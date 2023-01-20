@@ -5,4 +5,6 @@
     <string name="retry">Retry</string>
     <string name="logo">School logo</string>
     <string name="school_name">Pakistan International School Jeddah - English Section</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>
