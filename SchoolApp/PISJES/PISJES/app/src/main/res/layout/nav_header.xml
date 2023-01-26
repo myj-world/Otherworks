@@ -17,16 +17,19 @@
 <!--    <de.hdodenhof.circleimageview.CircleImageView-->
 <!--        android:layout_width="80dp"-->
 <!--        android:layout_height="80dp"-->
+<!--        android:id="@+id/darklogo"-->
 <!--        android:src="@drawable/logo"/>-->
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/logonav"
         android:layout_width="80dp"
         android:layout_height="80dp"
         app:srcCompat="@drawable/logotwo"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
+        tools:layout_editor_absoluteY="16dp"
+        android:clipToOutline="true" />
 
     <TextView
+        android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -36,7 +39,7 @@
         android:textColor="#000000" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
