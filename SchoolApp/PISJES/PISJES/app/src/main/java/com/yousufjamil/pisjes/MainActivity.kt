@@ -9,9 +9,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
 import android.webkit.WebView
@@ -21,24 +20,29 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 
-@Suppress("DEPRECATION")
+@Suppress("DEPRECATION", "SetJavascriptEnabled", "ClickableViewAccessibility")
 class MainActivity : AppCompatActivity() {
 
+    var urlParcelable: String? = ""
+    lateinit var webView: WebView
     lateinit var toggle: ActionBarDrawerToggle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar?.title = "PISJES"
+
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
         val navView: NavigationView = findViewById(R.id.nav_view)
 
-        val url = intent.getStringExtra(EXTRA_URL)
+        urlParcelable = intent.getStringExtra(EXTRA_URL)
 
-        val webView: WebView = findViewById(R.id.websiteWebView)
+        webView = findViewById(R.id.websiteWebView)
 //        val titleWebSite: TextView = findViewById(R.id.pageNameTxt)
         val progressLoad: ProgressBar = findViewById(R.id.loadWebSite)
 
@@ -50,14 +54,15 @@ class MainActivity : AppCompatActivity() {
 
         navView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.home -> webView.loadUrl("https://pisjes.edu.sa")
-                R.id.calendar -> webView.loadUrl("https://pisjes.edu.sa/calendar/")
-                R.id.junior -> webView.loadUrl("https://pisjes.edu.sa/pg-nursery-reception/")
-                R.id.middle -> webView.loadUrl("https://pisjes.edu.sa/middle-school/")
-                R.id.senior -> webView.loadUrl("https://pisjes.edu.sa/senior-school/")
-                R.id.parentportal -> webView.loadUrl("https://pisjes.edu.sa/parent-portal/")
+                R.id.home -> urlParcelable = "https://pisjes.edu.sa"
+                R.id.calendar -> urlParcelable = "https://pisjes.edu.sa/calendar/"
+                R.id.junior -> urlParcelable = "https://pisjes.edu.sa/pg-nursery-reception/"
+                R.id.middle -> urlParcelable = "https://pisjes.edu.sa/middle-school/"
+                R.id.senior -> urlParcelable = "https://pisjes.edu.sa/senior-school/"
+                R.id.parentportal -> urlParcelable = "https://pisjes.edu.sa/parent-portal/"
                 else -> Toast.makeText(this, "Unknown Error", Toast.LENGTH_SHORT).show()
             }
+            webView.loadUrl(urlParcelable.toString())
             drawerLayout.closeDrawers()
             true
         }
@@ -89,21 +94,16 @@ class MainActivity : AppCompatActivity() {
             urlnav.setTextColor(navtextcolour)
         }
 
-
-
-
-        webView.loadUrl(url.toString())
+        webView.loadUrl(urlParcelable.toString())
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.canGoBack()
         progressLoad.visibility = View.INVISIBLE
 
-        val connectionManager: ConnectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
-        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
-
         webView.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                urlParcelable = url
+                checkInternet()
                 super.onPageStarted(view, url, favicon)
                 webView.setOnTouchListener(View.OnTouchListener { v, event -> true })
                 progressLoad.visibility = View.VISIBLE
@@ -112,9 +112,9 @@ class MainActivity : AppCompatActivity() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 webView.setOnTouchListener(View.OnTouchListener { v, event -> false })
-//                titleWebSite.text = webView.title
-//                supportActionBar?.title = webView.title
+
                 progressLoad.visibility = View.INVISIBLE
+                urlParcelable = webView.url
             }
         }
     }
@@ -126,10 +126,24 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-//    fun checkInternet(): Boolean {
-//        val connectionManager: ConnectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-//        val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
-//        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
-//        return isConnected
-//    }
+    override fun onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    fun checkInternet() {
+        val connectionManager: ConnectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+        println("Current URL: $urlParcelable")
+        if (!isConnected) {
+            val internetIssueIntent = Intent(this, InternetProblemActivity::class.java)
+            internetIssueIntent.putExtra(EXTRA_URL, urlParcelable)
+            startActivity(internetIssueIntent)
+            finish()
+        }
+    }
 }

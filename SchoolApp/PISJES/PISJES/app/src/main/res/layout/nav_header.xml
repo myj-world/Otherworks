@@ -26,7 +26,8 @@
         app:srcCompat="@drawable/logotwo"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp"
-        android:clipToOutline="true" />
+        android:clipToOutline="true"
+        android:contentDescription="@string/pisjes_logo" />
 
     <TextView
         android:id="@+id/name"
