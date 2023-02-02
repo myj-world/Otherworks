@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PISJES (Beta)</string>
+    <string name="app_name">PISJES</string>
     <string name="no_internet">No Internet</string>
     <string name="no_internet_conn">No Internet Connection Found</string>
     <string name="retry">Retry</string>
@@ -17,4 +17,6 @@
     <string name="senior_school">Senior School</string>
     <string name="parent_portal">Parent Portal</string>
     <string name="parent_portal_menu">Parent Portal</string>
+    <string name="info">Info</string>
+    <string name="report_a_bug">Report a Bug</string>
 </resources>

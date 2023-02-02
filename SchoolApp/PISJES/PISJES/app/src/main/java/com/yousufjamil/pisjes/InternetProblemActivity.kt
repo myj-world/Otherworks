@@ -15,6 +15,8 @@ class InternetProblemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_internet_problem)
 
+        supportActionBar?.hide()
+
         val onUrl = intent.getStringExtra(EXTRA_URL)
 
         val retryBtn: Button = findViewById(R.id.internetProblemRetryBtn)

@@ -11,6 +11,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.webkit.WebView
@@ -31,16 +32,33 @@ class MainActivity : AppCompatActivity() {
     var urlParcelable: String? = ""
     lateinit var webView: WebView
     lateinit var toggle: ActionBarDrawerToggle
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        println("Current URL saved: $urlParcelable")
+        outState.putString(EXTRA_URL, urlParcelable)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (savedInstanceState != null) {
+            urlParcelable = savedInstanceState.getString(EXTRA_URL, "https://pisjes.edu.sa")
+            println("Current URL retrieved: $urlParcelable")
+        }
+
+        println("Current URL retrieved: $urlParcelable")
 
         supportActionBar?.title = "PISJES"
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
         val navView: NavigationView = findViewById(R.id.nav_view)
 
-        urlParcelable = intent.getStringExtra(EXTRA_URL)
+        if (urlParcelable == "") {
+            println("Current URL is $urlParcelable so reassign")
+            urlParcelable = intent.getStringExtra(EXTRA_URL)
+        }
 
         webView = findViewById(R.id.websiteWebView)
 //        val titleWebSite: TextView = findViewById(R.id.pageNameTxt)
@@ -68,10 +86,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-//        when (currentNightMode) {
-//            Configuration.UI_MODE_NIGHT_NO -> {} // Night mode is not active, we're using the light theme
-//            Configuration.UI_MODE_NIGHT_YES -> {} // Night mode is active, we're using dark theme
-//        }
         if (currentNightMode == Configuration.UI_MODE_NIGHT_NO) {
             val logonav = navView.getHeaderView(0).findViewById<ImageView>(R.id.logonav)
             val bitmap = BitmapFactory.decodeResource(resources, R.drawable.logotwo)
@@ -102,7 +116,7 @@ class MainActivity : AppCompatActivity() {
 
         webView.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                urlParcelable = url
+//                urlParcelable = url
                 checkInternet()
                 super.onPageStarted(view, url, favicon)
                 webView.setOnTouchListener(View.OnTouchListener { v, event -> true })
@@ -114,7 +128,9 @@ class MainActivity : AppCompatActivity() {
                 webView.setOnTouchListener(View.OnTouchListener { v, event -> false })
 
                 progressLoad.visibility = View.INVISIBLE
+                println("Current URL: ${webView.url}")
                 urlParcelable = webView.url
+                println("Current URL: $urlParcelable")
             }
         }
     }
@@ -122,6 +138,13 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             return true
+        }
+        if (item.itemId == R.id.info) {
+            val infoIntent = Intent(this, InfoActivity::class.java)
+            startActivity(infoIntent)
+        } else if (item.itemId == R.id.report) {
+            val reportIntent = Intent(this, ReportActivity::class.java)
+            startActivity(reportIntent)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -134,11 +157,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_top, menu)
+        return true
+    }
+
     fun checkInternet() {
         val connectionManager: ConnectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
-        println("Current URL: $urlParcelable")
         if (!isConnected) {
             val internetIssueIntent = Intent(this, InternetProblemActivity::class.java)
             internetIssueIntent.putExtra(EXTRA_URL, urlParcelable)
