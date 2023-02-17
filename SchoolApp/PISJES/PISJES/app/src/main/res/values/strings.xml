@@ -19,4 +19,14 @@
     <string name="parent_portal_menu">Parent Portal</string>
     <string name="info">Info</string>
     <string name="report_a_bug">Report a Bug</string>
+    <string name="school_slogan">Excellence in Education</string>
+    <string name="details_txt">Details</string>
+    <string name="detail">Few decisions have the lasting impact on your child as that of school choice. It is during their school days that life-long friendships will be made, the spiritual formation will take place, and values will be instilled. PISJ-ES exists today because it is in constant quest to improve the standard of education and to educate their children in a safe, secure and competitive learning environment that instills values, helps develop character and cultivates wisdom, manifested through academic excellence. At all grade levels, the curriculum and classroom instruction is focused on maximizing individual student’s achievement and developing strength of character. Students are given opportunities to explore modern vistas of global education in modern and well equipped classrooms and labs. With many opportunities and prospects in academics, the provision of comprehensive sports, fine arts, debates and many other co-curricular activities unfold a vast horizon of creativity and confidence. PISJ-ES gives high importance in preparing children to become individuals who choose character before career, wisdom beyond scholarship, service before self, honesty before opportunities and participation as a way of life.</string>
+    <string name="devlabel">Developers:</string>
+    <string name="myj">Muhammad Yousuf Jamil</string>
+    <string name="mk">Musab Khan</string>
+    <string name="au">Abdullah Umair</string>
+    <string name="email_data">Email Data</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="please_open_navigation_drawer_and_click_quot_home_quot_in_case_you_see_blank_screen">Please open navigation drawer and click \"Home\" in case you see blank screen</string>
 </resources>

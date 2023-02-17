@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
     <item
@@ -42,4 +43,11 @@
                 android:icon="@drawable/baseline_person_24"/>
         </menu>
     </item>
+<!--    <group>-->
+<!--        <item-->
+<!--            android:id="@+id/darkswitch"-->
+<!--            android:title="@string/dark_mode"-->
+<!--            app:actionLayout="@layout/switch_item"-->
+<!--            app:showAsAction="always" />-->
+<!--    </group>-->
 </menu>
