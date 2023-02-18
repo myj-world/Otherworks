@@ -19,10 +19,7 @@ import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.webkit.CookieManager
-import android.webkit.URLUtil
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Switch
@@ -165,9 +162,19 @@ class MainActivity : AppCompatActivity() {
                 println("Current URL: ${webView.url}")
                 urlParcelable = webView.url
                 println("Current URL: $urlParcelable")
-                if (webView.url == "about:blank") {
-                    errortxt.visibility = View.VISIBLE
+                if (webView.url == "about:blank" || webView.url == "http://null/") {
+//                    errortxt.visibility = View.VISIBLE
+                    webView.loadUrl("https://pisjes.edu.sa")
                 }
+            }
+
+            override fun onReceivedError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                error: WebResourceError?
+            ) {
+                super.onReceivedError(view, request, error)
+                webView.loadUrl("https://pisjes.edu.sa")
             }
         }
 

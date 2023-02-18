@@ -1,12 +1,15 @@
 package com.yousufjamil.pisjes
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 
 class ReportActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,6 +18,12 @@ class ReportActivity : AppCompatActivity() {
 
         supportActionBar?.show()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val logo: ImageView = findViewById(R.id.reportLogo)
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.logo)
+        val rounded = RoundedBitmapDrawableFactory.create(resources, bitmap)
+        rounded.isCircular = true
+        logo.setImageDrawable(rounded)
 
         val email = "muhammadyousufjamil@gmail.com"
         val subject: EditText = findViewById(R.id.etSubject)
