@@ -32,7 +32,7 @@ class SplashActivity : AppCompatActivity() {
             {
                 val openmainintent = Intent(this, MainActivity::class.java)
                 startActivity(openmainintent)
-            }, 4000
+            }, 2520
         )
     }
 }
