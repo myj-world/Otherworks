@@ -28,10 +28,13 @@ class SplashActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
+        supportActionBar?.hide()
+
         Handler().postDelayed(
             {
                 val openmainintent = Intent(this, MainActivity::class.java)
                 startActivity(openmainintent)
+                finish()
             }, 2520
         )
     }
