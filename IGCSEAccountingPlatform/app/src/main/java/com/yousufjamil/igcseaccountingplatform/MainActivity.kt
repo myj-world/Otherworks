@@ -1,7 +1,10 @@
 package com.yousufjamil.igcseaccountingplatform
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -23,6 +26,9 @@ class MainActivity : AppCompatActivity() {
         toggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#8787c6")))
+//        supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Accorm</font>")
 
         navView.setNavigationItemSelectedListener {item ->
             when(item.itemId) {
