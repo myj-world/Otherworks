@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#8787c6")))
-//        supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Accorm</font>")
+        supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Accorm</font>")
 
         navView.setNavigationItemSelectedListener {item ->
             when(item.itemId) {
