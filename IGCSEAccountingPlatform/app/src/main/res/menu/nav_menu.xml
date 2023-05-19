@@ -7,31 +7,21 @@
     <item
         android:id="@+id/home"
         android:icon="@drawable/baseline_home_24"
-        android:title="Home"
-        android:iconTint="#FFFFFF"
-        app:iconTint="#FFFFFF"/>
+        android:title="Home"/>
+    <item
+        android:id="@+id/subjects"
+        android:icon="@drawable/baseline_menu_book_24"
+        android:title="Subjects"/>
+    <item
+        android:id="@+id/features"
+        android:icon="@drawable/baseline_apps_24"
+        android:title="Features"/>
+    <item
+        android:id="@+id/contribute"
+        android:icon="@drawable/baseline_add_circle_24"
+        android:title="Contribute"/>
     <item
         android:id="@+id/about"
         android:icon="@drawable/baseline_info_24"
-        android:title="About"
-        android:iconTint="#FFFFFF"
-        app:iconTint="#FFFFFF"/>
-    <item
-        android:id="@+id/tutorials"
-        android:icon="@drawable/baseline_video_library_24"
-        android:title="Tutorials"
-        android:iconTint="#FFFFFF"
-        app:iconTint="#FFFFFF"/>
-    <item
-        android:id="@+id/sheets"
-        android:icon="@drawable/baseline_table_chart_24"
-        android:title="Sheets"
-        android:iconTint="#FFFFFF"
-        app:iconTint="#FFFFFF"/>
-    <item
-        android:id="@+id/ppqs"
-        android:icon="@drawable/baseline_article_24"
-        android:title="Past Paper Questions"
-        android:iconTint="#FFFFFF"
-        app:iconTint="#FFFFFF"/>
+        android:title="About"/>
 </menu>

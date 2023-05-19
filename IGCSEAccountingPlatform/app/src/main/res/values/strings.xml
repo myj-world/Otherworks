@@ -2,4 +2,11 @@
     <string name="app_name">Accorm</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string-array name="themesarray">
+        <item>Default</item>
+        <item>Red</item>
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Teal</item>
+    </string-array>
 </resources>
