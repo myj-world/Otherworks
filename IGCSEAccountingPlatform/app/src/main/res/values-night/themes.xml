@@ -7,5 +7,70 @@
         <item name="android:statusBarColor" tools:targetApi="21">@color/purple_700</item>
     </style>
 
+    <style name="Theme.Default" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="bg">#0f0f16</item>
+        <item name="navbar">#1e1e2c</item>
+        <item name="light">#acacf9</item>
+        <item name="med">#8787c6</item>
+        <item name="dark">#4b4b6e</item>
+        <item name="bg_img">@drawable/def_bg</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:statusBarColor" tools:targetApi="21">@color/purple_700</item>
+    </style>
+
+    <style name="Theme.Red" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="bg">#2d1515</item>
+        <item name="navbar">#5a2a2a</item>
+        <item name="light">#ff9696</item>
+        <item name="med">#d56464</item>
+        <item name="dark">#9f4b4b</item>
+        <item name="bg_img">@drawable/red_bg</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:statusBarColor" tools:targetApi="21">@color/purple_700</item>
+    </style>
+
+    <style name="Theme.Green" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="bg">#002419</item>
+        <item name="navbar">#004832</item>
+        <item name="light">#00ffb4</item>
+        <item name="med">#00c98e</item>
+        <item name="dark">#008e64</item>
+        <item name="bg_img">@drawable/green_bg</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:statusBarColor" tools:targetApi="21">@color/purple_700</item>
+    </style>
+
+    <style name="Theme.Blue" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="bg">#001924</item>
+        <item name="navbar">#003248</item>
+        <item name="light">#00b4ff</item>
+        <item name="med">#008ec9</item>
+        <item name="dark">#00648e</item>
+        <item name="bg_img">@drawable/blue_bg</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:statusBarColor" tools:targetApi="21">@color/purple_700</item>
+    </style>
+
+    <style name="Theme.Teal" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="bg">#001e1e</item>
+        <item name="navbar">#003c3c</item>
+        <item name="light">#00c8c8</item>
+        <item name="med">#009696</item>
+        <item name="dark">#006464</item>
+        <item name="bg_img">@drawable/teal_bg</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:statusBarColor" tools:targetApi="21">@color/purple_700</item>
+    </style>
+
     <style name="Theme.IGCSEAccountingPlatform" parent="Base.Theme.IGCSEAccountingPlatform" />
 </resources>

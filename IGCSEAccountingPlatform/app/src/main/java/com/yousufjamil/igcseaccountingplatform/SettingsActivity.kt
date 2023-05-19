@@ -37,6 +37,10 @@ class SettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         selecteditem = parent?.getItemAtPosition(position)
         println("Theme: $selecteditem")
+        if (selecteditem == "Red") {
+            setTheme(R.style.Theme_Red)
+//            recreate()
+        }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {

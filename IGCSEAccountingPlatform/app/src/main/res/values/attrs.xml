@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="bg" format="color"/>
+    <attr name="navbar" format="color"/>
+    <attr name="light" format="color"/>
+    <attr name="med" format="color"/>
+    <attr name="dark" format="color"/>
+    <attr name="bg_img" format="reference"/>
+</resources>

@@ -5,7 +5,7 @@
     android:id="@+id/nav_head"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#0f0f16"
+    android:background="?attr/navbar"
     android:paddingBottom="24dp">
 
     <ImageView
@@ -54,7 +54,7 @@
         android:drawableLeft="@drawable/baseline_account_circle_24"
         android:text="Login"
         android:textSize="12sp"
-        app:backgroundTint="#4B4B6E"
+        app:backgroundTint="?attr/dark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nav_head_logo" />
 </androidx.constraintlayout.widget.ConstraintLayout>
