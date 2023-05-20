@@ -6,4 +6,5 @@
     <attr name="med" format="color"/>
     <attr name="dark" format="color"/>
     <attr name="bg_img" format="reference"/>
+    <attr name="nav_head" format="color"/>
 </resources>

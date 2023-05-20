@@ -1,22 +1,30 @@
 package com.yousufjamil.igcseaccountingplatform
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : ChangeTheme() {
 
     lateinit var toggle: ActionBarDrawerToggle
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val sharedGradients = arrayOf(getSharedPreferences("themeInfo", MODE_PRIVATE))
+        val userTheme = sharedGradients[0].getString("userTheme", "Theme.Default")
+        val themeId = resources.getIdentifier(userTheme.toString(), "style", packageName)
+        setTheme(themeId)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -29,7 +37,27 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#8787c6")))
+//        val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
+//        val themeResId: Int = packageInfo.applicationInfo.theme
+//        val currenttheme = resources.getResourceEntryName(themeResId)
+
+        when (userTheme) {
+            "Theme.Default" -> {
+                supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#8787c6")))
+            }
+            "Theme.Red" -> {
+                supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#d56464")))
+            }
+            "Theme.Green" -> {
+                supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#00c98e")))
+            }
+            "Theme.Blue" -> {
+                supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#008ec9")))
+            }
+            "Theme.Teal" -> {
+                supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#009696")))
+            }
+        }
         supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Accorm</font>")
 
         navView.setNavigationItemSelectedListener {item ->

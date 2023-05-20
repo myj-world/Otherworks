@@ -17,7 +17,7 @@
         <item name="dark">#4b4b6e</item>
         <item name="bg_img">@drawable/def_bg</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:statusBarColor" tools:targetApi="21">@color/purple_700</item>
+        <item name="android:statusBarColor" tools:targetApi="21">?attr/dark</item>
     </style>
 
     <style name="Theme.Red" parent="Theme.Material3.DayNight">
@@ -30,7 +30,7 @@
         <item name="dark">#9f4b4b</item>
         <item name="bg_img">@drawable/red_bg</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:statusBarColor" tools:targetApi="21">@color/purple_700</item>
+        <item name="android:statusBarColor" tools:targetApi="21">?attr/dark</item>
     </style>
 
     <style name="Theme.Green" parent="Theme.Material3.DayNight">
@@ -43,7 +43,7 @@
         <item name="dark">#008e64</item>
         <item name="bg_img">@drawable/green_bg</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:statusBarColor" tools:targetApi="21">@color/purple_700</item>
+        <item name="android:statusBarColor" tools:targetApi="21">?attr/dark</item>
     </style>
 
     <style name="Theme.Blue" parent="Theme.Material3.DayNight">
@@ -56,7 +56,7 @@
         <item name="dark">#00648e</item>
         <item name="bg_img">@drawable/blue_bg</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:statusBarColor" tools:targetApi="21">@color/purple_700</item>
+        <item name="android:statusBarColor" tools:targetApi="21">?attr/dark</item>
     </style>
 
     <style name="Theme.Teal" parent="Theme.Material3.DayNight">
@@ -69,7 +69,7 @@
         <item name="dark">#006464</item>
         <item name="bg_img">@drawable/teal_bg</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:statusBarColor" tools:targetApi="21">@color/purple_700</item>
+        <item name="android:statusBarColor" tools:targetApi="21">?attr/dark</item>
     </style>
 
     <style name="Theme.IGCSEAccountingPlatform" parent="Base.Theme.IGCSEAccountingPlatform" />
