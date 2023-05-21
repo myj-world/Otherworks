@@ -1,5 +1,6 @@
 package com.yousufjamil.igcseaccountingplatform
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
@@ -46,7 +47,6 @@ open class ChangeTheme: AppCompatActivity() {
         editor[0].putString("userTheme", "Theme.$userThemePref")
         editor[0].apply()
 
-        Toast.makeText(this, "Click the back button to apply the theme", Toast.LENGTH_SHORT).show()
 
 //        if (alreadyRecreated) {
 //            recreate()
