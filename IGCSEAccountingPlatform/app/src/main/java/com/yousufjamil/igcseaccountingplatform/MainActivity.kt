@@ -1,19 +1,20 @@
 package com.yousufjamil.igcseaccountingplatform
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.yousufjamil.igcseaccountingplatform.fragments.HomeFragment
+import com.yousufjamil.igcseaccountingplatform.theme.ChangeTheme
 
 
 class MainActivity : ChangeTheme() {
@@ -67,12 +68,21 @@ class MainActivity : ChangeTheme() {
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#009696")))
             }
         }
-        supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Accorm</font>")
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Accorm</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        } else {
+            supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Accorm</font>")
+        }
 
         navView.setNavigationItemSelectedListener {item ->
             when(item.itemId) {
                 R.id.home -> {
-                    TODO("Development in progress")
+                    supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.FragmentContainer, homeFragment)
+                        addToBackStack(null)
+                        commit()
+                    }
                 }
                 R.id.subjects -> {
                     TODO("Development in progress")
@@ -88,6 +98,7 @@ class MainActivity : ChangeTheme() {
                 }
                 else -> Toast.makeText(this, "Unknown Error", Toast.LENGTH_SHORT).show()
             }
+            drawerLayout.closeDrawers()
             true
         }
     }

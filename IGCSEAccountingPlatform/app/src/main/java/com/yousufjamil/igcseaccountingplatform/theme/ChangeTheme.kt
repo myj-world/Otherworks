@@ -1,8 +1,7 @@
-package com.yousufjamil.igcseaccountingplatform
+package com.yousufjamil.igcseaccountingplatform.theme
 
-import android.content.Intent
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.yousufjamil.igcseaccountingplatform.R
 
 
 open class ChangeTheme: AppCompatActivity() {

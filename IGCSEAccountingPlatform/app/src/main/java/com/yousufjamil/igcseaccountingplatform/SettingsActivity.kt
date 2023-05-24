@@ -1,14 +1,16 @@
 package com.yousufjamil.igcseaccountingplatform
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.core.text.HtmlCompat
+import com.yousufjamil.igcseaccountingplatform.theme.ChangeTheme
 
 
 class SettingsActivity : ChangeTheme(), AdapterView.OnItemSelectedListener {
@@ -53,7 +55,13 @@ class SettingsActivity : ChangeTheme(), AdapterView.OnItemSelectedListener {
         }
 
 //        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#8787c6")))
-        supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Settings</font>")
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Accorm</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        } else {
+            supportActionBar?.title = Html.fromHtml("<font color='#FFFFFF'>Accorm</font>")
+        }
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val themepickerdrp: Spinner = findViewById(R.id.themepickerdrp)
