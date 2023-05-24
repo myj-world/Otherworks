@@ -13,6 +13,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import com.yousufjamil.igcseaccountingplatform.fragments.HomeFragment
 
 
 class MainActivity : ChangeTheme() {
@@ -27,6 +28,14 @@ class MainActivity : ChangeTheme() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val homeFragment = HomeFragment()
+
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.FragmentContainer, homeFragment)
+//            addToBackStack(null)
+            commit()
+        }
 
         val drawerLayout:DrawerLayout = findViewById(R.id.drawerLayout)
         val navView: NavigationView = findViewById(R.id.nav_view)

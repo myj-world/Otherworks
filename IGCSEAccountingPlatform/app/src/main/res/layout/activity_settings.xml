@@ -49,13 +49,16 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
-        android:text="Click the back button to apply the theme when changed"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="Click the back button on the top-left corner  to apply the theme when changed"
         android:textColor="#D6D6D6"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/themepickerdrp" />
 
