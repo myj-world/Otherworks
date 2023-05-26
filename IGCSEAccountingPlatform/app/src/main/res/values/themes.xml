@@ -18,6 +18,9 @@
         <item name="bg_img">@drawable/def_bg</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:statusBarColor" tools:targetApi="21">?attr/dark</item>
+        <item name="logoColorBtn">#5c5c87</item>
+        <item name="logoBgColorBtn">#d4d4ff</item>
+        <item name="textColorBtn">#3b3b56</item>
     </style>
 
     <style name="Theme.Red" parent="Theme.Material3.DayNight">
@@ -31,6 +34,9 @@
         <item name="bg_img">@drawable/red_bg</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:statusBarColor" tools:targetApi="21">?attr/dark</item>
+        <item name="logoColorBtn">#c45c5c</item>
+        <item name="logoBgColorBtn">#ffb8b8</item>
+        <item name="textColorBtn">#5f2d2d</item>
     </style>
 
     <style name="Theme.Green" parent="Theme.Material3.DayNight">
@@ -44,6 +50,9 @@
         <item name="bg_img">@drawable/green_bg</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:statusBarColor" tools:targetApi="21">?attr/dark</item>
+        <item name="logoColorBtn">#00af7b</item>
+        <item name="logoBgColorBtn">#00ffdd</item>
+        <item name="textColorBtn">#00553c</item>
     </style>
 
     <style name="Theme.Blue" parent="Theme.Material3.DayNight">
@@ -57,6 +66,9 @@
         <item name="bg_img">@drawable/blue_bg</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:statusBarColor" tools:targetApi="21">?attr/dark</item>
+        <item name="logoColorBtn">#007baf</item>
+        <item name="logoBgColorBtn">#00ddff</item>
+        <item name="textColorBtn">#003e57</item>
     </style>
 
     <style name="Theme.Teal" parent="Theme.Material3.DayNight">
@@ -70,6 +82,9 @@
         <item name="bg_img">@drawable/teal_bg</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:statusBarColor" tools:targetApi="21">?attr/dark</item>
+        <item name="logoColorBtn">#007b7b</item>
+        <item name="logoBgColorBtn">#00f6f6</item>
+        <item name="textColorBtn">#003c3c</item>
     </style>
 
     <style name="Theme.IGCSEAccountingPlatform" parent="Base.Theme.IGCSEAccountingPlatform" />

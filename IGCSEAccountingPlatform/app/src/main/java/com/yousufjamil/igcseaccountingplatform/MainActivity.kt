@@ -8,12 +8,16 @@ import android.os.Bundle
 import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.text.HtmlCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import com.yousufjamil.igcseaccountingplatform.fragments.AboutFragment
+import com.yousufjamil.igcseaccountingplatform.fragments.FeaturesFragment
 import com.yousufjamil.igcseaccountingplatform.fragments.HomeFragment
+import com.yousufjamil.igcseaccountingplatform.fragments.SubjectsFragment
 import com.yousufjamil.igcseaccountingplatform.theme.ChangeTheme
 
 
@@ -31,6 +35,9 @@ class MainActivity : ChangeTheme() {
         setContentView(R.layout.activity_main)
 
         val homeFragment = HomeFragment()
+        val subjectsFragment = SubjectsFragment()
+        val featuresFragment = FeaturesFragment()
+        val aboutFragment = AboutFragment()
 
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.FragmentContainer, homeFragment)
@@ -79,27 +86,116 @@ class MainActivity : ChangeTheme() {
             when(item.itemId) {
                 R.id.home -> {
                     supportFragmentManager.beginTransaction().apply {
+                        setCustomAnimations(
+                            R.anim.slide_in,
+                            R.anim.fade_out,
+                            R.anim.fade_in,
+                            R.anim.slide_out
+                        )
                         replace(R.id.FragmentContainer, homeFragment)
                         addToBackStack(null)
                         commit()
                     }
                 }
                 R.id.subjects -> {
-                    TODO("Development in progress")
+                    supportFragmentManager.beginTransaction().apply {
+                        setCustomAnimations(
+                            R.anim.slide_in,
+                            R.anim.fade_out,
+                            R.anim.fade_in,
+                            R.anim.slide_out
+                        )
+                        replace(R.id.FragmentContainer, subjectsFragment)
+                        addToBackStack(null)
+                        commit()
+                    }
                 }
                 R.id.features -> {
-                    TODO("Development in progress")
+                    supportFragmentManager.beginTransaction().apply {
+                        setCustomAnimations(
+                            R.anim.slide_in,
+                            R.anim.fade_out,
+                            R.anim.fade_in,
+                            R.anim.slide_out
+                        )
+                        replace(R.id.FragmentContainer, featuresFragment)
+                        addToBackStack(null)
+                        commit()
+                    }
                 }
                 R.id.contribute -> {
                     TODO("Development in progress")
                 }
                 R.id.about -> {
-                    TODO("Development in progress")
+                    supportFragmentManager.beginTransaction().apply {
+                        setCustomAnimations(
+                            R.anim.slide_in,
+                            R.anim.fade_out,
+                            R.anim.fade_in,
+                            R.anim.slide_out
+                        )
+                        replace(R.id.FragmentContainer, aboutFragment)
+                        addToBackStack(null)
+                        commit()
+                    }
                 }
                 else -> Toast.makeText(this, "Unknown Error", Toast.LENGTH_SHORT).show()
             }
             drawerLayout.closeDrawers()
             true
+        }
+
+//        val subjectButton: Button = findViewById(R.id.subjectInfo)
+//        subjectButton.setOnClickListener {
+//            supportFragmentManager.beginTransaction().apply {
+//                replace(R.id.FragmentContainer, subjectsFragment)
+//                addToBackStack(null)
+//                commit()
+//            }
+//        }
+    }
+
+    fun subjectFragmentOpen(view: View) {
+        val subjectsFragment = SubjectsFragment()
+        supportFragmentManager.beginTransaction().apply {
+            setCustomAnimations(
+                R.anim.slide_in,
+                R.anim.fade_out,
+                R.anim.fade_in,
+                R.anim.slide_out
+            )
+            replace(R.id.FragmentContainer, subjectsFragment)
+            addToBackStack(null)
+            commit()
+        }
+    }
+    fun featuresFragmentOpen(view: View) {
+        val featuresFragment = FeaturesFragment()
+        supportFragmentManager.beginTransaction().apply {
+            setCustomAnimations(
+                R.anim.slide_in,
+                R.anim.fade_out,
+                R.anim.fade_in,
+                R.anim.slide_out
+            )
+            replace(R.id.FragmentContainer, featuresFragment)
+            addToBackStack(null)
+            commit()
+        }
+    }
+
+    fun aboutFragmentOpen(view: View) {
+        val aboutFragment = AboutFragment()
+        supportFragmentManager.beginTransaction().apply {
+            setCustomAnimations(
+                R.anim.slide_in,
+                R.anim.fade_out,
+                R.anim.fade_in,
+                R.anim.slide_out
+            )
+            replace(R.id.FragmentContainer, aboutFragment)
+            addToBackStack(null)
+            commit()
         }
     }
 

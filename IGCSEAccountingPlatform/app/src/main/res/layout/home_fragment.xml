@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <ImageView
-        android:id="@+id/bg"
+        android:id="@+id/bghome"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
@@ -13,10 +15,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?attr/bg_img" />
+
     <ScrollView
         android:id="@+id/scrollableLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -84,12 +88,16 @@
 
                 <Button
                     android:id="@+id/subjectInfo"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:backgroundTint="?attr/navbar"
-                    android:drawableLeft="@drawable/baseline_menu_book_24"
+                    android:layout_width="175dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="50dp"
+                    android:backgroundTint="?attr/med"
+                    android:drawableLeft="@drawable/baseline_keyboard_arrow_left_24"
+                    android:drawableTint="?attr/textColorBtn"
+                    android:onClick="subjectFragmentOpen"
+                    android:paddingLeft="50dp"
                     android:text="Subjects"
+                    android:textColor="?attr/textColorBtn"
                     app:layout_constraintEnd_toStartOf="@+id/featureInfo"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -97,14 +105,33 @@
                     app:layout_constraintTop_toBottomOf="@+id/lineInfo" />
 
                 <Button
+                    android:id="@+id/subjectIconInfo"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="-10dp"
+                    android:layout_marginLeft="-10dp"
+                    android:backgroundTint="?attr/logoBgColorBtn"
+                    android:drawableLeft="@drawable/baseline_menu_book_24"
+                    android:drawableTint="?attr/logoColorBtn"
+                    android:onClick="subjectFragmentOpen"
+                    android:padding="10dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/subjectInfo"
+                    app:layout_constraintStart_toStartOf="@+id/subjectInfo"
+                    app:layout_constraintTop_toTopOf="@+id/subjectInfo" />
+
+                <Button
                     android:id="@+id/featureInfo"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="175dp"
+                    android:layout_height="45dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
-                    android:backgroundTint="?attr/navbar"
-                    android:drawableRight="@drawable/baseline_apps_24"
+                    android:backgroundTint="?attr/med"
+                    android:drawableRight="@drawable/baseline_keyboard_arrow_right_24"
+                    android:drawableTint="?attr/textColorBtn"
+                    android:onClick="featuresFragmentOpen"
+                    android:paddingRight="50dp"
                     android:text="Features"
+                    android:textColor="?attr/textColorBtn"
                     app:layout_constraintBottom_toBottomOf="@+id/subjectInfo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -112,13 +139,32 @@
                     app:layout_constraintTop_toTopOf="@+id/subjectInfo" />
 
                 <Button
+                    android:id="@+id/featureIconInfo"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="-10dp"
+                    android:layout_marginRight="-10dp"
+                    android:backgroundTint="?attr/logoBgColorBtn"
+                    android:drawableLeft="@drawable/baseline_apps_24"
+                    android:drawableTint="?attr/logoColorBtn"
+                    android:onClick="featuresFragmentOpen"
+                    android:padding="10dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/featureInfo"
+                    app:layout_constraintEnd_toEndOf="@+id/featureInfo"
+                    app:layout_constraintTop_toTopOf="@+id/featureInfo"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <Button
                     android:id="@+id/contributeInfo"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="175dp"
+                    android:layout_height="45dp"
                     android:layout_marginTop="8dp"
-                    android:backgroundTint="?attr/navbar"
-                    android:drawableLeft="@drawable/baseline_add_circle_24"
+                    android:backgroundTint="?attr/med"
+                    android:drawableLeft="@drawable/baseline_keyboard_arrow_left_24"
+                    android:drawableTint="?attr/textColorBtn"
+                    android:paddingLeft="50dp"
                     android:text="Contribute"
+                    android:textColor="?attr/textColorBtn"
                     app:layout_constraintEnd_toStartOf="@+id/aboutInfo"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -126,20 +172,54 @@
                     app:layout_constraintTop_toBottomOf="@+id/subjectInfo" />
 
                 <Button
+                    android:id="@+id/contributeIconInfo"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="-10dp"
+                    android:layout_marginLeft="-10dp"
+                    android:backgroundTint="?attr/logoBgColorBtn"
+                    android:drawableLeft="@drawable/baseline_add_circle_24"
+                    android:drawableTint="?attr/logoColorBtn"
+                    android:padding="10dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/contributeInfo"
+                    app:layout_constraintStart_toStartOf="@+id/contributeInfo"
+                    app:layout_constraintTop_toTopOf="@+id/contributeInfo" />
+
+                <Button
                     android:id="@+id/aboutInfo"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="175dp"
+                    android:layout_height="45dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
-                    android:backgroundTint="?attr/navbar"
-                    android:drawableRight="@drawable/baseline_info_24"
+                    android:backgroundTint="?attr/med"
+                    android:drawableRight="@drawable/baseline_keyboard_arrow_right_24"
+                    android:drawableTint="?attr/textColorBtn"
+                    android:onClick="aboutFragmentOpen"
+                    android:paddingRight="50dp"
                     android:text="About Us"
+                    android:textColor="?attr/textColorBtn"
                     app:layout_constraintBottom_toBottomOf="@+id/contributeInfo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/contributeInfo"
                     app:layout_constraintTop_toTopOf="@+id/contributeInfo"
                     app:layout_constraintVertical_bias="1.0" />
+
+                <Button
+                    android:id="@+id/aboutIconInfo"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="-10dp"
+                    android:layout_marginRight="-10dp"
+                    android:backgroundTint="?attr/logoBgColorBtn"
+                    android:drawableLeft="@drawable/baseline_info_24"
+                    android:drawableTint="?attr/logoColorBtn"
+                    android:onClick="aboutFragmentOpen"
+                    android:padding="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/aboutInfo"
+                    app:layout_constraintTop_toTopOf="@+id/aboutInfo" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>

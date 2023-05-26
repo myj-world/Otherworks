@@ -7,4 +7,7 @@
     <attr name="dark" format="color"/>
     <attr name="bg_img" format="reference"/>
     <attr name="nav_head" format="color"/>
+    <attr name="textColorBtn" format="color"/>
+    <attr name="logoBgColorBtn" format="color"/>
+    <attr name="logoColorBtn" format="color"/>
 </resources>

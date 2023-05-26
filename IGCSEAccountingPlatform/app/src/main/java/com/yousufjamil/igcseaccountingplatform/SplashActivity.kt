@@ -19,7 +19,7 @@ class SplashActivity : AppCompatActivity() {
         val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.accorm)
         videoView.setVideoURI(uri)
         videoView.setOnPreparedListener { mp ->
-            mp.isLooping = true
+//            mp.isLooping = true
             mp.setVolume(0f, 0f)
             mp.start()
         }
