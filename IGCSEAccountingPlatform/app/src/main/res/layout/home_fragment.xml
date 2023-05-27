@@ -74,7 +74,7 @@
 
                 <View
                     android:id="@+id/lineInfo"
-                    android:layout_width="0dp"
+                    android:layout_width="150dp"
                     android:layout_height="5dp"
                     android:layout_marginStart="150dp"
                     android:layout_marginLeft="150dp"
