@@ -253,6 +253,9 @@ class MainActivity : AppCompatActivity() {
             val reportIntent = Intent(this, ReportActivity::class.java)
             startActivity(reportIntent)
 //            finish()
+        } else if (item.itemId == R.id.search ){
+            val searchIntent = Intent(this, SearchActivity::class.java)
+            startActivity(searchIntent)
         }
         return super.onOptionsItemSelected(item)
     }
