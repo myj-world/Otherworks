@@ -63,11 +63,20 @@
             android:padding="20dp">
 
             <TextView
-                android:id="@+id/detailinfo"
+                android:id="@+id/detailinfo1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
-                android:text="@string/detail"
+                android:text="@string/detail1"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/detailInfo2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/detail2"
                 android:textSize="16sp" />
 
             <TextView
@@ -104,21 +113,6 @@
                 android:text="@string/au"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/dev4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:text="@string/ma"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/dev5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:text="@string/mz"
-                android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
