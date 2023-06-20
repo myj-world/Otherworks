@@ -15,6 +15,7 @@ import androidx.core.text.HtmlCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.yousufjamil.igcseaccountingplatform.fragments.AboutFragment
+import com.yousufjamil.igcseaccountingplatform.fragments.ContributeFragment
 import com.yousufjamil.igcseaccountingplatform.fragments.FeaturesFragment
 import com.yousufjamil.igcseaccountingplatform.fragments.HomeFragment
 import com.yousufjamil.igcseaccountingplatform.fragments.SubjectsFragment
@@ -38,6 +39,7 @@ class MainActivity : ChangeTheme() {
         val subjectsFragment = SubjectsFragment()
         val featuresFragment = FeaturesFragment()
         val aboutFragment = AboutFragment()
+        val contributeFragment = ContributeFragment()
 
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.FragmentContainer, homeFragment)
@@ -124,7 +126,17 @@ class MainActivity : ChangeTheme() {
                     }
                 }
                 R.id.contribute -> {
-                    TODO("Development in progress")
+                    supportFragmentManager.beginTransaction().apply {
+                        setCustomAnimations(
+                            R.anim.slide_in,
+                            R.anim.fade_out,
+                            R.anim.fade_in,
+                            R.anim.slide_out
+                        )
+                        replace(R.id.FragmentContainer, aboutFragment)
+                        addToBackStack(null)
+                        commit()
+                    }
                 }
                 R.id.about -> {
                     supportFragmentManager.beginTransaction().apply {
@@ -134,7 +146,7 @@ class MainActivity : ChangeTheme() {
                             R.anim.fade_in,
                             R.anim.slide_out
                         )
-                        replace(R.id.FragmentContainer, aboutFragment)
+                        replace(R.id.FragmentContainer, contributeFragment)
                         addToBackStack(null)
                         commit()
                     }
@@ -194,6 +206,21 @@ class MainActivity : ChangeTheme() {
                 R.anim.slide_out
             )
             replace(R.id.FragmentContainer, aboutFragment)
+            addToBackStack(null)
+            commit()
+        }
+    }
+
+    fun contributeFragmentOpen(view: View) {
+        val contributeFragment = ContributeFragment()
+        supportFragmentManager.beginTransaction().apply {
+            setCustomAnimations(
+                R.anim.slide_in,
+                R.anim.fade_out,
+                R.anim.fade_in,
+                R.anim.slide_out
+            )
+            replace(R.id.FragmentContainer, contributeFragment)
             addToBackStack(null)
             commit()
         }

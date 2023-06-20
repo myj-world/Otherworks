@@ -38,7 +38,7 @@
                 android:layout_marginTop="32dp">
 
                 <ImageView
-                    android:id="@+id/logoInfo"
+                    android:id="@+id/logoInfoHome"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +47,7 @@
                     app:srcCompat="@drawable/logo_round" />
 
                 <TextView
-                    android:id="@+id/accormNameInfo"
+                    android:id="@+id/accormNameInfoHome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/josefin_sans"
@@ -57,10 +57,10 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/logoInfo" />
+                    app:layout_constraintTop_toBottomOf="@+id/logoInfoHome" />
 
                 <TextView
-                    android:id="@+id/accormSubInfo"
+                    android:id="@+id/accormSubInfoHome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -70,10 +70,10 @@
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/accormNameInfo" />
+                    app:layout_constraintTop_toBottomOf="@+id/accormNameInfoHome" />
 
                 <View
-                    android:id="@+id/lineInfo"
+                    android:id="@+id/lineInfoHome"
                     android:layout_width="150dp"
                     android:layout_height="5dp"
                     android:layout_marginStart="150dp"
@@ -84,10 +84,10 @@
                     android:background="?attr/light"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/accormSubInfo" />
+                    app:layout_constraintTop_toBottomOf="@+id/accormSubInfoHome" />
 
                 <Button
-                    android:id="@+id/subjectInfo"
+                    android:id="@+id/subjectInfoHome"
                     android:layout_width="175dp"
                     android:layout_height="45dp"
                     android:layout_marginTop="50dp"
@@ -98,14 +98,14 @@
                     android:paddingLeft="50dp"
                     android:text="Subjects"
                     android:textColor="?attr/textColorBtn"
-                    app:layout_constraintEnd_toStartOf="@+id/featureInfo"
+                    app:layout_constraintEnd_toStartOf="@+id/featureInfoHome"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/lineInfo" />
+                    app:layout_constraintTop_toBottomOf="@+id/lineInfoHome" />
 
                 <Button
-                    android:id="@+id/subjectIconInfo"
+                    android:id="@+id/subjectIconInfoHome"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginStart="-10dp"
@@ -115,12 +115,12 @@
                     android:drawableTint="?attr/logoColorBtn"
                     android:onClick="subjectFragmentOpen"
                     android:padding="10dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/subjectInfo"
-                    app:layout_constraintStart_toStartOf="@+id/subjectInfo"
-                    app:layout_constraintTop_toTopOf="@+id/subjectInfo" />
+                    app:layout_constraintBottom_toBottomOf="@+id/subjectInfoHome"
+                    app:layout_constraintStart_toStartOf="@+id/subjectInfoHome"
+                    app:layout_constraintTop_toTopOf="@+id/subjectInfoHome" />
 
                 <Button
-                    android:id="@+id/featureInfo"
+                    android:id="@+id/featureInfoHome"
                     android:layout_width="175dp"
                     android:layout_height="45dp"
                     android:layout_marginStart="16dp"
@@ -132,14 +132,14 @@
                     android:paddingRight="50dp"
                     android:text="Features"
                     android:textColor="?attr/textColorBtn"
-                    app:layout_constraintBottom_toBottomOf="@+id/subjectInfo"
+                    app:layout_constraintBottom_toBottomOf="@+id/subjectInfoHome"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/subjectInfo"
-                    app:layout_constraintTop_toTopOf="@+id/subjectInfo" />
+                    app:layout_constraintStart_toEndOf="@+id/subjectInfoHome"
+                    app:layout_constraintTop_toTopOf="@+id/subjectInfoHome" />
 
                 <Button
-                    android:id="@+id/featureIconInfo"
+                    android:id="@+id/featureIconInfoHome"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginEnd="-10dp"
@@ -149,30 +149,31 @@
                     android:drawableTint="?attr/logoColorBtn"
                     android:onClick="featuresFragmentOpen"
                     android:padding="10dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/featureInfo"
-                    app:layout_constraintEnd_toEndOf="@+id/featureInfo"
-                    app:layout_constraintTop_toTopOf="@+id/featureInfo"
+                    app:layout_constraintBottom_toBottomOf="@+id/featureInfoHome"
+                    app:layout_constraintEnd_toEndOf="@+id/featureInfoHome"
+                    app:layout_constraintTop_toTopOf="@+id/featureInfoHome"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <Button
-                    android:id="@+id/contributeInfo"
+                    android:id="@+id/contributeInfoHome"
                     android:layout_width="175dp"
                     android:layout_height="45dp"
                     android:layout_marginTop="8dp"
                     android:backgroundTint="?attr/med"
                     android:drawableLeft="@drawable/baseline_keyboard_arrow_left_24"
                     android:drawableTint="?attr/textColorBtn"
+                    android:onClick="contributeFragmentOpen"
                     android:paddingLeft="50dp"
                     android:text="Contribute"
                     android:textColor="?attr/textColorBtn"
-                    app:layout_constraintEnd_toStartOf="@+id/aboutInfo"
+                    app:layout_constraintEnd_toStartOf="@+id/aboutInfoHome"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/subjectInfo" />
+                    app:layout_constraintTop_toBottomOf="@+id/subjectInfoHome" />
 
                 <Button
-                    android:id="@+id/contributeIconInfo"
+                    android:id="@+id/contributeIconInfoHome"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginStart="-10dp"
@@ -180,13 +181,14 @@
                     android:backgroundTint="?attr/logoBgColorBtn"
                     android:drawableLeft="@drawable/baseline_add_circle_24"
                     android:drawableTint="?attr/logoColorBtn"
+                    android:onClick="contributeFragmentOpen"
                     android:padding="10dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/contributeInfo"
-                    app:layout_constraintStart_toStartOf="@+id/contributeInfo"
-                    app:layout_constraintTop_toTopOf="@+id/contributeInfo" />
+                    app:layout_constraintBottom_toBottomOf="@+id/contributeInfoHome"
+                    app:layout_constraintStart_toStartOf="@+id/contributeInfoHome"
+                    app:layout_constraintTop_toTopOf="@+id/contributeInfoHome" />
 
                 <Button
-                    android:id="@+id/aboutInfo"
+                    android:id="@+id/aboutInfoHome"
                     android:layout_width="175dp"
                     android:layout_height="45dp"
                     android:layout_marginStart="16dp"
@@ -198,15 +200,15 @@
                     android:paddingRight="50dp"
                     android:text="About Us"
                     android:textColor="?attr/textColorBtn"
-                    app:layout_constraintBottom_toBottomOf="@+id/contributeInfo"
+                    app:layout_constraintBottom_toBottomOf="@+id/contributeInfoHome"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/contributeInfo"
-                    app:layout_constraintTop_toTopOf="@+id/contributeInfo"
+                    app:layout_constraintStart_toEndOf="@+id/contributeInfoHome"
+                    app:layout_constraintTop_toTopOf="@+id/contributeInfoHome"
                     app:layout_constraintVertical_bias="1.0" />
 
                 <Button
-                    android:id="@+id/aboutIconInfo"
+                    android:id="@+id/aboutIconInfoHome"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginEnd="-10dp"
@@ -217,8 +219,8 @@
                     android:onClick="aboutFragmentOpen"
                     android:padding="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/aboutInfo"
-                    app:layout_constraintTop_toTopOf="@+id/aboutInfo" />
+                    app:layout_constraintEnd_toEndOf="@+id/aboutInfoHome"
+                    app:layout_constraintTop_toTopOf="@+id/aboutInfoHome" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
