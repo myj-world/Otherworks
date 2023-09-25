@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/bghome"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?attr/bg_img" />
+
+    <ScrollView
+        android:id="@+id/scrollableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/InfoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="32dp">
+
+                <ImageView
+                    android:id="@+id/logoInfoHome"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/logo_round" />
+
+                <TextView
+                    android:id="@+id/accormNameInfoHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/josefin_sans"
+                    android:text="Accorm"
+                    android:textColor="?attr/light"
+                    android:textSize="48sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/logoInfoHome" />
+
+                <TextView
+                    android:id="@+id/accormSubInfoHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/dosis"
+                    android:text="A Staggering Educational Platform"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/accormNameInfoHome" />
+
+                <View
+                    android:id="@+id/lineInfoHome"
+                    android:layout_width="150dp"
+                    android:layout_height="5dp"
+                    android:layout_marginStart="150dp"
+                    android:layout_marginLeft="150dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="150dp"
+                    android:layout_marginRight="150dp"
+                    android:background="?attr/light"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/accormSubInfoHome" />
+
+                <Button
+                    android:id="@+id/subjectInfoHome"
+                    android:layout_width="175dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="50dp"
+                    android:backgroundTint="?attr/med"
+                    android:drawableLeft="@drawable/baseline_keyboard_arrow_left_24"
+                    android:drawableTint="?attr/textColorBtn"
+                    android:onClick="subjectFragmentOpen"
+                    android:paddingLeft="50dp"
+                    android:text="Subjects"
+                    android:textColor="?attr/textColorBtn"
+                    app:layout_constraintEnd_toStartOf="@+id/featureInfoHome"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lineInfoHome" />
+
+                <Button
+                    android:id="@+id/subjectIconInfoHome"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="-10dp"
+                    android:layout_marginLeft="-10dp"
+                    android:backgroundTint="?attr/logoBgColorBtn"
+                    android:drawableLeft="@drawable/baseline_menu_book_24"
+                    android:drawableTint="?attr/logoColorBtn"
+                    android:onClick="subjectFragmentOpen"
+                    android:padding="10dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/subjectInfoHome"
+                    app:layout_constraintStart_toStartOf="@+id/subjectInfoHome"
+                    app:layout_constraintTop_toTopOf="@+id/subjectInfoHome" />
+
+                <Button
+                    android:id="@+id/featureInfoHome"
+                    android:layout_width="175dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:backgroundTint="?attr/med"
+                    android:drawableRight="@drawable/baseline_keyboard_arrow_right_24"
+                    android:drawableTint="?attr/textColorBtn"
+                    android:onClick="featuresFragmentOpen"
+                    android:paddingRight="50dp"
+                    android:text="Features"
+                    android:textColor="?attr/textColorBtn"
+                    app:layout_constraintBottom_toBottomOf="@+id/subjectInfoHome"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/subjectInfoHome"
+                    app:layout_constraintTop_toTopOf="@+id/subjectInfoHome" />
+
+                <Button
+                    android:id="@+id/featureIconInfoHome"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="-10dp"
+                    android:layout_marginRight="-10dp"
+                    android:backgroundTint="?attr/logoBgColorBtn"
+                    android:drawableLeft="@drawable/baseline_apps_24"
+                    android:drawableTint="?attr/logoColorBtn"
+                    android:onClick="featuresFragmentOpen"
+                    android:padding="10dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/featureInfoHome"
+                    app:layout_constraintEnd_toEndOf="@+id/featureInfoHome"
+                    app:layout_constraintTop_toTopOf="@+id/featureInfoHome"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <Button
+                    android:id="@+id/contributeInfoHome"
+                    android:layout_width="175dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="?attr/med"
+                    android:drawableLeft="@drawable/baseline_keyboard_arrow_left_24"
+                    android:drawableTint="?attr/textColorBtn"
+                    android:onClick="contributeFragmentOpen"
+                    android:paddingLeft="50dp"
+                    android:text="Contribute"
+                    android:textColor="?attr/textColorBtn"
+                    app:layout_constraintEnd_toStartOf="@+id/aboutInfoHome"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/subjectInfoHome" />
+
+                <Button
+                    android:id="@+id/contributeIconInfoHome"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="-10dp"
+                    android:layout_marginLeft="-10dp"
+                    android:backgroundTint="?attr/logoBgColorBtn"
+                    android:drawableLeft="@drawable/baseline_add_circle_24"
+                    android:drawableTint="?attr/logoColorBtn"
+                    android:onClick="contributeFragmentOpen"
+                    android:padding="10dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/contributeInfoHome"
+                    app:layout_constraintStart_toStartOf="@+id/contributeInfoHome"
+                    app:layout_constraintTop_toTopOf="@+id/contributeInfoHome" />
+
+                <Button
+                    android:id="@+id/aboutInfoHome"
+                    android:layout_width="175dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:backgroundTint="?attr/med"
+                    android:drawableRight="@drawable/baseline_keyboard_arrow_right_24"
+                    android:drawableTint="?attr/textColorBtn"
+                    android:onClick="aboutFragmentOpen"
+                    android:paddingRight="50dp"
+                    android:text="About Us"
+                    android:textColor="?attr/textColorBtn"
+                    app:layout_constraintBottom_toBottomOf="@+id/contributeInfoHome"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/contributeInfoHome"
+                    app:layout_constraintTop_toTopOf="@+id/contributeInfoHome"
+                    app:layout_constraintVertical_bias="1.0" />
+
+                <Button
+                    android:id="@+id/aboutIconInfoHome"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="-10dp"
+                    android:layout_marginRight="-10dp"
+                    android:backgroundTint="?attr/logoBgColorBtn"
+                    android:drawableLeft="@drawable/baseline_info_24"
+                    android:drawableTint="?attr/logoColorBtn"
+                    android:onClick="aboutFragmentOpen"
+                    android:padding="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/aboutInfoHome"
+                    app:layout_constraintTop_toTopOf="@+id/aboutInfoHome" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

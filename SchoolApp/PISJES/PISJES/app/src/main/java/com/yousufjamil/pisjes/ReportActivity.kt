@@ -39,7 +39,7 @@ class ReportActivity : AppCompatActivity() {
     }
 
     private fun sendEmail(recepient: String, subject: String, email: String) {
-        val mailIntent = Intent(Intent.ACTION_SEND)
+        val mailIntent = Intent(Intent.ACTION_SENDTO)
         mailIntent.data = Uri.parse("mailto:")
         mailIntent.type = "text/plain"
 //        mailIntent.setDataAndType(Uri.parse("mailto:"), "text/plain")

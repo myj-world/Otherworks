@@ -17,12 +17,50 @@ class SearchActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val pages = arrayOf("Home", "Calendar", "About", "Why PISJES", "Principal's Message", "Our Team", "Our Campus",
-            "Policy Statement", "Junior School Academic Policy", "Middle School Academic Policy",
-            "Senior School Academic Policy", "Uniform Policy", "Leave Policy", "Bus Transport Policy",
-            "Student Annual Award Rubric", "Documents required for Admission", "Age Criteria for Admission",
-            "School Leaving Certificate", "Fee Payment System", "Clearance of School Dues", "Terms and Conditions",
-            "Parent Portal")
+        val pages = arrayOf(
+            "Home",
+            "Calendar",
+            "About",
+            "Why PISJES",
+            "Principal's Message",
+            "Our Team",
+            "Our Campus",
+            "Policy Statement",
+            "Junior School",
+            "Middle School",
+            "Senior School",
+            "Documents required for Admission",
+            "Age Criteria for Admission",
+            "School Leaving Certificate",
+            "Fee Structure",
+            "Fee Payment System",
+            "Clearance of School Dues",
+            "Terms and Conditions",
+            "School Timings",
+            "School Books",
+            "Head & Vice-head prefects",
+            "Clubs",
+            "House System",
+            "MUN",
+            "Student Achievements",
+            "Career Counselling",
+            "FAQs Undergraduate Programmes Pakistani Universities",
+            "Alumni Diaries",
+            "Alumni Register",
+            "Alumni",
+            "Parent Engagement Platform - PEP",
+            "Parent Principal Conference - PPC",
+            "Parent Portal",
+            "Contact",
+            "Submit your query",
+            "School Management Council",
+            "FAQs",
+            "Teacher's Training Program",
+            "Careers",
+            "Apply Online",
+            "Gallery",
+            "Press Release"
+        )
         println("Length of page is: " + pages.size)
 
         val adapter: ArrayAdapter<String> = ArrayAdapter(
@@ -67,21 +105,41 @@ class SearchActivity : AppCompatActivity() {
                 "Principal's Message" -> webpagesearched = "https://pisjes.edu.sa/principals-message/"
                 "Our Team" -> webpagesearched = "https://pisjes.edu.sa/our-team/"
                 "Our Campus" -> webpagesearched = "https://pisjes.edu.sa/our-campus/"
-                "Policy Statement" -> webpagesearched = "https://pisjes.edu.sa/policy-statement/"
-                "Junior School Academic Policy" -> webpagesearched = "https://pisjes.edu.sa/academic-policy-js/"
-                "Middle School Academic Policy" -> webpagesearched = "https://pisjes.edu.sa/academic-policy-ms/"
-                "Senior School Academic Policy" -> webpagesearched = "https://pisjes.edu.sa/academic-policy-ss/"
-                "Uniform Policy" -> webpagesearched = "https://pisjes.edu.sa/uniform-policy/"
-                "Leave Policy" -> webpagesearched = "https://pisjes.edu.sa/leave-policy/"
-                "Bus Transport Policy" -> webpagesearched = "https://pisjes.edu.sa/bus-policy/"
-                "Student Annual Award Rubric" -> webpagesearched = "https://pisjes.edu.sa/student-annual-awards-rubric/"
+                "PISJES Policies" -> webpagesearched = "https://pisjes.edu.sa/pisj-es-policies/"
+                "Junior School" -> webpagesearched = "https://pisjes.edu.sa/pg-nursery-reception/"
+                "Middle School" -> webpagesearched = "https://pisjes.edu.sa/middle-school/"
+                "Senior School" -> webpagesearched = "https://pisjes.edu.sa/senior-school/"
                 "Documents required for Admission" -> webpagesearched = "https://pisjes.edu.sa/doc-req-admsn/"
                 "Age Criteria for Admission" -> webpagesearched = "https://pisjes.edu.sa/age-criteria/"
                 "School Leaving Certificate" -> webpagesearched = "https://pisjes.edu.sa/school-leaving-certificate/"
+                "Fee Structure" -> webpagesearched = "https://pisjes.edu.sa/fee-structure/"
                 "Fee Payment System" -> webpagesearched = "https://pisjes.edu.sa/fee-payment-system/"
                 "Clearance of School Dues" -> webpagesearched = "https://pisjes.edu.sa/clearance-dues/"
                 "Terms and Conditions" -> webpagesearched = "https://pisjes.edu.sa/terms-condition/"
+                "School Timings" -> webpagesearched = "https://pisjes.edu.sa/school-timings/"
+                "School Books" -> webpagesearched = "https://pisjes.edu.sa/school-books/"
+                "Head & Vice-head prefects" -> webpagesearched = "https://pisjes.edu.sa/head-and-vice-head-prefects/"
+                "Clubs" -> webpagesearched = "https://pisjes.edu.sa/clubs-societies/"
+                "House System" -> webpagesearched = "https://pisjes.edu.sa/house-system/"
+                "MUN" -> webpagesearched = "https://pisjes.edu.sa/mun-pisj/"
+                "Student Achievements" -> webpagesearched = "https://pisjes.edu.sa/std-achv/"
+                "Career Counselling" -> webpagesearched = "https://pisjes.edu.sa/career-counselling/"
+                "FAQs Undergraduate Programmes Pakistani Universities" -> webpagesearched = "https://pisjes.edu.sa/faqs/"
+                "Alumni Diaries" -> webpagesearched = "https://pisjes.edu.sa/alumni-diaries/"
+                "Alumni Register" -> webpagesearched = "https://pisjes.edu.sa/alumni-register/"
+                "Alumni" -> webpagesearched = "https://pisjes.edu.sa/alumni/"
+                "Parent Engagement Platform - PEP" -> webpagesearched = "https://pisjes.edu.sa/pisj-pep/"
+                "Parent Principal Conference - PPC" -> webpagesearched = "https://pisjes.edu.sa/parent-principal-conference-page/"
                 "Parent Portal" -> webpagesearched = "https://pisjes.edu.sa/parent-portal/"
+                "Contact" -> webpagesearched = "https://pisjes.edu.sa/contact/"
+                "Submit your query" -> webpagesearched = "https://pisjes.edu.sa/submit-your-query/"
+                "School Management Council" -> webpagesearched = "https://pisjes.edu.sa/smc/"
+                "FAQs" -> webpagesearched = "https://pisjes.edu.sa/faqs-teams-portal/"
+                "Teacher's Training Program" -> webpagesearched = "https://pisjes.edu.sa/teachers-training-program/"
+                "Careers" -> webpagesearched = "https://pisjes.edu.sa/careers/"
+                "Apply Online" -> webpagesearched = "https://pisjes.edu.sa/apply-online/"
+                "Gallery" -> webpagesearched = "https://pisjes.edu.sa/gallery/"
+                "Press Release" -> webpagesearched = "https://pisjes.edu.sa/press/"
             }
             val openPageIntent = Intent(this, MainActivity::class.java)
             openPageIntent.putExtra(EXTRA_URL, webpagesearched)
