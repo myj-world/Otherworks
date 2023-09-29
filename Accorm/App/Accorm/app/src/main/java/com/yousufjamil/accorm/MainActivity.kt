@@ -20,13 +20,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.magnifier
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.rounded.Menu
+import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -41,8 +46,10 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
@@ -108,7 +115,7 @@ class MainActivity : ComponentActivity() {
                                                 Text(
                                                     text = "Accorm",
                                                     color = Color.White,
-                                                    modifier = Modifier.fillMaxWidth(0.95f),
+                                                    modifier = Modifier.fillMaxWidth(0.95f).padding(top = 6.dp),
                                                     textAlign = TextAlign.Left,
                                                     fontFamily = poppins,
                                                     fontWeight = FontWeight.SemiBold
@@ -122,7 +129,8 @@ class MainActivity : ComponentActivity() {
                                                 ) {
                                                     Icon(
                                                         imageVector = Icons.Rounded.Menu,
-                                                        contentDescription = "Menu Button"
+                                                        contentDescription = "Menu Button",
+                                                        modifier = Modifier.size(30.dp)
                                                     )
                                                 }
                                             },
@@ -169,7 +177,7 @@ fun HomeScreen(context: Context) {
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(150.dp))
+        Spacer(modifier = Modifier.height(100.dp))
         Text(text = buildAnnotatedString {
             withStyle(
                 SpanStyle(color = Color.White, fontFamily = poppins, fontSize = 60.sp)
@@ -215,5 +223,64 @@ fun HomeScreen(context: Context) {
             fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center
         )
+        Spacer(modifier = Modifier.height(30.dp))
+        Row {
+            IconButton(
+                onClick = {},
+                colors = IconButtonDefaults.filledIconButtonColors(
+                    containerColor = Color(33, 33, 43, 255)
+                ),
+                modifier = Modifier.clip(RoundedCornerShape(100))
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Info,
+                    contentDescription = "Info",
+                    tint = Color(171, 171, 248, 255),
+                    modifier = Modifier.size(25.dp)
+                )
+            }
+            IconButton(
+                onClick = {},
+                colors = IconButtonDefaults.filledIconButtonColors(
+                    containerColor = Color(33, 33, 43, 255)
+                ),
+                modifier = Modifier.clip(RoundedCornerShape(100))
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.book_open),
+                    contentDescription = "Info",
+                    tint = Color(171, 171, 248, 255),
+                    modifier = Modifier.size(25.dp)
+                )
+            }
+            IconButton(
+                onClick = {},
+                colors = IconButtonDefaults.filledIconButtonColors(
+                    containerColor = Color(33, 33, 43, 255)
+                ),
+                modifier = Modifier.clip(RoundedCornerShape(100))
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.apps),
+                    contentDescription = "Info",
+                    tint = Color(171, 171, 248, 255),
+                    modifier = Modifier.size(25.dp)
+                )
+            }
+            IconButton(
+                onClick = {},
+                colors = IconButtonDefaults.filledIconButtonColors(
+                    containerColor = Color(33, 33, 43, 255)
+                ),
+                modifier = Modifier.clip(RoundedCornerShape(100))
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.AddCircle,
+                    contentDescription = "Contribute",
+                    tint = Color(171, 171, 248, 255),
+                    modifier = Modifier.size(25.dp)
+                )
+            }
+        }
     }
 }
