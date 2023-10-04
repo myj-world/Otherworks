@@ -215,7 +215,10 @@ fun HomeScreen(context: Context) {
                     append(".\n\n")
                 }
             }
-        })
+        },
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
         Text(
             text = "Where students and educational \ncontent blend",
             color = Color(144, 144, 214, 255),
