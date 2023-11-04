@@ -350,7 +350,7 @@ fun HomeScreen(context: Context) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0, 0, 0, 255))
+            .background(Color(38, 38, 47, 255))
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
