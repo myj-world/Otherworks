@@ -568,7 +568,7 @@ fun AboutUsScreen(context: Context) {
             icon = R.drawable.faizan,
             name = "Faizan",
             role = "Content Provider",
-            email = ""
+            email = "adamcroft715@gmail.com"
         )
         DeveloperBox(
             icon = R.drawable.basim,
