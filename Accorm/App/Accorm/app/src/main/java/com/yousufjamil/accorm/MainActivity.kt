@@ -1,6 +1,9 @@
 package com.yousufjamil.accorm
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -31,6 +34,7 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -53,6 +57,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
@@ -200,14 +205,53 @@ fun NavigationDrawer(closeDrawer: () -> Unit) {
                     .height(2.dp)
             )
         }
-//        Row (
-//            horizontalArrangement = Arrangement.End,
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//            IconButton(onClick = { closeDrawer() }) {
-//                Icon(imageVector = Icons.Default.Close, contentDescription = "Close Drawer", tint = Color.White)
-//            }
-//        }
+
+        @Composable
+        fun NavSingleButton(
+            onClick: () -> Unit,
+            usesImageVector: Boolean,
+            imageVector: ImageVector = Icons.Default.Warning,
+            painterResource: Int = R.drawable.app_ic,
+            contentDescription: String
+        ) {
+            Button(
+                onClick = {
+                    closeDrawer()
+                    onClick()
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Transparent
+                ),
+                shape = RoundedCornerShape(corner = CornerSize(1.dp))
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (usesImageVector) {
+                        Icon(
+                            imageVector = imageVector,
+                            contentDescription = contentDescription,
+                            tint = Color(171, 171, 248, 255),
+                            modifier = Modifier.size(25.dp)
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(painterResource),
+                            contentDescription = contentDescription,
+                            tint = Color(171, 171, 248, 255),
+                            modifier = Modifier.size(25.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(30.dp))
+                    Text(
+                        text = contentDescription,
+                        fontFamily = lexend,
+                        fontSize = 19.sp
+                    )
+                }
+            }
+        }
+
         Spacer(modifier = Modifier.height(30.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -236,85 +280,24 @@ fun NavigationDrawer(closeDrawer: () -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Start
         ) {
-            Button(
-                onClick = {
-                    closeDrawer()
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent
-                ),
-                shape = RoundedCornerShape(corner = CornerSize(1.dp))
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.book_open),
-                        contentDescription = "Subjects",
-                        tint = Color(171, 171, 248, 255),
-                        modifier = Modifier.size(25.dp)
-                    )
-                    Spacer(modifier = Modifier.width(30.dp))
-                    Text(
-                        text = "Subjects",
-                        fontFamily = lexend,
-                        fontSize = 19.sp
-                    )
-                }
-            }
-            Button(
-                onClick = {
-                    closeDrawer()
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent
-                ),
-                shape = RoundedCornerShape(corner = CornerSize(1.dp))
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.apps),
-                        contentDescription = "Apps",
-                        tint = Color(171, 171, 248, 255),
-                        modifier = Modifier.size(25.dp)
-                    )
-                    Spacer(modifier = Modifier.width(30.dp))
-                    Text(
-                        text = "Features",
-                        fontFamily = lexend,
-                        fontSize = 19.sp
-                    )
-                }
-            }
-            Button(
-                onClick = {
-                    navController.navigate("about")
-                    closeDrawer()
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent
-                ),
-                shape = RoundedCornerShape(corner = CornerSize(1.dp))
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Info,
-                        contentDescription = "Info",
-                        tint = Color(171, 171, 248, 255),
-                        modifier = Modifier.size(25.dp)
-                    )
-                    Spacer(modifier = Modifier.width(30.dp))
-                    Text(
-                        text = "Info",
-                        fontFamily = lexend,
-                        fontSize = 19.sp
-                    )
-                }
-            }
+            NavSingleButton(
+                onClick = { },
+                usesImageVector = false,
+                painterResource = R.drawable.book_open,
+                contentDescription = "Subjects"
+            )
+            NavSingleButton(
+                onClick = { },
+                usesImageVector = false,
+                painterResource = R.drawable.apps,
+                contentDescription = "Features"
+            )
+            NavSingleButton(
+                onClick = { navController.navigate("about") },
+                usesImageVector = true,
+                imageVector = Icons.Default.Info,
+                contentDescription = "Info"
+            )
         }
         Spacer(modifier = Modifier.height(20.dp))
         Divider()
@@ -323,58 +306,18 @@ fun NavigationDrawer(closeDrawer: () -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Start
         ) {
-            Button(
-                onClick = {
-                    closeDrawer()
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent
-                ),
-                shape = RoundedCornerShape(corner = CornerSize(1.dp))
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.AddCircle,
-                        contentDescription = "Contribute",
-                        tint = Color(171, 171, 248, 255),
-                        modifier = Modifier.size(25.dp)
-                    )
-                    Spacer(modifier = Modifier.width(30.dp))
-                    Text(
-                        text = "Contribute",
-                        fontFamily = lexend,
-                        fontSize = 19.sp
-                    )
-                }
-            }
-            Button(
-                onClick = {
-                    closeDrawer()
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent
-                ),
-                shape = RoundedCornerShape(corner = CornerSize(1.dp)),
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = "Profile",
-                        tint = Color(171, 171, 248, 255),
-                        modifier = Modifier.size(25.dp)
-                    )
-                    Spacer(modifier = Modifier.width(30.dp))
-                    Text(
-                        text = "Profile",
-                        fontFamily = lexend,
-                        fontSize = 19.sp
-                    )
-                }
-            }
+            NavSingleButton(
+                onClick = { },
+                usesImageVector = true,
+                imageVector = Icons.Default.AddCircle,
+                contentDescription = "Contribute"
+            )
+            NavSingleButton(
+                onClick = { },
+                usesImageVector = true,
+                imageVector = Icons.Default.Person,
+                contentDescription = "Profile"
+            )
         }
         Spacer(modifier = Modifier.height(20.dp))
         Divider()
@@ -425,10 +368,6 @@ fun HomeScreen(context: Context) {
                     ) {
                         append(".\n\n\n")
                     }
-                }
-                withStyle(
-                    SpanStyle(color = Color.White, fontFamily = poppins, fontSize = 60.sp)
-                ) {
                     append("Empower")
                     withStyle(
                         SpanStyle(
@@ -437,10 +376,6 @@ fun HomeScreen(context: Context) {
                     ) {
                         append(".\n\n\n")
                     }
-                }
-                withStyle(
-                    SpanStyle(color = Color.White, fontFamily = poppins, fontSize = 60.sp)
-                ) {
                     append("Excel")
                     withStyle(
                         SpanStyle(
@@ -463,62 +398,63 @@ fun HomeScreen(context: Context) {
         )
         Spacer(modifier = Modifier.height(30.dp))
         Row {
-            IconButton(
+
+            @Composable
+            fun HomeIcon(
+                onClick: () -> Unit,
+                usesImageVector: Boolean,
+                imageVector: ImageVector = Icons.Default.Warning,
+                painterResource: Int = R.drawable.app_ic,
+                contentDescription: String
+            ) {
+                IconButton(
+                    onClick = { onClick() },
+                    colors = IconButtonDefaults.filledIconButtonColors(
+                        containerColor = Color(33, 33, 43, 255)
+                    ),
+                    modifier = Modifier.clip(RoundedCornerShape(100))
+                ) {
+                    if (usesImageVector) {
+                        Icon(
+                            imageVector = imageVector,
+                            contentDescription = contentDescription,
+                            tint = Color(171, 171, 248, 255),
+                            modifier = Modifier.size(25.dp)
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(painterResource),
+                            contentDescription = contentDescription,
+                            tint = Color(171, 171, 248, 255),
+                            modifier = Modifier.size(25.dp)
+                        )
+                    }
+                }
+            }
+            HomeIcon(
                 onClick = { navController.navigate("about") },
-                colors = IconButtonDefaults.filledIconButtonColors(
-                    containerColor = Color(33, 33, 43, 255)
-                ),
-                modifier = Modifier.clip(RoundedCornerShape(100))
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Info,
-                    contentDescription = "Info",
-                    tint = Color(171, 171, 248, 255),
-                    modifier = Modifier.size(25.dp)
-                )
-            }
-            IconButton(
+                usesImageVector = true,
+                imageVector = Icons.Default.Info,
+                contentDescription = "Info"
+            )
+            HomeIcon(
                 onClick = {},
-                colors = IconButtonDefaults.filledIconButtonColors(
-                    containerColor = Color(33, 33, 43, 255)
-                ),
-                modifier = Modifier.clip(RoundedCornerShape(100))
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.book_open),
-                    contentDescription = "Info",
-                    tint = Color(171, 171, 248, 255),
-                    modifier = Modifier.size(25.dp)
-                )
-            }
-            IconButton(
+                usesImageVector = false,
+                painterResource = R.drawable.book_open,
+                contentDescription = "Subjects"
+            )
+            HomeIcon(
                 onClick = {},
-                colors = IconButtonDefaults.filledIconButtonColors(
-                    containerColor = Color(33, 33, 43, 255)
-                ),
-                modifier = Modifier.clip(RoundedCornerShape(100))
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.apps),
-                    contentDescription = "Info",
-                    tint = Color(171, 171, 248, 255),
-                    modifier = Modifier.size(25.dp)
-                )
-            }
-            IconButton(
+                usesImageVector = false,
+                painterResource = R.drawable.apps,
+                contentDescription = "Features"
+            )
+            HomeIcon(
                 onClick = {},
-                colors = IconButtonDefaults.filledIconButtonColors(
-                    containerColor = Color(33, 33, 43, 255)
-                ),
-                modifier = Modifier.clip(RoundedCornerShape(100))
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.AddCircle,
-                    contentDescription = "Contribute",
-                    tint = Color(171, 171, 248, 255),
-                    modifier = Modifier.size(25.dp)
-                )
-            }
+                usesImageVector = true,
+                imageVector = Icons.Default.AddCircle,
+                contentDescription = "Contribute"
+            )
         }
     }
 }
@@ -526,6 +462,75 @@ fun HomeScreen(context: Context) {
 @Composable
 fun AboutUsScreen(context: Context) {
     val scrollState = rememberScrollState()
+
+    @Composable
+    fun DeveloperBox(
+        icon: Int,
+        name: String,
+        role: String,
+        email: String
+    ) {
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(30.dp))
+                .background(Color(53, 53, 62, 255))
+                .fillMaxWidth(0.8f)
+                .height(280.dp)
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(15.dp))
+                Image(
+                    painter = painterResource(id = icon),
+                    contentDescription = name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .fillMaxWidth(0.9f)
+                        .height(140.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = name,
+                    color = Color(227, 227, 228, 255),
+                    fontFamily = poppins,
+                    fontSize = 25.sp,
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    text = role,
+                    color = Color(160, 160, 231, 255),
+                    fontFamily = poppins,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Box(
+                    modifier = Modifier
+                        .background(Color(75, 75, 110, 255))
+                        .clickable {
+                            val url = "mailto:$email"
+                            val intent = Intent(Intent.ACTION_VIEW)
+                            intent.data = Uri.parse(url)
+                            context.startActivity(intent)
+                        }
+                        .fillMaxWidth()
+                        .height(40.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Email,
+                        contentDescription = "Email",
+                        tint = Color(255, 255, 255, 255),
+                        modifier = Modifier.size(25.dp)
+                    )
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -535,329 +540,42 @@ fun AboutUsScreen(context: Context) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(50.dp))
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(30.dp))
-                .background(Color(53, 53, 62, 255))
-                .fillMaxWidth(0.8f)
-                .height(280.dp)
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(15.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.musab),
-                    contentDescription = "Musab Khan",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .fillMaxWidth(0.9f)
-                        .height(140.dp)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = "Musab Khan",
-                    color = Color(227, 227, 228, 255),
-                    fontFamily = poppins,
-                    fontSize = 25.sp,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = "Project Manager",
-                    color = Color(160, 160, 231, 255),
-                    fontFamily = poppins,
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Box(
-                    modifier = Modifier
-                        .background(Color(75, 75, 110, 255))
-                        .clickable { }
-                        .fillMaxWidth()
-                        .height(40.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = "Email",
-                        tint = Color(255, 255, 255, 255),
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-            }
-        }
+        DeveloperBox(
+            icon = R.drawable.musab,
+            name = "Musab Khan",
+            role = "Project Manager",
+            email = "contact@ginastic.co"
+        )
+        DeveloperBox(
+            icon = R.drawable.abd,
+            name = "Abdullah Umair",
+            role = "Designer",
+            email = "solution.i67@outlook.com"
+        )
+        DeveloperBox(
+            icon = R.drawable.yousuf,
+            name = "M.Yousuf Jamil",
+            role = "Project Manager",
+            email = "contact.us.myj@gmail.com"
+        )
+        DeveloperBox(
+            icon = R.drawable.majid,
+            name = "Majid Muhammad",
+            role = "Content Provider",
+            email = "mylifechoice96@gmail.com"
+        )
+        DeveloperBox(
+            icon = R.drawable.faizan,
+            name = "Faizan",
+            role = "Content Provider",
+            email = ""
+        )
+        DeveloperBox(
+            icon = R.drawable.basim,
+            name = "Basim Kashif",
+            role = "Contributor",
+            email = "bkashamsi2008@gmail.com"
+        )
         Spacer(modifier = Modifier.height(20.dp))
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(30.dp))
-                .background(Color(53, 53, 62, 255))
-                .fillMaxWidth(0.8f)
-                .height(280.dp)
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(15.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.abd),
-                    contentDescription = "Abdullah Umair",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .fillMaxWidth(0.9f)
-                        .height(140.dp)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = "Abdullah Umair",
-                    color = Color(227, 227, 228, 255),
-                    fontFamily = poppins,
-                    fontSize = 25.sp,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = "Designer",
-                    color = Color(160, 160, 231, 255),
-                    fontFamily = poppins,
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Box(
-                    modifier = Modifier
-                        .background(Color(75, 75, 110, 255))
-                        .clickable { }
-                        .fillMaxWidth()
-                        .height(40.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = "Email",
-                        tint = Color(255, 255, 255, 255),
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(30.dp))
-                .background(Color(53, 53, 62, 255))
-                .fillMaxWidth(0.8f)
-                .height(280.dp)
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(15.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.yousuf),
-                    contentDescription = "M.Yousuf Jamil",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .fillMaxWidth(0.9f)
-                        .height(140.dp)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = "M.Yousuf Jamil",
-                    color = Color(227, 227, 228, 255),
-                    fontFamily = poppins,
-                    fontSize = 25.sp,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = "App Developer",
-                    color = Color(160, 160, 231, 255),
-                    fontFamily = poppins,
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Box(
-                    modifier = Modifier
-                        .background(Color(75, 75, 110, 255))
-                        .clickable { }
-                        .fillMaxWidth()
-                        .height(40.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = "Email",
-                        tint = Color(255, 255, 255, 255),
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(30.dp))
-                .background(Color(53, 53, 62, 255))
-                .fillMaxWidth(0.8f)
-                .height(280.dp)
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(15.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.majid),
-                    contentDescription = "Majid Muhammad",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .fillMaxWidth(0.9f)
-                        .height(140.dp)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = "Majid Muhammad",
-                    color = Color(227, 227, 228, 255),
-                    fontFamily = poppins,
-                    fontSize = 25.sp,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = "Content Provider",
-                    color = Color(160, 160, 231, 255),
-                    fontFamily = poppins,
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Box(
-                    modifier = Modifier
-                        .background(Color(75, 75, 110, 255))
-                        .clickable { }
-                        .fillMaxWidth()
-                        .height(40.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = "Email",
-                        tint = Color(255, 255, 255, 255),
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(30.dp))
-                .background(Color(53, 53, 62, 255))
-                .fillMaxWidth(0.8f)
-                .height(280.dp)
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(15.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.faizan),
-                    contentDescription = "Faizan",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .fillMaxWidth(0.9f)
-                        .height(140.dp)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = "Faizan",
-                    color = Color(227, 227, 228, 255),
-                    fontFamily = poppins,
-                    fontSize = 25.sp,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = "Content Provider",
-                    color = Color(160, 160, 231, 255),
-                    fontFamily = poppins,
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Box(
-                    modifier = Modifier
-                        .background(Color(75, 75, 110, 255))
-                        .clickable { }
-                        .fillMaxWidth()
-                        .height(40.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = "Email",
-                        tint = Color(255, 255, 255, 255),
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(30.dp))
-                .background(Color(53, 53, 62, 255))
-                .fillMaxWidth(0.8f)
-                .height(280.dp)
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(15.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.basim),
-                    contentDescription = "Basim Kashif",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .fillMaxWidth(0.9f)
-                        .height(140.dp)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = "Basim Kashif",
-                    color = Color(227, 227, 228, 255),
-                    fontFamily = poppins,
-                    fontSize = 25.sp,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = "Contributor",
-                    color = Color(160, 160, 231, 255),
-                    fontFamily = poppins,
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Box(
-                    modifier = Modifier
-                        .background(Color(75, 75, 110, 255))
-                        .clickable { }
-                        .fillMaxWidth()
-                        .height(40.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = "Email",
-                        tint = Color(255, 255, 255, 255),
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(40.dp))
     }
 }
