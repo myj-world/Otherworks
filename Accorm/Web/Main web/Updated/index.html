@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Accorm</title>
+    <script src="https://kit.fontawesome.com/90301f7072.js" crossorigin="anonymous"></script>
+    <script src="icons.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="files/logo.png" rel="icon" type="image/x-icon" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Gabarito&display=swap');
+        @font-face {
+            font-family: accorm;
+            src: url(files/font.ttf);
+        }
+        
+        @font-face {
+            font-family: nav;
+            src: url(files/navigation.ttf);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0px;
+        }
+        
+        body {
+            background: rgba(31, 31, 54, 255);
+        }
+        
+         ::-webkit-scrollbar {
+            width: 12px;
+        }
+        /* Track */
+        
+         ::-webkit-scrollbar-track {
+            background: rgba(79,79,118,255);
+        }
+        /* Handle */
+        
+         ::-webkit-scrollbar-thumb {
+            background: #9494fe;
+        }
+        /* Handle on hover */
+        
+         ::-webkit-scrollbar-thumb:hover {
+            background: rgba(120, 120, 160, 1);
+        }
+        
+        #navbar {
+            width: 100%;
+            background: transparent;
+            display: flex;
+            padding: 15px 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+        
+        .n-left {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .n-left img {
+            height: 50px;
+            border-radius: 50%;
+        }
+        
+        .n-left h1 {
+            font-family: accorm;
+            font-size: 1.5em;
+            color: #b6b5f9;
+            display: flex;
+            align-items: center;
+            margin: 0;
+            margin-left: 10px;
+            filter: brightness(120%);
+        }
+        
+        .n-middle {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .n-middle button {
+            font-family: accorm;
+            outline: none;
+            border: 0px;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 10px 15px;
+            background: transparent;
+            border-radius: 5px;
+            transition: .3s ease;
+            cursor: pointer;
+            margin: 0 2.5px;
+        }
+        
+        .n-middle button:hover {
+            background: rgba(255, 255, 255, 0.075);
+            color: white;
+        }
+        
+        .n-middle button:active {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+        }
+        
+        .n-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .n-right button {
+            background: #9494fe;
+            font-family: accorm;
+            border: 0;
+            outline: none;
+            transition: 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .profile {
+            border-radius: 50px;
+            padding: 10px 25px;
+            font-size: 0.95rem;
+        }
+        
+        .light {
+            border-radius: 50%;
+            height: 43px;
+            width: 43px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0px !important;
+            margin-right: 12px;
+        }
+        
+        .dark {
+            border-radius: 50%;
+            height: 43px;
+            width: 43px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 0px !important;
+            margin-right: 12px;
+            font-size: 1.2rem;
+            transition: 0.37s;
+        }
+        
+        .material-icons {
+            /*      margin-left: 1px !important;*/
+            margin-top: 1px !important;
+        }
+        
+        .n-right .profile i {
+            margin-left: 7px;
+        }
+        
+        .n-right button:hover {
+            filter: brightness(0.7);
+        }
+        
+        .n-right button:active {
+            transform: scale(0.7);
+        }
+        
+        .light:active {
+            transform: rotate(120deg) !important;
+        }
+        
+        .dark:active {
+            transform: rotate(217deg) !important;
+        }
+        
+        .con {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100%;
+        }
+        
+        .con h1 {
+            font-family: accorm;
+            font-size: 6rem;
+            color: white;
+            margin: 0;
+        }
+        
+        h1 span {
+            color: #b6b5f9;
+            filter: brightness(90%);
+        }
+        
+        .con p {
+            font-family: accorm;
+            font-size: 1rem;
+            color: #b6b5f9;
+            margin-top: -25px;
+        }
+        
+        .contribute {
+            outline: none;
+            margin-top: 12px;
+            border: 0px;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-family: accorm;
+            background: #9494fe;
+            font-size: 1em;
+            transition: .3s ease;
+            cursor: pointer;
+        }
+        
+        .contribute i {
+            margin-left: 7px;
+            transition: .3s ease;
+        }
+        
+        .contribute:hover {
+            filter: brightness(70%);
+        }
+        
+        .contribute:hover i {
+            margin-left: 43px;
+        }
+        
+        .contribute:active {
+            transform: scale(0.7);
+        }
+        
+        @keyframes fade {
+            0% {
+                opacity: 0%;
+            }
+            100% {
+                opacity: 100%;
+            }
+        }
+        
+        .anim {
+            animation-name: fade;
+            animation-duration: 2.1s;
+            margin: 0 37px;
+        }
+        
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: calc(50% - 110.585px);
+            right: calc(50% - 110.585px);
+            background: rgba(200, 200, 255, 0.075);
+            height: fit-content;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            padding: 12px 25PX;
+            text-align: center;
+            transition: .3s ease;
+        }
+        
+        .f-con {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .content {
+            height: fit-content;
+            background: rgba(200, 200, 255, 0.1);
+            margin-right: 10px;
+            border-radius: 12px;
+            padding: 11.4px;
+            text-align: center;
+            width: 50.4px;
+            height: 50.4px;
+            transition: .3s ease;
+            cursor: pointer;
+        }
+        
+        .content:hover {
+            filter: brightness(52%);
+        }
+        
+        .content:active {
+            filter: brightness(25%);
+        }
+        
+        .content i {
+            color: #9494fe;
+            font-size: 1.72em;
+        }
+        
+        .a {
+            padding-bottom: 12px;
+            padding-top: 10px;
+            padding-left: 9.5px;
+            padding-right: 12px;
+        }
+        
+        .t {
+            padding-left: 10px;
+            padding-right: 11.4px;
+        }
+        
+        .fa-book-open {
+            width: 30.4px;
+        }
+        
+        .apps {
+            height: 30px !important;
+            width: 30px !important;
+        }
+        
+        .material-icons {
+            margin-top: 2px !important;
+            margin-left: 1px !important;
+            height: 25px;
+            width: 25px;
+        }
+        
+        .content h2 {
+            font-family: accorm;
+            color: white;
+            font-size: 1.4em;
+            letter-spacing: -1px;
+            font-weight: 150;
+        }
+        
+        .cright {
+            margin: 0;
+        }
+        
+        .open-f {
+            font-size: 1.2em;
+            color: white;
+            filter: opacity(0%);
+            padding-bottom: 12px;
+            transition: 0.3s ease;
+            width: 100%;
+            cursor: pointer;
+            display: none;
+        }
+        
+        .open-f:hover {
+            filter: opacity(52%) !important;
+        }
+        
+        .open-f:active {
+            filter: opacity(25%) !important;
+        }
+        
+        .close-f {
+            font-size: 1.2em;
+            color: white;
+            filter: opacity(100%);
+            padding-bottom: 12px;
+            transition: 0.3s ease;
+            width: 100%;
+            cursor: pointer;
+        }
+        
+        .close-f:hover {
+            filter: opacity(52%) !important;
+        }
+        
+        .close-f:active {
+            filter: opacity(25%) !important;
+        }
+        
+        .frame {
+            position: fixed;
+            z-index: 5;
+            height: 100vh;
+            background: rgba(31, 31, 54, 255);
+            display: flex;
+            transition: 0.5s ease;
+            width: 100%;
+        }
+        
+        #about-frame {
+            right: -100%;
+            top: 0;
+        }
+        
+        .frame-left {
+            width: 320px;
+            height: 100vh;
+            background: rgba(37, 37, 65, 255);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .close-frame {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 39px;
+            width: 39px;
+            color: rgba(255, 255, 255, 0.75);
+            transition: 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .close-frame:hover {
+            filter: brightness(0.7);
+        }
+        
+        .close-frame:active {
+            transform: scale(0.7);
+        }
+        
+        .accorm {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            top: 0px;
+            background: rgba(255, 255, 255, 0.075);
+            padding: 7px 12px;
+            border-bottom-left-radius: 7px;
+            border-bottom-right-radius: 7px;
+            left: calc(50% - 55.625px);
+        }
+        
+        .accorm img {
+            height: 30px;
+            border-radius: 50%;
+        }
+        
+        .v-line {
+            height: 95px;
+            width: 1.9px;
+            background: #9494fe;
+            opacity: 0.25;
+            margin: 0 15px;
+        }
+        
+        .accorm h2 {
+            font-family: accorm;
+            font-weight: 500;
+            color: #b6b5f9;
+            opacity: 64%;
+            font-size: 0.91em;
+        }
+        
+        .frame-right {
+            width: calc(100% - 320px);
+            padding: 25px;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .frame-left .fa-circle-info {
+            color: #9494fe;
+            font-size: 5em;
+            width: 100%;
+            text-align: center;
+            opacity: 50%;
+        }
+        
+        .frame-left h1 {
+            color: white;
+            font-family: accorm;
+            font-size: 3.2em;
+            letter-spacing: 0px;
+        }
+        
+        .read-more {
+            outline: none;
+            margin-top: 5px;
+            border: 0px;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-family: accorm;
+            background: #9494fe;
+            font-size: 1em;
+            transition: .3s ease;
+            cursor: pointer;
+        }
+        
+        .read-more i {
+            margin-left: 7px;
+            transition: .3s ease;
+        }
+        
+        .read-more:hover {
+            filter: brightness(70%);
+        }
+        
+        .read-more:hover i {
+            margin-left: 43px;
+        }
+        
+        .read-more:active {
+            transform: scale(0.7);
+        }
+        
+        .backth {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            bottom: 0px;
+            height: 44px;
+            width: 111.25px;
+            background: rgba(255, 255, 255, 0.075);
+            border-top-left-radius: 7px;
+            border-top-right-radius: 7px;
+            left: calc(50% - 55.625px);
+            font-size: 1em;
+            color: #b6b5f9;
+            transition: 0.3s ease;
+        }
+        
+        .backth i {
+            transition: 0.3s ease;
+        }
+        
+        .backth:hover i {
+            margin-right: 19px;
+        }
+        
+        .backth:hover {
+            opacity: 50%;
+        }
+        
+        .backth:active {
+            opacity: 75%;
+        }
+        
+        .paddin {
+            /*      width: 100%;*/
+            padding: 25px;
+            background: rgba(38, 38, 66, 255);
+            border-radius: 10px;
+            transition: 0.3s ease;
+            overflow-y: auto;
+        }
+        
+        .full {
+            height: 100%;
+        }
+        
+        .flexes {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .h3 {
+            color: white;
+            font-family: accorm;
+            font-size: 1.4em;
+            font-weight: 150;
+        }
+        
+        .spec {
+            font-size: 0.9em;
+            color: #b6b5f9;
+            font-family: accorm;
+            margin-top: 3px;
+        }
+        
+        .smargin {
+            margin-top: 25px;
+        }
+        
+        .s {
+            padding: 8.2px 14px;
+            font-size: 0.86em;
+            margin-top: 10px;
+        }
+        
+        .dev-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .paddin:hover {
+            background: rgba(255, 255, 255, 0.032);
+        }
+        
+        .item {
+            padding: 10px 10px 30px 10px;
+            background: rgba(255, 255, 255, 0.095);
+            border-radius: 10px;
+            width: 250px;
+            position: relative;
+            transition: .3s ease;
+            margin: 21.9px 12px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
+        }
+        
+        .item:hover {
+            transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .logo-profile {
+            height: 120px;
+            width: 100%;
+            border-radius: 10px;
+        }
+        
+        .musab {
+            background: url(files/musab.jpg) center center;
+            background-size: cover;
+        }
+        
+        .faizan {
+            background: url(files/faizan.jpg) center center;
+            background-size: cover;
+        }
+        
+        .abd {
+            background: url(files/abd.jpeg) center center;
+            background-size: cover;
+        }
+        
+        .yousuf {
+            background: url(files/yousuf.png) center center;
+            background-size: cover;
+        }
+        
+        .majid {
+            background: url(files/majid.png) center center;
+            background-size: cover;
+        }
+        
+        .basim {
+            background: url(files/basim.png) center center;
+            background-size: cover;
+        }
+        
+        .item h1 {
+            color: white;
+            font-family: accorm;
+            font-size: 1.45em;
+            font-weight: 150;
+            text-align: center;
+            margin-top: 12px;
+        }
+        
+        .item h5 {
+            font-weight: 150;
+            font-family: accorm;
+            font-size: 0.9em;
+            color: #b6b5f9;
+            text-align: center;
+            margin-bottom: 2.5px;
+        }
+        
+        .prof-div {
+            width: calc(100% - 20px);
+            position: absolute;
+            bottom: -18.19px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        #subjects-frame {
+            bottom: -100%;
+            right: 0;
+        }
+        
+        .subjects-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 25px 0px;
+        }
+        
+        .option {
+            padding: 25px;
+            border-radius: 10px;
+            width: 270px;
+            position: relative;
+            transition: .3s ease;
+            /* margin: 21.9px 12px; */
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
+        }
+        
+        .middle h4 {
+            font-family: accorm;
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 100;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+        
+        .middle h1 {
+            font-family: gabarito;
+            color: white;
+            font-weight: 150;
+            font-size: 2.3em;
+            font-weight: 750;
+            margin-bottom: 25px;
+        }
+        
+        .middle p {
+            font-family: accorm;
+            color: white;
+            border-top: 1.6px solid rgba(255, 255, 255, 0.3);
+            font-size: 1em;
+            padding: 7.5px 0;
+            text-align: left;
+        }
+        
+        .side h4 {
+            font-family: accorm;
+            color: rgba(200, 200, 255, 0.32);
+            font-weight: 100;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+        }
+        
+        .side h1 {
+            font-family: gabarito;
+            font-weight: 150;
+            font-size: 2.19em;
+            font-weight: 750;
+            margin-bottom: 20px;
+            /* background: radial-gradient(circle at top left, rgba(180, 190, 255, 1), rgba(90, 100, 255, 1));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block; */
+            color: white;
+        }
+        
+        .side p {
+            font-family: accorm;
+            color: white;
+            border-top: 1.6px solid rgba(255, 255, 255, 0.3);
+            font-size: 1em;
+            padding: 7.5px 0;
+            text-align: left;
+        }
+        
+        .last {
+            border-bottom: 1.6px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .side {
+            height: 360px;
+            /*      background: #2d2d3a;*/
+            background: rgba(200, 200, 255, 0.05);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .side-left {
+            margin-right: -20px;
+        }
+        
+        .side-right {
+            margin-left: -20px;
+        }
+        
+        .middle {
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 460px;
+            background: radial-gradient(circle at top left, rgba(180, 190, 255, 1), rgba(90, 100, 255, 1));
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
+        }
+        
+        .superTitle {
+            font-family: accorm;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            letter-spacing: 0.75px;
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 150;
+            padding: 0 25px;
+        }
+        
+        #subjects {
+            white-space: nowrap;
+            overflow-x: scroll;
+            padding: 5px 17.5px 15px 17.5px;
+            /*      width: 900px;*/
+            display: flex;
+            margin-bottom: 50px;
+        }
+        
+        #subjects::-webkit-scrollbar {
+            height: 12px;
+        }
+        
+        #subjects::-webkit-scrollbar-track {
+            background: rgba(42, 42, 60, 1);
+        }
+        
+        #subjects div {
+            border-radius: 7.5px;
+            padding: 7.5px 12px;
+            margin: 7.5px;
+            background: #9494fe;
+            font-family: accorm;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            transition: 0.3s ease;
+            cursor: pointer;
+        }
+        
+        #subjects div:hover {
+            filter: brightness(70%);
+        }
+        
+        #subjects div:active {
+            transform: scale(0.75);
+        }
+        
+        .nopaddin {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        
+        .marginated {
+            margin: 0 25px 25px 25px;
+        }
+        
+        .noback {
+            background: transparent !important;
+        }
+        
+        .middle .explore {
+            outline: 0;
+            border: 0px;
+            padding: 7.5px 23px;
+            border-radius: 5px;
+            font-family: accorm;
+            margin-top: 30px;
+            font-size: 1em;
+            transition: 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .side .explore {
+            outline: 0;
+            border: 0px;
+            padding: 7.5px 23px;
+            border-radius: 5px;
+            font-family: accorm;
+            margin-top: 20px;
+            font-size: 1em;
+            transition: 0.3s ease;
+            cursor: pointer;
+            background: radial-gradient(circle at top left, rgba(180, 190, 255, 1), rgba(90, 100, 255, 1));
+        }
+        
+        .special {
+            background: rgba(255, 255, 255, .5);
+        }
+        
+        .middle .explore:hover {
+            filter: brightness(37%);
+        }
+        
+        .side .explore:hover {
+            filter: brightness(70%);
+            /*      background: radial-gradient(circle at top left, rgba(90, 100, 255, 1), rgba(180, 190, 255, 1));*/
+        }
+        
+        .explore:active {
+            transform: scale(0.75);
+        }
+        
+        .explore i {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav id="navbar">
+
+        <div class="n-left">
+            <img src="files/logo.png" />
+            <h1>Accorm</h1>
+        </div>
+
+        <div class="n-middle">
+            <button onclick="openAbout()">About</button>
+            <button onclick="openSubjects()">Subjects</button>
+            <button>Features</button>
+        </div>
+
+        <div class="n-right">
+            <button class="light"><i class="material-icons">wb_sunny</i></button>
+            <button class="dark"><i class="fa-solid fa-moon"></i></button>
+            <button class="profile">Profile <i class="fa-solid fa-user"></i></button>
+        </div>
+    </nav>
+
+    <div class="con">
+        <div class="anim">
+            <h1>Educate<span>.</span> Empower<span>.</span> Excel<span>.</span></h1>
+            <p>Where students and educational content blend</p>
+            <button class="contribute" onclick="openSubjects()">Subjects <i class="fa-solid fa-caret-right"></i></button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <i class="fa-solid fa-caret-up open-f" onclick="openFooter()"></i>
+        <i class="fa-solid fa-caret-down close-f" onclick="closeFooter()"></i>
+        <div class="f-con">
+            <div onclick="openAbout()" title="About Us" class="content">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div onclick="openSubjects()" title="Subjects & Content" class="content t">
+                <i class="fa-solid fa-book-open"></i>
+            </div>
+            <div title="Applications and Features" class="content a cright">
+                <i class="material-icons apps">apps</i>
+            </div>
+        </div>
+    </div>
+
+    <div class="frame" id="about-frame">
+        <div class="frame-left">
+            <div>
+                <div class="accorm">
+                    <img src="files/logo-trans.png" />
+                    <h2>Accorm</h2>
+                </div>
+                <h1>About Us<span>.</span></h1>
+                <button class="read-more">Read More <i class="fa-solid fa-caret-right"></i></button>
+                <div onclick="closeAbout()" class="backth">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </div>
+            </div>
+        </div>
+        <div class="frame-right">
+
+            <!-- <div class="paddin">
+        <h3 class="h3">Pinpoints of Accorm</h3>
+        <p class="spec">Accorm is built for Uniqueness. Our intention is solely based on compiling the relative educational content of specefic Cambridge IGCSE subjects. We do not intend to promote external websites, authors and/or publishers, however we necessate enough-to-locate citation from external resources by the users who contribute them to Accorm.</p>
+        <button class="read-more s">Read More <i class="fa-solid fa-caret-right"></i></button>
+      </div> -->
+            <div class="paddin flexes full">
+                <!-- <h3 class="h3">Developers & Contributors</h3> -->
+                <div class="dev-grid">
+                    <div class="item">
+                        <div class="logo-profile musab"></div>
+                        <h1>Musab Khan</h1>
+                        <h5>Project Manager</h5>
+                        <div class="prof-div">
+                            <button onclick="window.location='mailto:contact@ginastic.co';" class="read-more s prof">Contact <i
+                  class="fa-solid fa-caret-right"></i></button>
+                        </div>
+
+                    </div>
+                    <div class="item">
+                        <div class="logo-profile abd"></div>
+                        <h1>Abdullah Umair</h1>
+                        <h5>Designer</h5>
+                        <div class="prof-div">
+                            <button onclick="window.location='mailto:solution.i67@outlook.com';" class="read-more s prof">Contact <i
+                  class="fa-solid fa-caret-right"></i></button>
+                        </div>
+
+                    </div>
+
+                    <div class="item">
+                        <div class="logo-profile yousuf"></div>
+                        <h1>M.Yousuf Jamil</h1>
+                        <h5>App Developer</h5>
+                        <div class="prof-div">
+                            <button onclick="window.location='mailto:contact.us.myj@gmail.com';" class="read-more s prof">Contact <i
+                  class="fa-solid fa-caret-right"></i></button>
+                        </div>
+
+                    </div>
+
+                    <div class="item">
+                        <div class="logo-profile majid"></div>
+                        <h1>Majid Mohammad</h1>
+                        <h5>Content Provider</h5>
+                        <div class="prof-div">
+                            <button onclick="window.location='mailto:mylifechoice96@gmail.com';" class="read-more s prof">Contact <i
+                  class="fa-solid fa-caret-right"></i></button>
+                        </div>
+
+                    </div>
+
+                    <div class="item">
+                        <div class="logo-profile basim"></div>
+                        <h1>Basim Kashif</h1>
+                        <h5>Contributor</h5>
+                        <div class="prof-div">
+                            <button onclick="window.location='mailto:bkashamsi2008@outlook.com';" class="read-more s prof">Contact <i
+                  class="fa-solid fa-caret-right"></i></button>
+                        </div>
+
+                    </div>
+
+                    <div class="item">
+                        <div class="logo-profile faizan"></div>
+                        <h1>Faizan Ali</h1>
+                        <h5>Contributor</h5>
+                        <div class="prof-div">
+                            <button onclick="window.location='mailto:adamcroft715@gmail.com';" class="read-more s prof">Contact <i
+                  class="fa-solid fa-caret-right"></i></button>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <!-- <button class="read-more s">Read More <i class="fa-solid fa-caret-right"></i></button> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="frame" id="subjects-frame">
+        <div class="frame-left">
+            <div>
+                <div class="accorm">
+                    <img src="files/logo-trans.png" />
+                    <h2>Accorm</h2>
+                </div>
+                <h1>Subjects<span>.</span></h1>
+                <button class="read-more">Read More <i class="fa-solid fa-caret-right"></i></button>
+                <div onclick="closeSubjects()" class="backth">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </div>
+            </div>
+        </div>
+        <div class="frame-right nopaddin">
+            <h3 class="superTitle">IGCSE & O Levels</h3>
+            <div id="subjects">
+                <div>Islamiat</div>
+                <div>Pak Studies</div>
+                <div>Maths</div>
+                <div>Physics</div>
+                <div>Chemistry</div>
+                <div>FLE</div>
+                <div>ESL</div>
+                <div>CS</div>
+                <div>Biology</div>
+                <div>Accounting</div>
+            </div>
+            <div class="marginated paddin flexes noback">
+                <div class="subjects-grid">
+
+                    <div class="option side side-left">
+                        <div style="margin-right: 15px;">
+                            <h4>All Subjects</h4>
+                            <h1>Syllabus</h1>
+                            <p>Scheme of Work</p>
+                            <p class="last">Syllabus Overview</p>
+
+                            <button class="explore">Explore <i class="fa-solid fa-caret-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="option middle">
+                        <div>
+                            <h4>All Subjects</h4>
+                            <h1>Past Papers</h1>
+                            <p>Topical & Yearly</p>
+                            <p>Marking Schemes</p>
+                            <p>Grade Thresholds</p>
+                            <p class="last">Examiner Reports</p>
+
+                            <button class="explore special">Explore <i class="fa-solid fa-caret-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="option side side-right">
+                        <div>
+                            <h4>All Subjects</h4>
+                            <h1>Resources</h1>
+                            <p>Notes</p>
+                            <p>Course Videos</p>
+                            <!-- <p>Coursebook PDFs</p> -->
+                            <p class="last">Educational Blogs</p>
+
+                            <button class="explore">Explore <i class="fa-solid fa-caret-right"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function closeFooter() {
+            document.querySelector(".footer").style.bottom = "-64.2px";
+            document.querySelector(".close-f").style.filter = "opacity(0%)";
+            document.querySelector(".close-f").style.display = "none";
+            document.querySelector(".open-f").style.filter = "opacity(100%)";
+            document.querySelector(".open-f").style.display = "block";
+        }
+
+        function openFooter() {
+            document.querySelector(".footer").style.bottom = "0px";
+            document.querySelector(".close-f").style.filter = "opacity(100%)";
+            document.querySelector(".close-f").style.display = "block";
+            document.querySelector(".open-f").style.filter = "opacity(0%)";
+            document.querySelector(".open-f").style.display = "none";
+        }
+
+        function openAbout() {
+            document.querySelector("#about-frame").style.right = "0px";
+        }
+
+        function closeAbout() {
+            document.querySelector("#about-frame").style.right = "-100%";
+        }
+
+        function openSubjects() {
+            document.querySelector("#subjects-frame").style.bottom = "0px";
+        }
+
+        function closeSubjects() {
+            document.querySelector("#subjects-frame").style.bottom = "-100%";
+        }
+
+        // window.onload=()=> {
+        //   document.getElementById('subjects').style.width=document.getElementById('subjects').clientWidth;
+        // }
+    </script>
+</body>
+
+</html>
