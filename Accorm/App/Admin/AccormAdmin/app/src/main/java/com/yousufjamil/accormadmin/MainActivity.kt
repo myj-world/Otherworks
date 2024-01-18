@@ -195,7 +195,7 @@ class MainActivity : ComponentActivity() {
                 onClick: () -> Unit,
                 usesImageVector: Boolean,
                 imageVector: ImageVector = Icons.Default.Warning,
-//                painterResource: Int = R.drawable.app_ic,
+                painterResource: Int = R.drawable.baseline_warning_24,
                 contentDescription: String
             ) {
                 Button(
@@ -219,12 +219,12 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier.size(25.dp)
                             )
                         } else {
-//                            Icon(
-//                                painter = painterResource(painterResource),
-//                                contentDescription = contentDescription,
-//                                tint = Color(171, 171, 248, 255),
-//                                modifier = Modifier.size(25.dp)
-//                            )
+                            Icon(
+                                painter = painterResource(painterResource),
+                                contentDescription = contentDescription,
+                                tint = Color(171, 171, 248, 255),
+                                modifier = Modifier.size(25.dp)
+                            )
                         }
                         Spacer(modifier = Modifier.width(30.dp))
                         Text(
@@ -242,13 +242,13 @@ class MainActivity : ComponentActivity() {
                 horizontalArrangement = Arrangement.Start,
                 modifier = Modifier.fillMaxWidth()
             ) {
-//                Image(
-//                    painter = painterResource(id = R.drawable.app_ic),
-//                    contentDescription = "App icon",
-//                    modifier = Modifier
-//                        .size(70.dp)
-//                        .clip(RoundedCornerShape(corner = CornerSize(50.dp)))
-//                )
+                Image(
+                    painter = painterResource(id = R.drawable.app_ic),
+                    contentDescription = "App icon",
+                    modifier = Modifier
+                        .size(70.dp)
+                        .clip(RoundedCornerShape(corner = CornerSize(50.dp)))
+                )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
                     text = "Accorm",
@@ -264,12 +264,12 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.Start
             ) {
-//                NavSingleButton(
-//                    onClick = { },
-//                    usesImageVector = false,
-//                    painterResource = R.drawable.book_open,
-//                    contentDescription = "Subjects"
-//                )
+                NavSingleButton(
+                    onClick = { },
+                    usesImageVector = false,
+                    painterResource = R.drawable.baseline_upload_24,
+                    contentDescription = "Upload"
+                )
 //                NavSingleButton(
 //                    onClick = { },
 //                    usesImageVector = false,
