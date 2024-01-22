@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -37,12 +38,18 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -72,6 +79,7 @@ class MainActivity : ComponentActivity() {
     lateinit var navController: NavHostController
     lateinit var poppins: FontFamily
     lateinit var lexend: FontFamily
+
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,7 +122,7 @@ class MainActivity : ComponentActivity() {
                                         TopAppBar(
                                             title = {
                                                 Text(
-                                                    text = "Accorm",
+                                                    text = "Accorm Admin",
                                                     color = Color.White,
                                                     modifier = Modifier
                                                         .fillMaxWidth(0.95f)
@@ -166,6 +174,18 @@ class MainActivity : ComponentActivity() {
         NavHost(navHostController, "home") {
             composable("home") {
                 HomeScreen(context)
+            }
+            composable("contributors") {
+                ContributorsScreen(context = context)
+            }
+            composable("feedbacks") {
+                FeedbacksScreen(context = context)
+            }
+            composable("accorm-blogs") {
+                AccormBlogsScreen(context = context)
+            }
+            composable("upload") {
+                UploadScreen(context = context)
             }
         }
     }
@@ -235,27 +255,54 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-
             Spacer(modifier = Modifier.height(30.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start,
-                modifier = Modifier.fillMaxWidth()
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(75.dp)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.app_ic),
-                    contentDescription = "App icon",
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start,
                     modifier = Modifier
-                        .size(70.dp)
-                        .clip(RoundedCornerShape(corner = CornerSize(50.dp)))
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = "Accorm",
-                    fontFamily = lexend,
-                    color = Color.White,
-                    fontSize = 35.sp
-                )
+                        .fillMaxWidth(0.8f)
+                        .height(75.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.app_ic),
+                        contentDescription = "App icon",
+                        modifier = Modifier
+                            .size(75.dp)
+                            .clip(RoundedCornerShape(corner = CornerSize(50.dp)))
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Column {
+                        Text(
+                            text = "Name",
+                            fontFamily = lexend,
+                            color = Color.White,
+                            fontSize = 35.sp
+                        )
+                        Text(
+                            text = "Email",
+                            fontFamily = lexend,
+                            color = Color.White,
+                            fontSize = 18.sp
+                        )
+                    }
+                }
+                Column {
+                    Spacer(modifier = Modifier.height(40.dp))
+                    IconButton(onClick = { }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_logout_24),
+                            contentDescription = "Log out",
+                            tint = Color.White
+                        )
+                    }
+                }
             }
             Spacer(modifier = Modifier.height(20.dp))
             Divider()
@@ -265,180 +312,289 @@ class MainActivity : ComponentActivity() {
                 horizontalAlignment = Alignment.Start
             ) {
                 NavSingleButton(
-                    onClick = { },
+                    onClick = { navController.navigate("upload") },
                     usesImageVector = false,
                     painterResource = R.drawable.baseline_upload_24,
                     contentDescription = "Upload"
                 )
-//                NavSingleButton(
-//                    onClick = { },
-//                    usesImageVector = false,
-//                    painterResource = R.drawable.apps,
-//                    contentDescription = "Features"
-//                )
-//                NavSingleButton(
-//                    onClick = { navController.navigate("about") },
-//                    usesImageVector = true,
-//                    imageVector = Icons.Default.Info,
-//                    contentDescription = "Info"
-//                )
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-            Divider()
-            Spacer(modifier = Modifier.height(20.dp))
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.Start
-            ) {
                 NavSingleButton(
-                    onClick = { },
+                    onClick = { navController.navigate("contributors") },
                     usesImageVector = true,
                     imageVector = Icons.Default.AddCircle,
-                    contentDescription = "Contribute"
+                    contentDescription = "Contributors"
+                )
+                NavSingleButton(
+                    onClick = { navController.navigate("feedbacks") },
+                    usesImageVector = false,
+                    painterResource = R.drawable.baseline_feedback_24,
+                    contentDescription = "Feedbacks"
+                )
+                NavSingleButton(
+                    onClick = { navController.navigate("accorm-blogs") },
+                    usesImageVector = false,
+                    painterResource = R.drawable.baseline_newspaper_24,
+                    contentDescription = "Accorm Blogs"
                 )
                 NavSingleButton(
                     onClick = { },
-                    usesImageVector = true,
-                    imageVector = Icons.Default.Person,
-                    contentDescription = "Profile"
+                    usesImageVector = false,
+                    painterResource = R.drawable.baseline_folder_24,
+                    contentDescription = "Resources"
                 )
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-            Divider()
-            Spacer(modifier = Modifier.height(20.dp))
-            IconButton(
-                onClick = {
-                    closeDrawer()
-                },
-                colors = IconButtonDefaults.filledIconButtonColors(
-                    containerColor = Color(172, 172, 249, 255)
-                ),
-                modifier = Modifier
-                    .clip(RoundedCornerShape(corner = CornerSize(100.dp)))
-                    .size(50.dp)
-            ) {
-//                Icon(
-//                    painter = painterResource(id = R.drawable.wb_sunny),
-//                    contentDescription = "Change Theme",
-//                    tint = Color(33, 33, 43, 255),
-//                    modifier = Modifier
-//                        .padding(10.dp)
-//                        .size(100.dp)
-//                )
             }
         }
     }
 
     @Composable
     fun HomeScreen(context: Context) {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color(38, 38, 47, 255))
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(100.dp))
-            Text(
-                text = buildAnnotatedString {
-                    withStyle(
-                        SpanStyle(color = Color.White, fontFamily = poppins, fontSize = 60.sp)
-                    ) {
-                        append("Educate")
+            item {
+                Spacer(modifier = Modifier.height(100.dp))
+                Text(
+                    text = buildAnnotatedString {
                         withStyle(
-                            SpanStyle(
-                                color = Color(144, 144, 214, 255)
-                            )
+                            SpanStyle(color = Color.White, fontFamily = lexend, fontSize = 60.sp)
                         ) {
-                            append(".\n\n\n")
+                            append("Welcome to \n\n\n Ginastic\n\n\n")
+                            withStyle(
+                                SpanStyle(
+                                    color = Color(144, 144, 214, 255)
+                                )
+                            ) {
+                                append("Dashboard!\n\n\n\n")
+                            }
                         }
-                        append("Empower")
-                        withStyle(
-                            SpanStyle(
-                                color = Color(144, 144, 214, 255)
-                            )
-                        ) {
-                            append(".\n\n\n")
-                        }
-                        append("Excel")
-                        withStyle(
-                            SpanStyle(
-                                color = Color(144, 144, 214, 255)
-                            )
-                        ) {
-                            append(".\n\n")
-                        }
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
-            Text(
-                text = "Where students and educational \ncontent blend",
-                color = Color(144, 144, 214, 255),
-                fontFamily = poppins,
-                fontWeight = FontWeight.SemiBold,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(30.dp))
-            Row {
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    text = "View, append & edit data according to your role. Choose an option from the Navigation bar to get started.",
+                    color = Color(144, 144, 214, 255),
+                    fontFamily = poppins,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
 
-                @Composable
-                fun HomeIcon(
-                    onClick: () -> Unit,
-                    usesImageVector: Boolean,
-                    imageVector: ImageVector = Icons.Default.Warning,
-//                    painterResource: Int = R.drawable.app_ic,
-                    contentDescription: String
+    @Composable
+    fun UploadScreen(context: Context) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(38, 38, 47, 255))
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(100.dp))
+                Text(
+                    text = "Upload",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = lexend,
+                    fontSize = 60.sp
+                )
+                Text(
+                    text = "This section is specially made for content publishers of Accorm so they can upload resources hassle-free and with accorm's credit.",
+                    color = Color(144, 144, 214, 255),
+                    fontFamily = poppins,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center
+                )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(29, 32, 54, 255))
+                        .clip(RoundedCornerShape(50.dp))
+                        .padding(20.dp)
                 ) {
-                    IconButton(
-                        onClick = { onClick() },
-                        colors = IconButtonDefaults.filledIconButtonColors(
-                            containerColor = Color(33, 33, 43, 255)
-                        ),
-                        modifier = Modifier.clip(RoundedCornerShape(100))
-                    ) {
-                        if (usesImageVector) {
-                            Icon(
-                                imageVector = imageVector,
-                                contentDescription = contentDescription,
-                                tint = Color(171, 171, 248, 255),
-                                modifier = Modifier.size(25.dp)
-                            )
-                        } else {
-//                            Icon(
-//                                painter = painterResource(painterResource),
-//                                contentDescription = contentDescription,
-//                                tint = Color(171, 171, 248, 255),
-//                                modifier = Modifier.size(25.dp)
-//                            )
-                        }
+                    var title by remember {
+                        mutableStateOf("")
                     }
+                    var shortDes by remember {
+                        mutableStateOf("")
+                    }
+                    var subject by remember {
+                        mutableStateOf("")
+                    }
+                    var chapter by remember {
+                        mutableStateOf("")
+                    }
+                    var author by remember {
+                        mutableStateOf("")
+                    }
+                    var customAuthorName by remember {
+                        mutableStateOf("")
+                    }
+                    var customAuthorWebsite by remember {
+                        mutableStateOf("")
+                    }
+
+                    TextField(
+                        value = title,
+                        onValueChange = {
+                            title = it
+                        },
+                        label = {
+                            Text(text = "Title")
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = TextFieldDefaults.colors()
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    TextField(
+                        value = shortDes,
+                        onValueChange = {
+                            shortDes = it
+                        },
+                        label = {
+                            Text(text = "Short Description")
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = TextFieldDefaults.colors()
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
-                HomeIcon(
-                    onClick = { navController.navigate("about") },
-                    usesImageVector = true,
-                    imageVector = Icons.Default.Info,
-                    contentDescription = "Info"
+            }
+        }
+    }
+
+    @Composable
+    fun ContributorsScreen(context: Context) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(38, 38, 47, 255))
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(100.dp))
+                Text(
+                    text = "Contributors",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = lexend,
+                    fontSize = 60.sp
                 )
-//                HomeIcon(
-//                    onClick = {},
-//                    usesImageVector = false,
-//                    painterResource = R.drawable.book_open,
-//                    contentDescription = "Subjects"
-//                )
-//                HomeIcon(
-//                    onClick = {},
-//                    usesImageVector = false,
-//                    painterResource = R.drawable.apps,
-//                    contentDescription = "Features"
-//                )
-                HomeIcon(
-                    onClick = {},
-                    usesImageVector = true,
-                    imageVector = Icons.Default.AddCircle,
-                    contentDescription = "Contribute"
+                Text(
+                    text = "See the list of Accorm Contributors, the users who have published and provided educational resources to Accorm.",
+                    color = Color(144, 144, 214, 255),
+                    fontFamily = poppins,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center
                 )
+                Row {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_warning_24),
+                        contentDescription = "Warning Icon",
+                        tint = Color.Yellow
+                    )
+                    Text(
+                        text = "Under Development.",
+                        color = Color.White
+                    )
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun FeedbacksScreen(context: Context) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(38, 38, 47, 255))
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(100.dp))
+                Text(
+                    text = "Feedbacks",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = lexend,
+                    fontSize = 60.sp
+                )
+                Text(
+                    text = "Find here the feedbacks by users of Accorm to be updated of any bad user-experience, bugs, suggestions, encouragements, or simply praises.",
+                    color = Color(144, 144, 214, 255),
+                    fontFamily = poppins,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center
+                )
+                Row {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_warning_24),
+                        contentDescription = "Warning Icon",
+                        tint = Color.Yellow
+                    )
+                    Text(
+                        text = "Under Development.",
+                        color = Color.White
+                    )
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun AccormBlogsScreen(context: Context) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(38, 38, 47, 255))
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(100.dp))
+                Text(
+                    text = "Accorm \n \n\n Blogs",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = lexend,
+                    fontSize = 60.sp
+                )
+                Text(
+                    text = "ONLY Educational category blogs are facilitated by Accorm. So find here the different statuses of blogs for verification purposes.",
+                    color = Color(144, 144, 214, 255),
+                    fontFamily = poppins,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center
+                )
+                Row {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_warning_24),
+                        contentDescription = "Warning Icon",
+                        tint = Color.Yellow
+                    )
+                    Text(
+                        text = "Under Development.",
+                        color = Color.White
+                    )
+                }
             }
         }
     }
