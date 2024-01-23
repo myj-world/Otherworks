@@ -24,12 +24,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -53,8 +57,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -67,6 +74,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -417,8 +425,8 @@ class MainActivity : ComponentActivity() {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .clip(RoundedCornerShape(25.dp))
                         .background(Color(29, 32, 54, 255))
-                        .clip(RoundedCornerShape(50.dp))
                         .padding(20.dp)
                 ) {
                     var title by remember {
@@ -430,6 +438,32 @@ class MainActivity : ComponentActivity() {
                     var subject by remember {
                         mutableStateOf("")
                     }
+                    var subjectSize by remember {
+                        mutableStateOf(Size.Zero)
+                    }
+                    var subjectExpanded by remember {
+                        mutableStateOf(false)
+                    }
+
+                    val subjectIcon = if (subjectExpanded)
+                        Icons.Filled.KeyboardArrowUp
+                    else
+                        Icons.Filled.KeyboardArrowDown
+
+                    val subjects = listOf(
+                        "Islamiyat (0493)",
+                        "Pakistan Studies, History (0448/01)",
+                        "Pakistan Studies, Geography (0448/02)",
+                        "Maths (0580)",
+                        "Physics (0625)",
+                        "Chemistry (0620)",
+                        "FLE (0500)",
+                        "ESL (0510)",
+                        "Computer Science (0478)",
+                        "Biology (0610)",
+                        "Accounting (0452)"
+                    )
+
                     var chapter by remember {
                         mutableStateOf("")
                     }
@@ -468,6 +502,53 @@ class MainActivity : ComponentActivity() {
                         colors = TextFieldDefaults.colors()
                     )
                     Spacer(modifier = Modifier.height(10.dp))
+
+                    TextField(
+                        value = subject,
+                        onValueChange = {
+                            subject = it
+                        },
+                        label = {
+                            Text(text = "Subject")
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .onGloballyPositioned { coordinates ->
+                                subjectSize = coordinates.size.toSize()
+                            },
+                        colors = TextFieldDefaults.colors(),
+                        trailingIcon = {
+                            Icon(subjectIcon, "contentDescription",
+                                Modifier.clickable { subjectExpanded = !subjectExpanded })
+                        }
+                    )
+                    DropdownMenu(
+                        expanded = subjectExpanded,
+                        onDismissRequest = { subjectExpanded = false },
+                        modifier = Modifier
+                            .width(with(LocalDensity.current) { subjectSize.width.toDp() })
+                    ) {
+                        subjects.forEach { label ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(text = label)
+                                }, onClick = {
+                                    subject = label
+                                    subjectExpanded = false
+                                }
+                            )
+                        }
+                    }
+
+                    Column (
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(25.dp))
+                            .background(Color(68, 75, 113, 255))
+                            .padding(10.dp)
+                    ) {
+                        Text(text = "Credits", color = Color.White)
+                    }
                 }
             }
         }
