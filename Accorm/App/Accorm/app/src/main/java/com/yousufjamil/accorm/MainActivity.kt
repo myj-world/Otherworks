@@ -56,6 +56,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -180,6 +182,9 @@ fun Navigation(context: Context, navHostController: NavHostController) {
         composable("home") {
             HomeScreen(context)
         }
+        composable("resources") {
+            ResourcesScreen(context)
+        }
         composable("about") {
             AboutUsScreen(context)
         }
@@ -281,7 +286,7 @@ fun NavigationDrawer(closeDrawer: () -> Unit) {
             horizontalAlignment = Alignment.Start
         ) {
             NavSingleButton(
-                onClick = { },
+                onClick = { navController.navigate("resources") },
                 usesImageVector = false,
                 painterResource = R.drawable.book_open,
                 contentDescription = "Subjects"
@@ -455,6 +460,84 @@ fun HomeScreen(context: Context) {
                 imageVector = Icons.Default.AddCircle,
                 contentDescription = "Contribute"
             )
+        }
+    }
+}
+
+@Composable
+fun ResourcesScreen(context: Context) {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(38, 38, 47, 255))
+            .verticalScroll(scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            Color(115, 114, 164, 255),
+                            Color(191, 114, 217, 255)
+                        ),
+                        start = Offset(
+                            0f,
+                            1f
+                        ),
+                        end = Offset(
+                            1f,
+                            0f
+                        )
+                    )
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Column {
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            SpanStyle(
+                                color = Color.White,
+                                fontFamily = lexend
+                            )
+                        ) {
+                            withStyle(
+                                SpanStyle(
+                                    fontSize = 18.sp
+                                )
+                            ) {
+                                append("IGCSE \n\n")
+                            }
+                            withStyle(
+                                SpanStyle(
+                                    fontSize = 48.sp
+                                )
+                            ) {
+                                append("Islamiyat \n\n")
+                            }
+                            withStyle(
+                                SpanStyle(
+                                    fontSize = 28.sp
+                                )
+                            ) {
+                                append("0493")
+                            }
+                        }
+                    },
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+        Column (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+        ) {
+
         }
     }
 }

@@ -23,10 +23,8 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.Button
@@ -37,9 +35,10 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -192,8 +191,11 @@ class MainActivity : ComponentActivity() {
             composable("accorm-blogs") {
                 AccormBlogsScreen(context = context)
             }
-            composable("upload") {
-                UploadScreen(context = context)
+            composable("upload-notes") {
+                UploadNotesScreen(context = context)
+            }
+            composable("upload-vids") {
+                UploadVideosScreen(context = context)
             }
         }
     }
@@ -320,10 +322,16 @@ class MainActivity : ComponentActivity() {
                 horizontalAlignment = Alignment.Start
             ) {
                 NavSingleButton(
-                    onClick = { navController.navigate("upload") },
+                    onClick = { navController.navigate("upload-notes") },
                     usesImageVector = false,
                     painterResource = R.drawable.baseline_upload_24,
-                    contentDescription = "Upload"
+                    contentDescription = "Upload Notes"
+                )
+                NavSingleButton(
+                    onClick = { navController.navigate("upload-vids") },
+                    usesImageVector = false,
+                    painterResource = R.drawable.baseline_video_library_24,
+                    contentDescription = "Upload Video"
                 )
                 NavSingleButton(
                     onClick = { navController.navigate("contributors") },
@@ -395,7 +403,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun UploadScreen(context: Context) {
+    fun UploadNotesScreen(context: Context) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
@@ -407,7 +415,7 @@ class MainActivity : ComponentActivity() {
             item {
                 Spacer(modifier = Modifier.height(100.dp))
                 Text(
-                    text = "Upload",
+                    text = "Upload \n \n \n Notes",
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
                     color = Color.White,
@@ -469,6 +477,15 @@ class MainActivity : ComponentActivity() {
                     }
                     var author by remember {
                         mutableStateOf("")
+                    }
+                    var uploaderAuthor by remember {
+                        mutableStateOf(false)
+                    }
+                    var unknownAuthor by remember {
+                        mutableStateOf(false)
+                    }
+                    var externalAuthor by remember {
+                        mutableStateOf(false)
                     }
                     var customAuthorName by remember {
                         mutableStateOf("")
@@ -539,8 +556,9 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     }
+                    Spacer(modifier = Modifier.height(10.dp))
 
-                    Column (
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(25.dp))
@@ -548,6 +566,304 @@ class MainActivity : ComponentActivity() {
                             .padding(10.dp)
                     ) {
                         Text(text = "Credits", color = Color.White)
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = uploaderAuthor,
+                                onClick = {
+                                    uploaderAuthor = true
+                                    unknownAuthor = false
+                                    externalAuthor = false
+                                    customAuthorName = ""
+                                    customAuthorWebsite = ""
+                                    author = "personal"
+                                },
+                                colors = RadioButtonDefaults.colors(
+                                    unselectedColor = Color.White,
+                                    selectedColor = Color(118, 118, 118, 255)
+                                )
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                text = "I am the author",
+                                color = Color.White
+                            )
+                        }
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = unknownAuthor,
+                                onClick = {
+                                    uploaderAuthor = false
+                                    unknownAuthor = true
+                                    externalAuthor = false
+                                    customAuthorName = ""
+                                    customAuthorWebsite = ""
+                                    author = "unknown"
+                                },
+                                colors = RadioButtonDefaults.colors(
+                                    unselectedColor = Color.White,
+                                    selectedColor = Color(118, 118, 118, 255)
+                                )
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                text = "Unknown author",
+                                color = Color.White
+                            )
+                        }
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = externalAuthor,
+                                onClick = {
+                                    uploaderAuthor = false
+                                    unknownAuthor = false
+                                    externalAuthor = true
+                                    author = "external"
+                                },
+                                colors = RadioButtonDefaults.colors(
+                                    unselectedColor = Color.White,
+                                    selectedColor = Color(118, 118, 118, 255)
+                                )
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                text = "External author",
+                                color = Color.White
+                            )
+                        }
+
+                        if (externalAuthor) {
+                            TextField(
+                                value = customAuthorName,
+                                onValueChange = {
+                                    customAuthorName = it
+                                },
+                                label = {
+                                    Text(text = "Author name/Website name")
+                                },
+                                colors = TextFieldDefaults.colors()
+                            )
+
+                            TextField(
+                                value = customAuthorWebsite,
+                                onValueChange = {
+                                    customAuthorWebsite = it
+                                },
+                                label = {
+                                    Text(text = "Website link")
+                                },
+                                colors = TextFieldDefaults.colors()
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row {
+                        Button(
+                            onClick = { },
+                            colors = ButtonDefaults.buttonColors()
+                        ) {
+                            Text(text = "Choose file")
+                        }
+                        Spacer(modifier = Modifier.width(2.dp))
+                        Text(text = "File Name")
+                    }
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(
+                        text = "Only PDF file is acceptable. Max file size is up to 30MB.",
+                        color = Color.White
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Button(
+                        onClick = { },
+                        colors = ButtonDefaults.buttonColors()
+                    ) {
+                        Text(text = "Upload")
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun UploadVideosScreen(context: Context) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(38, 38, 47, 255))
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(100.dp))
+                Text(
+                    text = "Upload \n \n \n Videos",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = lexend,
+                    fontSize = 60.sp
+                )
+                Text(
+                    text = "Upload the course videos from here under the title of Accorm.",
+                    color = Color(144, 144, 214, 255),
+                    fontFamily = poppins,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center
+                )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(25.dp))
+                        .background(Color(29, 32, 54, 255))
+                        .padding(20.dp)
+                ) {
+                    var title by remember {
+                        mutableStateOf("")
+                    }
+                    var shortDes by remember {
+                        mutableStateOf("")
+                    }
+                    var subject by remember {
+                        mutableStateOf("")
+                    }
+                    var subjectSize by remember {
+                        mutableStateOf(Size.Zero)
+                    }
+                    var subjectExpanded by remember {
+                        mutableStateOf(false)
+                    }
+
+                    val subjectIcon = if (subjectExpanded)
+                        Icons.Filled.KeyboardArrowUp
+                    else
+                        Icons.Filled.KeyboardArrowDown
+
+                    val subjects = listOf(
+                        "Islamiyat (0493)",
+                        "Pakistan Studies, History (0448/01)",
+                        "Pakistan Studies, Geography (0448/02)",
+                        "Maths (0580)",
+                        "Physics (0625)",
+                        "Chemistry (0620)",
+                        "FLE (0500)",
+                        "ESL (0510)",
+                        "Computer Science (0478)",
+                        "Biology (0610)",
+                        "Accounting (0452)"
+                    )
+
+                    var url by remember {
+                        mutableStateOf("")
+                    }
+                    var embeddedCode by remember {
+                        mutableStateOf("")
+                    }
+
+                    TextField(
+                        value = title,
+                        onValueChange = {
+                            title = it
+                        },
+                        label = {
+                            Text(text = "Title")
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = TextFieldDefaults.colors()
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    TextField(
+                        value = shortDes,
+                        onValueChange = {
+                            shortDes = it
+                        },
+                        label = {
+                            Text(text = "Short Description")
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = TextFieldDefaults.colors()
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    TextField(
+                        value = subject,
+                        onValueChange = {
+                            subject = it
+                        },
+                        label = {
+                            Text(text = "Subject")
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .onGloballyPositioned { coordinates ->
+                                subjectSize = coordinates.size.toSize()
+                            },
+                        colors = TextFieldDefaults.colors(),
+                        trailingIcon = {
+                            Icon(subjectIcon, "contentDescription",
+                                Modifier.clickable { subjectExpanded = !subjectExpanded })
+                        }
+                    )
+                    DropdownMenu(
+                        expanded = subjectExpanded,
+                        onDismissRequest = { subjectExpanded = false },
+                        modifier = Modifier
+                            .width(with(LocalDensity.current) { subjectSize.width.toDp() })
+                    ) {
+                        subjects.forEach { label ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(text = label)
+                                }, onClick = {
+                                    subject = label
+                                    subjectExpanded = false
+                                }
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    TextField(
+                        value = url,
+                        onValueChange = {
+                            url = it
+                        },
+                        label = {
+                            Text(text = "Video URL")
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = TextFieldDefaults.colors()
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    TextField(
+                        value = embeddedCode,
+                        onValueChange = {
+                            embeddedCode = it
+                        },
+                        label = {
+                            Text(text = "Video's embedded code")
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = TextFieldDefaults.colors()
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Button(
+                        onClick = { },
+                        colors = ButtonDefaults.buttonColors()
+                    ) {
+                        Text(text = "Upload")
                     }
                 }
             }
