@@ -2,17 +2,15 @@ package com.yousufjamil.accorm
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +28,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
@@ -52,7 +49,11 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -79,6 +80,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.yousufjamil.accorm.ui.theme.AccormTheme
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 lateinit var navController: NavHostController
 lateinit var poppins: FontFamily
@@ -466,6 +468,37 @@ fun HomeScreen(context: Context) {
 
 @Composable
 fun ResourcesScreen(context: Context) {
+
+    var canDecode by remember {
+        mutableStateOf(false)
+    }
+
+    var result by remember {
+        mutableStateOf("")
+    }
+
+    fun retrieveData(subject: String) {
+        val bgWorker = BackgroundWorker(context)
+        Thread {
+            bgWorker.execute("https://accorm.ginastic.co/300/fetch/?access-id=65aea3e3e6184&subject=$subject")
+        }.start()
+
+        fun checkStatus() {
+            Handler().postDelayed(
+                {
+                    if (bgWorker.status.toString() == "FINISHED") {
+                        canDecode = true
+                        result = bgWorker.response
+                    } else {
+                        checkStatus()
+                    }
+                }, 3000
+            )
+        }
+        checkStatus()
+    }
+    retrieveData("islamiyat")
+
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -532,11 +565,145 @@ fun ResourcesScreen(context: Context) {
                 )
             }
         }
-        Column (
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp)
+                .background(Color(66, 66, 66, 255))
+                .padding(horizontal = 20.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            Text(
+                text = "Notes",
+                fontSize = 22.sp,
+                fontFamily = lexend,
+                color = Color.White
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .width(80.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color(145, 145, 254, 255))
+                        .padding(5.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Videos",
+                        color = Color.White
+                    )
+                }
+                Spacer(modifier = Modifier.width(10.dp))
+                Box(
+                    modifier = Modifier
+                        .width(80.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color(145, 145, 254, 255))
+                        .padding(5.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Blogs",
+                        color = Color.White
+                    )
+                }
+            }
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(36, 36, 36, 255))
+                .padding(25.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (!canDecode) {
+                Text(
+                    text = "Loading...",
+                    color = Color.White,
+                    fontFamily = poppins,
+                    fontSize = 28.sp
+                )
+            }
+            @Composable
+            fun SingleNotesBox(
+                bgRgb: Color,
+                logoLetter: String,
+                nameDisplay: String,
+                textDisplay: String
+            ) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Column(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color(66, 66, 66, 255))
+                        .padding(20.dp)
+                        .height(150.dp),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(100.dp))
+                                .width(50.dp)
+                                .height(50.dp)
+                                .background(bgRgb)
+                                .padding(10.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = logoLetter,
+                                color = Color.White,
+                                fontSize = 22.sp,
+                                fontFamily = poppins
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = nameDisplay,
+                            color = Color.White,
+                            fontSize = 22.sp,
+                            fontFamily = lexend
+                        )
+                    }
+                    Text(
+                        text = textDisplay,
+                        color = Color.White,
+                        fontSize = 28.sp,
+                        fontFamily = lexend
+                    )
+                }
+                if (canDecode) {
+                    val jsonObject = JSONObject(result)
+                    val noOfRows = jsonObject.getInt("num-of-rows")
+                    println("Stuff: $noOfRows")
+                    for (i in 1..noOfRows) {
+                        val singleItem = jsonObject.getJSONObject("$i")
+                        val r: Int =
+                            singleItem.getString("logo_bg").substring(1, 3).toInt(16) // 16 for hex
+
+                        val g: Int =
+                            singleItem.getString("logo_bg").substring(3, 5).toInt(16) // 16 for hex
+
+                        val b: Int =
+                            singleItem.getString("logo_bg").substring(5, 7).toInt(16) // 16 for hex
+
+                        SingleNotesBox(
+                            bgRgb = Color(r, g, b),
+                            logoLetter = singleItem.getString("logo"),
+                            nameDisplay = singleItem.getString("publisher"),
+                            textDisplay = singleItem.getString("title")
+                        )
+
+                        println("Stuff: $r, $g, $b -- ${singleItem.getString("logo")} -- ${singleItem.getString("publisher")} -- ${singleItem.getString("title")}")
+                    }
+                }
+            }
 
         }
     }
