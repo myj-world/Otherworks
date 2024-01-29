@@ -511,22 +511,7 @@ fun ResourcesScreen(context: Context) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(
-                            Color(115, 114, 164, 255),
-                            Color(191, 114, 217, 255)
-                        ),
-                        start = Offset(
-                            0f,
-                            1f
-                        ),
-                        end = Offset(
-                            1f,
-                            0f
-                        )
-                    )
-                ),
+                .background(Color(115, 114, 164, 255)),
             contentAlignment = Alignment.Center
         ) {
             Column {
@@ -678,30 +663,31 @@ fun ResourcesScreen(context: Context) {
                         fontFamily = lexend
                     )
                 }
-                if (canDecode) {
-                    val jsonObject = JSONObject(result)
-                    val noOfRows = jsonObject.getInt("num-of-rows")
-                    println("Stuff: $noOfRows")
-                    for (i in 1..noOfRows) {
-                        val singleItem = jsonObject.getJSONObject("$i")
-                        val r: Int =
-                            singleItem.getString("logo_bg").substring(1, 3).toInt(16) // 16 for hex
+            }
 
-                        val g: Int =
-                            singleItem.getString("logo_bg").substring(3, 5).toInt(16) // 16 for hex
+            if (canDecode) {
+                val jsonObject = JSONObject(result)
+                val noOfRows = jsonObject.getInt("num-of-rows")
+                println("Stuff: $noOfRows")
+                for (i in 1..noOfRows) {
+                    val singleItem = jsonObject.getJSONObject("$i")
+                    val r: Int =
+                        singleItem.getString("logo_bg").substring(1, 3).toInt(16) // 16 for hex
 
-                        val b: Int =
-                            singleItem.getString("logo_bg").substring(5, 7).toInt(16) // 16 for hex
+                    val g: Int =
+                        singleItem.getString("logo_bg").substring(3, 5).toInt(16) // 16 for hex
 
-                        SingleNotesBox(
-                            bgRgb = Color(r, g, b),
-                            logoLetter = singleItem.getString("logo"),
-                            nameDisplay = singleItem.getString("publisher"),
-                            textDisplay = singleItem.getString("title")
-                        )
+                    val b: Int =
+                        singleItem.getString("logo_bg").substring(5, 7).toInt(16) // 16 for hex
 
-                        println("Stuff: $r, $g, $b -- ${singleItem.getString("logo")} -- ${singleItem.getString("publisher")} -- ${singleItem.getString("title")}")
-                    }
+                    SingleNotesBox(
+                        bgRgb = Color(r, g, b),
+                        logoLetter = singleItem.getString("logo"),
+                        nameDisplay = singleItem.getString("publisher"),
+                        textDisplay = singleItem.getString("title")
+                    )
+
+                    println("Stuff: $r, $g, $b -- ${singleItem.getString("logo")} -- ${singleItem.getString("publisher")} -- ${singleItem.getString("title")}")
                 }
             }
 
