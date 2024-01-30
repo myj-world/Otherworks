@@ -670,24 +670,34 @@ fun ResourcesScreen(context: Context) {
                 val noOfRows = jsonObject.getInt("num-of-rows")
                 println("Stuff: $noOfRows")
                 for (i in 1..noOfRows) {
-                    val singleItem = jsonObject.getJSONObject("$i")
-                    val r: Int =
-                        singleItem.getString("logo_bg").substring(1, 3).toInt(16) // 16 for hex
+                    fun decode(): List<JSONObject> {
+                        return try {
+                            listOf(jsonObject.getJSONObject("$i"))
+                        } catch (_: Exception) {
+                            listOf(JSONObject())
+                        }
+                    }
 
-                    val g: Int =
-                        singleItem.getString("logo_bg").substring(3, 5).toInt(16) // 16 for hex
+                    if (decode()[0].has("logo_bg")) {
+                        println("${decode()[0]}")
+                        val r: Int =
+                            decode()[0].getString("logo_bg").substring(1, 3).toInt(16) // 16 for hex
 
-                    val b: Int =
-                        singleItem.getString("logo_bg").substring(5, 7).toInt(16) // 16 for hex
+                        val g: Int =
+                            decode()[0].getString("logo_bg").substring(3, 5).toInt(16) // 16 for hex
 
-                    SingleNotesBox(
-                        bgRgb = Color(r, g, b),
-                        logoLetter = singleItem.getString("logo"),
-                        nameDisplay = singleItem.getString("publisher"),
-                        textDisplay = singleItem.getString("title")
-                    )
+                        val b: Int =
+                            decode()[0].getString("logo_bg").substring(5, 7).toInt(16) // 16 for hex
 
-                    println("Stuff: $r, $g, $b -- ${singleItem.getString("logo")} -- ${singleItem.getString("publisher")} -- ${singleItem.getString("title")}")
+                        SingleNotesBox(
+                            bgRgb = Color(r, g, b),
+                            logoLetter = decode()[0].getString("logo"),
+                            nameDisplay = decode()[0].getString("publisher"),
+                            textDisplay = decode()[0].getString("title")
+                        )
+
+//                        println("Stuff: $r, $g, $b -- ${decode()[1].getString("logo")} -- ${decode()[1].getString("publisher")} -- ${decode()[1].getString("title")}")
+                    }
                 }
             }
 
