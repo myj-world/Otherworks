@@ -197,6 +197,12 @@ class MainActivity : ComponentActivity() {
             composable("upload-vids") {
                 UploadVideosScreen(context = context)
             }
+            composable("accorm-videos") {
+                AccormVideosScreen(context = context)
+            }
+            composable("resources") {
+                Resources(context = context)
+            }
         }
     }
 
@@ -352,7 +358,13 @@ class MainActivity : ComponentActivity() {
                     contentDescription = "Accorm Blogs"
                 )
                 NavSingleButton(
-                    onClick = { },
+                    onClick = { navController.navigate("accorm-videos") },
+                    usesImageVector = false,
+                    painterResource = R.drawable.baseline_video_settings_24,
+                    contentDescription = "Accorm Videos"
+                )
+                NavSingleButton(
+                    onClick = { navController.navigate("resources") },
                     usesImageVector = false,
                     painterResource = R.drawable.baseline_folder_24,
                     contentDescription = "Resources"
@@ -465,8 +477,6 @@ class MainActivity : ComponentActivity() {
                         "Maths (0580)",
                         "Physics (0625)",
                         "Chemistry (0620)",
-                        "FLE (0500)",
-                        "ESL (0510)",
                         "Computer Science (0478)",
                         "Biology (0610)",
                         "Accounting (0452)"
@@ -475,6 +485,28 @@ class MainActivity : ComponentActivity() {
                     var chapter by remember {
                         mutableStateOf("")
                     }
+                    var chapterSize by remember {
+                        mutableStateOf(Size.Zero)
+                    }
+                    var chapterExpanded by remember {
+                        mutableStateOf(false)
+                    }
+                    val chapterIcon = if (subjectExpanded)
+                        Icons.Filled.KeyboardArrowUp
+                    else
+                        Icons.Filled.KeyboardArrowDown
+
+                    var chapterLimit by remember {
+                        mutableStateOf(0)
+                    }
+                    var papers by remember {
+                        mutableStateOf(mutableListOf<String>())
+                    }
+
+                    var chapters by remember {
+                        mutableStateOf(mutableListOf<String>())
+                    }
+
                     var author by remember {
                         mutableStateOf("")
                     }
@@ -535,7 +567,7 @@ class MainActivity : ComponentActivity() {
                             },
                         colors = TextFieldDefaults.colors(),
                         trailingIcon = {
-                            Icon(subjectIcon, "contentDescription",
+                            Icon(subjectIcon, "Pick a subject",
                                 Modifier.clickable { subjectExpanded = !subjectExpanded })
                         }
                     )
@@ -552,8 +584,104 @@ class MainActivity : ComponentActivity() {
                                 }, onClick = {
                                     subject = label
                                     subjectExpanded = false
+
+                                    chapterLimit = when (label) {
+                                        "Islamiyat (0493)" -> 8
+                                        "Pakistan Studies, History (0448/01)" -> 16
+                                        "Pakistan Studies, Geography (0448/02)" -> 8
+                                        "Maths (0580)" -> 24
+                                        "Physics (0625)" -> 6
+                                        "Chemistry (0620)" -> 12
+                                        "Computer Science (0478)" -> 10
+                                        "Biology (0610)" -> 21
+                                        "Accounting (0452)" -> 7
+                                        else -> 0
+                                    }
+
+                                    chapters = mutableListOf()
+
+                                    if (chapterLimit > 0) {
+                                        for (i in 1..chapterLimit) {
+                                            chapters.add("Chapter $i")
+                                        }
+                                    }
+
+                                    when (label) {
+                                        "Islamiyat (0493)" -> papers =
+                                            mutableListOf("Paper 1", "Paper 2")
+
+                                        "Pakistan Studies, History (0448/01)" -> papers =
+                                            mutableListOf("Paper 1")
+
+                                        "Pakistan Studies, Geography (0448/02)" -> papers =
+                                            mutableListOf("Paper 2")
+
+                                        "Maths (0580)" -> papers =
+                                            mutableListOf("Paper 2", "Paper 4")
+
+                                        "Physics (0625)" -> papers =
+                                            mutableListOf("Paper 2", "Paper 4", "Paper 6")
+
+                                        "Chemistry (0620)" -> papers =
+                                            mutableListOf("Paper 2", "Paper 4", "Paper 6")
+
+                                        "Computer Science (0478)" -> papers =
+                                            mutableListOf("Paper 1", "Paper 2")
+
+                                        "Biology (0610)" -> papers =
+                                            mutableListOf("Paper 2", "Paper 4", "Paper 6")
+
+                                        "Accounting (0452)" -> papers =
+                                            mutableListOf("Paper 1", "Paper 2")
+                                    }
+
+                                    for (i in 0..<papers.size) {
+                                        chapters.add(papers[i])
+                                    }
+                                    chapters.add("Miscellaneous")
+                                    chapters.add("All Chapters")
                                 }
                             )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    if (subject != "") {
+                        TextField(
+                            value = chapter,
+                            onValueChange = {
+                                chapter = it
+                            },
+                            label = {
+                                Text(text = "Chapter")
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .onGloballyPositioned { coordinates ->
+                                    chapterSize = coordinates.size.toSize()
+                                },
+                            colors = TextFieldDefaults.colors(),
+                            trailingIcon = {
+                                Icon(chapterIcon, "Pick a chapter",
+                                    Modifier.clickable { chapterExpanded = !chapterExpanded })
+                            }
+                        )
+                        DropdownMenu(
+                            expanded = chapterExpanded,
+                            onDismissRequest = { chapterExpanded = false },
+                            modifier = Modifier
+                                .width(with(LocalDensity.current) { chapterSize.width.toDp() })
+                        ) {
+                            chapters.forEach { label ->
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(text = label)
+                                    }, onClick = {
+                                        chapter = label
+                                        chapterExpanded = false
+                                    }
+                                )
+                            }
                         }
                     }
                     Spacer(modifier = Modifier.height(10.dp))
@@ -755,12 +883,36 @@ class MainActivity : ComponentActivity() {
                         "Maths (0580)",
                         "Physics (0625)",
                         "Chemistry (0620)",
-                        "FLE (0500)",
-                        "ESL (0510)",
                         "Computer Science (0478)",
                         "Biology (0610)",
                         "Accounting (0452)"
                     )
+
+                    var chapter by remember {
+                        mutableStateOf("")
+                    }
+                    var chapterSize by remember {
+                        mutableStateOf(Size.Zero)
+                    }
+                    var chapterExpanded by remember {
+                        mutableStateOf(false)
+                    }
+                    val chapterIcon = if (subjectExpanded)
+                        Icons.Filled.KeyboardArrowUp
+                    else
+                        Icons.Filled.KeyboardArrowDown
+
+                    var chapterLimit by remember {
+                        mutableStateOf(0)
+                    }
+                    var papers by remember {
+                        mutableStateOf(mutableListOf<String>())
+                    }
+
+                    var chapters by remember {
+                        mutableStateOf(mutableListOf<String>())
+                    }
+
 
                     var url by remember {
                         mutableStateOf("")
@@ -827,8 +979,103 @@ class MainActivity : ComponentActivity() {
                                 }, onClick = {
                                     subject = label
                                     subjectExpanded = false
+                                    chapterLimit = when (label) {
+                                        "Islamiyat (0493)" -> 8
+                                        "Pakistan Studies, History (0448/01)" -> 16
+                                        "Pakistan Studies, Geography (0448/02)" -> 8
+                                        "Maths (0580)" -> 24
+                                        "Physics (0625)" -> 6
+                                        "Chemistry (0620)" -> 12
+                                        "Computer Science (0478)" -> 10
+                                        "Biology (0610)" -> 21
+                                        "Accounting (0452)" -> 7
+                                        else -> 0
+                                    }
+
+                                    chapters = mutableListOf()
+
+                                    if (chapterLimit > 0) {
+                                        for (i in 1..chapterLimit) {
+                                            chapters.add("Chapter $i")
+                                        }
+                                    }
+
+                                    when (label) {
+                                        "Islamiyat (0493)" -> papers =
+                                            mutableListOf("Paper 1", "Paper 2")
+
+                                        "Pakistan Studies, History (0448/01)" -> papers =
+                                            mutableListOf("Paper 1")
+
+                                        "Pakistan Studies, Geography (0448/02)" -> papers =
+                                            mutableListOf("Paper 2")
+
+                                        "Maths (0580)" -> papers =
+                                            mutableListOf("Paper 2", "Paper 4")
+
+                                        "Physics (0625)" -> papers =
+                                            mutableListOf("Paper 2", "Paper 4", "Paper 6")
+
+                                        "Chemistry (0620)" -> papers =
+                                            mutableListOf("Paper 2", "Paper 4", "Paper 6")
+
+                                        "Computer Science (0478)" -> papers =
+                                            mutableListOf("Paper 1", "Paper 2")
+
+                                        "Biology (0610)" -> papers =
+                                            mutableListOf("Paper 2", "Paper 4", "Paper 6")
+
+                                        "Accounting (0452)" -> papers =
+                                            mutableListOf("Paper 1", "Paper 2")
+                                    }
+
+                                    for (i in 0..<papers.size) {
+                                        chapters.add(papers[i])
+                                    }
+                                    chapters.add("Miscellaneous")
+                                    chapters.add("All Chapters")
                                 }
                             )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    if (subject != "") {
+                        TextField(
+                            value = chapter,
+                            onValueChange = {
+                                chapter = it
+                            },
+                            label = {
+                                Text(text = "Chapter")
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .onGloballyPositioned { coordinates ->
+                                    chapterSize = coordinates.size.toSize()
+                                },
+                            colors = TextFieldDefaults.colors(),
+                            trailingIcon = {
+                                Icon(chapterIcon, "Pick a chapter",
+                                    Modifier.clickable { chapterExpanded = !chapterExpanded })
+                            }
+                        )
+                        DropdownMenu(
+                            expanded = chapterExpanded,
+                            onDismissRequest = { chapterExpanded = false },
+                            modifier = Modifier
+                                .width(with(LocalDensity.current) { chapterSize.width.toDp() })
+                        ) {
+                            chapters.forEach { label ->
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(text = label)
+                                    }, onClick = {
+                                        chapter = label
+                                        chapterExpanded = false
+                                    }
+                                )
+                            }
                         }
                     }
                     Spacer(modifier = Modifier.height(10.dp))
@@ -976,6 +1223,90 @@ class MainActivity : ComponentActivity() {
                 )
                 Text(
                     text = "ONLY Educational category blogs are facilitated by Accorm. So find here the different statuses of blogs for verification purposes.",
+                    color = Color(144, 144, 214, 255),
+                    fontFamily = poppins,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center
+                )
+                Row {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_warning_24),
+                        contentDescription = "Warning Icon",
+                        tint = Color.Yellow
+                    )
+                    Text(
+                        text = "Under Development.",
+                        color = Color.White
+                    )
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun AccormVideosScreen(context: Context) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(38, 38, 47, 255))
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(100.dp))
+                Text(
+                    text = "Accorm \n \n\n Videos",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = lexend,
+                    fontSize = 60.sp
+                )
+                Text(
+                    text = "Find here the uploaded videos by Accorm Team or Contributors.",
+                    color = Color(144, 144, 214, 255),
+                    fontFamily = poppins,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center
+                )
+                Row {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_warning_24),
+                        contentDescription = "Warning Icon",
+                        tint = Color.Yellow
+                    )
+                    Text(
+                        text = "Under Development.",
+                        color = Color.White
+                    )
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun Resources(context: Context) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(38, 38, 47, 255))
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(100.dp))
+                Text(
+                    text = "Resources",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = lexend,
+                    fontSize = 60.sp
+                )
+                Text(
+                    text = "Find here the uploaded resources by Accorm Team or Contributors. Click on any to view the subject-specific table.",
                     color = Color(144, 144, 214, 255),
                     fontFamily = poppins,
                     fontWeight = FontWeight.SemiBold,
