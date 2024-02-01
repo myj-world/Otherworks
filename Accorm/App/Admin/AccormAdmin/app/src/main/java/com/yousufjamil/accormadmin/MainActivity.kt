@@ -2,6 +2,7 @@ package com.yousufjamil.accormadmin
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -86,6 +87,7 @@ class MainActivity : ComponentActivity() {
     lateinit var navController: NavHostController
     lateinit var poppins: FontFamily
     lateinit var lexend: FontFamily
+    lateinit var resourcesChosenSubject: String
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -202,6 +204,9 @@ class MainActivity : ComponentActivity() {
             }
             composable("resources") {
                 Resources(context = context)
+            }
+            composable("resources-subject") {
+                ResourcesSubject(context = context)
             }
         }
     }
@@ -1312,14 +1317,159 @@ class MainActivity : ComponentActivity() {
                     fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center
                 )
-                Row {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_warning_24),
-                        contentDescription = "Warning Icon",
-                        tint = Color.Yellow
+                Spacer(modifier = Modifier.height(10.dp))
+
+                @Composable
+                fun SingleSubject(
+                    subject: String
+                ) {
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(25.dp))
+                            .background(Color(35, 36, 53, 255))
+                            .fillMaxWidth()
+                            .padding(10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = subject,
+                            color = Color.White,
+                            fontFamily = poppins
+                        )
+                        Button(
+                            onClick = {
+                                resourcesChosenSubject = subject
+                                navController.navigate("resources-subject")
+                            },
+                            colors = ButtonDefaults.buttonColors()
+                        ) {
+                            Text(text = "View")
+                        }
+                    }
+                }
+
+                SingleSubject(subject = "Islamiyat")
+                SingleSubject(subject = "Pakistan Studies(History)")
+                SingleSubject(subject = "Pakistan Studies(Geography)")
+                SingleSubject(subject = "Accounting")
+                SingleSubject(subject = "Physics")
+                SingleSubject(subject = "Chemistry")
+                SingleSubject(subject = "Maths")
+                SingleSubject(subject = "Computer Science")
+                SingleSubject(subject = "Biology")
+            }
+        }
+    }
+
+    @Composable
+    fun ResourcesSubject(context: Context) {
+
+        var canDecode by remember {
+            mutableStateOf(false)
+        }
+
+        var result by remember {
+            mutableStateOf("")
+        }
+
+        fun retrieveData(subject: String) {
+            val bgWorker = BackgroundWorker(context)
+            Thread {
+                bgWorker.execute("https://accorm.ginastic.co/300/fetch/?access-id=65aea3e3e6184&subject=$subject")
+            }.start()
+
+            fun checkStatus() {
+                Handler().postDelayed(
+                    {
+                        if (bgWorker.status.toString() == "FINISHED") {
+                            canDecode = true
+                            result = bgWorker.response
+                        } else {
+                            checkStatus()
+                        }
+                    }, 3000
+                )
+            }
+            checkStatus()
+        }
+        retrieveData(resourcesChosenSubject.lowercase())
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(38, 38, 47, 255))
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(100.dp))
+                Text(
+                    text = resourcesChosenSubject,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = lexend,
+                    fontSize = 60.sp
+                )
+                Text(
+                    text = "See here the $resourcesChosenSubject resources",
+                    color = Color(144, 144, 214, 255),
+                    fontFamily = poppins,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Button(
+                        onClick = {
+                            navController.navigate("resources")
+                        },
+                        colors = ButtonDefaults.buttonColors()
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_arrow_back_ios_new_24),
+                            contentDescription = "Back"
+                        )
+                        Text(text = "Back")
+                    }
+                    Button(
+                        onClick = {
+                            navController.navigate("resources-subject")
+                        },
+                        colors = ButtonDefaults.buttonColors()
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_refresh_24),
+                            contentDescription = "Refresh"
+                        )
+                        Text(text = "Refresh")
+                    }
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                if (!canDecode) {
+                    Text(
+                        text = "Loading...",
+                        color = Color.White,
+                        fontFamily = poppins,
+                        fontSize = 28.sp
+                    )
+                }
+                if (canDecode) {
+                    Text(
+                        text = "URL: https://accorm.ginastic.co/300/fetch/?access-id=65aea3e3e6184&subject=${resourcesChosenSubject.lowercase()}",
+                        color = Color.White
                     )
                     Text(
-                        text = "Under Development.",
+                        text = "Data: $result",
                         color = Color.White
                     )
                 }
