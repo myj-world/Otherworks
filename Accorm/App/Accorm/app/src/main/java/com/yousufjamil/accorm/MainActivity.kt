@@ -85,6 +85,7 @@ import org.json.JSONObject
 lateinit var navController: NavHostController
 lateinit var poppins: FontFamily
 lateinit var lexend: FontFamily
+lateinit var subject: String
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -185,7 +186,7 @@ fun Navigation(context: Context, navHostController: NavHostController) {
             HomeScreen(context)
         }
         composable("resources") {
-            ResourcesScreen(context)
+            SubjectsScreen(context)
         }
         composable("about") {
             AboutUsScreen(context)
@@ -282,7 +283,7 @@ fun NavigationDrawer(closeDrawer: () -> Unit) {
         }
         Spacer(modifier = Modifier.height(20.dp))
         Divider()
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Start
@@ -297,18 +298,12 @@ fun NavigationDrawer(closeDrawer: () -> Unit) {
                 onClick = { },
                 usesImageVector = false,
                 painterResource = R.drawable.apps,
-                contentDescription = "Features"
-            )
-            NavSingleButton(
-                onClick = { navController.navigate("about") },
-                usesImageVector = true,
-                imageVector = Icons.Default.Info,
-                contentDescription = "Info"
+                contentDescription = "Services"
             )
         }
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         Divider()
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Start
@@ -320,33 +315,42 @@ fun NavigationDrawer(closeDrawer: () -> Unit) {
                 contentDescription = "Contribute"
             )
             NavSingleButton(
+                onClick = { navController.navigate("about") },
+                usesImageVector = true,
+                imageVector = Icons.Default.Info,
+                contentDescription = "About"
+            )
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        Divider()
+        Spacer(modifier = Modifier.height(10.dp))
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.Start
+        ) {
+            NavSingleButton(
                 onClick = { },
                 usesImageVector = true,
                 imageVector = Icons.Default.Person,
                 contentDescription = "Profile"
             )
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-        Divider()
-        Spacer(modifier = Modifier.height(20.dp))
-        IconButton(
-            onClick = {
-                closeDrawer()
-            },
-            colors = IconButtonDefaults.filledIconButtonColors(
-                containerColor = Color(172, 172, 249, 255)
-            ),
-            modifier = Modifier
-                .clip(RoundedCornerShape(corner = CornerSize(100.dp)))
-                .size(50.dp)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.wb_sunny),
-                contentDescription = "Change Theme",
-                tint = Color(33, 33, 43, 255),
-                modifier = Modifier
-                    .padding(10.dp)
-                    .size(100.dp)
+            NavSingleButton(
+                onClick = { },
+                usesImageVector = false,
+                painterResource = R.drawable.baseline_logout_24,
+                contentDescription = "Logout"
+            )
+            NavSingleButton(
+                onClick = { },
+                usesImageVector = false,
+                painterResource = R.drawable.baseline_person_add_alt_1_24,
+                contentDescription = "Sign up"
+            )
+            NavSingleButton(
+                onClick = { },
+                usesImageVector = false,
+                painterResource = R.drawable.baseline_login_24,
+                contentDescription = "Login"
             )
         }
     }
@@ -357,7 +361,16 @@ fun HomeScreen(context: Context) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(38, 38, 47, 255))
+            .background(
+                brush = Brush.radialGradient(
+                    listOf(
+                        Color(92, 62, 123),
+                        Color(44, 44, 76)
+                    ),
+                    radius = 1500f
+                )
+            )
+//            .background(Color(38, 38, 47, 255))
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -417,7 +430,7 @@ fun HomeScreen(context: Context) {
                 IconButton(
                     onClick = { onClick() },
                     colors = IconButtonDefaults.filledIconButtonColors(
-                        containerColor = Color(33, 33, 43, 255)
+                        containerColor = Color(53, 53, 93, 255)
                     ),
                     modifier = Modifier.clip(RoundedCornerShape(100))
                 ) {
@@ -439,12 +452,6 @@ fun HomeScreen(context: Context) {
                 }
             }
             HomeIcon(
-                onClick = { navController.navigate("about") },
-                usesImageVector = true,
-                imageVector = Icons.Default.Info,
-                contentDescription = "Info"
-            )
-            HomeIcon(
                 onClick = {},
                 usesImageVector = false,
                 painterResource = R.drawable.book_open,
@@ -462,7 +469,75 @@ fun HomeScreen(context: Context) {
                 imageVector = Icons.Default.AddCircle,
                 contentDescription = "Contribute"
             )
+
+            HomeIcon(
+                onClick = { navController.navigate("about") },
+                usesImageVector = true,
+                imageVector = Icons.Default.Info,
+                contentDescription = "About"
+            )
+            HomeIcon(
+                onClick = {},
+                usesImageVector = false,
+                painterResource = R.drawable.baseline_shield_24,
+                contentDescription = "Privacy & Terms"
+            )
         }
+    }
+}
+
+@Composable
+fun SubjectsScreen(context: Context) {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(31, 31, 54, 255))
+            .verticalScroll(scrollState)
+            .padding(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(50.dp))
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(50.dp))
+                .background(Color(116, 132, 195, 255))
+                .padding(25.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.book_open),
+                contentDescription = "Subjects",
+                tint = Color.White,
+                modifier = Modifier.size(40.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "❝A wide range of in-depth resources for 10 different subjects, covering all the main subjects and sciences, extended course.❞",
+            color = Color.White,
+            fontFamily = poppins,
+            textAlign = TextAlign.Center,
+            fontSize = 16.sp
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text = "© Accorm 2024 | All Rights Reserved",
+            color = Color(172,172,249),
+            fontFamily = poppins,
+            fontSize = 15.sp
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "IGCSE",
+            color = Color.White,
+            fontFamily = poppins,
+            textAlign = TextAlign.Center,
+            fontSize = 25.sp
+        )
+
+        @Composable
+        fun SingleSubject() {}
     }
 }
 
@@ -497,7 +572,22 @@ fun ResourcesScreen(context: Context) {
         }
         checkStatus()
     }
-    retrieveData("islamiyat")
+
+    var subjectRetrieve by remember {
+        mutableStateOf("")
+    }
+    subjectRetrieve = when (subject) {
+        "Islamiyat" -> "islamiyat"
+        "Pakistan Studies, History" -> "history"
+        "Pakistan Studies, Geography" -> "geography"
+        "Accounting" -> "accounting"
+        "Physics" -> "physics"
+        "Chemistry" -> "chemistry"
+        "Biology" -> "biology"
+        "Computer Science" -> "computer_science"
+        else -> "maths"
+    }
+    retrieveData(subjectRetrieve)
 
     val scrollState = rememberScrollState()
     Column(
