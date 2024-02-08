@@ -30,6 +30,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.rounded.Menu
@@ -70,6 +71,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -187,6 +189,9 @@ fun Navigation(context: Context, navHostController: NavHostController) {
         }
         composable("resources") {
             SubjectsScreen(context)
+        }
+        composable("notes-resources") {
+            NotesResourcesScreen(context)
         }
         composable("about") {
             AboutUsScreen(context)
@@ -523,7 +528,7 @@ fun SubjectsScreen(context: Context) {
         Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = "© Accorm 2024 | All Rights Reserved",
-            color = Color(172,172,249),
+            color = Color(172, 172, 249),
             fontFamily = poppins,
             fontSize = 15.sp
         )
@@ -537,13 +542,202 @@ fun SubjectsScreen(context: Context) {
         )
 
         @Composable
-        fun SingleSubject() {}
+        fun SingleColumn(
+            title: String,
+            content: @Composable () -> Unit
+        ) {
+            Column(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(25.dp))
+                    .background(Color(38, 38, 66, 255))
+                    .fillMaxWidth()
+                    .padding(20.dp)
+            ) {
+                Text(
+                    text = title,
+                    fontFamily = lexend,
+                    fontSize = 30.sp,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(15.dp))
+                content()
+            }
+        }
+
+        SingleColumn(title = "Blogs") {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .clip(RoundedCornerShape(25.dp))
+                    .background(Color(100, 86, 144, 255))
+                    .padding(10.dp)
+
+            ) {
+                Text(
+                    text = "Educational Blogs",
+                    fontFamily = lexend,
+                    fontSize = 30.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+                Text(
+                    text = buildAnnotatedString {
+                        append("Powered by ")
+                        withStyle(
+                            SpanStyle(textDecoration = TextDecoration.Underline)
+                        ) {
+                            append("Ginastic Blogs")
+                        }
+                    },
+                    fontSize = 15.sp,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Button(
+                    onClick = { },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(142, 142, 209, 255)
+                    )
+                ) {
+                    Text(
+                        text = "Browse",
+                        fontFamily = lexend,
+                        fontSize = 18.sp,
+                        color = Color.White
+                    )
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowRight,
+                        contentDescription = "Browse"
+                    )
+                }
+            }
+        }
+
+        SingleColumn(title = "Notes, Videos & PPQs") {
+            @Composable
+            fun SingleSubject(
+                code: String,
+                title: String
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp)
+                        .clip(RoundedCornerShape(25.dp))
+                        .background(Color(100, 86, 144, 255))
+                        .padding(10.dp)
+
+                ) {
+                    Text(
+                        text = code,
+                        fontFamily = lexend,
+                        fontSize = 18.sp,
+                        color = Color.White
+                    )
+                    Text(
+                        text = title,
+                        fontFamily = lexend,
+                        fontSize = 30.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Button(
+                        onClick = {
+                                  subject = title
+                            navController.navigate("notes-resources")
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(142, 142, 209, 255)
+                        )
+                    ) {
+                        Text(
+                            text = "Notes",
+                            fontFamily = lexend,
+                            fontSize = 18.sp,
+                            color = Color.White
+                        )
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowRight,
+                            contentDescription = "Browse"
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Button(
+                        onClick = { },
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(142, 142, 209, 255)
+                        )
+                    ) {
+                        Text(
+                            text = "Videos",
+                            fontFamily = lexend,
+                            fontSize = 18.sp,
+                            color = Color.White
+                        )
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowRight,
+                            contentDescription = "Browse"
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Button(
+                        onClick = { },
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(142, 142, 209, 255)
+                        )
+                    ) {
+                        Text(
+                            text = "PPQs",
+                            fontFamily = lexend,
+                            fontSize = 18.sp,
+                            color = Color.White
+                        )
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowRight,
+                            contentDescription = "Browse"
+                        )
+                    }
+                }
+            }
+            SingleSubject("0493", "Islamiyat")
+            Spacer(modifier = Modifier.height(15.dp))
+            SingleSubject("0448", "Pakistan Studies, \n \n History")
+            Spacer(modifier = Modifier.height(15.dp))
+            SingleSubject("0448", "Pakistan Studies, \n \n Geography")
+            Spacer(modifier = Modifier.height(15.dp))
+            SingleSubject("0452", "Accounting")
+            Spacer(modifier = Modifier.height(15.dp))
+            SingleSubject("0625", "Physics")
+            Spacer(modifier = Modifier.height(15.dp))
+            SingleSubject("0620", "Chemistry")
+            Spacer(modifier = Modifier.height(15.dp))
+            SingleSubject("0610", "Biology")
+            Spacer(modifier = Modifier.height(15.dp))
+            SingleSubject("0478", "Computer Science")
+            Spacer(modifier = Modifier.height(15.dp))
+            SingleSubject("0480", "Maths")
+        }
     }
 }
 
 @Composable
-fun ResourcesScreen(context: Context) {
-
+fun NotesResourcesScreen(context: Context) {
     var canDecode by remember {
         mutableStateOf(false)
     }
@@ -576,16 +770,30 @@ fun ResourcesScreen(context: Context) {
     var subjectRetrieve by remember {
         mutableStateOf("")
     }
+    var subjectCode by remember {
+        mutableStateOf("")
+    }
     subjectRetrieve = when (subject) {
         "Islamiyat" -> "islamiyat"
-        "Pakistan Studies, History" -> "history"
-        "Pakistan Studies, Geography" -> "geography"
+        "Pakistan Studies, \n \n History" -> "history"
+        "Pakistan Studies, \n \n Geography" -> "geography"
         "Accounting" -> "accounting"
         "Physics" -> "physics"
         "Chemistry" -> "chemistry"
         "Biology" -> "biology"
         "Computer Science" -> "computer_science"
         else -> "maths"
+    }
+    subjectCode = when (subject) {
+        "Islamiyat" -> "0493"
+        "Pakistan Studies, \n \n History" -> "0448"
+        "Pakistan Studies, \n \n Geography" -> "0448"
+        "Accounting" -> "0452"
+        "Physics" -> "0625"
+        "Chemistry" -> "0620"
+        "Biology" -> "0610"
+        "Computer Science" -> "0478"
+        else -> "0580"
     }
     retrieveData(subjectRetrieve)
 
@@ -625,14 +833,14 @@ fun ResourcesScreen(context: Context) {
                                     fontSize = 48.sp
                                 )
                             ) {
-                                append("Islamiyat \n\n")
+                                append("$subject \n\n")
                             }
                             withStyle(
                                 SpanStyle(
                                     fontSize = 28.sp
                                 )
                             ) {
-                                append("0493")
+                                append(subjectCode)
                             }
                         }
                     },
