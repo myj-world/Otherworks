@@ -58,7 +58,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -192,6 +191,9 @@ fun Navigation(context: Context, navHostController: NavHostController) {
         }
         composable("notes-resources") {
             NotesResourcesScreen(context)
+        }
+        composable("videos-resources") {
+            VideosResourcesScreen(context)
         }
         composable("about") {
             AboutUsScreen(context)
@@ -377,9 +379,10 @@ fun HomeScreen(context: Context) {
             )
 //            .background(Color(38, 38, 47, 255))
             .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Spacer(modifier = Modifier.height(100.dp))
+//        Spacer(modifier = Modifier.height(100.dp))
         Text(
             text = buildAnnotatedString {
                 withStyle(
@@ -653,7 +656,7 @@ fun SubjectsScreen(context: Context) {
                     Spacer(modifier = Modifier.height(10.dp))
                     Button(
                         onClick = {
-                                  subject = title
+                            subject = title
                             navController.navigate("notes-resources")
                         },
                         modifier = Modifier
@@ -675,7 +678,10 @@ fun SubjectsScreen(context: Context) {
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                     Button(
-                        onClick = { },
+                        onClick = {
+                            subject = title
+                            navController.navigate("videos-resources")
+                        },
                         modifier = Modifier
                             .fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(
@@ -870,7 +876,10 @@ fun NotesResourcesScreen(context: Context) {
                         .width(80.dp)
                         .clip(RoundedCornerShape(20.dp))
                         .background(Color(145, 145, 254, 255))
-                        .padding(5.dp),
+                        .padding(5.dp)
+                        .clickable {
+                            navController.navigate("videos-resources")
+                        },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -996,6 +1005,315 @@ fun NotesResourcesScreen(context: Context) {
 
 //                        println("Stuff: $r, $g, $b -- ${decode()[1].getString("logo")} -- ${decode()[1].getString("publisher")} -- ${decode()[1].getString("title")}")
                     }
+                }
+            }
+
+        }
+    }
+}
+
+@Composable
+fun VideosResourcesScreen(context: Context) {
+    var canDecode by remember {
+        mutableStateOf(false)
+    }
+
+    var result by remember {
+        mutableStateOf("")
+    }
+
+    fun retrieveData(subject: String) {
+        val bgWorker = BackgroundWorker(context)
+        Thread {
+            bgWorker.execute("https://accorm.ginastic.co/300/vids/?access-id=5ece4797eaf5e&subject=$subject")
+        }.start()
+
+        fun checkStatus() {
+            Handler().postDelayed(
+                {
+                    if (bgWorker.status.toString() == "FINISHED") {
+                        canDecode = true
+                        result = bgWorker.response
+                    } else {
+                        checkStatus()
+                    }
+                }, 3000
+            )
+        }
+        checkStatus()
+    }
+
+    var subjectRetrieve by remember {
+        mutableStateOf("")
+    }
+    var subjectCode by remember {
+        mutableStateOf("")
+    }
+    subjectRetrieve = when (subject) {
+        "Islamiyat" -> "islamiyat"
+        "Pakistan Studies, \n \n History" -> "history"
+        "Pakistan Studies, \n \n Geography" -> "geography"
+        "Accounting" -> "accounting"
+        "Physics" -> "physics"
+        "Chemistry" -> "chemistry"
+        "Biology" -> "biology"
+        "Computer Science" -> "computer%20science"
+        else -> "maths"
+    }
+    subjectCode = when (subject) {
+        "Islamiyat" -> "0493"
+        "Pakistan Studies, \n \n History" -> "0448"
+        "Pakistan Studies, \n \n Geography" -> "0448"
+        "Accounting" -> "0452"
+        "Physics" -> "0625"
+        "Chemistry" -> "0620"
+        "Biology" -> "0610"
+        "Computer Science" -> "0478"
+        else -> "0580"
+    }
+    retrieveData(subjectRetrieve)
+
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(38, 38, 47, 255))
+            .verticalScroll(scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .background(Color(115, 114, 164, 255)),
+            contentAlignment = Alignment.Center
+        ) {
+            Column {
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            SpanStyle(
+                                color = Color.White,
+                                fontFamily = lexend
+                            )
+                        ) {
+                            withStyle(
+                                SpanStyle(
+                                    fontSize = 18.sp
+                                )
+                            ) {
+                                append("IGCSE \n\n")
+                            }
+                            withStyle(
+                                SpanStyle(
+                                    fontSize = 48.sp
+                                )
+                            ) {
+                                append("$subject \n\n")
+                            }
+                            withStyle(
+                                SpanStyle(
+                                    fontSize = 28.sp
+                                )
+                            ) {
+                                append(subjectCode)
+                            }
+                        }
+                    },
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(66, 66, 66, 255))
+                .padding(horizontal = 20.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "Videos",
+                fontSize = 22.sp,
+                fontFamily = lexend,
+                color = Color.White
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .width(80.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color(145, 145, 254, 255))
+                        .padding(5.dp)
+                        .clickable {
+                            navController.navigate("notes-resources")
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Notes",
+                        color = Color.White
+                    )
+                }
+                Spacer(modifier = Modifier.width(10.dp))
+                Box(
+                    modifier = Modifier
+                        .width(80.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color(145, 145, 254, 255))
+                        .padding(5.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Blogs",
+                        color = Color.White
+                    )
+                }
+            }
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(36, 36, 36, 255))
+                .padding(25.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (!canDecode) {
+                Text(
+                    text = "Loading...",
+                    color = Color.White,
+                    fontFamily = poppins,
+                    fontSize = 28.sp
+                )
+            }
+            @Composable
+            fun SingleVideoBox(
+                bgRgb: Color,
+                logoLetter: String,
+                nameDisplay: String,
+                textDisplay: String,
+                link: String
+            ) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Column(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color(66, 66, 66, 255))
+                        .padding(20.dp)
+                        .height(150.dp),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(100.dp))
+                                .width(50.dp)
+                                .height(50.dp)
+                                .background(bgRgb)
+                                .padding(10.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = logoLetter,
+                                color = Color.White,
+                                fontSize = 22.sp,
+                                fontFamily = poppins
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = nameDisplay,
+                            color = Color.White,
+                            fontSize = 22.sp,
+                            fontFamily = lexend
+                        )
+                    }
+                    Column {
+                        Text(
+                            text = textDisplay,
+                            color = Color.White,
+                            fontSize = 28.sp,
+                            fontFamily = lexend
+                        )
+                        Button(
+                            onClick = {
+                                val openVideoIntent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(link)
+                                )
+                                context.startActivity(openVideoIntent)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(142, 142, 209, 25)
+                            )
+                        ) {
+                            Text(
+                                text = "Open link",
+                                color = Color.White,
+                                fontSize = 20.sp
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Icon(
+                                imageVector = Icons.Filled.KeyboardArrowRight,
+                                contentDescription = "Open link"
+                            )
+                        }
+                    }
+                }
+            }
+
+            if (canDecode) {
+                if (result != "no data available.") {
+                    val jsonObject = JSONObject(result)
+                    val noOfRows = jsonObject.getInt("num-of-rows")
+                    println("Stuff: $noOfRows")
+                    for (i in 1..noOfRows) {
+                        fun decode(): List<JSONObject> {
+                            return try {
+                                listOf(jsonObject.getJSONObject("$i"))
+                            } catch (_: Exception) {
+                                listOf(JSONObject())
+                            }
+                        }
+
+                        if (decode()[0].has("logo_bg")) {
+                            println("${decode()[0]}")
+                            val r: Int =
+                                decode()[0].getString("logo_bg").substring(1, 3)
+                                    .toInt(16) // 16 for hex
+
+                            val g: Int =
+                                decode()[0].getString("logo_bg").substring(3, 5)
+                                    .toInt(16) // 16 for hex
+
+                            val b: Int =
+                                decode()[0].getString("logo_bg").substring(5, 7)
+                                    .toInt(16) // 16 for hex
+
+                            SingleVideoBox(
+                                bgRgb = Color(r, g, b),
+                                logoLetter = decode()[0].getString("logo"),
+                                nameDisplay = decode()[0].getString("publisher"),
+                                textDisplay = decode()[0].getString("title"),
+                                link = decode()[0].getString("link")
+                            )
+                        }
+                    }
+                } else {
+                    Text(
+                        text = "Unknown Error",
+                        color = Color.White,
+                        fontFamily = poppins,
+                        fontSize = 28.sp
+                    )
                 }
             }
 
