@@ -198,6 +198,9 @@ fun Navigation(context: Context, navHostController: NavHostController) {
         composable("about") {
             AboutUsScreen(context)
         }
+        composable("blogs") {
+            BlogsResourcesScreen(context)
+        }
     }
 }
 
@@ -577,7 +580,6 @@ fun SubjectsScreen(context: Context) {
                     .clip(RoundedCornerShape(25.dp))
                     .background(Color(100, 86, 144, 255))
                     .padding(10.dp)
-
             ) {
                 Text(
                     text = "Educational Blogs",
@@ -601,7 +603,7 @@ fun SubjectsScreen(context: Context) {
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Button(
-                    onClick = { },
+                    onClick = { navController.navigate("blogs") },
                     modifier = Modifier
                         .fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
@@ -893,7 +895,10 @@ fun NotesResourcesScreen(context: Context) {
                         .width(80.dp)
                         .clip(RoundedCornerShape(20.dp))
                         .background(Color(145, 145, 254, 255))
-                        .padding(5.dp),
+                        .padding(5.dp)
+                        .clickable {
+                            navController.navigate("blogs")
+                        },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -1163,7 +1168,10 @@ fun VideosResourcesScreen(context: Context) {
                         .width(80.dp)
                         .clip(RoundedCornerShape(20.dp))
                         .background(Color(145, 145, 254, 255))
-                        .padding(5.dp),
+                        .padding(5.dp)
+                        .clickable {
+                            navController.navigate("blogs")
+                        },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -1256,14 +1264,14 @@ fun VideosResourcesScreen(context: Context) {
                             )
                         ) {
                             Text(
-                                text = "Open link",
+                                text = "Play Video",
                                 color = Color.White,
                                 fontSize = 20.sp
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                             Icon(
                                 imageVector = Icons.Filled.KeyboardArrowRight,
-                                contentDescription = "Open link"
+                                contentDescription = "Play Video"
                             )
                         }
                     }
@@ -1304,6 +1312,225 @@ fun VideosResourcesScreen(context: Context) {
                                 nameDisplay = decode()[0].getString("publisher"),
                                 textDisplay = decode()[0].getString("title"),
                                 link = decode()[0].getString("link")
+                            )
+                        }
+                    }
+                } else {
+                    Text(
+                        text = "Unknown Error",
+                        color = Color.White,
+                        fontFamily = poppins,
+                        fontSize = 28.sp
+                    )
+                }
+            }
+
+        }
+    }
+}
+
+@Composable
+fun BlogsResourcesScreen(context: Context) {
+    var canDecode by remember {
+        mutableStateOf(false)
+    }
+
+    var result by remember {
+        mutableStateOf("")
+    }
+
+    fun retrieveData() {
+        val bgWorker = BackgroundWorker(context)
+        Thread {
+            bgWorker.execute("https://accorm.ginastic.co/300/blogs/?access-id=65c3ad4b976e3")
+        }.start()
+
+        fun checkStatus() {
+            Handler().postDelayed(
+                {
+                    if (bgWorker.status.toString() == "FINISHED") {
+                        canDecode = true
+                        result = bgWorker.response
+                    } else {
+                        checkStatus()
+                    }
+                }, 3000
+            )
+        }
+        checkStatus()
+    }
+
+    retrieveData()
+
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(38, 38, 47, 255))
+            .verticalScroll(scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .background(Color(115, 114, 164, 255)),
+            contentAlignment = Alignment.Center
+        ) {
+            Column {
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            SpanStyle(
+                                color = Color.White,
+                                fontFamily = lexend
+                            )
+                        ) {
+                            withStyle(
+                                SpanStyle(
+                                    fontSize = 22.sp
+                                )
+                            ) {
+                                append("Educational \n\n")
+                            }
+                            withStyle(
+                                SpanStyle(
+                                    fontSize = 48.sp
+                                )
+                            ) {
+                                append("Blogs \n")
+                            }
+                            withStyle(
+                                SpanStyle(
+                                    fontSize = 20.sp
+                                )
+                            ) {
+                                append("by Accorm")
+                            }
+                        }
+                    },
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(66, 66, 66, 255))
+                .padding(horizontal = 20.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Find helpful tips, experiences, and much more.",
+                fontSize = 22.sp,
+                fontFamily = lexend,
+                color = Color.White,
+                textAlign = TextAlign.Center
+            )
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(36, 36, 36, 255))
+                .padding(25.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (!canDecode) {
+                Text(
+                    text = "Loading...",
+                    color = Color.White,
+                    fontFamily = poppins,
+                    fontSize = 28.sp
+                )
+            }
+            @Composable
+            fun SingleBlogBox(
+                nameDisplay: String,
+                textDisplay: String,
+                linkId: String,
+                date: String
+            ) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Column(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color(66, 66, 66, 255))
+                        .padding(20.dp)
+                        .height(200.dp),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                        Text(
+                            text = textDisplay,
+                            color = Color.White,
+                            fontSize = 28.sp,
+                            fontFamily = lexend
+                        )
+                    Column {
+                        Text(
+                            text = "By $nameDisplay",
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontFamily = lexend
+                        )
+                        Text(
+                            text = "Published on ${date.subSequence(0, 8)}",
+                            color = Color.White,
+                            fontSize = 18.sp,
+                            fontFamily = lexend
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Button(
+                            onClick = {
+                                val openVideoIntent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(linkId)
+                                )
+                                context.startActivity(openVideoIntent)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(142, 142, 209, 25)
+                            )
+                        ) {
+                            Text(
+                                text = "Open blog",
+                                color = Color.White,
+                                fontSize = 20.sp
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Icon(
+                                imageVector = Icons.Filled.KeyboardArrowRight,
+                                contentDescription = "Open blog"
+                            )
+                        }
+                    }
+                }
+            }
+
+            if (canDecode) {
+                if (result != "no data available.") {
+                    val jsonObject = JSONObject(result)
+                    val noOfRows = jsonObject.getInt("num-of-rows")
+                    println("Stuff: $noOfRows")
+                    for (i in 1..noOfRows) {
+                        fun decode(): List<JSONObject> {
+                            return try {
+                                listOf(jsonObject.getJSONObject("$i"))
+                            } catch (_: Exception) {
+                                listOf(JSONObject())
+                            }
+                        }
+
+                        if (decode()[0].has("title")) {
+                            println("${decode()[0]}")
+
+                            SingleBlogBox(
+                                nameDisplay = decode()[0].getString("publisher"),
+                                textDisplay = decode()[0].getString("title"),
+                                linkId = "https://blogs.ginastic.co/blog/?id=${decode()[0].getString("unique_id")}",
+                                date = decode()[0].getString("date")
                             )
                         }
                     }
