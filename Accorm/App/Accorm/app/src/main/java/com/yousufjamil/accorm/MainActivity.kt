@@ -72,6 +72,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -177,6 +178,20 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    @Preview(showSystemUi = true)
+    @Composable
+    fun PreviewAboutUs() {
+        poppins = FontFamily(
+            Font(R.font.poppins_thin, FontWeight.Thin),
+            Font(R.font.poppins_light, FontWeight.Light),
+            Font(R.font.poppins_bold, FontWeight.Bold),
+            Font(R.font.poppins_semibold, FontWeight.SemiBold),
+            Font(R.font.poppins_regular, FontWeight.Normal)
+        )
+
+        AboutUsScreen(context = this)
     }
 }
 
@@ -1460,12 +1475,12 @@ fun BlogsResourcesScreen(context: Context) {
                         .height(200.dp),
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                        Text(
-                            text = textDisplay,
-                            color = Color.White,
-                            fontSize = 28.sp,
-                            fontFamily = lexend
-                        )
+                    Text(
+                        text = textDisplay,
+                        color = Color.White,
+                        fontSize = 28.sp,
+                        fontFamily = lexend
+                    )
                     Column {
                         Text(
                             text = "By $nameDisplay",
@@ -1529,7 +1544,11 @@ fun BlogsResourcesScreen(context: Context) {
                             SingleBlogBox(
                                 nameDisplay = decode()[0].getString("publisher"),
                                 textDisplay = decode()[0].getString("title"),
-                                linkId = "https://blogs.ginastic.co/blog/?id=${decode()[0].getString("unique_id")}",
+                                linkId = "https://blogs.ginastic.co/blog/?id=${
+                                    decode()[0].getString(
+                                        "unique_id"
+                                    )
+                                }",
                                 date = decode()[0].getString("date")
                             )
                         }
@@ -1551,53 +1570,68 @@ fun BlogsResourcesScreen(context: Context) {
 @Composable
 fun AboutUsScreen(context: Context) {
     val scrollState = rememberScrollState()
-
     @Composable
     fun DeveloperBox(
         icon: Int,
         name: String,
         role: String,
-        email: String
+        email: String,
+        stdClass: String
     ) {
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(30.dp))
-                .background(Color(53, 53, 62, 255))
+                .background(Color(58, 58, 84, 255))
                 .fillMaxWidth(0.8f)
-                .height(280.dp)
+                .height(180.dp)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.height(15.dp))
-                Image(
-                    painter = painterResource(id = icon),
-                    contentDescription = name,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .fillMaxWidth(0.9f)
-                        .height(140.dp)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = name,
-                    color = Color(227, 227, 228, 255),
-                    fontFamily = poppins,
-                    fontSize = 25.sp,
-                    textAlign = TextAlign.Center
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = icon),
+                        contentDescription = name,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(20.dp))
+                            .width(60.dp)
+                            .height(60.dp)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Column {
+                        Text(
+                            text = name,
+                            color = Color(227, 227, 228, 255),
+                            fontFamily = poppins,
+                            fontSize = 25.sp,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.height(30.dp)
+                        )
+                        Text(
+                            text = "From $stdClass",
+                            color = Color(128, 128, 128, 255),
+                            fontFamily = poppins,
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(5.dp))
                 Text(
                     text = role,
-                    color = Color(160, 160, 231, 255),
+                    color = Color(172, 172, 249, 255),
                     fontFamily = poppins,
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                Box(
+                Row(
                     modifier = Modifier
-                        .background(Color(75, 75, 110, 255))
+                        .background(Color(114, 114, 253, 255))
                         .clickable {
                             val url = "mailto:$email"
                             val intent = Intent(Intent.ACTION_VIEW)
@@ -1606,13 +1640,22 @@ fun AboutUsScreen(context: Context) {
                         }
                         .fillMaxWidth()
                         .height(40.dp),
-                    contentAlignment = Alignment.Center
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         imageVector = Icons.Default.Email,
                         contentDescription = "Email",
                         tint = Color(255, 255, 255, 255),
                         modifier = Modifier.size(25.dp)
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Text(
+                        text = "Contact",
+                        color = Color(255, 255, 255, 255),
+                        fontFamily = poppins,
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center
                     )
                 }
             }
@@ -1623,47 +1666,101 @@ fun AboutUsScreen(context: Context) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(38, 38, 47, 255))
+            .background(Color(31, 31, 54, 255))
             .padding(horizontal = 20.dp)
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(50.dp))
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(50.dp))
+                .background(Color(116, 132, 195, 255))
+                .padding(25.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_people_24),
+                contentDescription = "Subjects",
+                tint = Color.White,
+                modifier = Modifier.size(40.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(5.dp))
+        Text(
+            text = buildAnnotatedString {
+                withStyle(SpanStyle(color = Color.White)) {
+                    append("For Students")
+                }
+                withStyle(SpanStyle(color = Color(172, 172, 249, 255))) {
+                    append(". \n")
+                }
+                withStyle(SpanStyle(color = Color.White)) {
+                    append("By Students")
+                }
+                withStyle(SpanStyle(color = Color(172, 172, 249, 255))) {
+                    append(".")
+                }
+            },
+            fontFamily = poppins,
+            textAlign = TextAlign.Center,
+            fontSize = 26.sp
+        )
+        Text(
+            text = "© Accorm 2024 | All Rights Reserved",
+            color = Color(172, 172, 249),
+            fontFamily = poppins,
+            fontSize = 15.sp
+        )
+        Spacer(modifier = Modifier.height(20.dp))
         DeveloperBox(
             icon = R.drawable.musab,
             name = "Musab Khan",
-            role = "Project Manager",
-            email = "contact@ginastic.co"
+            role = "Manager, Owner, Founder, Full-Stack Developer",
+            email = "contact@ginastic.co",
+            stdClass = "Y10-B4"
         )
         DeveloperBox(
             icon = R.drawable.abd,
             name = "Abdullah Umair",
-            role = "Designer",
-            email = "solution.i67@outlook.com"
+            role = "Front-end Developer, Advisor \n",
+            email = "solution.i67@outlook.com",
+            stdClass = "Y10-B4"
         )
         DeveloperBox(
             icon = R.drawable.yousuf,
             name = "M.Yousuf Jamil",
-            role = "Project Manager",
-            email = "contact.us.myj@gmail.com"
+            role = "App Developer \n",
+            email = "contact.us.myj@gmail.com",
+            stdClass = "Y10-B1"
         )
         DeveloperBox(
             icon = R.drawable.majid,
-            name = "Majid Muhammad",
-            role = "Content Provider",
-            email = "mylifechoice96@gmail.com"
+            name = "Majid",
+            role = "Content Provider \n",
+            email = "mylifechoice96@gmail.com",
+            stdClass = "Y10-B4"
         )
         DeveloperBox(
             icon = R.drawable.faizan,
-            name = "Faizan",
-            role = "Content Provider",
-            email = "adamcroft715@gmail.com"
+            name = "Faizan Ali",
+            role = "Content Provider \n",
+            email = "adamcroft715@gmail.com",
+            stdClass = "Y10-B4"
         )
         DeveloperBox(
-            icon = R.drawable.basim,
-            name = "Basim Kashif",
-            role = "Contributor",
-            email = "bkashamsi2008@gmail.com"
+            icon = R.drawable.taqi,
+            name = "Taqi Ahmed",
+            role = "Content Provider \n",
+            email = "",
+            stdClass = "Y10-B4"
+        )
+        DeveloperBox(
+            icon = R.drawable.abdkamil,
+            name = "Abdullah Kamil",
+            role = "Content Provider, Content Writer, Advisor",
+            email = "abdullahkamil1107@gmail.com",
+            stdClass = "Y10-B5"
         )
         Spacer(modifier = Modifier.height(20.dp))
     }
