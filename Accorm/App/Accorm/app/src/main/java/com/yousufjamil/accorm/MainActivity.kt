@@ -182,7 +182,7 @@ class MainActivity : ComponentActivity() {
 
     @Preview(showSystemUi = true)
     @Composable
-    fun PreviewAboutUs() {
+    fun Previewer() {
         poppins = FontFamily(
             Font(R.font.poppins_thin, FontWeight.Thin),
             Font(R.font.poppins_light, FontWeight.Light),
@@ -191,7 +191,16 @@ class MainActivity : ComponentActivity() {
             Font(R.font.poppins_regular, FontWeight.Normal)
         )
 
-        AboutUsScreen(context = this)
+        lexend = FontFamily(
+            Font(R.font.lexend_thin, FontWeight.Thin),
+            Font(R.font.lexend_regular, FontWeight.Normal),
+            Font(R.font.lexend_bold, FontWeight.Bold)
+        )
+
+        subject = "Islamiyat"
+
+//        AboutUsScreen(context = this)
+        NotesResourcesScreen(context = this)
     }
 }
 
@@ -943,7 +952,8 @@ fun NotesResourcesScreen(context: Context) {
                 bgRgb: Color,
                 logoLetter: String,
                 nameDisplay: String,
-                textDisplay: String
+                textDisplay: String,
+                fileID: String
             ) {
                 Spacer(modifier = Modifier.height(10.dp))
                 Column(
@@ -983,12 +993,39 @@ fun NotesResourcesScreen(context: Context) {
                             fontFamily = lexend
                         )
                     }
-                    Text(
-                        text = textDisplay,
-                        color = Color.White,
-                        fontSize = 28.sp,
-                        fontFamily = lexend
-                    )
+                    Column {
+                        Text(
+                            text = textDisplay,
+                            color = Color.White,
+                            fontSize = 28.sp,
+                            fontFamily = lexend
+                        )
+                        Button(
+                            onClick = {
+                                val openVideoIntent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://drive.google.com/file/d/$fileID/view")
+                                )
+                                context.startActivity(openVideoIntent)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(142, 142, 209, 25)
+                            )
+                        ) {
+                            Text(
+                                text = "View Notes",
+                                color = Color.White,
+                                fontSize = 20.sp
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Icon(
+                                imageVector = Icons.Filled.KeyboardArrowRight,
+                                contentDescription = "Play Video"
+                            )
+                        }
+                    }
                 }
             }
 
@@ -1020,7 +1057,8 @@ fun NotesResourcesScreen(context: Context) {
                             bgRgb = Color(r, g, b),
                             logoLetter = decode()[0].getString("logo"),
                             nameDisplay = decode()[0].getString("publisher"),
-                            textDisplay = decode()[0].getString("title")
+                            textDisplay = decode()[0].getString("title"),
+                            fileID = decode()[0].getString("fileID"),
                         )
 
 //                        println("Stuff: $r, $g, $b -- ${decode()[1].getString("logo")} -- ${decode()[1].getString("publisher")} -- ${decode()[1].getString("title")}")
