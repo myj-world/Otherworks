@@ -219,11 +219,20 @@ fun Navigation(context: Context, navHostController: NavHostController) {
         composable("videos-resources") {
             VideosResourcesScreen(context)
         }
-        composable("about") {
-            AboutUsScreen(context)
+        composable("ppqs") {
+            PPQsScreen(context)
         }
         composable("blogs") {
             BlogsResourcesScreen(context)
+        }
+        composable("contribute") {
+            ContributeScreen(context)
+        }
+        composable("about") {
+            AboutUsScreen(context)
+        }
+        composable("pptc") {
+            PPTC(context)
         }
     }
 }
@@ -1624,6 +1633,119 @@ fun BlogsResourcesScreen(context: Context) {
 }
 
 @Composable
+fun ContributeScreen(context: Context) {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(31, 31, 54, 255))
+            .padding(horizontal = 20.dp)
+            .verticalScroll(scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(50.dp))
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(50.dp))
+                .background(Color(116, 132, 195, 255))
+                .padding(25.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.AddCircle,
+                contentDescription = "Contribute",
+                tint = Color.White,
+                modifier = Modifier.size(40.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "❝Capable of helping? Go ahead! Contribute and appear here in the Contributors list, so that the public knows who is one of their major helper.❞",
+            color = Color.White,
+            fontFamily = poppins,
+            textAlign = TextAlign.Center,
+            fontSize = 16.sp
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text = "© Accorm 2024 | All Rights Reserved",
+            color = Color(172, 172, 249),
+            fontFamily = poppins,
+            fontSize = 15.sp
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Column(
+            modifier = Modifier
+                .clip(RoundedCornerShape(25.dp))
+                .background(Color(38, 38, 66, 255))
+                .fillMaxWidth()
+                .padding(20.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(25.dp))
+                    .background(Color(120, 105, 218, 255))
+                    .fillMaxWidth()
+                    .padding(20.dp)
+            ) {
+                Text(
+                    text = "Appear on Top Contributors List",
+                    fontFamily = lexend,
+                    fontSize = 30.sp,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(15.dp))
+                Text(
+                    text = "See the requirements from dashboard",
+                    fontFamily = lexend,
+                    fontSize = 22.sp,
+                    color = Color.White
+                )
+                Button(
+                    onClick = { },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(255,255,255,255)
+                    )
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "Contribute",
+                            color = Color(120,105,218,255),
+                            fontSize = 20.sp
+                        )
+                        Icon(
+                            imageVector = Icons.Filled.KeyboardArrowRight,
+                            contentDescription = "Contribute",
+                            tint = Color(120,105,218,255)
+                        )
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(25.dp))
+            Text(
+                text = "Contributors",
+                fontFamily = lexend,
+                fontSize = 30.sp,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+            Text(
+                text = "No Contributors found",
+                fontFamily = lexend,
+                fontSize = 18.sp,
+                color = Color.White
+            )
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+    }
+}
+
+@Composable
 fun AboutUsScreen(context: Context) {
     val scrollState = rememberScrollState()
     @Composable
@@ -1841,7 +1963,7 @@ fun PPTC(context: Context) {
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "Last Updated: 28/1/2024",
+            text = "Last Updated: 15/2/2024",
             color = Color(255,255,255, 191),
             fontSize = 20.sp,
             fontFamily = poppins
@@ -1855,7 +1977,7 @@ fun PPTC(context: Context) {
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "Accorm gathers & displays top study resources for specific subjects. We consider it our duty to provide everyone with a central hub for learning. We also make it our job to credit the providers for their hard work, but this does not at all mean that we intend to promote them in any way.",
+            text = "Accorm gathers & displays top study resources for specific subjects. We consider it our duty to provide everyone with a central hub for learning. We also make it our job to credit the providers for their hard work, but this does not at all mean that we intend to promote them in any way. By using Accorm and the provided services, you agree to abide to our policies.",
             color = Color.White,
             fontSize = 18.sp,
             fontFamily = poppins
@@ -1875,10 +1997,10 @@ fun PPTC(context: Context) {
             fontFamily = poppins
         )
         val agreeList = mutableListOf(
-            "spam/scam or submit abusive content",
+            "spam/scam or submit abusive, unethical, or illegal content",
             "submit any malicious or virus-containing files or links",
-            "to credit the author of resources correctly/to depict honesty",
-            "to not copy, share, or use any content or code of the website thereof."
+            "to credit the author of resources appropriately",
+            "to not copy, share, resell or re-use any content or code of the website thereof."
         )
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             agreeList.forEach() {
@@ -1922,7 +2044,7 @@ fun PPTC(context: Context) {
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "A major policy to keep in mind is to give credits to the rightful author of the resource properly. However, in some case, the author might not be known, or the document is too old, etc. In this case, users may use the option UNKNOWN USER in the credits section of the resource, however, it is to keep in mind that the resource might be rejected, verification delayed, or otherwise, in severe cases, deleted.",
+            text = "A major policy to keep in mind is to give credits to the rightful author of the resource properly. However, there are some websites that we do not accept any content from (such as SaveMyExams), due to certain reasons such as dis-allowance for re-using their content elsewhere. In severe cases(such as informal, illegal, unethical, or abusive content submissions), we may delete your content or take any other severe actions.",
             color = Color.White,
             fontSize = 18.sp,
             fontFamily = poppins
@@ -1950,7 +2072,7 @@ fun PPTC(context: Context) {
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "If you face any difficulty or problem in using our service, please do not hesitate to contact us at our email.",
+            text = "If you face any difficulty, problem, or have any concern, please do not hesitate to contact us at our email.",
             color = Color.White,
             fontSize = 18.sp,
             fontFamily = poppins
@@ -1975,15 +2097,317 @@ fun PPTC(context: Context) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Open Blog",
+                    text = "Email",
                     color = Color.White,
                     fontSize = 20.sp
                 )
                 Icon(
                     imageVector = Icons.Filled.KeyboardArrowRight,
-                    contentDescription = "Open Blog"
+                    contentDescription = "Email"
                 )
             }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@Composable
+fun PPQsScreen(context: Context) {
+    var canDecode by remember {
+        mutableStateOf(false)
+    }
+
+    var result1 by remember {
+        mutableStateOf("")
+    }
+    var result2 by remember {
+        mutableStateOf("")
+    }
+    var result3 by remember {
+        mutableStateOf("")
+    }
+    var result4 by remember {
+        mutableStateOf("")
+    }
+
+    var subjectRetrieve by remember {
+        mutableStateOf("")
+    }
+    var subjectCode by remember {
+        mutableStateOf("")
+    }
+    subjectRetrieve = when (subject) {
+        "Islamiyat" -> "islamiyat"
+        "Pakistan Studies, \n \n History" -> "history"
+        "Pakistan Studies, \n \n Geography" -> "geography"
+        "Accounting" -> "accounting"
+        "Physics" -> "physics"
+        "Chemistry" -> "chemistry"
+        "Biology" -> "biology"
+        "Computer Science" -> "computer_science"
+        else -> "maths"
+    }
+    subjectCode = when (subject) {
+        "Islamiyat" -> "0493"
+        "Pakistan Studies, \n \n History" -> "0448"
+        "Pakistan Studies, \n \n Geography" -> "0448"
+        "Accounting" -> "0452"
+        "Physics" -> "0625"
+        "Chemistry" -> "0620"
+        "Biology" -> "0610"
+        "Computer Science" -> "0478"
+        else -> "0580"
+    }
+    fun retrieveData(resultNo: Int) {
+        val bgWorker = BackgroundWorker(context)
+        val fileName = when (resultNo) {
+            1 -> "qp_mj.json"
+            2 -> "qp_on.json"
+            3 -> "ms_mj.json"
+            else -> "ms_on.json"
+        }
+        Thread {
+            bgWorker.execute("https://accorm.ginastic.co/200/$subjectCode/$fileName")
+        }.start()
+
+        fun checkStatus() {
+            Handler().postDelayed(
+                {
+                    if (bgWorker.status.toString() == "FINISHED") {
+                        when (resultNo) {
+                            1 -> result1 = bgWorker.response
+                            2 -> result2 = bgWorker.response
+                            3 -> result3 = bgWorker.response
+                            else -> {
+                                result4 = bgWorker.response
+                                canDecode = true
+                            }
+                        }
+                    } else {
+                        checkStatus()
+                    }
+                }, 3000
+            )
+        }
+        checkStatus()
+    }
+
+    for (i in 1..4) {
+        retrieveData(i)
+    }
+
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(38, 38, 47, 255))
+            .verticalScroll(scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .background(Color(115, 114, 164, 255)),
+            contentAlignment = Alignment.Center
+        ) {
+            Column {
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            SpanStyle(
+                                color = Color.White,
+                                fontFamily = lexend
+                            )
+                        ) {
+                            withStyle(
+                                SpanStyle(
+                                    fontSize = 18.sp
+                                )
+                            ) {
+                                append("IGCSE \n\n")
+                            }
+                            withStyle(
+                                SpanStyle(
+                                    fontSize = 48.sp
+                                )
+                            ) {
+                                append("$subject \n\n")
+                            }
+                            withStyle(
+                                SpanStyle(
+                                    fontSize = 28.sp
+                                )
+                            ) {
+                                append(subjectCode)
+                            }
+                        }
+                    },
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(66, 66, 66, 255))
+                .padding(horizontal = 20.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "PPQs",
+                fontSize = 22.sp,
+                fontFamily = lexend,
+                color = Color.White
+            )
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(36, 36, 36, 255))
+                .padding(25.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (!canDecode) {
+//                Text(
+//                    text = "Loading...",
+//                    color = Color.White,
+//                    fontFamily = poppins,
+//                    fontSize = 28.sp
+//                )
+            }
+            @Composable
+            fun SinglePPQBox(
+                paper: String,
+                fileIDQp: String,
+                fileIDMs: String
+            ) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Column(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color(49, 49, 49, 255))
+                        .padding(20.dp)
+                        .height(190.dp),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column {
+                        Text(
+                            text = "$subjectCode $subject - Paper $paper",
+                            color = Color.White,
+                            fontSize = 28.sp,
+                            fontFamily = lexend
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Button(
+                            onClick = {
+                                val openPaperIntent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(fileIDQp)
+                                )
+                                context.startActivity(openPaperIntent)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(105, 105, 151, 255)
+                            )
+                        ) {
+                            Row (
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "Question Paper",
+                                    color = Color.White,
+                                    fontSize = 20.sp
+                                )
+                                Icon(
+                                    imageVector = Icons.Filled.KeyboardArrowRight,
+                                    contentDescription = "Question Paper"
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Button(
+                            onClick = {
+                                val openPaperIntent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(fileIDMs)
+                                )
+                                context.startActivity(openPaperIntent)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(105, 105, 151, 255)
+                            )
+                        ) {
+                            Row (
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "Marking Scheme",
+                                    color = Color.White,
+                                    fontSize = 20.sp
+                                )
+                                Icon(
+                                    imageVector = Icons.Filled.KeyboardArrowRight,
+                                    contentDescription = "Marking Scheme"
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            SinglePPQBox(paper = "12", fileIDQp = "sfdasfds", fileIDMs = "saffs")
+            SinglePPQBox(paper = "12", fileIDQp = "sfdasfds", fileIDMs = "saffs")
+            SinglePPQBox(paper = "12", fileIDQp = "sfdasfds", fileIDMs = "saffs")
+            SinglePPQBox(paper = "12", fileIDQp = "sfdasfds", fileIDMs = "saffs")
+            SinglePPQBox(paper = "12", fileIDQp = "sfdasfds", fileIDMs = "saffs")
+
+            if (canDecode) {
+                val jsonObject1 = JSONObject(result1)
+                val jsonObject2 = JSONObject(result2)
+                val jsonObject3 = JSONObject(result3)
+                val jsonObject4 = JSONObject(result4)
+
+//                val noOfRows = jsonObject1.getInt("num-of-rows")
+//                println("Stuff: $noOfRows")
+//                for (i in 1..noOfRows) {
+//                    fun decode(): List<JSONObject> {
+//                        return try {
+//                            listOf(jsonObject1.getJSONObject("$i"))
+//                        } catch (_: Exception) {
+//                            listOf(JSONObject())
+//                        }
+//                    }
+//
+//                    if (decode()[0].has("logo_bg")) {
+//                        println("${decode()[0]}")
+//
+//                        SinglePPQBox(paper = paper, fileIDQp = qpLink, fileIDMs = msLink)
+//
+////                        println("Stuff: $r, $g, $b -- ${decode()[1].getString("logo")} -- ${decode()[1].getString("publisher")} -- ${decode()[1].getString("title")}")
+//                    }
+//                }
+            }
+
         }
     }
 }
