@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -199,8 +200,7 @@ class MainActivity : ComponentActivity() {
 
         subject = "Islamiyat"
 
-//        AboutUsScreen(context = this)
-        NotesResourcesScreen(context = this)
+        Text(text = "Previewer")
     }
 }
 
@@ -298,7 +298,11 @@ fun NavigationDrawer(closeDrawer: () -> Unit) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    navController.navigate("home")
+                }
         ) {
             Image(
                 painter = painterResource(id = R.drawable.app_ic),
@@ -959,9 +963,9 @@ fun NotesResourcesScreen(context: Context) {
                 Column(
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
-                        .background(Color(66, 66, 66, 255))
+                        .background(Color(49, 49, 49, 255))
                         .padding(20.dp)
-                        .height(150.dp),
+                        .height(180.dp),
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     Row(
@@ -1000,30 +1004,35 @@ fun NotesResourcesScreen(context: Context) {
                             fontSize = 28.sp,
                             fontFamily = lexend
                         )
+                        Spacer(modifier = Modifier.height(10.dp))
                         Button(
                             onClick = {
-                                val openVideoIntent = Intent(
+                                val openNotesIntent = Intent(
                                     Intent.ACTION_VIEW,
                                     Uri.parse("https://drive.google.com/file/d/$fileID/view")
                                 )
-                                context.startActivity(openVideoIntent)
+                                context.startActivity(openNotesIntent)
                             },
                             modifier = Modifier
                                 .fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(142, 142, 209, 25)
+                                containerColor = Color(105, 105, 151, 255)
                             )
                         ) {
-                            Text(
-                                text = "View Notes",
-                                color = Color.White,
-                                fontSize = 20.sp
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Icon(
-                                imageVector = Icons.Filled.KeyboardArrowRight,
-                                contentDescription = "Play Video"
-                            )
+                            Row (
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "View Notes",
+                                    color = Color.White,
+                                    fontSize = 20.sp
+                                )
+                                Icon(
+                                    imageVector = Icons.Filled.KeyboardArrowRight,
+                                    contentDescription = "Play Video"
+                                )
+                            }
                         }
                     }
                 }
@@ -1261,9 +1270,9 @@ fun VideosResourcesScreen(context: Context) {
                 Column(
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
-                        .background(Color(66, 66, 66, 255))
+                        .background(Color(49, 49, 49, 255))
                         .padding(20.dp)
-                        .height(150.dp),
+                        .height(180.dp),
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     Row(
@@ -1302,6 +1311,7 @@ fun VideosResourcesScreen(context: Context) {
                             fontSize = 28.sp,
                             fontFamily = lexend
                         )
+                        Spacer(modifier = Modifier.height(10.dp))
                         Button(
                             onClick = {
                                 val openVideoIntent = Intent(
@@ -1313,19 +1323,23 @@ fun VideosResourcesScreen(context: Context) {
                             modifier = Modifier
                                 .fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(142, 142, 209, 25)
+                                containerColor = Color(105, 105, 151, 255)
                             )
                         ) {
-                            Text(
-                                text = "Play Video",
-                                color = Color.White,
-                                fontSize = 20.sp
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Icon(
-                                imageVector = Icons.Filled.KeyboardArrowRight,
-                                contentDescription = "Play Video"
-                            )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "Watch Video",
+                                    color = Color.White,
+                                    fontSize = 20.sp
+                                )
+                                Icon(
+                                    imageVector = Icons.Filled.KeyboardArrowRight,
+                                    contentDescription = "Watch Video"
+                                )
+                            }
                         }
                     }
                 }
@@ -1508,7 +1522,7 @@ fun BlogsResourcesScreen(context: Context) {
                 Column(
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
-                        .background(Color(66, 66, 66, 255))
+                        .background(Color(49, 49, 49, 255))
                         .padding(20.dp)
                         .height(200.dp),
                     verticalArrangement = Arrangement.SpaceBetween
@@ -1544,19 +1558,23 @@ fun BlogsResourcesScreen(context: Context) {
                             modifier = Modifier
                                 .fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(142, 142, 209, 25)
+                                containerColor = Color(105, 105, 151, 255)
                             )
                         ) {
-                            Text(
-                                text = "Open blog",
-                                color = Color.White,
-                                fontSize = 20.sp
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Icon(
-                                imageVector = Icons.Filled.KeyboardArrowRight,
-                                contentDescription = "Open blog"
-                            )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "Open Blog",
+                                    color = Color.White,
+                                    fontSize = 20.sp
+                                )
+                                Icon(
+                                    imageVector = Icons.Filled.KeyboardArrowRight,
+                                    contentDescription = "Open Blog"
+                                )
+                            }
                         }
                     }
                 }
@@ -1801,5 +1819,171 @@ fun AboutUsScreen(context: Context) {
             stdClass = "Y10-B5"
         )
         Spacer(modifier = Modifier.height(20.dp))
+    }
+}
+
+@Composable
+fun PPTC(context: Context) {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(31, 31, 54, 255))
+            .padding(horizontal = 20.dp)
+            .verticalScroll(scrollState)
+    ) {
+        Spacer(modifier = Modifier.height(50.dp))
+        Text(
+            text = "Privacy & \n\n Terms",
+            color = Color.White,
+            fontSize = 58.sp,
+            fontFamily = poppins,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "Last Updated: 28/1/2024",
+            color = Color(255,255,255, 191),
+            fontSize = 20.sp,
+            fontFamily = poppins
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "Introduction",
+            color = Color.White,
+            fontSize = 28.sp,
+            fontFamily = poppins,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "Accorm gathers & displays top study resources for specific subjects. We consider it our duty to provide everyone with a central hub for learning. We also make it our job to credit the providers for their hard work, but this does not at all mean that we intend to promote them in any way.",
+            color = Color.White,
+            fontSize = 18.sp,
+            fontFamily = poppins
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "Rights & Responsibilities",
+            color = Color.White,
+            fontSize = 28.sp,
+            fontFamily = poppins,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "By using Accorm's services, users agree NOT to:",
+            color = Color.White,
+            fontSize = 18.sp,
+            fontFamily = poppins
+        )
+        val agreeList = mutableListOf(
+            "spam/scam or submit abusive content",
+            "submit any malicious or virus-containing files or links",
+            "to credit the author of resources correctly/to depict honesty",
+            "to not copy, share, or use any content or code of the website thereof."
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            agreeList.forEach() {
+                Row {
+                    Box(
+                        modifier = Modifier
+                            .padding(top = 10.dp, start = 16.dp, end = 8.dp)
+                            .size(8.dp)
+                            .background(Color.White, shape = CircleShape),
+                    )
+
+                    Text(
+                        text = it,
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontFamily = poppins
+                    )
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "Data Collection & Use",
+            color = Color.White,
+            fontSize = 28.sp,
+            fontFamily = poppins,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "We do not intend to harm your data in anyways, or use it inappropriately or illegally. However, we collect data for tracking web traffic, managing your account, and managing website content. We use your email to control your account and provide you with your data. We display your name, and profile picture, however, we do not make public your email address.",
+            color = Color.White,
+            fontSize = 18.sp,
+            fontFamily = poppins
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "Content Credits Policy",
+            color = Color.White,
+            fontSize = 28.sp,
+            fontFamily = poppins,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "A major policy to keep in mind is to give credits to the rightful author of the resource properly. However, in some case, the author might not be known, or the document is too old, etc. In this case, users may use the option UNKNOWN USER in the credits section of the resource, however, it is to keep in mind that the resource might be rejected, verification delayed, or otherwise, in severe cases, deleted.",
+            color = Color.White,
+            fontSize = 18.sp,
+            fontFamily = poppins
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "Changes & Updates",
+            color = Color.White,
+            fontSize = 28.sp,
+            fontFamily = poppins,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "Being a user of this website, you agree thereof to comply with any changes to the policies. We will update the policies based on new scenarios observed and basing on any new feature developed on the website. Therefore, we do not intend to keep changing the policy on set intervals, but rather on situations.",
+            color = Color.White,
+            fontSize = 18.sp,
+            fontFamily = poppins
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "Contact Info",
+            color = Color.White,
+            fontSize = 28.sp,
+            fontFamily = poppins,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "If you face any difficulty or problem in using our service, please do not hesitate to contact us at our email.",
+            color = Color.White,
+            fontSize = 18.sp,
+            fontFamily = poppins
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(
+            onClick = {
+                val emailIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("mailto:contact&ginastic.co")
+                )
+                context.startActivity(emailIntent)
+            },
+            modifier = Modifier
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(105, 105, 151, 255)
+            )
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Open Blog",
+                    color = Color.White,
+                    fontSize = 20.sp
+                )
+                Icon(
+                    imageVector = Icons.Filled.KeyboardArrowRight,
+                    contentDescription = "Open Blog"
+                )
+            }
+        }
     }
 }
