@@ -84,6 +84,7 @@ import androidx.navigation.compose.rememberNavController
 import com.yousufjamil.accorm.ui.theme.AccormTheme
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.util.TreeMap
 
 lateinit var navController: NavHostController
 lateinit var poppins: FontFamily
@@ -661,6 +662,8 @@ fun SubjectsScreen(context: Context) {
             }
         }
 
+        Spacer(modifier = Modifier.height(10.dp))
+
         SingleColumn(title = "Notes, Videos & PPQs") {
             @Composable
             fun SingleSubject(
@@ -740,7 +743,10 @@ fun SubjectsScreen(context: Context) {
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                     Button(
-                        onClick = { },
+                        onClick = {
+                            subject = title
+                            navController.navigate("ppqs")
+                        },
                         modifier = Modifier
                             .fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(
@@ -776,7 +782,7 @@ fun SubjectsScreen(context: Context) {
             Spacer(modifier = Modifier.height(15.dp))
             SingleSubject("0478", "Computer Science")
             Spacer(modifier = Modifier.height(15.dp))
-            SingleSubject("0480", "Maths")
+            SingleSubject("0580", "Maths")
         }
     }
 }
@@ -1633,6 +1639,354 @@ fun BlogsResourcesScreen(context: Context) {
 }
 
 @Composable
+fun PPQsScreen(context: Context) {
+    var canDecode by remember {
+        mutableStateOf(false)
+    }
+
+    var result1 by remember {
+        mutableStateOf("")
+    }
+    var result2 by remember {
+        mutableStateOf("")
+    }
+    var result3 by remember {
+        mutableStateOf("")
+    }
+    var result4 by remember {
+        mutableStateOf("")
+    }
+
+    var subjectRetrieve by remember {
+        mutableStateOf("")
+    }
+    var subjectCode by remember {
+        mutableStateOf("")
+    }
+    subjectRetrieve = when (subject) {
+        "Islamiyat" -> "islamiyat"
+        "Pakistan Studies, \n \n History" -> "history"
+        "Pakistan Studies, \n \n Geography" -> "geography"
+        "Accounting" -> "accounting"
+        "Physics" -> "physics"
+        "Chemistry" -> "chemistry"
+        "Biology" -> "biology"
+        "Computer Science" -> "computer_science"
+        else -> "maths"
+    }
+    subjectCode = when (subject) {
+        "Islamiyat" -> "0493"
+        "Pakistan Studies, \n \n History" -> "0448"
+        "Pakistan Studies, \n \n Geography" -> "0448"
+        "Accounting" -> "0452"
+        "Physics" -> "0625"
+        "Chemistry" -> "0620"
+        "Biology" -> "0610"
+        "Computer Science" -> "0478"
+        else -> "0580"
+    }
+    fun retrieveData(resultNo: Int, subjectcode: String) {
+        val bgWorker = BackgroundWorker(context)
+        val fileName = when (resultNo) {
+            1 -> "qp_mj.json"
+            2 -> "qp_on.json"
+            3 -> "ms_mj.json"
+            else -> "ms_on.json"
+        }
+        Thread {
+            bgWorker.execute("https://accorm.ginastic.co/200/$subjectcode/$fileName")
+        }.start()
+
+        fun checkStatus() {
+            Handler().postDelayed(
+                {
+                    if (bgWorker.status.toString() == "FINISHED") {
+                        when (resultNo) {
+                            1 -> result1 = bgWorker.response
+                            2 -> result2 = bgWorker.response
+                            3 -> result3 = bgWorker.response
+                            else -> {
+                                result4 = bgWorker.response
+                                canDecode = true
+                            }
+                        }
+                    } else {
+                        checkStatus()
+                    }
+                }, 3000
+            )
+        }
+        checkStatus()
+    }
+
+    for (i in 1..4) {
+        retrieveData(i, subjectCode)
+    }
+
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(38, 38, 47, 255))
+            .verticalScroll(scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .background(Color(115, 114, 164, 255)),
+            contentAlignment = Alignment.Center
+        ) {
+            Column {
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            SpanStyle(
+                                color = Color.White,
+                                fontFamily = lexend
+                            )
+                        ) {
+                            withStyle(
+                                SpanStyle(
+                                    fontSize = 18.sp
+                                )
+                            ) {
+                                append("IGCSE \n\n")
+                            }
+                            withStyle(
+                                SpanStyle(
+                                    fontSize = 48.sp
+                                )
+                            ) {
+                                append("$subject \n\n")
+                            }
+                            withStyle(
+                                SpanStyle(
+                                    fontSize = 28.sp
+                                )
+                            ) {
+                                append(subjectCode)
+                            }
+                        }
+                    },
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(66, 66, 66, 255))
+                .padding(horizontal = 20.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "PPQs",
+                fontSize = 22.sp,
+                fontFamily = lexend,
+                color = Color.White
+            )
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(36, 36, 36, 255))
+                .padding(25.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (!canDecode) {
+                Text(
+                    text = "Loading...",
+                    color = Color.White,
+                    fontFamily = poppins,
+                    fontSize = 28.sp
+                )
+            }
+            @Composable
+            fun SinglePPQBox(
+                paper: String,
+                fileIDQp: String,
+                fileIDMs: String
+            ) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Column(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color(49, 49, 49, 255))
+                        .padding(20.dp)
+                        .height(190.dp),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column {
+                        Text(
+                            text = "$subjectCode $subject - Paper $paper",
+                            color = Color.White,
+                            fontSize = 28.sp,
+                            fontFamily = lexend
+                        )
+                    }
+                    Column {
+                        Button(
+                            onClick = {
+                                val openPaperIntent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(fileIDQp)
+                                )
+                                context.startActivity(openPaperIntent)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(105, 105, 151, 255)
+                            )
+                        ) {
+                            Row (
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "Question Paper",
+                                    color = Color.White,
+                                    fontSize = 20.sp
+                                )
+                                Icon(
+                                    imageVector = Icons.Filled.KeyboardArrowRight,
+                                    contentDescription = "Question Paper"
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Button(
+                            onClick = {
+                                val openPaperIntent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(fileIDMs)
+                                )
+                                context.startActivity(openPaperIntent)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(105, 105, 151, 255)
+                            )
+                        ) {
+                            Row (
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "Marking Scheme",
+                                    color = Color.White,
+                                    fontSize = 20.sp
+                                )
+                                Icon(
+                                    imageVector = Icons.Filled.KeyboardArrowRight,
+                                    contentDescription = "Marking Scheme"
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (canDecode) {
+                val jsonObject1 = JSONObject(result1)
+                val jsonObject2 = JSONObject(result2)
+                val jsonObject3 = JSONObject(result3)
+                val jsonObject4 = JSONObject(result4)
+
+                val mjQpMap: MutableMap<String, String> = HashMap()
+                val mjMsMap: MutableMap<String, String> = HashMap()
+                val onQpMap: MutableMap<String, String> = HashMap()
+                val onMsMap: MutableMap<String, String> = HashMap()
+
+                for (i in 1..(jsonObject1.names()?.length()?.minus(1) ?: 0)) {
+
+                    val item1key = jsonObject1.names()?.getString(i)
+                    val item1 = jsonObject1.getJSONObject(item1key.toString())
+                    if (item1.getString("Type") != "Folder") {
+                        val item2key = jsonObject2.names()?.getString(i)
+                        val item2 = jsonObject2.getJSONObject(item2key.toString())
+
+                        val item3key = jsonObject3.names()?.getString(i)
+                        val item3 = jsonObject3.getJSONObject(item3key.toString())
+
+                        val item4key = jsonObject4.names()?.getString(i)
+                        val item4 = jsonObject4.getJSONObject(item4key.toString())
+
+                        val name1 = item1.getString("Name")
+                        val url1 = item1.getString("URL")
+
+                        val name2 = item2.getString("Name")
+                        val url2 = item2.getString("URL")
+
+                        val name3 = item3.getString("Name")
+                        val url3 = item3.getString("URL")
+
+                        val name4 = item4.getString("Name")
+                        val url4 = item4.getString("URL")
+
+                        mjQpMap[name1] = url1
+                        onQpMap[name2] = url2
+                        mjMsMap[name3] = url3
+                        onMsMap[name4] = url4
+                    }
+                }
+                val mjQpMapS = TreeMap(mjQpMap)
+                val onQpMapS = TreeMap(onQpMap)
+                val mjMsMapS = TreeMap(mjMsMap)
+                val onMsMapS = TreeMap(onQpMap)
+
+                for (i in 0..mjQpMapS.keys.size.minus(1)) {
+                    val mjPaperQpName = mjQpMapS.keys.elementAt(i)
+                    val mjPaperMsName = mjMsMapS.keys.elementAt(i)
+                    val year = "20"+mjPaperQpName.substring(6..7)
+                    val mjPaper = mjPaperQpName.subSequence(12..13)
+
+                    Text(
+                        text = "Year: $year - Paper: $mjPaper - Session: May/June",
+                        fontFamily = lexend,
+                        fontSize = 30.sp,
+                        color = Color.White
+                    )
+                    Spacer(modifier = Modifier.height(15.dp))
+
+                    SinglePPQBox(
+                        paper = mjPaper.toString(),
+                        fileIDQp = mjQpMapS[mjPaperQpName].toString(),
+                        fileIDMs = mjMsMapS[mjPaperMsName].toString()
+                    )
+
+                    Spacer(modifier = Modifier.height(5.dp))
+
+                    val onPaperQpName = onQpMapS.keys.elementAt(i)
+                    val onPaperMsName = onMsMapS.keys.elementAt(i)
+                    val onPaper = onPaperQpName.subSequence(12..13)
+
+                    Text(
+                        text = "Year: $year - Paper: $onPaper - Session: Oct/Nov",
+                        fontFamily = lexend,
+                        fontSize = 30.sp,
+                        color = Color.White
+                    )
+                    Spacer(modifier = Modifier.height(15.dp))
+
+                    SinglePPQBox(
+                        paper = onPaper.toString(),
+                        fileIDQp = onQpMapS[onPaperQpName].toString(),
+                        fileIDMs = onMsMapS[onPaperMsName].toString()
+                    )
+
+                    Spacer(modifier = Modifier.height(5.dp))
+                }
+            }
+        }
+    }
+}
+
+@Composable
 fun ContributeScreen(context: Context) {
     val scrollState = rememberScrollState()
     Column(
@@ -2106,308 +2460,6 @@ fun PPTC(context: Context) {
                     contentDescription = "Email"
                 )
             }
-        }
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@Composable
-fun PPQsScreen(context: Context) {
-    var canDecode by remember {
-        mutableStateOf(false)
-    }
-
-    var result1 by remember {
-        mutableStateOf("")
-    }
-    var result2 by remember {
-        mutableStateOf("")
-    }
-    var result3 by remember {
-        mutableStateOf("")
-    }
-    var result4 by remember {
-        mutableStateOf("")
-    }
-
-    var subjectRetrieve by remember {
-        mutableStateOf("")
-    }
-    var subjectCode by remember {
-        mutableStateOf("")
-    }
-    subjectRetrieve = when (subject) {
-        "Islamiyat" -> "islamiyat"
-        "Pakistan Studies, \n \n History" -> "history"
-        "Pakistan Studies, \n \n Geography" -> "geography"
-        "Accounting" -> "accounting"
-        "Physics" -> "physics"
-        "Chemistry" -> "chemistry"
-        "Biology" -> "biology"
-        "Computer Science" -> "computer_science"
-        else -> "maths"
-    }
-    subjectCode = when (subject) {
-        "Islamiyat" -> "0493"
-        "Pakistan Studies, \n \n History" -> "0448"
-        "Pakistan Studies, \n \n Geography" -> "0448"
-        "Accounting" -> "0452"
-        "Physics" -> "0625"
-        "Chemistry" -> "0620"
-        "Biology" -> "0610"
-        "Computer Science" -> "0478"
-        else -> "0580"
-    }
-    fun retrieveData(resultNo: Int) {
-        val bgWorker = BackgroundWorker(context)
-        val fileName = when (resultNo) {
-            1 -> "qp_mj.json"
-            2 -> "qp_on.json"
-            3 -> "ms_mj.json"
-            else -> "ms_on.json"
-        }
-        Thread {
-            bgWorker.execute("https://accorm.ginastic.co/200/$subjectCode/$fileName")
-        }.start()
-
-        fun checkStatus() {
-            Handler().postDelayed(
-                {
-                    if (bgWorker.status.toString() == "FINISHED") {
-                        when (resultNo) {
-                            1 -> result1 = bgWorker.response
-                            2 -> result2 = bgWorker.response
-                            3 -> result3 = bgWorker.response
-                            else -> {
-                                result4 = bgWorker.response
-                                canDecode = true
-                            }
-                        }
-                    } else {
-                        checkStatus()
-                    }
-                }, 3000
-            )
-        }
-        checkStatus()
-    }
-
-    for (i in 1..4) {
-        retrieveData(i)
-    }
-
-    val scrollState = rememberScrollState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(38, 38, 47, 255))
-            .verticalScroll(scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .background(Color(115, 114, 164, 255)),
-            contentAlignment = Alignment.Center
-        ) {
-            Column {
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(
-                            SpanStyle(
-                                color = Color.White,
-                                fontFamily = lexend
-                            )
-                        ) {
-                            withStyle(
-                                SpanStyle(
-                                    fontSize = 18.sp
-                                )
-                            ) {
-                                append("IGCSE \n\n")
-                            }
-                            withStyle(
-                                SpanStyle(
-                                    fontSize = 48.sp
-                                )
-                            ) {
-                                append("$subject \n\n")
-                            }
-                            withStyle(
-                                SpanStyle(
-                                    fontSize = 28.sp
-                                )
-                            ) {
-                                append(subjectCode)
-                            }
-                        }
-                    },
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(66, 66, 66, 255))
-                .padding(horizontal = 20.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "PPQs",
-                fontSize = 22.sp,
-                fontFamily = lexend,
-                color = Color.White
-            )
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(36, 36, 36, 255))
-                .padding(25.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (!canDecode) {
-//                Text(
-//                    text = "Loading...",
-//                    color = Color.White,
-//                    fontFamily = poppins,
-//                    fontSize = 28.sp
-//                )
-            }
-            @Composable
-            fun SinglePPQBox(
-                paper: String,
-                fileIDQp: String,
-                fileIDMs: String
-            ) {
-                Spacer(modifier = Modifier.height(10.dp))
-                Column(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(Color(49, 49, 49, 255))
-                        .padding(20.dp)
-                        .height(190.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Column {
-                        Text(
-                            text = "$subjectCode $subject - Paper $paper",
-                            color = Color.White,
-                            fontSize = 28.sp,
-                            fontFamily = lexend
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Button(
-                            onClick = {
-                                val openPaperIntent = Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse(fileIDQp)
-                                )
-                                context.startActivity(openPaperIntent)
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(105, 105, 151, 255)
-                            )
-                        ) {
-                            Row (
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text(
-                                    text = "Question Paper",
-                                    color = Color.White,
-                                    fontSize = 20.sp
-                                )
-                                Icon(
-                                    imageVector = Icons.Filled.KeyboardArrowRight,
-                                    contentDescription = "Question Paper"
-                                )
-                            }
-                        }
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Button(
-                            onClick = {
-                                val openPaperIntent = Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse(fileIDMs)
-                                )
-                                context.startActivity(openPaperIntent)
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(105, 105, 151, 255)
-                            )
-                        ) {
-                            Row (
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text(
-                                    text = "Marking Scheme",
-                                    color = Color.White,
-                                    fontSize = 20.sp
-                                )
-                                Icon(
-                                    imageVector = Icons.Filled.KeyboardArrowRight,
-                                    contentDescription = "Marking Scheme"
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-
-            SinglePPQBox(paper = "12", fileIDQp = "sfdasfds", fileIDMs = "saffs")
-            SinglePPQBox(paper = "12", fileIDQp = "sfdasfds", fileIDMs = "saffs")
-            SinglePPQBox(paper = "12", fileIDQp = "sfdasfds", fileIDMs = "saffs")
-            SinglePPQBox(paper = "12", fileIDQp = "sfdasfds", fileIDMs = "saffs")
-            SinglePPQBox(paper = "12", fileIDQp = "sfdasfds", fileIDMs = "saffs")
-
-            if (canDecode) {
-                val jsonObject1 = JSONObject(result1)
-                val jsonObject2 = JSONObject(result2)
-                val jsonObject3 = JSONObject(result3)
-                val jsonObject4 = JSONObject(result4)
-
-//                val noOfRows = jsonObject1.getInt("num-of-rows")
-//                println("Stuff: $noOfRows")
-//                for (i in 1..noOfRows) {
-//                    fun decode(): List<JSONObject> {
-//                        return try {
-//                            listOf(jsonObject1.getJSONObject("$i"))
-//                        } catch (_: Exception) {
-//                            listOf(JSONObject())
-//                        }
-//                    }
-//
-//                    if (decode()[0].has("logo_bg")) {
-//                        println("${decode()[0]}")
-//
-//                        SinglePPQBox(paper = paper, fileIDQp = qpLink, fileIDMs = msLink)
-//
-////                        println("Stuff: $r, $g, $b -- ${decode()[1].getString("logo")} -- ${decode()[1].getString("publisher")} -- ${decode()[1].getString("title")}")
-//                    }
-//                }
-            }
-
         }
     }
 }
