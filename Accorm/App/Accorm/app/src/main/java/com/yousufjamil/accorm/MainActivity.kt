@@ -501,32 +501,42 @@ fun HomeScreen(context: Context) {
                 }
             }
             HomeIcon(
-                onClick = {},
+                onClick = {
+                    navController.navigate("resources")
+                },
                 usesImageVector = false,
                 painterResource = R.drawable.book_open,
                 contentDescription = "Subjects"
             )
             HomeIcon(
-                onClick = {},
+                onClick = {
+                    navController.navigate("home")
+                },
                 usesImageVector = false,
                 painterResource = R.drawable.apps,
                 contentDescription = "Features"
             )
             HomeIcon(
-                onClick = {},
+                onClick = {
+                    navController.navigate("contribute")
+                },
                 usesImageVector = true,
                 imageVector = Icons.Default.AddCircle,
                 contentDescription = "Contribute"
             )
 
             HomeIcon(
-                onClick = { navController.navigate("about") },
+                onClick = {
+                    navController.navigate("about")
+                },
                 usesImageVector = true,
                 imageVector = Icons.Default.Info,
                 contentDescription = "About"
             )
             HomeIcon(
-                onClick = {},
+                onClick = {
+                    navController.navigate("pptc")
+                },
                 usesImageVector = false,
                 painterResource = R.drawable.baseline_shield_24,
                 contentDescription = "Privacy & Terms"
@@ -1034,7 +1044,7 @@ fun NotesResourcesScreen(context: Context) {
                                 containerColor = Color(105, 105, 151, 255)
                             )
                         ) {
-                            Row (
+                            Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
@@ -1693,8 +1703,16 @@ fun PPQsScreen(context: Context) {
             3 -> "ms_mj.json"
             else -> "ms_on.json"
         }
+        var accessSubjectCode = subjectCode
+        if (accessSubjectCode == "0448") {
+            accessSubjectCode = if (subjectRetrieve.contains("History")) {
+                "04481"
+            } else {
+                "04482"
+            }
+        }
         Thread {
-            bgWorker.execute("https://accorm.ginastic.co/200/$subjectcode/$fileName")
+            bgWorker.execute("https://accorm.ginastic.co/200/$accessSubjectCode/$fileName")
         }.start()
 
         fun checkStatus() {
@@ -1842,7 +1860,7 @@ fun PPQsScreen(context: Context) {
                                 containerColor = Color(105, 105, 151, 255)
                             )
                         ) {
-                            Row (
+                            Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
@@ -1872,7 +1890,7 @@ fun PPQsScreen(context: Context) {
                                 containerColor = Color(105, 105, 151, 255)
                             )
                         ) {
-                            Row (
+                            Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
@@ -1942,7 +1960,7 @@ fun PPQsScreen(context: Context) {
                 for (i in 0..mjQpMapS.keys.size.minus(1)) {
                     val mjPaperQpName = mjQpMapS.keys.elementAt(i)
                     val mjPaperMsName = mjMsMapS.keys.elementAt(i)
-                    val year = "20"+mjPaperQpName.substring(6..7)
+                    val year = "20" + mjPaperQpName.substring(6..7)
                     val mjPaper = mjPaperQpName.subSequence(12..13)
 
                     Text(
@@ -2060,7 +2078,7 @@ fun ContributeScreen(context: Context) {
                     modifier = Modifier
                         .fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(255,255,255,255)
+                        containerColor = Color(255, 255, 255, 255)
                     )
                 ) {
                     Row(
@@ -2069,13 +2087,13 @@ fun ContributeScreen(context: Context) {
                     ) {
                         Text(
                             text = "Contribute",
-                            color = Color(120,105,218,255),
+                            color = Color(120, 105, 218, 255),
                             fontSize = 20.sp
                         )
                         Icon(
                             imageVector = Icons.Filled.KeyboardArrowRight,
                             contentDescription = "Contribute",
-                            tint = Color(120,105,218,255)
+                            tint = Color(120, 105, 218, 255)
                         )
                     }
                 }
@@ -2102,6 +2120,7 @@ fun ContributeScreen(context: Context) {
 @Composable
 fun AboutUsScreen(context: Context) {
     val scrollState = rememberScrollState()
+
     @Composable
     fun DeveloperBox(
         icon: Int,
@@ -2318,7 +2337,7 @@ fun PPTC(context: Context) {
         )
         Text(
             text = "Last Updated: 15/2/2024",
-            color = Color(255,255,255, 191),
+            color = Color(255, 255, 255, 191),
             fontSize = 20.sp,
             fontFamily = poppins
         )
@@ -2434,11 +2453,10 @@ fun PPTC(context: Context) {
         Spacer(modifier = Modifier.height(10.dp))
         Button(
             onClick = {
-                val emailIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("mailto:contact&ginastic.co")
-                )
-                context.startActivity(emailIntent)
+                val url = "mailto:contact@ginastic.co"
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(url)
+                context.startActivity(intent)
             },
             modifier = Modifier
                 .fillMaxWidth(),
@@ -2461,5 +2479,6 @@ fun PPTC(context: Context) {
                 )
             }
         }
+        Spacer(modifier = Modifier.height(15.dp))
     }
 }
