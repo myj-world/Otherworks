@@ -211,6 +211,9 @@ fun Navigation(context: Context, navHostController: NavHostController) {
         composable("home") {
             HomeScreen(context)
         }
+        composable("about") {
+            InfoScreen(context)
+        }
         composable("resources") {
             SubjectsScreen(context)
         }
@@ -226,11 +229,11 @@ fun Navigation(context: Context, navHostController: NavHostController) {
         composable("blogs") {
             BlogsResourcesScreen(context)
         }
+        composable("features") {
+            FeaturesScreen(context = context)
+        }
         composable("contribute") {
             ContributeScreen(context)
-        }
-        composable("about") {
-            AboutUsScreen(context)
         }
         composable("pptc") {
             PPTC(context)
@@ -510,7 +513,7 @@ fun HomeScreen(context: Context) {
             )
             HomeIcon(
                 onClick = {
-                    navController.navigate("home")
+                    navController.navigate("features")
                 },
                 usesImageVector = false,
                 painterResource = R.drawable.apps,
@@ -542,6 +545,206 @@ fun HomeScreen(context: Context) {
                 contentDescription = "Privacy & Terms"
             )
         }
+    }
+}
+
+@Composable
+fun InfoScreen(context: Context) {
+    val scrollState = rememberScrollState()
+
+    @Composable
+    fun DeveloperBox(
+        icon: Int,
+        name: String,
+        role: String,
+        email: String,
+        stdClass: String
+    ) {
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(30.dp))
+                .background(Color(58, 58, 84, 255))
+                .fillMaxWidth(0.8f)
+                .height(180.dp)
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(15.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = icon),
+                        contentDescription = name,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(20.dp))
+                            .width(60.dp)
+                            .height(60.dp)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Column {
+                        Text(
+                            text = name,
+                            color = Color(227, 227, 228, 255),
+                            fontFamily = poppins,
+                            fontSize = 25.sp,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.height(30.dp)
+                        )
+                        Text(
+                            text = "From $stdClass",
+                            color = Color(128, 128, 128, 255),
+                            fontFamily = poppins,
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(5.dp))
+                Text(
+                    text = role,
+                    color = Color(172, 172, 249, 255),
+                    fontFamily = poppins,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier
+                        .background(Color(114, 114, 253, 255))
+                        .clickable {
+                            val url = "mailto:$email"
+                            val intent = Intent(Intent.ACTION_VIEW)
+                            intent.data = Uri.parse(url)
+                            context.startActivity(intent)
+                        }
+                        .fillMaxWidth()
+                        .height(40.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Email,
+                        contentDescription = "Email",
+                        tint = Color(255, 255, 255, 255),
+                        modifier = Modifier.size(25.dp)
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Text(
+                        text = "Contact",
+                        color = Color(255, 255, 255, 255),
+                        fontFamily = poppins,
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(31, 31, 54, 255))
+            .padding(horizontal = 20.dp)
+            .verticalScroll(scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(50.dp))
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(50.dp))
+                .background(Color(116, 132, 195, 255))
+                .padding(25.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_people_24),
+                contentDescription = "Subjects",
+                tint = Color.White,
+                modifier = Modifier.size(40.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(5.dp))
+        Text(
+            text = buildAnnotatedString {
+                withStyle(SpanStyle(color = Color.White)) {
+                    append("For Students")
+                }
+                withStyle(SpanStyle(color = Color(172, 172, 249, 255))) {
+                    append(". \n")
+                }
+                withStyle(SpanStyle(color = Color.White)) {
+                    append("By Students")
+                }
+                withStyle(SpanStyle(color = Color(172, 172, 249, 255))) {
+                    append(".")
+                }
+            },
+            fontFamily = poppins,
+            textAlign = TextAlign.Center,
+            fontSize = 26.sp
+        )
+        Text(
+            text = "© Accorm 2024 | All Rights Reserved",
+            color = Color(172, 172, 249),
+            fontFamily = poppins,
+            fontSize = 15.sp
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        DeveloperBox(
+            icon = R.drawable.musab,
+            name = "Musab Khan",
+            role = "Manager, Owner, Founder, Full-Stack Developer",
+            email = "contact@ginastic.co",
+            stdClass = "Y10-B4"
+        )
+        DeveloperBox(
+            icon = R.drawable.abd,
+            name = "Abdullah Umair",
+            role = "Front-end Developer, Advisor \n",
+            email = "solution.i67@outlook.com",
+            stdClass = "Y10-B4"
+        )
+        DeveloperBox(
+            icon = R.drawable.yousuf,
+            name = "M.Yousuf Jamil",
+            role = "App Developer \n",
+            email = "contact.us.myj@gmail.com",
+            stdClass = "Y10-B1"
+        )
+        DeveloperBox(
+            icon = R.drawable.majid,
+            name = "Majid",
+            role = "Content Provider \n",
+            email = "mylifechoice96@gmail.com",
+            stdClass = "Y10-B4"
+        )
+        DeveloperBox(
+            icon = R.drawable.faizan,
+            name = "Faizan Ali",
+            role = "Content Provider \n",
+            email = "adamcroft715@gmail.com",
+            stdClass = "Y10-B4"
+        )
+        DeveloperBox(
+            icon = R.drawable.taqi,
+            name = "Taqi Ahmed",
+            role = "Content Provider \n",
+            email = "",
+            stdClass = "Y10-B4"
+        )
+        DeveloperBox(
+            icon = R.drawable.abdkamil,
+            name = "Abdullah Kamil",
+            role = "Content Provider, Content Writer, Advisor",
+            email = "abdullahkamil1107@gmail.com",
+            stdClass = "Y10-B5"
+        )
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }
 
@@ -640,11 +843,14 @@ fun SubjectsScreen(context: Context) {
                 Text(
                     text = buildAnnotatedString {
                         append("Powered by ")
-                        withStyle(
-                            SpanStyle(textDecoration = TextDecoration.Underline)
-                        ) {
-                            append("Ginastic Blogs")
-                        }
+                        append("Ginastic Blogs")
+//                        withStyle(
+//                            SpanStyle(
+//                                textDecoration = TextDecoration.Underline)
+//
+//                        ) {
+//                            append("Ginastic Blogs")
+//                        }
                     },
                     fontSize = 15.sp,
                     color = Color.White
@@ -808,7 +1014,7 @@ fun NotesResourcesScreen(context: Context) {
     }
 
     fun retrieveData(subject: String) {
-        val bgWorker = BackgroundWorker(context)
+        val bgWorker = BackgroundWorker()
         Thread {
             bgWorker.execute("https://accorm.ginastic.co/300/fetch/?access-id=65aea3e3e6184&subject=$subject")
         }.start()
@@ -1115,7 +1321,7 @@ fun VideosResourcesScreen(context: Context) {
     }
 
     fun retrieveData(subject: String) {
-        val bgWorker = BackgroundWorker(context)
+        val bgWorker = BackgroundWorker()
         Thread {
             bgWorker.execute("https://accorm.ginastic.co/300/vids/?access-id=5ece4797eaf5e&subject=$subject")
         }.start()
@@ -1432,7 +1638,7 @@ fun BlogsResourcesScreen(context: Context) {
     }
 
     fun retrieveData() {
-        val bgWorker = BackgroundWorker(context)
+        val bgWorker = BackgroundWorker()
         Thread {
             bgWorker.execute("https://accorm.ginastic.co/300/blogs/?access-id=65c3ad4b976e3")
         }.start()
@@ -1696,7 +1902,7 @@ fun PPQsScreen(context: Context) {
         else -> "0580"
     }
     fun retrieveData(resultNo: Int, subjectcode: String) {
-        val bgWorker = BackgroundWorker(context)
+        val bgWorker = BackgroundWorker()
         val fileName = when (resultNo) {
             1 -> "qp_mj.json"
             2 -> "qp_on.json"
@@ -2005,6 +2211,264 @@ fun PPQsScreen(context: Context) {
 }
 
 @Composable
+fun FeaturesScreen(context: Context) {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(31, 31, 54, 255))
+            .padding(horizontal = 20.dp)
+            .verticalScroll(scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(50.dp))
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(50.dp))
+                .background(Color(116, 132, 195, 255))
+                .padding(25.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_settings_suggest_24),
+                contentDescription = "Features",
+                tint = Color.White,
+                modifier = Modifier.size(40.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(5.dp))
+        Text(
+            text = "❝We provide numerous, quality-rich and verified top-resources\n" +
+                    "in order to help students ace their exams.❞ \n",
+            color = Color.White,
+            fontFamily = poppins,
+            textAlign = TextAlign.Center,
+            fontSize = 16.sp
+        )
+        Text(
+            text = "This website is purely developed by its team and is hosted on the premium domain Ginastic. \n \n © Accorm 2024 | All Rights Reserved",
+            color = Color(172, 172, 249),
+            fontFamily = poppins,
+            fontSize = 15.sp,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+
+        @Composable
+        fun Divider() {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .background(Color(109, 109, 126, 255))
+                    .height(2.dp)
+            )
+        }
+
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(280.dp)
+                .clip(RoundedCornerShape(25.dp))
+                .background(Color(46, 46, 70, 255))
+                .padding(10.dp)
+        ) {
+            Text(
+                text = "Past Papers",
+                fontFamily = lexend,
+                fontSize = 30.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+            Divider()
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = "Yearly",
+                fontSize = 20.sp,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Divider()
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = "Marking Schemes",
+                fontSize = 20.sp,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Divider()
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = "Grade Thresholds",
+                fontSize = 20.sp,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Divider()
+            Spacer(modifier = Modifier.height(10.dp))
+            Button(
+                onClick = { navController.navigate("resources") },
+                modifier = Modifier
+                    .fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(186, 191, 255, 255)
+                )
+            ) {
+                Text(
+                    text = "Explore",
+                    fontFamily = lexend,
+                    fontSize = 18.sp,
+                    color = Color(54, 68, 87, 255)
+                )
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = "Explore",
+                    tint = Color(54, 68, 87, 255)
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(15.dp))
+
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(280.dp)
+                .clip(RoundedCornerShape(25.dp))
+                .background(Color(98, 108, 255, 255))
+                .padding(10.dp)
+        ) {
+            Text(
+                text = "Resources",
+                fontFamily = lexend,
+                fontSize = 30.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+            Divider()
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = "Notes",
+                fontSize = 20.sp,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Divider()
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = "Course Videos",
+                fontSize = 20.sp,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Divider()
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = "Educational Blogs",
+                fontSize = 20.sp,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Divider()
+            Spacer(modifier = Modifier.height(10.dp))
+            Button(
+                onClick = { navController.navigate("resources") },
+                modifier = Modifier
+                    .fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(186, 191, 255, 255)
+                )
+            ) {
+                Text(
+                    text = "Explore",
+                    fontFamily = lexend,
+                    fontSize = 18.sp,
+                    color = Color(54, 68, 87, 255)
+                )
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = "Explore",
+                    tint = Color(54, 68, 87, 255)
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(15.dp))
+
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(280.dp)
+                .clip(RoundedCornerShape(25.dp))
+                .background(Color(46, 46, 70, 255))
+                .padding(10.dp)
+        ) {
+            Text(
+                text = "Syllabus",
+                fontFamily = lexend,
+                fontSize = 30.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+            Divider()
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = "Yearly",
+                fontSize = 20.sp,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Divider()
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = "Scheme of Work",
+                fontSize = 20.sp,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Divider()
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = "Syllabus Overview",
+                fontSize = 20.sp,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Divider()
+            Spacer(modifier = Modifier.height(10.dp))
+            Button(
+                onClick = {  },
+                modifier = Modifier
+                    .fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(186, 191, 255, 255)
+                )
+            ) {
+                Text(
+                    text = "Coming Soon",
+                    fontFamily = lexend,
+                    fontSize = 18.sp,
+                    color = Color(54, 68, 87, 255)
+                )
+//                Icon(
+//                    imageVector = Icons.Default.KeyboardArrowRight,
+//                    contentDescription = "Coming Soon",
+//                    tint = Color(54, 68, 87, 255)
+//                )
+            }
+        }
+    }
+}
+
+@Composable
 fun ContributeScreen(context: Context) {
     val scrollState = rememberScrollState()
     Column(
@@ -2113,206 +2577,6 @@ fun ContributeScreen(context: Context) {
                 color = Color.White
             )
         }
-        Spacer(modifier = Modifier.height(20.dp))
-    }
-}
-
-@Composable
-fun AboutUsScreen(context: Context) {
-    val scrollState = rememberScrollState()
-
-    @Composable
-    fun DeveloperBox(
-        icon: Int,
-        name: String,
-        role: String,
-        email: String,
-        stdClass: String
-    ) {
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(30.dp))
-                .background(Color(58, 58, 84, 255))
-                .fillMaxWidth(0.8f)
-                .height(180.dp)
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(15.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = painterResource(id = icon),
-                        contentDescription = name,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(20.dp))
-                            .width(60.dp)
-                            .height(60.dp)
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Column {
-                        Text(
-                            text = name,
-                            color = Color(227, 227, 228, 255),
-                            fontFamily = poppins,
-                            fontSize = 25.sp,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.height(30.dp)
-                        )
-                        Text(
-                            text = "From $stdClass",
-                            color = Color(128, 128, 128, 255),
-                            fontFamily = poppins,
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(
-                    text = role,
-                    color = Color(172, 172, 249, 255),
-                    fontFamily = poppins,
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Row(
-                    modifier = Modifier
-                        .background(Color(114, 114, 253, 255))
-                        .clickable {
-                            val url = "mailto:$email"
-                            val intent = Intent(Intent.ACTION_VIEW)
-                            intent.data = Uri.parse(url)
-                            context.startActivity(intent)
-                        }
-                        .fillMaxWidth()
-                        .height(40.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = "Email",
-                        tint = Color(255, 255, 255, 255),
-                        modifier = Modifier.size(25.dp)
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Text(
-                        text = "Contact",
-                        color = Color(255, 255, 255, 255),
-                        fontFamily = poppins,
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(31, 31, 54, 255))
-            .padding(horizontal = 20.dp)
-            .verticalScroll(scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.height(50.dp))
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(50.dp))
-                .background(Color(116, 132, 195, 255))
-                .padding(25.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_people_24),
-                contentDescription = "Subjects",
-                tint = Color.White,
-                modifier = Modifier.size(40.dp)
-            )
-        }
-        Spacer(modifier = Modifier.height(5.dp))
-        Text(
-            text = buildAnnotatedString {
-                withStyle(SpanStyle(color = Color.White)) {
-                    append("For Students")
-                }
-                withStyle(SpanStyle(color = Color(172, 172, 249, 255))) {
-                    append(". \n")
-                }
-                withStyle(SpanStyle(color = Color.White)) {
-                    append("By Students")
-                }
-                withStyle(SpanStyle(color = Color(172, 172, 249, 255))) {
-                    append(".")
-                }
-            },
-            fontFamily = poppins,
-            textAlign = TextAlign.Center,
-            fontSize = 26.sp
-        )
-        Text(
-            text = "© Accorm 2024 | All Rights Reserved",
-            color = Color(172, 172, 249),
-            fontFamily = poppins,
-            fontSize = 15.sp
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        DeveloperBox(
-            icon = R.drawable.musab,
-            name = "Musab Khan",
-            role = "Manager, Owner, Founder, Full-Stack Developer",
-            email = "contact@ginastic.co",
-            stdClass = "Y10-B4"
-        )
-        DeveloperBox(
-            icon = R.drawable.abd,
-            name = "Abdullah Umair",
-            role = "Front-end Developer, Advisor \n",
-            email = "solution.i67@outlook.com",
-            stdClass = "Y10-B4"
-        )
-        DeveloperBox(
-            icon = R.drawable.yousuf,
-            name = "M.Yousuf Jamil",
-            role = "App Developer \n",
-            email = "contact.us.myj@gmail.com",
-            stdClass = "Y10-B1"
-        )
-        DeveloperBox(
-            icon = R.drawable.majid,
-            name = "Majid",
-            role = "Content Provider \n",
-            email = "mylifechoice96@gmail.com",
-            stdClass = "Y10-B4"
-        )
-        DeveloperBox(
-            icon = R.drawable.faizan,
-            name = "Faizan Ali",
-            role = "Content Provider \n",
-            email = "adamcroft715@gmail.com",
-            stdClass = "Y10-B4"
-        )
-        DeveloperBox(
-            icon = R.drawable.taqi,
-            name = "Taqi Ahmed",
-            role = "Content Provider \n",
-            email = "",
-            stdClass = "Y10-B4"
-        )
-        DeveloperBox(
-            icon = R.drawable.abdkamil,
-            name = "Abdullah Kamil",
-            role = "Content Provider, Content Writer, Advisor",
-            email = "abdullahkamil1107@gmail.com",
-            stdClass = "Y10-B5"
-        )
         Spacer(modifier = Modifier.height(20.dp))
     }
 }

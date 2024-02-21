@@ -12,7 +12,7 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.net.URLEncoder
 
-class BackgroundWorker(val context: Context): AsyncTask<String, Void, String>() {
+class BackgroundWorker: AsyncTask<String, Void, String>() {
 
     var response = ""
     override fun doInBackground(vararg params: String?): String {
