@@ -443,7 +443,6 @@ fun LoginScreen(context: Context) {
             .verticalScroll(scrollState)
     ) {
 //        Spacer(modifier = Modifier.height(50.dp))
-        var backEnabled by remember { mutableStateOf(false) }
         var webView by remember {
             mutableStateOf(WebView(context))
         }
@@ -452,35 +451,6 @@ fun LoginScreen(context: Context) {
         }
 
         if (display) {
-            AndroidView(
-                factory = {
-                    WebView(it).apply {
-                        layoutParams = ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT
-                        )
-                        this.settings.userAgentString =
-                            URLEncoder.encode("accormAndroidAccessing123#321 && browser is = webview")
-                        webViewClient = object : WebViewClient() {
-                            override fun onPageStarted(
-                                view: WebView,
-                                url: String?,
-                                favicon: Bitmap?
-                            ) {
-                                backEnabled = view.canGoBack()
-                            }
-                        }
-                        loadUrl("https://accounts.ginastic.co/login/")
-                        settings.javaScriptEnabled = true
-                        webView = this
-                    }
-                }, update = {
-                    it.loadUrl("https://accounts.ginastic.co/login/")
-                    it.settings.userAgentString = "accormAndroidAccessing123#321 && browser is = webview"
-                }
-            )
-
-
             val wm =
                 context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
             val ip: String =
@@ -490,12 +460,7 @@ fun LoginScreen(context: Context) {
 
             Thread {
                 bgWorker.execute(
-                    "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=${
-                        URLEncoder.encode(
-                            "accormAndroidAccessing123#321 && browser is = webview",
-                            "utf-8"
-                        )
-                    }"
+                    "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing"
                 )
             }.start()
 
@@ -505,15 +470,10 @@ fun LoginScreen(context: Context) {
                     {
                         if (bgWorker.status.toString() == "FINISHED") {
                             println("run2")
-                            println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=${
-                                URLEncoder.encode(
-                                    "accormAndroidAccessing123#321 && browser is = webview",
-                                    "utf-8"
-                                )
-                            }")
+                            println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=${webView.settings.userAgentString}")
                             println(ip+webView.settings.userAgentString)
                             println(uemail+ uname+ ulogo+ ulogobg+bgWorker.response)
-                            if (bgWorker.response != "no data available.") {
+                            if (bgWorker.response.contains("{")) {
                                 println("run4")
                                 val jsonObject = JSONObject(bgWorker.response)
                                 uemail = jsonObject.getString("email")
@@ -521,20 +481,18 @@ fun LoginScreen(context: Context) {
                                 ulogo = jsonObject.getString("logo")
                                 ulogobg = jsonObject.getString("logo_bg")
                                 display = false
+                                println(uemail+ uname+ ulogo+ ulogobg+bgWorker.response)
                                 navController.popBackStack()
                             } else {
                                 println("run3")
                                 bgWorker = BackgroundWorker()
+                                val ug =  webView.settings.userAgentString
                                 Thread {
                                     bgWorker.execute(
-                                        "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=${
-                                            URLEncoder.encode(
-                                                "accormAndroidAccessing123#321 && browser is = webview",
-                                                "utf-8"
-                                            )
-                                        }"
+                                        "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=$ug"
                                     )
                                 }.start()
+                                checkStatus()
                             }
                         } else {
                             checkStatus()
@@ -542,10 +500,33 @@ fun LoginScreen(context: Context) {
                     }, 3000
                 )
             }
-            checkStatus()
-        }
-        BackHandler(enabled = backEnabled) {
-            webView.goBack()
+
+            AndroidView(
+                factory = {
+                    WebView(it).apply {
+                        layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                        this.settings.userAgentString = "accormAndroidAccessing"
+                        webViewClient = object : WebViewClient() {
+                            override fun onPageStarted(
+                                view: WebView,
+                                url: String?,
+                                favicon: Bitmap?
+                            ) {
+                                checkStatus()
+                            }
+                        }
+                        loadUrl("https://accounts.ginastic.co/login/")
+                        settings.javaScriptEnabled = true
+                        webView = this
+                    }
+                }, update = {
+                    it.loadUrl("https://accounts.ginastic.co/login/")
+                    it.settings.userAgentString = "accormAndroidAccessing"
+                }
+            )
         }
     }
 }
