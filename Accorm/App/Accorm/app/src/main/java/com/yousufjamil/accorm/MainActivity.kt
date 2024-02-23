@@ -2,10 +2,17 @@ package com.yousufjamil.accorm
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.os.Handler
+import android.text.format.Formatter
+import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -52,6 +59,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -71,12 +79,12 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -84,17 +92,28 @@ import androidx.navigation.compose.rememberNavController
 import com.yousufjamil.accorm.ui.theme.AccormTheme
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.net.URLEncoder
 import java.util.TreeMap
+
 
 lateinit var navController: NavHostController
 lateinit var poppins: FontFamily
 lateinit var lexend: FontFamily
 lateinit var subject: String
+lateinit var uemail: String
+lateinit var uname: String
+lateinit var ulogo: String
+lateinit var ulogobg: String
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        uemail = ""
+        uname = ""
+        ulogo = ""
+        ulogobg = ""
 
         poppins = FontFamily(
             Font(R.font.poppins_thin, FontWeight.Thin),
@@ -208,6 +227,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Navigation(context: Context, navHostController: NavHostController) {
     NavHost(navHostController, "home") {
+        composable("login") {
+            LoginScreen(context = context)
+        }
         composable("home") {
             HomeScreen(context)
         }
@@ -398,11 +420,132 @@ fun NavigationDrawer(closeDrawer: () -> Unit) {
                 contentDescription = "Sign up"
             )
             NavSingleButton(
-                onClick = { },
+                onClick = { navController.navigate("login") },
                 usesImageVector = false,
                 painterResource = R.drawable.baseline_login_24,
                 contentDescription = "Login"
             )
+        }
+    }
+}
+
+@Composable
+fun LoginScreen(context: Context) {
+    val scrollState = rememberScrollState()
+    var padding by remember {
+        mutableIntStateOf(0)
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(255,255,255, 255))
+//            .padding(horizontal = 20.dp)
+            .verticalScroll(scrollState)
+    ) {
+//        Spacer(modifier = Modifier.height(50.dp))
+        var backEnabled by remember { mutableStateOf(false) }
+        var webView by remember {
+            mutableStateOf(WebView(context))
+        }
+        var display by remember {
+            mutableStateOf(true)
+        }
+
+        if (display) {
+            AndroidView(
+                factory = {
+                    WebView(it).apply {
+                        layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                        this.settings.userAgentString =
+                            URLEncoder.encode("accormAndroidAccessing123#321 && browser is = webview")
+                        webViewClient = object : WebViewClient() {
+                            override fun onPageStarted(
+                                view: WebView,
+                                url: String?,
+                                favicon: Bitmap?
+                            ) {
+                                backEnabled = view.canGoBack()
+                            }
+                        }
+                        loadUrl("https://accounts.ginastic.co/login/")
+                        settings.javaScriptEnabled = true
+                        webView = this
+                    }
+                }, update = {
+                    it.loadUrl("https://accounts.ginastic.co/login/")
+                    it.settings.userAgentString = "accormAndroidAccessing123#321 && browser is = webview"
+                }
+            )
+
+
+            val wm =
+                context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            val ip: String =
+                Formatter.formatIpAddress(wm.connectionInfo.ipAddress)
+
+            var bgWorker = BackgroundWorker()
+
+            Thread {
+                bgWorker.execute(
+                    "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=${
+                        URLEncoder.encode(
+                            "accormAndroidAccessing123#321 && browser is = webview",
+                            "utf-8"
+                        )
+                    }"
+                )
+            }.start()
+
+            fun checkStatus() {
+                println("run1")
+                Handler().postDelayed(
+                    {
+                        if (bgWorker.status.toString() == "FINISHED") {
+                            println("run2")
+                            println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=${
+                                URLEncoder.encode(
+                                    "accormAndroidAccessing123#321 && browser is = webview",
+                                    "utf-8"
+                                )
+                            }")
+                            println(ip+webView.settings.userAgentString)
+                            println(uemail+ uname+ ulogo+ ulogobg+bgWorker.response)
+                            if (bgWorker.response != "no data available.") {
+                                println("run4")
+                                val jsonObject = JSONObject(bgWorker.response)
+                                uemail = jsonObject.getString("email")
+                                uname = jsonObject.getString("name")
+                                ulogo = jsonObject.getString("logo")
+                                ulogobg = jsonObject.getString("logo_bg")
+                                display = false
+                                navController.popBackStack()
+                            } else {
+                                println("run3")
+                                bgWorker = BackgroundWorker()
+                                Thread {
+                                    bgWorker.execute(
+                                        "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=${
+                                            URLEncoder.encode(
+                                                "accormAndroidAccessing123#321 && browser is = webview",
+                                                "utf-8"
+                                            )
+                                        }"
+                                    )
+                                }.start()
+                            }
+                        } else {
+                            checkStatus()
+                        }
+                    }, 3000
+                )
+            }
+            checkStatus()
+        }
+        BackHandler(enabled = backEnabled) {
+            webView.goBack()
         }
     }
 }
