@@ -1,20 +1,19 @@
+@file:Suppress("DEPRECATION")
+
 package com.yousufjamil.accorm
 
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.os.Handler
-import android.text.format.Formatter
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -92,6 +91,7 @@ import androidx.navigation.compose.rememberNavController
 import com.yousufjamil.accorm.ui.theme.AccormTheme
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.net.URL
 import java.net.URLEncoder
 import java.util.TreeMap
 
@@ -106,7 +106,7 @@ lateinit var ulogo: String
 lateinit var ulogobg: String
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -141,7 +141,7 @@ class MainActivity : ComponentActivity() {
                         drawerContent = {
                             ModalDrawerSheet {
                                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                                    NavigationDrawer() { scope.launch { drawerState.close() } }
+                                    NavigationDrawer (this@MainActivity) { scope.launch { drawerState.close() } }
                                 }
                             }
                         }
@@ -198,6 +198,69 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+
+            var ip: String? = null
+            val thread = Thread {
+                try {
+                    val url = URL("https://api.ipify.org")
+                    val connection = url.openConnection()
+                    connection.setRequestProperty(
+                        "User-Agent",
+                        "Mozilla/5.0"
+                    ) // Set a User-Agent to avoid HTTP 403 Forbidden error
+                    val inputStream = connection.getInputStream()
+                    val s = java.util.Scanner(inputStream, "UTF-8").useDelimiter("\\A")
+                    ip = s.next()
+                    inputStream.close()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            thread.start()
+
+            var bgWorker = BackgroundWorker()
+
+            Thread {
+                bgWorker.execute(
+                    "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing"
+                )
+            }.start()
+
+            fun checkStatus() {
+                println("run1")
+                Handler().postDelayed(
+                    {
+                        if (bgWorker.status.toString() == "FINISHED") {
+                            println("run2")
+                            println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing")
+                            println(uemail + uname + ulogo + ulogobg + bgWorker.response)
+                            if (bgWorker.response.contains("{")) {
+                                println("run4")
+                                val jsonObject = JSONObject(bgWorker.response)
+                                uemail = jsonObject.getString("email")
+                                uname = jsonObject.getString("name")
+                                ulogo = jsonObject.getString("logo")
+                                ulogobg = jsonObject.getString("logo_bg")
+                                println(uemail + uname + ulogo + ulogobg + bgWorker.response)
+                            } else {
+                                println("run3")
+                                bgWorker = BackgroundWorker()
+                                val ug = "accormAndroidAccessing"
+                                Thread {
+                                    bgWorker.execute(
+                                        "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=$ug"
+                                    )
+                                }.start()
+                                checkStatus()
+                            }
+                        } else {
+                            checkStatus()
+                        }
+                    }, 3000
+                )
+            }
+
+            checkStatus()
         }
     }
 
@@ -218,8 +281,6 @@ class MainActivity : ComponentActivity() {
             Font(R.font.lexend_bold, FontWeight.Bold)
         )
 
-        subject = "Islamiyat"
-
         Text(text = "Previewer")
     }
 }
@@ -229,6 +290,9 @@ fun Navigation(context: Context, navHostController: NavHostController) {
     NavHost(navHostController, "home") {
         composable("login") {
             LoginScreen(context = context)
+        }
+        composable("sign-up") {
+            SignUpScreen(context = context)
         }
         composable("home") {
             HomeScreen(context)
@@ -264,12 +328,16 @@ fun Navigation(context: Context, navHostController: NavHostController) {
 }
 
 @Composable
-fun NavigationDrawer(closeDrawer: () -> Unit) {
+fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
+    var padding by remember {
+        mutableStateOf(0)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(46, 55, 72, 255))
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 20.dp + padding.dp - padding.dp)
             .clickable { closeDrawer() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -323,11 +391,22 @@ fun NavigationDrawer(closeDrawer: () -> Unit) {
                     Text(
                         text = contentDescription,
                         fontFamily = lexend,
-                        fontSize = 19.sp
+                        fontSize = 19.sp,
+                        color = Color.White
                     )
                 }
             }
         }
+
+        Handler().postDelayed(
+            {
+                if (padding > 2) {
+                    padding--
+                } else {
+                    padding++
+                }
+            }, 3000
+        )
 
         Spacer(modifier = Modifier.height(30.dp))
         Row(
@@ -336,23 +415,68 @@ fun NavigationDrawer(closeDrawer: () -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    navController.navigate("home")
+                    navController.navigate("home") {
+                        popUpToRoute
+                    }
+                    closeDrawer()
                 }
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.app_ic),
-                contentDescription = "App icon",
-                modifier = Modifier
-                    .size(70.dp)
-                    .clip(RoundedCornerShape(corner = CornerSize(50.dp)))
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(
-                text = "Accorm",
-                fontFamily = lexend,
-                color = Color.White,
-                fontSize = 35.sp
-            )
+            if (uemail == "") {
+                Image(
+                    painter = painterResource(id = R.drawable.app_ic),
+                    contentDescription = "App icon",
+                    modifier = Modifier
+                        .size(70.dp)
+                        .clip(RoundedCornerShape(corner = CornerSize(50.dp)))
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = "Accorm",
+                    fontFamily = lexend,
+                    color = Color.White,
+                    fontSize = 35.sp
+                )
+            } else {
+                val r: Int =
+                    ulogobg.substring(1, 3).toInt(16) // 16 for hex
+
+                val g: Int =
+                    ulogobg.substring(3, 5).toInt(16) // 16 for hex
+
+                val b: Int =
+                    ulogobg.substring(5, 7).toInt(16) // 16 for hex
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(100.dp))
+                        .width(75.dp)
+                        .height(75.dp)
+                        .background(Color(r, g, b, 255))
+                        .padding(10.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = ulogo,
+                        color = Color.White,
+                        fontSize = 35.sp,
+                        fontFamily = poppins
+                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                ) {
+                    Text(
+                        text = uname,
+                        color = Color.White,
+                        fontSize = 28.sp
+                    )
+                    Text(
+                        text = uemail,
+                        color = Color.White,
+                        fontSize = 18.sp
+                    )
+                }
+            }
         }
         Spacer(modifier = Modifier.height(20.dp))
         Divider()
@@ -401,36 +525,70 @@ fun NavigationDrawer(closeDrawer: () -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Start
         ) {
-            NavSingleButton(
-                onClick = { },
-                usesImageVector = true,
-                imageVector = Icons.Default.Person,
-                contentDescription = "Profile"
-            )
-            NavSingleButton(
-                onClick = { },
-                usesImageVector = false,
-                painterResource = R.drawable.baseline_logout_24,
-                contentDescription = "Logout"
-            )
-            NavSingleButton(
-                onClick = { },
-                usesImageVector = false,
-                painterResource = R.drawable.baseline_person_add_alt_1_24,
-                contentDescription = "Sign up"
-            )
-            NavSingleButton(
-                onClick = { navController.navigate("login") },
-                usesImageVector = false,
-                painterResource = R.drawable.baseline_login_24,
-                contentDescription = "Login"
-            )
+            if (uemail != "") {
+                NavSingleButton(
+                    onClick = { },
+                    usesImageVector = true,
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Profile"
+                )
+                NavSingleButton(
+                    onClick = {
+                        val bgWorker = BackgroundWorker()
+
+                        Thread {
+                            bgWorker.execute(
+                                "https://accorm.ginastic.co/300/logout/?access-id=434&email=${URLEncoder.encode(
+                                    uemail, "utf-8"
+                                )}"
+                            )
+                        }.start()
+
+                        fun checkStatus() {
+                            println("run1")
+                            Handler().postDelayed(
+                                {
+                                    if (bgWorker.status.toString() == "FINISHED") {
+                                        if (bgWorker.response == "Logged out successfully.") {
+                                            Toast.makeText(context, "Logged out successfully", Toast.LENGTH_SHORT).show()
+                                            uemail = ""
+                                            uname = ""
+                                            ulogo = ""
+                                            ulogobg = ""
+                                        }
+                                    } else {
+                                        checkStatus()
+                                    }
+                                }, 3000
+                            )
+                        }
+
+                        checkStatus()
+                    },
+                    usesImageVector = false,
+                    painterResource = R.drawable.baseline_logout_24,
+                    contentDescription = "Logout"
+                )
+            } else {
+                NavSingleButton(
+                    onClick = { navController.navigate("sign-up") },
+                    usesImageVector = false,
+                    painterResource = R.drawable.baseline_person_add_alt_1_24,
+                    contentDescription = "Sign up"
+                )
+                NavSingleButton(
+                    onClick = { navController.navigate("login") },
+                    usesImageVector = false,
+                    painterResource = R.drawable.baseline_login_24,
+                    contentDescription = "Login"
+                )
+            }
         }
     }
 }
 
 @Composable
-fun LoginScreen(context: Context) {
+fun SignUpScreen(context: Context) {
     val scrollState = rememberScrollState()
     var padding by remember {
         mutableIntStateOf(0)
@@ -438,7 +596,7 @@ fun LoginScreen(context: Context) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(255,255,255, 255))
+            .background(Color(255, 255, 255, 255))
 //            .padding(horizontal = 20.dp)
             .verticalScroll(scrollState)
     ) {
@@ -451,10 +609,24 @@ fun LoginScreen(context: Context) {
         }
 
         if (display) {
-            val wm =
-                context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-            val ip: String =
-                Formatter.formatIpAddress(wm.connectionInfo.ipAddress)
+            var ip: String? = null
+            val thread = Thread {
+                try {
+                    val url = URL("https://api.ipify.org")
+                    val connection = url.openConnection()
+                    connection.setRequestProperty(
+                        "User-Agent",
+                        "Mozilla/5.0"
+                    )
+                    val inputStream = connection.getInputStream()
+                    val s = java.util.Scanner(inputStream, "UTF-8").useDelimiter("\\A")
+                    ip = s.next()
+                    inputStream.close()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            thread.start()
 
             var bgWorker = BackgroundWorker()
 
@@ -471,8 +643,8 @@ fun LoginScreen(context: Context) {
                         if (bgWorker.status.toString() == "FINISHED") {
                             println("run2")
                             println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=${webView.settings.userAgentString}")
-                            println(ip+webView.settings.userAgentString)
-                            println(uemail+ uname+ ulogo+ ulogobg+bgWorker.response)
+                            println(ip + webView.settings.userAgentString)
+                            println(uemail + uname + ulogo + ulogobg + bgWorker.response)
                             if (bgWorker.response.contains("{")) {
                                 println("run4")
                                 val jsonObject = JSONObject(bgWorker.response)
@@ -481,12 +653,138 @@ fun LoginScreen(context: Context) {
                                 ulogo = jsonObject.getString("logo")
                                 ulogobg = jsonObject.getString("logo_bg")
                                 display = false
-                                println(uemail+ uname+ ulogo+ ulogobg+bgWorker.response)
+                                println(uemail + uname + ulogo + ulogobg + bgWorker.response)
                                 navController.popBackStack()
                             } else {
                                 println("run3")
                                 bgWorker = BackgroundWorker()
-                                val ug =  webView.settings.userAgentString
+                                val ug = webView.settings.userAgentString
+                                Thread {
+                                    bgWorker.execute(
+                                        "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=$ug"
+                                    )
+                                }.start()
+                                checkStatus()
+                            }
+                        } else {
+                            checkStatus()
+                        }
+                    }, 3000
+                )
+            }
+
+            AndroidView(
+                factory = {
+                    WebView(it).apply {
+                        layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                        this.settings.userAgentString = "accormAndroidAccessing"
+                        webViewClient = object : WebViewClient() {
+                            override fun onPageStarted(
+                                view: WebView,
+                                url: String?,
+                                favicon: Bitmap?
+                            ) {
+                                checkStatus()
+                            }
+                        }
+                        loadUrl("https://accounts.ginastic.co/signup/")
+                        settings.javaScriptEnabled = true
+                        Toast.makeText(
+                            context,
+                            "Please create and account, then click login and sign in with your created email",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        webView = this
+                    }
+                }, update = {
+                    it.loadUrl("https://accounts.ginastic.co/signup/")
+                    it.settings.userAgentString = "accormAndroidAccessing"
+                    Toast.makeText(
+                        context,
+                        "Please create and account, then click login and sign in with your created email",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun LoginScreen(context: Context) {
+    val scrollState = rememberScrollState()
+    var padding by remember {
+        mutableIntStateOf(0)
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(255, 255, 255, 255))
+//            .padding(horizontal = 20.dp)
+            .verticalScroll(scrollState)
+    ) {
+//        Spacer(modifier = Modifier.height(50.dp))
+        var webView by remember {
+            mutableStateOf(WebView(context))
+        }
+        var display by remember {
+            mutableStateOf(true)
+        }
+
+        if (display) {
+            var ip: String? = null
+            val thread = Thread {
+                try {
+                    val url = URL("https://api.ipify.org")
+                    val connection = url.openConnection()
+                    connection.setRequestProperty(
+                        "User-Agent",
+                        "Mozilla/5.0"
+                    ) // Set a User-Agent to avoid HTTP 403 Forbidden error
+                    val inputStream = connection.getInputStream()
+                    val s = java.util.Scanner(inputStream, "UTF-8").useDelimiter("\\A")
+                    ip = s.next()
+                    inputStream.close()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            thread.start()
+
+            var bgWorker = BackgroundWorker()
+
+            Thread {
+                bgWorker.execute(
+                    "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing"
+                )
+            }.start()
+
+            fun checkStatus() {
+                println("run1")
+                Handler().postDelayed(
+                    {
+                        if (bgWorker.status.toString() == "FINISHED") {
+                            println("run2")
+                            println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=${webView.settings.userAgentString}")
+                            println(ip + webView.settings.userAgentString)
+                            println(uemail + uname + ulogo + ulogobg + bgWorker.response)
+                            if (bgWorker.response.contains("{")) {
+                                println("run4")
+                                val jsonObject = JSONObject(bgWorker.response)
+                                uemail = jsonObject.getString("email")
+                                uname = jsonObject.getString("name")
+                                ulogo = jsonObject.getString("logo")
+                                ulogobg = jsonObject.getString("logo_bg")
+                                display = false
+                                println(uemail + uname + ulogo + ulogobg + bgWorker.response)
+                                navController.popBackStack()
+                            } else {
+                                println("run3")
+                                bgWorker = BackgroundWorker()
+                                val ug = webView.settings.userAgentString
                                 Thread {
                                     bgWorker.execute(
                                         "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=$ug"
@@ -951,7 +1249,7 @@ fun SubjectsScreen(context: Context) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(150.dp)
+                    .height(180.dp)
                     .clip(RoundedCornerShape(25.dp))
                     .background(Color(100, 86, 144, 255))
                     .padding(10.dp)
@@ -996,7 +1294,8 @@ fun SubjectsScreen(context: Context) {
                     )
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowRight,
-                        contentDescription = "Browse"
+                        contentDescription = "Browse",
+                        tint = Color.White
                     )
                 }
             }
@@ -1015,7 +1314,7 @@ fun SubjectsScreen(context: Context) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(300.dp)
+                        .height(320.dp)
                         .clip(RoundedCornerShape(25.dp))
                         .background(Color(100, 86, 144, 255))
                         .padding(10.dp)
@@ -1055,7 +1354,8 @@ fun SubjectsScreen(context: Context) {
                         )
                         Icon(
                             imageVector = Icons.Default.KeyboardArrowRight,
-                            contentDescription = "Browse"
+                            contentDescription = "Browse",
+                            tint = Color.White
                         )
                     }
                     Spacer(modifier = Modifier.height(5.dp))
@@ -1078,7 +1378,8 @@ fun SubjectsScreen(context: Context) {
                         )
                         Icon(
                             imageVector = Icons.Default.KeyboardArrowRight,
-                            contentDescription = "Browse"
+                            contentDescription = "Browse",
+                            tint = Color.White
                         )
                     }
                     Spacer(modifier = Modifier.height(5.dp))
@@ -1101,7 +1402,8 @@ fun SubjectsScreen(context: Context) {
                         )
                         Icon(
                             imageVector = Icons.Default.KeyboardArrowRight,
-                            contentDescription = "Browse"
+                            contentDescription = "Browse",
+                            tint = Color.White
                         )
                     }
                 }
@@ -1263,6 +1565,7 @@ fun NotesResourcesScreen(context: Context) {
                         .background(Color(145, 145, 254, 255))
                         .padding(5.dp)
                         .clickable {
+                            navController.popBackStack()
                             navController.navigate("videos-resources")
                         },
                     contentAlignment = Alignment.Center
@@ -1280,6 +1583,7 @@ fun NotesResourcesScreen(context: Context) {
                         .background(Color(145, 145, 254, 255))
                         .padding(5.dp)
                         .clickable {
+                            navController.popBackStack()
                             navController.navigate("blogs")
                         },
                     contentAlignment = Alignment.Center
@@ -1570,6 +1874,7 @@ fun VideosResourcesScreen(context: Context) {
                         .background(Color(145, 145, 254, 255))
                         .padding(5.dp)
                         .clickable {
+                            navController.popBackStack()
                             navController.navigate("notes-resources")
                         },
                     contentAlignment = Alignment.Center
@@ -1587,6 +1892,7 @@ fun VideosResourcesScreen(context: Context) {
                         .background(Color(145, 145, 254, 255))
                         .padding(5.dp)
                         .clickable {
+                            navController.popBackStack()
                             navController.navigate("blogs")
                         },
                     contentAlignment = Alignment.Center
@@ -2569,7 +2875,7 @@ fun FeaturesScreen(context: Context) {
             Divider()
             Spacer(modifier = Modifier.height(10.dp))
             Button(
-                onClick = {  },
+                onClick = { },
                 modifier = Modifier
                     .fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
@@ -2764,7 +3070,7 @@ fun PPTC(context: Context) {
             "to not copy, share, resell or re-use any content or code of the website thereof."
         )
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            agreeList.forEach() {
+            agreeList.forEach {
                 Row {
                     Box(
                         modifier = Modifier

@@ -2,3 +2,4 @@ Notes: https://accorm.ginastic.co/300/fetch/?access-id=65aea3e3e6184&subject=isl
 Videos: https://accorm.ginastic.co/300/vids/?access-id=5ece4797eaf5e&subject=computer%20science
 Blogs: https://accorm.ginastic.co/300/blogs/?access-id=65c3ad4b976e3
 Signup/Login: https://accorm.ginastic.co/300/login/?access-id=313&ip=[user ip address]&ug=[user agent, e.g. device, browser ips, etc]
+Logout: https://accorm.ginastic.co/300/logout/?access-id=434&email=[user email]
