@@ -2561,33 +2561,39 @@ fun PPQsScreen(context: Context) {
                     val item1key = jsonObject1.names()?.getString(i)
                     val item1 = jsonObject1.getJSONObject(item1key.toString())
                     if (item1.getString("Type") != "Folder") {
-                        val item2key = jsonObject2.names()?.getString(i)
-                        val item2 = jsonObject2.getJSONObject(item2key.toString())
 
                         val item3key = jsonObject3.names()?.getString(i)
                         val item3 = jsonObject3.getJSONObject(item3key.toString())
 
-                        val item4key = jsonObject4.names()?.getString(i)
-                        val item4 = jsonObject4.getJSONObject(item4key.toString())
-
                         val name1 = item1.getString("Name")
                         val url1 = item1.getString("URL")
-
-                        val name2 = item2.getString("Name")
-                        val url2 = item2.getString("URL")
 
                         val name3 = item3.getString("Name")
                         val url3 = item3.getString("URL")
 
-                        val name4 = item4.getString("Name")
-                        val url4 = item4.getString("URL")
-
                         mjQpMap[name1] = url1
-                        onQpMap[name2] = url2
                         mjMsMap[name3] = url3
-                        onMsMap[name4] = url4
                     }
                 }
+
+                for (i in 1..(jsonObject2.names()?.length()?.minus(1) ?: 0)) {
+
+                    val item2key = jsonObject2.names()?.getString(i)
+                    val item2 = jsonObject2.getJSONObject(item2key.toString())
+
+                    val item4key = jsonObject4.names()?.getString(i)
+                    val item4 = jsonObject4.getJSONObject(item4key.toString())
+
+                    val name2 = item2.getString("Name")
+                    val url2 = item2.getString("URL")
+
+                    val name4 = item4.getString("Name")
+                    val url4 = item4.getString("URL")
+
+                    onQpMap[name2] = url2
+                    onMsMap[name4] = url4
+                }
+
                 val mjQpMapS = TreeMap(mjQpMap)
                 val onQpMapS = TreeMap(onQpMap)
                 val mjMsMapS = TreeMap(mjMsMap)
@@ -2615,25 +2621,33 @@ fun PPQsScreen(context: Context) {
 
                     Spacer(modifier = Modifier.height(5.dp))
 
-                    val onPaperQpName = onQpMapS.keys.elementAt(i)
-                    val onPaperMsName = onMsMapS.keys.elementAt(i)
-                    val onPaper = onPaperQpName.subSequence(12..13)
+                    var onPaperQpName = ""
+                    var onPaperMsName = ""
+                    var onPaper = "" as CharSequence
 
-                    Text(
-                        text = "Year: $year - Paper: $onPaper - Session: Oct/Nov",
-                        fontFamily = lexend,
-                        fontSize = 30.sp,
-                        color = Color.White
-                    )
-                    Spacer(modifier = Modifier.height(15.dp))
+                    try {
+                        onPaperQpName = onQpMapS.keys.elementAt(i)
+                        onPaperMsName = onMsMapS.keys.elementAt(i)
+                        onPaper = onPaperQpName.subSequence(12..13)
+                    } catch (_: IndexOutOfBoundsException) {}
 
-                    SinglePPQBox(
-                        paper = onPaper.toString(),
-                        fileIDQp = onQpMapS[onPaperQpName].toString(),
-                        fileIDMs = onMsMapS[onPaperMsName].toString()
-                    )
+                    if (onPaperQpName != "") {
+                        Text(
+                            text = "Year: $year - Paper: $onPaper - Session: Oct/Nov",
+                            fontFamily = lexend,
+                            fontSize = 30.sp,
+                            color = Color.White
+                        )
+                        Spacer(modifier = Modifier.height(15.dp))
 
-                    Spacer(modifier = Modifier.height(5.dp))
+                        SinglePPQBox(
+                            paper = onPaper.toString(),
+                            fileIDQp = onQpMapS[onPaperQpName].toString(),
+                            fileIDMs = onMsMapS[onPaperMsName].toString()
+                        )
+
+                        Spacer(modifier = Modifier.height(5.dp))
+                    }
                 }
             }
         }
