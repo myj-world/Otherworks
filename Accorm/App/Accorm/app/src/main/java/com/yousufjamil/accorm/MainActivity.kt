@@ -141,7 +141,7 @@ class MainActivity : ComponentActivity() {
                         drawerContent = {
                             ModalDrawerSheet {
                                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                                    NavigationDrawer (this@MainActivity) { scope.launch { drawerState.close() } }
+                                    NavigationDrawer(this@MainActivity) { scope.launch { drawerState.close() } }
                                 }
                             }
                         }
@@ -492,10 +492,10 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
                 contentDescription = "Subjects"
             )
             NavSingleButton(
-                onClick = { },
+                onClick = { navController.navigate("features") },
                 usesImageVector = false,
                 painterResource = R.drawable.apps,
-                contentDescription = "Services"
+                contentDescription = "Features"
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
@@ -506,7 +506,9 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
             horizontalAlignment = Alignment.Start
         ) {
             NavSingleButton(
-                onClick = { },
+                onClick = { Toast
+                    .makeText(context, "Coming Soon...", Toast.LENGTH_SHORT)
+                    .show() },
                 usesImageVector = true,
                 imageVector = Icons.Default.AddCircle,
                 contentDescription = "Contribute"
@@ -527,7 +529,9 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
         ) {
             if (uemail != "") {
                 NavSingleButton(
-                    onClick = { },
+                    onClick = { Toast
+                        .makeText(context, "Coming Soon...", Toast.LENGTH_SHORT)
+                        .show() },
                     usesImageVector = true,
                     imageVector = Icons.Default.Person,
                     contentDescription = "Profile"
@@ -538,9 +542,11 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
 
                         Thread {
                             bgWorker.execute(
-                                "https://accorm.ginastic.co/300/logout/?access-id=434&email=${URLEncoder.encode(
-                                    uemail, "utf-8"
-                                )}"
+                                "https://accorm.ginastic.co/300/logout/?access-id=434&email=${
+                                    URLEncoder.encode(
+                                        uemail, "utf-8"
+                                    )
+                                }"
                             )
                         }.start()
 
@@ -550,7 +556,11 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
                                 {
                                     if (bgWorker.status.toString() == "FINISHED") {
                                         if (bgWorker.response == "Logged out successfully.") {
-                                            Toast.makeText(context, "Logged out successfully", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(
+                                                context,
+                                                "Logged out successfully",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                             uemail = ""
                                             uname = ""
                                             ulogo = ""
@@ -606,6 +616,9 @@ fun SignUpScreen(context: Context) {
         }
         var display by remember {
             mutableStateOf(true)
+        }
+        var shown by remember {
+            mutableStateOf(false)
         }
 
         if (display) {
@@ -702,11 +715,14 @@ fun SignUpScreen(context: Context) {
                 }, update = {
                     it.loadUrl("https://accounts.ginastic.co/signup/")
                     it.settings.userAgentString = "accormAndroidAccessing"
-                    Toast.makeText(
-                        context,
-                        "Please create and account, then click login and sign in with your created email",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    if (!shown) {
+                        Toast.makeText(
+                            context,
+                            "Please create and account, then click login and sign in with your created email",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        shown = true
+                    }
                 }
             )
         }
@@ -2562,17 +2578,22 @@ fun PPQsScreen(context: Context) {
                     val item1 = jsonObject1.getJSONObject(item1key.toString())
                     if (item1.getString("Type") != "Folder") {
 
-                        val item3key = jsonObject3.names()?.getString(i)
-                        val item3 = jsonObject3.getJSONObject(item3key.toString())
-
                         val name1 = item1.getString("Name")
                         val url1 = item1.getString("URL")
 
-                        val name3 = item3.getString("Name")
-                        val url3 = item3.getString("URL")
-
                         mjQpMap[name1] = url1
-                        mjMsMap[name3] = url3
+
+                        try {
+                            val item3key = jsonObject3.names()?.getString(i)
+                            val item3 = jsonObject3.getJSONObject(item3key.toString())
+
+                            val name3 = item3.getString("Name")
+                            val url3 = item3.getString("URL")
+
+                            mjMsMap[name3] = url3
+                        } catch (_: Exception) {
+                            mjMsMap[name1] = ""
+                        }
                     }
                 }
 
@@ -2581,17 +2602,23 @@ fun PPQsScreen(context: Context) {
                     val item2key = jsonObject2.names()?.getString(i)
                     val item2 = jsonObject2.getJSONObject(item2key.toString())
 
-                    val item4key = jsonObject4.names()?.getString(i)
-                    val item4 = jsonObject4.getJSONObject(item4key.toString())
 
                     val name2 = item2.getString("Name")
                     val url2 = item2.getString("URL")
 
-                    val name4 = item4.getString("Name")
-                    val url4 = item4.getString("URL")
-
                     onQpMap[name2] = url2
-                    onMsMap[name4] = url4
+
+                    try {
+                        val item4key = jsonObject4.names()?.getString(i)
+                        val item4 = jsonObject4.getJSONObject(item4key.toString())
+
+                        val name4 = item4.getString("Name")
+                        val url4 = item4.getString("URL")
+
+                        onMsMap[name4] = url4
+                    } catch (_: Exception) {
+                        onMsMap[name2] = ""
+                    }
                 }
 
                 val mjQpMapS = TreeMap(mjQpMap)
@@ -2602,24 +2629,27 @@ fun PPQsScreen(context: Context) {
                 for (i in 0..mjQpMapS.keys.size.minus(1)) {
                     val mjPaperQpName = mjQpMapS.keys.elementAt(i)
                     val mjPaperMsName = mjMsMapS.keys.elementAt(i)
-                    val year = "20" + mjPaperQpName.substring(6..7)
+                    var year = "20" + mjPaperQpName.substring(6..7)
                     val mjPaper = mjPaperQpName.subSequence(12..13)
 
-                    Text(
-                        text = "Year: $year - Paper: $mjPaper - Session: May/June",
-                        fontFamily = lexend,
-                        fontSize = 30.sp,
-                        color = Color.White
-                    )
-                    Spacer(modifier = Modifier.height(15.dp))
+                    if (year != "20ow") {
 
-                    SinglePPQBox(
-                        paper = mjPaper.toString(),
-                        fileIDQp = mjQpMapS[mjPaperQpName].toString(),
-                        fileIDMs = mjMsMapS[mjPaperMsName].toString()
-                    )
+                        Text(
+                            text = "Year: $year - Paper: $mjPaper - Session: May/June",
+                            fontFamily = lexend,
+                            fontSize = 30.sp,
+                            color = Color.White
+                        )
+                        Spacer(modifier = Modifier.height(15.dp))
 
-                    Spacer(modifier = Modifier.height(5.dp))
+                        SinglePPQBox(
+                            paper = mjPaper.toString(),
+                            fileIDQp = mjQpMapS[mjPaperQpName].toString(),
+                            fileIDMs = mjMsMapS[mjPaperMsName].toString()
+                        )
+
+                        Spacer(modifier = Modifier.height(5.dp))
+                    }
 
                     var onPaperQpName = ""
                     var onPaperMsName = ""
@@ -2629,9 +2659,12 @@ fun PPQsScreen(context: Context) {
                         onPaperQpName = onQpMapS.keys.elementAt(i)
                         onPaperMsName = onMsMapS.keys.elementAt(i)
                         onPaper = onPaperQpName.subSequence(12..13)
-                    } catch (_: IndexOutOfBoundsException) {}
 
-                    if (onPaperQpName != "") {
+                        year = "20" + onPaperQpName.substring(6..7)
+                    } catch (_: IndexOutOfBoundsException) {
+                    }
+
+                    if (onPaperQpName != "" && year != "20ow") {
                         Text(
                             text = "Year: $year - Paper: $onPaper - Session: Oct/Nov",
                             fontFamily = lexend,
@@ -2914,6 +2947,40 @@ fun FeaturesScreen(context: Context) {
 
 @Composable
 fun ContributeScreen(context: Context) {
+
+    var bgWorker = BackgroundWorker()
+
+    var response by remember {
+        mutableStateOf("")
+    }
+
+    var canDecode by remember {
+        mutableStateOf(false)
+    }
+
+    Thread {
+        bgWorker.execute(
+            "https://accorm.ginastic.co/300/contributors/?access-id=65aea3e3e6184"
+        )
+    }.start()
+
+    fun checkStatus() {
+        println("run1")
+        Handler().postDelayed(
+            {
+                if (bgWorker.status.toString() == "FINISHED") {
+                    response = bgWorker.response
+
+                    canDecode = true
+                } else {
+                    checkStatus()
+                }
+            }, 3000
+        )
+    }
+
+    checkStatus()
+
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -2990,7 +3057,13 @@ fun ContributeScreen(context: Context) {
                     )
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                Toast
+                                    .makeText(context, "Coming Soon...", Toast.LENGTH_SHORT)
+                                    .show()
+                            },
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
@@ -3014,12 +3087,77 @@ fun ContributeScreen(context: Context) {
                 color = Color.White
             )
             Spacer(modifier = Modifier.height(15.dp))
-            Text(
-                text = "No Contributors found",
-                fontFamily = lexend,
-                fontSize = 18.sp,
-                color = Color.White
-            )
+            if (canDecode) {
+                val jsonArray = JSONObject(response)
+                val rows = jsonArray.getInt("num-of-rows")
+
+                for (i in 0 until rows) {
+                    val singleUser = jsonArray.getJSONObject("$i")
+                    val logoColor = singleUser.getString("logo-col")
+                    val logo = singleUser.getString("pfp-name")
+                    val name = singleUser.getString("name")
+                    val notes = singleUser.getString("notes")
+                    val videos = singleUser.getString("videos")
+                    val blogs = singleUser.getString("blogs")
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .background(Color(29, 32, 54, 255))
+                            .padding(horizontal = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "${i + 1}",
+                            fontFamily = lexend,
+                            color = Color.White
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Row {
+                            val r: Int =
+                                logoColor.substring(1, 3).toInt(16) // 16 for hex
+
+                            val g: Int =
+                                logoColor.substring(3, 5).toInt(16) // 16 for hex
+
+                            val b: Int =
+                                logoColor.substring(5, 7).toInt(16) // 16 for hex
+                            Box(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(100.dp))
+                                    .width(25.dp)
+                                    .height(25.dp)
+                                    .background(Color(r, g, b, 255))
+                                    .padding(3.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = logo,
+                                    color = Color.White,
+                                    fontSize = 15.sp,
+                                    fontFamily = poppins
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.width(5.dp))
+
+                            Text(
+                                text = name,
+                                fontFamily = lexend,
+                                color = Color.White
+                            )
+                        }
+                    }
+                }
+            } else {
+                Text(
+                    text = "Loading...",
+                    fontFamily = poppins,
+                    fontSize = 28.sp,
+                    color = Color.White
+                )
+            }
         }
         Spacer(modifier = Modifier.height(20.dp))
     }

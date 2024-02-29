@@ -12,7 +12,7 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.net.URLEncoder
 
-class BackgroundWorker: AsyncTask<String, Void, String>() {
+class BackgroundWorker : AsyncTask<String, Void, String>() {
 
     var response = ""
     override fun doInBackground(vararg params: String?): String {
@@ -42,9 +42,11 @@ class BackgroundWorker: AsyncTask<String, Void, String>() {
 
             con.disconnect()
         } catch (e: IOException) {
-                println("Error found in connecting to database: $e")
+            println("Error found in connecting to database: $e")
+            response = "{}"
         } catch (e: MalformedURLException) {
-                println("Error found in connecting to database: $e")
+            println("Error found in connecting to database: $e")
+            response = "{}"
         }
 
         response = content.toString()
