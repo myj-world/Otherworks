@@ -5,6 +5,8 @@ package com.yousufjamil.accorm
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -51,12 +53,15 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -289,10 +294,24 @@ class MainActivity : ComponentActivity() {
 fun Navigation(context: Context, navHostController: NavHostController) {
     NavHost(navHostController, "home") {
         composable("login") {
-            LoginScreen(context = context)
+            val connectionManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
+            val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+            if (isConnected) {
+                LoginScreen(context = context)
+            } else {
+                NoInternetScreen(context)
+            }
         }
         composable("sign-up") {
-            SignUpScreen(context = context)
+            val connectionManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
+            val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+            if (isConnected) {
+                SignUpScreen(context = context)
+            } else {
+                NoInternetScreen(context)
+            }
         }
         composable("home") {
             HomeScreen(context)
@@ -301,19 +320,54 @@ fun Navigation(context: Context, navHostController: NavHostController) {
             InfoScreen(context)
         }
         composable("resources") {
-            SubjectsScreen(context)
+            val connectionManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
+            val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+            if (isConnected) {
+                SubjectsScreen(context = context)
+            } else {
+                NoInternetScreen(context)
+            }
         }
         composable("notes-resources") {
-            NotesResourcesScreen(context)
+            val connectionManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
+            val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+            if (isConnected) {
+                NotesResourcesScreen(context = context)
+            } else {
+                NoInternetScreen(context)
+            }
         }
         composable("videos-resources") {
-            VideosResourcesScreen(context)
+            val connectionManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
+            val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+            if (isConnected) {
+                VideosResourcesScreen(context = context)
+            } else {
+                NoInternetScreen(context)
+            }
         }
         composable("ppqs") {
-            PPQsScreen(context)
+            val connectionManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
+            val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+            if (isConnected) {
+                PPQsScreen(context = context)
+            } else {
+                NoInternetScreen(context)
+            }
         }
         composable("blogs") {
-            BlogsResourcesScreen(context)
+            val connectionManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
+            val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+            if (isConnected) {
+                BlogsResourcesScreen(context = context)
+            } else {
+                NoInternetScreen(context)
+            }
         }
         composable("features") {
             FeaturesScreen(context = context)
@@ -3326,5 +3380,23 @@ fun PPTC(context: Context) {
             }
         }
         Spacer(modifier = Modifier.height(15.dp))
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NoInternetScreen(context: Context) {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(31, 31, 54, 255))
+            .padding(horizontal = 20.dp)
+            .verticalScroll(scrollState)
+    ) {
+        navController.navigate("home") {
+            popUpToRoute
+        }
+        Toast.makeText(context, "Please check your Internet Connection.", Toast.LENGTH_SHORT).show()
     }
 }
