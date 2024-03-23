@@ -615,10 +615,17 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Start
         ) {
+            fun OpenSubject(sub: String) {
+                navController.navigate("home") {
+                    popUpToRoute
+                }
+                navController.navigate("resources")
+                subject = sub
+                navController.navigate("notes-resources")
+            }
             NavSingleButton(
                 onClick = {
-                    subject = "Islamiyat"
-                    navController.navigate("notes-resources")
+                    OpenSubject("Islamiyat")
                 },
                 usesImageVector = false,
                 painterResource = R.drawable.isl_pst,
@@ -626,8 +633,7 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
             )
             NavSingleButton(
                 onClick = {
-                    subject = "Pakistan Studies, \n \n History"
-                    navController.navigate("notes-resources")
+                    OpenSubject("Pakistan Studies, \n \n History")
                 },
                 usesImageVector = false,
                 painterResource = R.drawable.isl_pst,
@@ -635,8 +641,7 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
             )
             NavSingleButton(
                 onClick = {
-                    subject = "Pakistan Studies, \n \n Geography"
-                    navController.navigate("notes-resources")
+                    OpenSubject("Pakistan Studies, \n \n Geography")
                 },
                 usesImageVector = false,
                 painterResource = R.drawable.isl_pst,
@@ -644,8 +649,7 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
             )
             NavSingleButton(
                 onClick = {
-                    subject = "Accounting"
-                    navController.navigate("notes-resources")
+                    OpenSubject("Accounting")
                 },
                 usesImageVector = false,
                 painterResource = R.drawable.accounting_math,
@@ -653,8 +657,7 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
             )
             NavSingleButton(
                 onClick = {
-                    subject = "Physics"
-                    navController.navigate("notes-resources")
+                    OpenSubject("Physics")
                 },
                 usesImageVector = false,
                 painterResource = R.drawable.physics,
@@ -662,8 +665,7 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
             )
             NavSingleButton(
                 onClick = {
-                    subject = "Chemistry"
-                    navController.navigate("notes-resources")
+                    OpenSubject("Chemistry")
                 },
                 usesImageVector = false,
                 painterResource = R.drawable.chem,
@@ -671,8 +673,7 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
             )
             NavSingleButton(
                 onClick = {
-                    subject = "Biology"
-                    navController.navigate("notes-resources")
+                    OpenSubject("Biology")
                 },
                 usesImageVector = false,
                 painterResource = R.drawable.bio,
@@ -680,8 +681,7 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
             )
             NavSingleButton(
                 onClick = {
-                    subject = "Computer Science"
-                    navController.navigate("notes-resources")
+                    OpenSubject("Computer Science")
                 },
                 usesImageVector = false,
                 painterResource = R.drawable.cs,
@@ -689,8 +689,7 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
             )
             NavSingleButton(
                 onClick = {
-                    subject = "Maths"
-                    navController.navigate("notes-resources")
+                    OpenSubject("Maths")
                 },
                 usesImageVector = false,
                 painterResource = R.drawable.accounting_math,
@@ -698,8 +697,7 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
             )
             NavSingleButton(
                 onClick = {
-                    subject = "FLE"
-                    navController.navigate("notes-resources")
+                    OpenSubject("FLE")
                 },
                 usesImageVector = false,
                 painterResource = R.drawable.fle_esl,
@@ -707,8 +705,7 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
             )
             NavSingleButton(
                 onClick = {
-                    subject = "ESL"
-                    navController.navigate("notes-resources")
+                    OpenSubject("ESL")
                 },
                 usesImageVector = false,
                 painterResource = R.drawable.fle_esl,
