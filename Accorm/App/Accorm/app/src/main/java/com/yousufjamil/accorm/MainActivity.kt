@@ -38,6 +38,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Person
@@ -201,78 +202,78 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            var ip: String? = null
-            val thread = Thread {
-                try {
-                    val url = URL("https://api.ipify.org")
-                    val connection = url.openConnection()
-                    connection.setRequestProperty(
-                        "User-Agent",
-                        "Mozilla/5.0"
-                    ) // Set a User-Agent to avoid HTTP 403 Forbidden error
-                    val inputStream = connection.getInputStream()
-                    val s = java.util.Scanner(inputStream, "UTF-8").useDelimiter("\\A")
-                    ip = s.next()
-                    inputStream.close()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-            thread.start()
-
-            fun checkStatusIP() {
-                println("run1")
-                Handler().postDelayed(
-                    {
-                        if (thread.isAlive == false) {
-                            var bgWorker = BackgroundWorker()
-
-                            Thread {
-                                bgWorker.execute(
-                                    "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing"
-                                )
-                            }.start()
-
-                            fun checkStatus() {
-                                println("run1")
-                                Handler().postDelayed(
-                                    {
-                                        if (bgWorker.status.toString() == "FINISHED") {
-                                            println("run2")
-                                            println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing")
-                                            println(uemail + uname + ulogo + ulogobg + bgWorker.response)
-                                            if (bgWorker.response.contains("{")) {
-                                                println("run4")
-                                                val jsonObject = JSONObject(bgWorker.response)
-                                                uemail = jsonObject.getString("email")
-                                                uname = jsonObject.getString("name")
-                                                ulogo = jsonObject.getString("logo")
-                                                ulogobg = jsonObject.getString("logo_bg")
-                                                println(uemail + uname + ulogo + ulogobg + bgWorker.response)
-                                            } else {
-                                                println("run3")
-                                                bgWorker = BackgroundWorker()
-                                                val ug = "accormAndroidAccessing"
-                                                Thread {
-                                                    bgWorker.execute(
-                                                        "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=$ug"
-                                                    )
-                                                }.start()
-                                                checkStatus()
-                                            }
-                                        } else {
-                                            checkStatus()
-                                        }
-                                    }, 3000
-                                )
-                            }
-                            checkStatus()
-                        } else {
-                            checkStatusIP()
-                        }
-                    }, 3000
-                )
-            }
+//            var ip: String? = null
+//            val thread = Thread {
+//                try {
+//                    val url = URL("https://api.ipify.org")
+//                    val connection = url.openConnection()
+//                    connection.setRequestProperty(
+//                        "User-Agent",
+//                        "Mozilla/5.0"
+//                    ) // Set a User-Agent to avoid HTTP 403 Forbidden error
+//                    val inputStream = connection.getInputStream()
+//                    val s = java.util.Scanner(inputStream, "UTF-8").useDelimiter("\\A")
+//                    ip = s.next()
+//                    inputStream.close()
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//            }
+//            thread.start()
+//
+//            fun checkStatusIP() {
+//                println("run1")
+//                Handler().postDelayed(
+//                    {
+//                        if (thread.isAlive == false) {
+//                            var bgWorker = BackgroundWorker()
+//
+//                            Thread {
+//                                bgWorker.execute(
+//                                    "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing"
+//                                )
+//                            }.start()
+//
+//                            fun checkStatus() {
+//                                println("run1")
+//                                Handler().postDelayed(
+//                                    {
+//                                        if (bgWorker.status.toString() == "FINISHED") {
+//                                            println("run2")
+//                                            println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing")
+//                                            println(uemail + uname + ulogo + ulogobg + bgWorker.response)
+//                                            if (bgWorker.response.contains("{")) {
+//                                                println("run4")
+//                                                val jsonObject = JSONObject(bgWorker.response)
+//                                                uemail = jsonObject.getString("email")
+//                                                uname = jsonObject.getString("name")
+//                                                ulogo = jsonObject.getString("logo")
+//                                                ulogobg = jsonObject.getString("logo_bg")
+//                                                println(uemail + uname + ulogo + ulogobg + bgWorker.response)
+//                                            } else {
+//                                                println("run3")
+//                                                bgWorker = BackgroundWorker()
+//                                                val ug = "accormAndroidAccessing"
+//                                                Thread {
+//                                                    bgWorker.execute(
+//                                                        "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=$ug"
+//                                                    )
+//                                                }.start()
+//                                                checkStatus()
+//                                            }
+//                                        } else {
+//                                            checkStatus()
+//                                        }
+//                                    }, 3000
+//                                )
+//                            }
+//                            checkStatus()
+//                        } else {
+//                            checkStatusIP()
+//                        }
+//                    }, 3000
+//                )
+//            }
         }
     }
 
@@ -301,7 +302,8 @@ class MainActivity : ComponentActivity() {
 fun Navigation(context: Context, navHostController: NavHostController) {
     NavHost(navHostController, "home") {
         composable("login") {
-            val connectionManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectionManager: ConnectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
             val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
             if (isConnected) {
@@ -311,7 +313,8 @@ fun Navigation(context: Context, navHostController: NavHostController) {
             }
         }
         composable("sign-up") {
-            val connectionManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectionManager: ConnectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
             val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
             if (isConnected) {
@@ -327,7 +330,8 @@ fun Navigation(context: Context, navHostController: NavHostController) {
             InfoScreen(context)
         }
         composable("resources") {
-            val connectionManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectionManager: ConnectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
             val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
             if (isConnected) {
@@ -337,7 +341,8 @@ fun Navigation(context: Context, navHostController: NavHostController) {
             }
         }
         composable("notes-resources") {
-            val connectionManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectionManager: ConnectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
             val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
             if (isConnected) {
@@ -347,7 +352,8 @@ fun Navigation(context: Context, navHostController: NavHostController) {
             }
         }
         composable("videos-resources") {
-            val connectionManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectionManager: ConnectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
             val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
             if (isConnected) {
@@ -357,7 +363,8 @@ fun Navigation(context: Context, navHostController: NavHostController) {
             }
         }
         composable("ppqs") {
-            val connectionManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectionManager: ConnectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
             val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
             if (isConnected) {
@@ -367,7 +374,8 @@ fun Navigation(context: Context, navHostController: NavHostController) {
             }
         }
         composable("blogs") {
-            val connectionManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectionManager: ConnectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
             val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
             if (isConnected) {
@@ -380,7 +388,8 @@ fun Navigation(context: Context, navHostController: NavHostController) {
             FeaturesScreen(context = context)
         }
         composable("contribute") {
-            val connectionManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectionManager: ConnectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetwork: NetworkInfo? = connectionManager.activeNetworkInfo
             val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
             if (isConnected) {
@@ -401,12 +410,21 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
         mutableStateOf(0)
     }
 
+    val scrollState = rememberScrollState()
+    val scope = rememberCoroutineScope()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(46, 55, 72, 255))
             .padding(horizontal = 20.dp + padding.dp - padding.dp)
-            .clickable { closeDrawer() },
+            .verticalScroll(scrollState)
+            .clickable {
+                closeDrawer()
+                scope.launch {
+                    scrollState.scrollTo(0)
+                }
+            },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         @Composable
@@ -482,69 +500,81 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
             horizontalArrangement = Arrangement.Start,
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable {
+        ) {
+//            if (uemail == "") {
+            Image(
+                painter = painterResource(id = R.drawable.app_ic),
+                contentDescription = "App icon",
+                modifier = Modifier
+                    .size(70.dp)
+                    .clip(RoundedCornerShape(corner = CornerSize(50.dp)))
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Text(
+                text = "Accorm",
+                fontFamily = lexend,
+                color = Color.White,
+                fontSize = 35.sp
+            )
+//            } else {
+//                val r: Int =
+//                    ulogobg.substring(1, 3).toInt(16) // 16 for hex
+//
+//                val g: Int =
+//                    ulogobg.substring(3, 5).toInt(16) // 16 for hex
+//
+//                val b: Int =
+//                    ulogobg.substring(5, 7).toInt(16) // 16 for hex
+//                Box(
+//                    modifier = Modifier
+//                        .clip(RoundedCornerShape(100.dp))
+//                        .width(75.dp)
+//                        .height(75.dp)
+//                        .background(Color(r, g, b, 255))
+//                        .padding(10.dp),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    Text(
+//                        text = ulogo,
+//                        color = Color.White,
+//                        fontSize = 35.sp,
+//                        fontFamily = poppins
+//                    )
+//                }
+//                Column(
+//                    modifier = Modifier
+//                        .padding(start = 10.dp)
+//                ) {
+//                    Text(
+//                        text = uname,
+//                        color = Color.White,
+//                        fontSize = 28.sp
+//                    )
+//                    Text(
+//                        text = uemail,
+//                        color = Color.White,
+//                        fontSize = 18.sp
+//                    )
+//                }
+//            }
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        Divider()
+        Spacer(modifier = Modifier.height(10.dp))
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.Start
+        ) {
+            NavSingleButton(
+                onClick = {
                     navController.navigate("home") {
                         popUpToRoute
                     }
-                    closeDrawer()
-                }
-        ) {
-            if (uemail == "") {
-                Image(
-                    painter = painterResource(id = R.drawable.app_ic),
-                    contentDescription = "App icon",
-                    modifier = Modifier
-                        .size(70.dp)
-                        .clip(RoundedCornerShape(corner = CornerSize(50.dp)))
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = "Accorm",
-                    fontFamily = lexend,
-                    color = Color.White,
-                    fontSize = 35.sp
-                )
-            } else {
-                val r: Int =
-                    ulogobg.substring(1, 3).toInt(16) // 16 for hex
-
-                val g: Int =
-                    ulogobg.substring(3, 5).toInt(16) // 16 for hex
-
-                val b: Int =
-                    ulogobg.substring(5, 7).toInt(16) // 16 for hex
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(100.dp))
-                        .width(75.dp)
-                        .height(75.dp)
-                        .background(Color(r, g, b, 255))
-                        .padding(10.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = ulogo,
-                        color = Color.White,
-                        fontSize = 35.sp,
-                        fontFamily = poppins
-                    )
-                }
-                Column(
-                    modifier = Modifier
-                        .padding(start = 10.dp)
-                ) {
-                    Text(
-                        text = uname,
-                        color = Color.White,
-                        fontSize = 28.sp
-                    )
-                    Text(
-                        text = uemail,
-                        color = Color.White,
-                        fontSize = 18.sp
-                    )
-                }
-            }
+                },
+                usesImageVector = true,
+                imageVector = Icons.Default.Home,
+                contentDescription = "Home"
+            )
         }
         Spacer(modifier = Modifier.height(20.dp))
         Divider()
@@ -565,14 +595,6 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
                 painterResource = R.drawable.apps,
                 contentDescription = "Features"
             )
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        Divider()
-        Spacer(modifier = Modifier.height(10.dp))
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.Start
-        ) {
             NavSingleButton(
                 onClick = { navController.navigate("contribute") },
                 usesImageVector = true,
@@ -593,76 +615,186 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Start
         ) {
-            if (uemail != "") {
-                NavSingleButton(
-                    onClick = { Toast
-                        .makeText(context, "Dashboard is coming soon to Accorm Android. For now, please use Accorm Web to browse through your dashboard.", Toast.LENGTH_LONG)
-                        .show()
-                        val dashboardLaunchIntent = Intent(Intent.ACTION_VIEW)
-                        dashboardLaunchIntent.data = Uri.parse("https://accorm.ginastic.co/dashboard/")
-                        context.startActivity(dashboardLaunchIntent) },
-                    usesImageVector = true,
-                    imageVector = Icons.Default.Person,
-                    contentDescription = "Dashboard"
-                )
-                NavSingleButton(
-                    onClick = {
-                        val bgWorker = BackgroundWorker()
-
-                        Thread {
-                            bgWorker.execute(
-                                "https://accorm.ginastic.co/300/logout/?access-id=434&email=${
-                                    URLEncoder.encode(
-                                        uemail, "utf-8"
-                                    )
-                                }"
-                            )
-                        }.start()
-
-                        fun checkStatus() {
-                            println("run1")
-                            Handler().postDelayed(
-                                {
-                                    if (bgWorker.status.toString() == "FINISHED") {
-                                        if (bgWorker.response == "Logged out successfully.") {
-                                            Toast.makeText(
-                                                context,
-                                                "Logged out successfully",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                            uemail = ""
-                                            uname = ""
-                                            ulogo = ""
-                                            ulogobg = ""
-                                        }
-                                    } else {
-                                        checkStatus()
-                                    }
-                                }, 3000
-                            )
-                        }
-
-                        checkStatus()
-                    },
-                    usesImageVector = false,
-                    painterResource = R.drawable.baseline_logout_24,
-                    contentDescription = "Logout"
-                )
-            } else {
-                NavSingleButton(
-                    onClick = { navController.navigate("sign-up") },
-                    usesImageVector = false,
-                    painterResource = R.drawable.baseline_person_add_alt_1_24,
-                    contentDescription = "Sign up"
-                )
-                NavSingleButton(
-                    onClick = { navController.navigate("login") },
-                    usesImageVector = false,
-                    painterResource = R.drawable.baseline_login_24,
-                    contentDescription = "Login"
-                )
-            }
+            NavSingleButton(
+                onClick = {
+                    subject = "Islamiyat"
+                    navController.navigate("notes-resources")
+                },
+                usesImageVector = false,
+                painterResource = R.drawable.isl_pst,
+                contentDescription = "Islamiyat"
+            )
+            NavSingleButton(
+                onClick = {
+                    subject = "Pakistan Studies, \n \n History"
+                    navController.navigate("notes-resources")
+                },
+                usesImageVector = false,
+                painterResource = R.drawable.isl_pst,
+                contentDescription = "PST, History"
+            )
+            NavSingleButton(
+                onClick = {
+                    subject = "Pakistan Studies, \n \n Geography"
+                    navController.navigate("notes-resources")
+                },
+                usesImageVector = false,
+                painterResource = R.drawable.isl_pst,
+                contentDescription = "PST, Geo"
+            )
+            NavSingleButton(
+                onClick = {
+                    subject = "Accounting"
+                    navController.navigate("notes-resources")
+                },
+                usesImageVector = false,
+                painterResource = R.drawable.accounting_math,
+                contentDescription = "Accounting"
+            )
+            NavSingleButton(
+                onClick = {
+                    subject = "Physics"
+                    navController.navigate("notes-resources")
+                },
+                usesImageVector = false,
+                painterResource = R.drawable.physics,
+                contentDescription = "Physics"
+            )
+            NavSingleButton(
+                onClick = {
+                    subject = "Chemistry"
+                    navController.navigate("notes-resources")
+                },
+                usesImageVector = false,
+                painterResource = R.drawable.chem,
+                contentDescription = "Chemistry"
+            )
+            NavSingleButton(
+                onClick = {
+                    subject = "Biology"
+                    navController.navigate("notes-resources")
+                },
+                usesImageVector = false,
+                painterResource = R.drawable.bio,
+                contentDescription = "Biology"
+            )
+            NavSingleButton(
+                onClick = {
+                    subject = "Computer Science"
+                    navController.navigate("notes-resources")
+                },
+                usesImageVector = false,
+                painterResource = R.drawable.cs,
+                contentDescription = "CS"
+            )
+            NavSingleButton(
+                onClick = {
+                    subject = "Maths"
+                    navController.navigate("notes-resources")
+                },
+                usesImageVector = false,
+                painterResource = R.drawable.accounting_math,
+                contentDescription = "Maths"
+            )
+            NavSingleButton(
+                onClick = {
+                    subject = "FLE"
+                    navController.navigate("notes-resources")
+                },
+                usesImageVector = false,
+                painterResource = R.drawable.fle_esl,
+                contentDescription = "FLE"
+            )
+            NavSingleButton(
+                onClick = {
+                    subject = "ESL"
+                    navController.navigate("notes-resources")
+                },
+                usesImageVector = false,
+                painterResource = R.drawable.fle_esl,
+                contentDescription = "ESL"
+            )
         }
+        Spacer(modifier = Modifier.height(10.dp))
+        Divider()
+        Spacer(modifier = Modifier.height(30.dp))
+//        Spacer(modifier = Modifier.height(10.dp))
+//        Divider()
+//        Spacer(modifier = Modifier.height(10.dp))
+//        Column(
+//            modifier = Modifier.fillMaxWidth(),
+//            horizontalAlignment = Alignment.Start
+//        ) {
+//            if (uemail != "") {
+//                NavSingleButton(
+//                    onClick = { Toast
+//                        .makeText(context, "Dashboard is coming soon to Accorm Android. For now, please use Accorm Web to browse through your dashboard.", Toast.LENGTH_LONG)
+//                        .show()
+//                        val dashboardLaunchIntent = Intent(Intent.ACTION_VIEW)
+//                        dashboardLaunchIntent.data = Uri.parse("https://accorm.ginastic.co/dashboard/")
+//                        context.startActivity(dashboardLaunchIntent) },
+//                    usesImageVector = true,
+//                    imageVector = Icons.Default.Person,
+//                    contentDescription = "Dashboard"
+//                )
+//                NavSingleButton(
+//                    onClick = {
+//                        val bgWorker = BackgroundWorker()
+//
+//                        Thread {
+//                            bgWorker.execute(
+//                                "https://accorm.ginastic.co/300/logout/?access-id=434&email=${
+//                                    URLEncoder.encode(
+//                                        uemail, "utf-8"
+//                                    )
+//                                }"
+//                            )
+//                        }.start()
+//
+//                        fun checkStatus() {
+//                            println("run1")
+//                            Handler().postDelayed(
+//                                {
+//                                    if (bgWorker.status.toString() == "FINISHED") {
+//                                        if (bgWorker.response == "Logged out successfully.") {
+//                                            Toast.makeText(
+//                                                context,
+//                                                "Logged out successfully",
+//                                                Toast.LENGTH_SHORT
+//                                            ).show()
+//                                            uemail = ""
+//                                            uname = ""
+//                                            ulogo = ""
+//                                            ulogobg = ""
+//                                        }
+//                                    } else {
+//                                        checkStatus()
+//                                    }
+//                                }, 3000
+//                            )
+//                        }
+//
+//                        checkStatus()
+//                    },
+//                    usesImageVector = false,
+//                    painterResource = R.drawable.baseline_logout_24,
+//                    contentDescription = "Logout"
+//                )
+//            } else {
+//                NavSingleButton(
+//                    onClick = { navController.navigate("sign-up") },
+//                    usesImageVector = false,
+//                    painterResource = R.drawable.baseline_person_add_alt_1_24,
+//                    contentDescription = "Sign up"
+//                )
+//                NavSingleButton(
+//                    onClick = { navController.navigate("login") },
+//                    usesImageVector = false,
+//                    painterResource = R.drawable.baseline_login_24,
+//                    contentDescription = "Login"
+//                )
+//            }
+//        }
     }
 }
 
@@ -1798,9 +1930,11 @@ fun NotesResourcesScreen(context: Context) {
             }
 
             if (canDecode) {
-                var jsonObject = JSONObject()
+                val jsonObject: JSONObject
+                val noOfRows: Int
                 try {
                     jsonObject = JSONObject(result)
+                    noOfRows = jsonObject.getInt("num-of-rows")
                 } catch (e: Exception) {
                     Text(
                         text = "An error occurred",
@@ -1814,8 +1948,8 @@ fun NotesResourcesScreen(context: Context) {
                         fontFamily = poppins,
                         fontSize = 14.sp
                     )
+                    return
                 }
-                val noOfRows = jsonObject.getInt("num-of-rows")
                 println("Stuff: $noOfRows")
                 for (i in 1..noOfRows) {
                     fun decode(): List<JSONObject> {
@@ -1828,15 +1962,17 @@ fun NotesResourcesScreen(context: Context) {
 
                     if (decode()[0].has("logo_bg")) {
                         println("${decode()[0]}")
-                        val r: Int =
-                            decode()[0].getString("logo_bg").substring(1, 3).toInt(16) // 16 for hex
+                        val r: Int
+                        val g: Int
+                        val b: Int
 
-                        val g: Int =
-                            decode()[0].getString("logo_bg").substring(3, 5).toInt(16) // 16 for hex
-
-                        val b: Int =
-                            decode()[0].getString("logo_bg").substring(5, 7).toInt(16) // 16 for hex
-
+                        try {
+                            r = decode()[0].getString("logo_bg").substring(1, 3).toInt(16)
+                            g = decode()[0].getString("logo_bg").substring(3, 5).toInt(16)
+                            b = decode()[0].getString("logo_bg").substring(5, 7).toInt(16)
+                        } catch (e: Exception) {
+                            continue
+                        }
                         SingleNotesBox(
                             bgRgb = Color(r, g, b),
                             logoLetter = decode()[0].getString("logo"),
@@ -2694,7 +2830,7 @@ fun PPQsScreen(context: Context) {
                         jsonObject2 = JSONObject(result2)
                         jsonObject3 = JSONObject(result3)
                         jsonObject4 = JSONObject(result4)
-                    } catch (e:Exception) {
+                    } catch (e: Exception) {
                         Text(
                             text = "No PPQs Available",
                             color = Color.White,
@@ -3193,7 +3329,11 @@ fun ContributeScreen(context: Context) {
                 Button(
                     onClick = {
                         Toast
-                            .makeText(context, "Contribute is coming soon to Accorm Android. For now, please use Accorm Web to contribute. Thanks for contributing to Accorm!", Toast.LENGTH_LONG)
+                            .makeText(
+                                context,
+                                "Please login to Accorm in web browser to contribute. Thanks for contributing!",
+                                Toast.LENGTH_LONG
+                            )
                             .show()
                         val site = Intent(Intent.ACTION_VIEW)
                         site.data = Uri.parse("https://accorm.ginastic.co/dashboard/")
