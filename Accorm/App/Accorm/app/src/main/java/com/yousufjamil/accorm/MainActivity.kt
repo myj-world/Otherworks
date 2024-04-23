@@ -41,6 +41,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.rounded.Menu
@@ -60,6 +61,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -91,6 +93,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.logEvent
 import com.yousufjamil.accorm.ui.theme.AccormTheme
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -107,6 +111,7 @@ lateinit var uemail: String
 lateinit var uname: String
 lateinit var ulogo: String
 lateinit var ulogobg: String
+lateinit var firebaseAnalytics: FirebaseAnalytics
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -131,6 +136,8 @@ class MainActivity : ComponentActivity() {
             Font(R.font.lexend_regular, FontWeight.Normal),
             Font(R.font.lexend_bold, FontWeight.Bold)
         )
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this@MainActivity)
 
         setContent {
             AccormTheme {
@@ -200,6 +207,35 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
+            }
+
+//            TrackAnalytics()
+
+            navController.addOnDestinationChangedListener { _, destination, _ ->
+//                val params = Bundle()
+                val sub =
+                    if (destination.route == "notes-resources" || destination.route == "videos-resources" || destination.route == "ppqs") subject else null
+//                params.putString(
+//                    FirebaseAnalytics.Param.SCREEN_NAME,
+//                    "${destination.route?.substringAfter("=")} | Accorm Android ${if (sub != null) "| subject=$sub" else ""}"
+//                )
+//                params.putString(
+//                    FirebaseAnalytics.Param.SCREEN_CLASS,
+//                    "${destination.route?.substringAfter("=")} | Accorm Android ${if (sub != null) "| subject=$sub" else ""}"
+//                )
+                Thread {
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+                        param(
+                            FirebaseAnalytics.Param.SCREEN_NAME,
+                            "${destination.route?.substringAfter("=")} | Accorm Android${if (sub != null) " | subject=$sub" else ""}"
+                        )
+                        param(
+                            FirebaseAnalytics.Param.SCREEN_CLASS,
+                            "${destination.route?.substringAfter("=")} | Accorm Android${if (sub != null) " | subject=$sub" else ""}"
+                        )
+                    }
+                }.start()
+//                println("Logged $params")
             }
 
 //            var ip: String? = null
@@ -296,6 +332,27 @@ class MainActivity : ComponentActivity() {
 
         Text(text = "Previewer")
     }
+}
+
+@Composable
+fun TrackAnalytics() {
+    navController.addOnDestinationChangedListener { _, destination, _ ->
+        val params = Bundle()
+        val sub =
+            if (destination.route == "notes-resources" || destination.route == "videos-resources" || destination.route == "ppqs") subject else null
+        params.putString(
+            FirebaseAnalytics.Param.SCREEN_NAME,
+            "${destination.route} | Accorm Android ${if (sub != null) "| subject=$sub" else ""}"
+        )
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params)
+    }
+//    DisposableEffect(key1 = Unit) {
+//        onDispose {
+//            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+//                param(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+//            }
+//        }
+//    }
 }
 
 @Composable
@@ -710,6 +767,26 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
                 usesImageVector = false,
                 painterResource = R.drawable.fle_esl,
                 contentDescription = "ESL"
+            )
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        Divider()
+        Spacer(modifier = Modifier.height(10.dp))
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.Start
+        ) {
+            NavSingleButton(
+                onClick = {
+                    navController.navigate("home") {
+                        popUpToRoute
+                    }
+                    navController.navigate("resources")
+                    navController.navigate("blogs")
+                },
+                usesImageVector = true,
+                imageVector = Icons.Default.List,
+                contentDescription = "Accorm Blogs"
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
@@ -1549,7 +1626,7 @@ fun SubjectsScreen(context: Context) {
                     Text(
                         text = title,
                         fontFamily = lexend,
-                        fontSize = 30.sp,
+                        fontSize = if (!title.contains("Pak")) 30.sp else 24.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center
@@ -1751,7 +1828,7 @@ fun NotesResourcesScreen(context: Context) {
                             }
                             withStyle(
                                 SpanStyle(
-                                    fontSize = 48.sp
+                                    fontSize = if (!subject.contains("Pak")) 48.sp else 30.sp
                                 )
                             ) {
                                 append("$subject \n\n")
@@ -2085,7 +2162,7 @@ fun VideosResourcesScreen(context: Context) {
                             }
                             withStyle(
                                 SpanStyle(
-                                    fontSize = 48.sp
+                                    fontSize = if (!subject.contains("Pak")) 48.sp else 30.sp
                                 )
                             ) {
                                 append("$subject \n\n")
@@ -2532,7 +2609,7 @@ fun BlogsResourcesScreen(context: Context) {
                             SingleBlogBox(
                                 nameDisplay = decode()[0].getString("publisher"),
                                 textDisplay = decode()[0].getString("title"),
-                                linkId = "https://blogs.ginastic.co/blog/?id=${
+                                linkId = "https://blog.ginastic.co/blog/?id=${
                                     decode()[0].getString(
                                         "unique_id"
                                     )
@@ -2682,7 +2759,7 @@ fun PPQsScreen(context: Context) {
                                 }
                                 withStyle(
                                     SpanStyle(
-                                        fontSize = 48.sp
+                                        fontSize = if (!subject.contains("Pak")) 48.sp else 30.sp
                                     )
                                 ) {
                                     append("$subject \n\n")
