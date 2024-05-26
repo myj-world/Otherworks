@@ -45,6 +45,7 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.rounded.Menu
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerValue
@@ -56,6 +57,7 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
@@ -209,6 +211,38 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
+            var show by remember {
+                mutableStateOf(true)
+            }
+            val isShown =
+                getSharedPreferences("accorm_data", MODE_PRIVATE).getString("warning_avast", "")
+                    .toString()
+            if (isShown == "" && show) {
+                AlertDialog(
+                    icon = {
+                        Icon(Icons.Default.Warning, contentDescription = "Warning")
+                    },
+                    title = {
+                        Text(text = "Warning for Avast Antivirus, HONOR and HUAWEI Users")
+                    },
+                    text = {
+                        Text(text = "Avast Antivirus users, and therefore HUAWEI and HONOR users have reported an anti-virus warning regarding Accorm security. We wanted to inform our users that Accorm is a secure platform, and this is a FALSE positive warning from Avast regarding a few random apps downloaded from Google Play. Avast is currently fixing this issue, and till then, don't be worried if you see this issue.")
+                    },
+                    onDismissRequest = {},
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                getSharedPreferences("accorm_data", MODE_PRIVATE).edit()
+                                    .putString("warning_avast", "warning shown").apply()
+                                show = false
+                            }
+                        ) {
+                            Text("OK")
+                        }
+                    }
+                )
+            }
+
 //            TrackAnalytics()
 
             navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -238,78 +272,78 @@ class MainActivity : ComponentActivity() {
 //                println("Logged $params")
             }
 
-//            var ip: String? = null
-//            val thread = Thread {
-//                try {
-//                    val url = URL("https://api.ipify.org")
-//                    val connection = url.openConnection()
-//                    connection.setRequestProperty(
-//                        "User-Agent",
-//                        "Mozilla/5.0"
-//                    ) // Set a User-Agent to avoid HTTP 403 Forbidden error
-//                    val inputStream = connection.getInputStream()
-//                    val s = java.util.Scanner(inputStream, "UTF-8").useDelimiter("\\A")
-//                    ip = s.next()
-//                    inputStream.close()
-//                } catch (e: Exception) {
-//                    e.printStackTrace()
-//                }
-//            }
-//            thread.start()
-//
-//            fun checkStatusIP() {
-//                println("run1")
-//                Handler().postDelayed(
-//                    {
-//                        if (thread.isAlive == false) {
-//                            var bgWorker = BackgroundWorker()
-//
-//                            Thread {
-//                                bgWorker.execute(
-//                                    "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing"
-//                                )
-//                            }.start()
-//
-//                            fun checkStatus() {
-//                                println("run1")
-//                                Handler().postDelayed(
-//                                    {
-//                                        if (bgWorker.status.toString() == "FINISHED") {
-//                                            println("run2")
-//                                            println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing")
-//                                            println(uemail + uname + ulogo + ulogobg + bgWorker.response)
-//                                            if (bgWorker.response.contains("{")) {
-//                                                println("run4")
-//                                                val jsonObject = JSONObject(bgWorker.response)
-//                                                uemail = jsonObject.getString("email")
-//                                                uname = jsonObject.getString("name")
-//                                                ulogo = jsonObject.getString("logo")
-//                                                ulogobg = jsonObject.getString("logo_bg")
-//                                                println(uemail + uname + ulogo + ulogobg + bgWorker.response)
-//                                            } else {
-//                                                println("run3")
-//                                                bgWorker = BackgroundWorker()
-//                                                val ug = "accormAndroidAccessing"
-//                                                Thread {
-//                                                    bgWorker.execute(
-//                                                        "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=$ug"
-//                                                    )
-//                                                }.start()
-//                                                checkStatus()
-//                                            }
-//                                        } else {
-//                                            checkStatus()
-//                                        }
-//                                    }, 3000
-//                                )
-//                            }
-//                            checkStatus()
-//                        } else {
-//                            checkStatusIP()
-//                        }
-//                    }, 3000
-//                )
-//            }
+            var ip: String? = null
+            val thread = Thread {
+                try {
+                    val url = URL("https://api.ipify.org")
+                    val connection = url.openConnection()
+                    connection.setRequestProperty(
+                        "User-Agent",
+                        "Mozilla/5.0"
+                    ) // Set a User-Agent to avoid HTTP 403 Forbidden error
+                    val inputStream = connection.getInputStream()
+                    val s = java.util.Scanner(inputStream, "UTF-8").useDelimiter("\\A")
+                    ip = s.next()
+                    inputStream.close()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            thread.start()
+
+            fun checkStatusIP() {
+                println("run1")
+                Handler().postDelayed(
+                    {
+                        if (thread.isAlive == false) {
+                            var bgWorker = BackgroundWorker()
+
+                            Thread {
+                                bgWorker.execute(
+                                    "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing"
+                                )
+                            }.start()
+
+                            fun checkStatus() {
+                                println("run1")
+                                Handler().postDelayed(
+                                    {
+                                        if (bgWorker.status.toString() == "FINISHED") {
+                                            println("run2")
+                                            println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing")
+                                            println(uemail + uname + ulogo + ulogobg + bgWorker.response)
+                                            if (bgWorker.response.contains("{")) {
+                                                println("run4")
+                                                val jsonObject = JSONObject(bgWorker.response)
+                                                uemail = jsonObject.getString("email")
+                                                uname = jsonObject.getString("name")
+                                                ulogo = jsonObject.getString("logo")
+                                                ulogobg = jsonObject.getString("logo_bg")
+                                                println(uemail + uname + ulogo + ulogobg + bgWorker.response)
+                                            } else {
+                                                println("run3")
+                                                bgWorker = BackgroundWorker()
+                                                val ug = "accormAndroidAccessing"
+                                                Thread {
+                                                    bgWorker.execute(
+                                                        "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=$ug"
+                                                    )
+                                                }.start()
+                                                checkStatus()
+                                            }
+                                        } else {
+                                            checkStatus()
+                                        }
+                                    }, 3000
+                                )
+                            }
+                            checkStatus()
+                        } else {
+                            checkStatusIP()
+                        }
+                    }, 3000
+                )
+            }
         }
     }
 
@@ -558,64 +592,141 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-//            if (uemail == "") {
-            Image(
-                painter = painterResource(id = R.drawable.app_ic),
-                contentDescription = "App icon",
-                modifier = Modifier
-                    .size(70.dp)
-                    .clip(RoundedCornerShape(corner = CornerSize(50.dp)))
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(
-                text = "Accorm",
-                fontFamily = lexend,
-                color = Color.White,
-                fontSize = 35.sp
-            )
-//            } else {
-//                val r: Int =
-//                    ulogobg.substring(1, 3).toInt(16) // 16 for hex
-//
-//                val g: Int =
-//                    ulogobg.substring(3, 5).toInt(16) // 16 for hex
-//
-//                val b: Int =
-//                    ulogobg.substring(5, 7).toInt(16) // 16 for hex
-//                Box(
-//                    modifier = Modifier
-//                        .clip(RoundedCornerShape(100.dp))
-//                        .width(75.dp)
-//                        .height(75.dp)
-//                        .background(Color(r, g, b, 255))
-//                        .padding(10.dp),
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    Text(
-//                        text = ulogo,
-//                        color = Color.White,
-//                        fontSize = 35.sp,
-//                        fontFamily = poppins
-//                    )
-//                }
-//                Column(
-//                    modifier = Modifier
-//                        .padding(start = 10.dp)
-//                ) {
-//                    Text(
-//                        text = uname,
-//                        color = Color.White,
-//                        fontSize = 28.sp
-//                    )
-//                    Text(
-//                        text = uemail,
-//                        color = Color.White,
-//                        fontSize = 18.sp
-//                    )
-//                }
-//            }
+            if (uemail == "") {
+                Image(
+                    painter = painterResource(id = R.drawable.app_ic),
+                    contentDescription = "App icon",
+                    modifier = Modifier
+                        .size(70.dp)
+                        .clip(RoundedCornerShape(corner = CornerSize(50.dp)))
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = "Accorm",
+                    fontFamily = lexend,
+                    color = Color.White,
+                    fontSize = 35.sp
+                )
+            } else {
+                val r: Int =
+                    ulogobg.substring(1, 3).toInt(16) // 16 for hex
+
+                val g: Int =
+                    ulogobg.substring(3, 5).toInt(16) // 16 for hex
+
+                val b: Int =
+                    ulogobg.substring(5, 7).toInt(16) // 16 for hex
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(100.dp))
+                        .width(75.dp)
+                        .height(75.dp)
+                        .background(Color(r, g, b, 255))
+                        .padding(10.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = ulogo,
+                        color = Color.White,
+                        fontSize = 35.sp,
+                        fontFamily = poppins
+                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                ) {
+                    Text(
+                        text = uname,
+                        color = Color.White,
+                        fontSize = 28.sp
+                    )
+                    Text(
+                        text = uemail,
+                        color = Color.White,
+                        fontSize = 18.sp
+                    )
+                }
+            }
         }
         Spacer(modifier = Modifier.height(20.dp))
+        Divider()
+        Spacer(modifier = Modifier.height(10.dp))
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.Start
+        ) {
+            if (uemail != "") {
+//                NavSingleButton(
+//                    onClick = { Toast
+//                        .makeText(context, "Dashboard is coming soon to Accorm Android. For now, please use Accorm Web to browse through your dashboard.", Toast.LENGTH_LONG)
+//                        .show()
+//                        val dashboardLaunchIntent = Intent(Intent.ACTION_VIEW)
+//                        dashboardLaunchIntent.data = Uri.parse("https://accorm.ginastic.co/dashboard/")
+//                        context.startActivity(dashboardLaunchIntent) },
+//                    usesImageVector = true,
+//                    imageVector = Icons.Default.Person,
+//                    contentDescription = "Dashboard"
+//                )
+                NavSingleButton(
+                    onClick = {
+                        val bgWorker = BackgroundWorker()
+
+                        Thread {
+                            bgWorker.execute(
+                                "https://accorm.ginastic.co/300/logout/?access-id=434&email=${
+                                    URLEncoder.encode(
+                                        uemail, "utf-8"
+                                    )
+                                }"
+                            )
+                        }.start()
+
+                        fun checkStatus() {
+                            println("run1")
+                            Handler().postDelayed(
+                                {
+                                    if (bgWorker.status.toString() == "FINISHED") {
+                                        if (bgWorker.response == "Logged out successfully.") {
+                                            Toast.makeText(
+                                                context,
+                                                "Logged out successfully",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            uemail = ""
+                                            uname = ""
+                                            ulogo = ""
+                                            ulogobg = ""
+                                        }
+                                    } else {
+                                        checkStatus()
+                                    }
+                                }, 3000
+                            )
+                        }
+
+                        checkStatus()
+                    },
+                    usesImageVector = false,
+                    painterResource = R.drawable.baseline_logout_24,
+                    contentDescription = "Logout"
+                )
+            } else {
+                NavSingleButton(
+                    onClick = { navController.navigate("sign-up") },
+                    usesImageVector = false,
+                    painterResource = R.drawable.baseline_person_add_alt_1_24,
+                    contentDescription = "Sign up"
+                )
+                NavSingleButton(
+                    onClick = { navController.navigate("login") },
+                    usesImageVector = false,
+                    painterResource = R.drawable.baseline_login_24,
+                    contentDescription = "Login"
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(10.dp))
         Divider()
         Spacer(modifier = Modifier.height(10.dp))
         Column(
@@ -792,83 +903,7 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
         Spacer(modifier = Modifier.height(10.dp))
         Divider()
         Spacer(modifier = Modifier.height(30.dp))
-//        Spacer(modifier = Modifier.height(10.dp))
-//        Divider()
-//        Spacer(modifier = Modifier.height(10.dp))
-//        Column(
-//            modifier = Modifier.fillMaxWidth(),
-//            horizontalAlignment = Alignment.Start
-//        ) {
-//            if (uemail != "") {
-//                NavSingleButton(
-//                    onClick = { Toast
-//                        .makeText(context, "Dashboard is coming soon to Accorm Android. For now, please use Accorm Web to browse through your dashboard.", Toast.LENGTH_LONG)
-//                        .show()
-//                        val dashboardLaunchIntent = Intent(Intent.ACTION_VIEW)
-//                        dashboardLaunchIntent.data = Uri.parse("https://accorm.ginastic.co/dashboard/")
-//                        context.startActivity(dashboardLaunchIntent) },
-//                    usesImageVector = true,
-//                    imageVector = Icons.Default.Person,
-//                    contentDescription = "Dashboard"
-//                )
-//                NavSingleButton(
-//                    onClick = {
-//                        val bgWorker = BackgroundWorker()
-//
-//                        Thread {
-//                            bgWorker.execute(
-//                                "https://accorm.ginastic.co/300/logout/?access-id=434&email=${
-//                                    URLEncoder.encode(
-//                                        uemail, "utf-8"
-//                                    )
-//                                }"
-//                            )
-//                        }.start()
-//
-//                        fun checkStatus() {
-//                            println("run1")
-//                            Handler().postDelayed(
-//                                {
-//                                    if (bgWorker.status.toString() == "FINISHED") {
-//                                        if (bgWorker.response == "Logged out successfully.") {
-//                                            Toast.makeText(
-//                                                context,
-//                                                "Logged out successfully",
-//                                                Toast.LENGTH_SHORT
-//                                            ).show()
-//                                            uemail = ""
-//                                            uname = ""
-//                                            ulogo = ""
-//                                            ulogobg = ""
-//                                        }
-//                                    } else {
-//                                        checkStatus()
-//                                    }
-//                                }, 3000
-//                            )
-//                        }
-//
-//                        checkStatus()
-//                    },
-//                    usesImageVector = false,
-//                    painterResource = R.drawable.baseline_logout_24,
-//                    contentDescription = "Logout"
-//                )
-//            } else {
-//                NavSingleButton(
-//                    onClick = { navController.navigate("sign-up") },
-//                    usesImageVector = false,
-//                    painterResource = R.drawable.baseline_person_add_alt_1_24,
-//                    contentDescription = "Sign up"
-//                )
-//                NavSingleButton(
-//                    onClick = { navController.navigate("login") },
-//                    usesImageVector = false,
-//                    painterResource = R.drawable.baseline_login_24,
-//                    contentDescription = "Login"
-//                )
-//            }
-//        }
+
     }
 }
 
@@ -891,9 +926,6 @@ fun SignUpScreen(context: Context) {
         }
         var display by remember {
             mutableStateOf(true)
-        }
-        var shown by remember {
-            mutableStateOf(false)
         }
 
         if (display) {
@@ -980,24 +1012,11 @@ fun SignUpScreen(context: Context) {
                         }
                         loadUrl("https://accounts.ginastic.co/signup/")
                         settings.javaScriptEnabled = true
-                        Toast.makeText(
-                            context,
-                            "Please create and account, then click login and sign in with your created email",
-                            Toast.LENGTH_LONG
-                        ).show()
                         webView = this
                     }
                 }, update = {
                     it.loadUrl("https://accounts.ginastic.co/signup/")
                     it.settings.userAgentString = "accormAndroidAccessing"
-                    if (!shown) {
-                        Toast.makeText(
-                            context,
-                            "Please create and account, then click login and sign in with your created email",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        shown = true
-                    }
                 }
             )
         }
@@ -3701,6 +3720,7 @@ fun NoInternetScreen(context: Context) {
         navController.navigate("home") {
             popUpToRoute
         }
-        Toast.makeText(context, "Please check your Internet Connection.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Please check your Internet Connection.", Toast.LENGTH_SHORT)
+            .show()
     }
 }
