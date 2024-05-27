@@ -320,6 +320,8 @@ class MainActivity : ComponentActivity() {
                                                 ulogo = jsonObject.getString("logo")
                                                 ulogobg = jsonObject.getString("logo_bg")
                                                 println(uemail + uname + ulogo + ulogobg + bgWorker.response)
+
+                                                Toast.makeText(this@MainActivity, "Re-logged in successfully", Toast.LENGTH_SHORT).show()
                                             } else {
                                                 println("run3")
                                                 bgWorker = BackgroundWorker()
@@ -344,6 +346,8 @@ class MainActivity : ComponentActivity() {
                     }, 3000
                 )
             }
+
+            checkStatusIP()
         }
     }
 
@@ -1908,12 +1912,12 @@ fun NotesResourcesScreen(context: Context) {
                         .padding(5.dp)
                         .clickable {
                             navController.popBackStack()
-                            navController.navigate("blogs")
+                            navController.navigate("ppqs")
                         },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Blogs",
+                        text = "PPQs",
                         color = Color.White
                     )
                 }
@@ -2044,6 +2048,7 @@ fun NotesResourcesScreen(context: Context) {
                     return
                 }
                 println("Stuff: $noOfRows")
+
                 for (i in 1..noOfRows) {
                     fun decode(): List<JSONObject> {
                         return try {
@@ -2053,7 +2058,7 @@ fun NotesResourcesScreen(context: Context) {
                         }
                     }
 
-                    if (decode()[0].has("logo_bg")) {
+                    if (decode()[0].has("logo_bg") && uemail == "") {
                         println("${decode()[0]}")
                         val r: Int
                         val g: Int
@@ -2066,15 +2071,83 @@ fun NotesResourcesScreen(context: Context) {
                         } catch (e: Exception) {
                             continue
                         }
-                        SingleNotesBox(
-                            bgRgb = Color(r, g, b),
-                            logoLetter = decode()[0].getString("logo"),
-                            nameDisplay = decode()[0].getString("publisher"),
-                            textDisplay = decode()[0].getString("title"),
-                            fileID = decode()[0].getString("fileID"),
-                        )
+                        if (uemail == "") {
+                            SingleNotesBox(
+                                bgRgb = Color(r, g, b),
+                                logoLetter = decode()[0].getString("logo"),
+                                nameDisplay = decode()[0].getString("publisher"),
+                                textDisplay = decode()[0].getString("title"),
+                                fileID = decode()[0].getString("fileID"),
+                            )
+                        }
 
 //                        println("Stuff: $r, $g, $b -- ${decode()[1].getString("logo")} -- ${decode()[1].getString("publisher")} -- ${decode()[1].getString("title")}")
+                    }
+                }
+
+                if (uemail != "") {
+                    val sortedKeys = jsonObject.keys().asSequence()
+                        .filter { it != "num-of-rows" }
+                        .sortedBy { key ->
+                            val chapterValue = jsonObject.getJSONObject(key).getString("chapter")
+                            if (chapterValue == "all") Int.MAX_VALUE - 1 else if (chapterValue == "miscellaneous") Int.MAX_VALUE else if (chapterValue == "P1") Int.MAX_VALUE-6 else if (chapterValue == "P2") Int.MAX_VALUE-5 else if (chapterValue == "P3") Int.MAX_VALUE-4 else if (chapterValue == "P4") Int.MAX_VALUE-3 else if (chapterValue == "P6") Int.MAX_VALUE-2 else chapterValue.toInt()
+                        }
+                        .toList()
+
+                    val sortedJsonArray = JSONObject()
+                    sortedKeys.forEachIndexed { index, key ->
+                        sortedJsonArray.put(index.toString(), jsonObject.getJSONObject(key))
+                    }
+
+                    var lastChapter = ""
+
+                    for (i in 0..noOfRows) {
+                        fun decode(): List<JSONObject> {
+                            return try {
+                                listOf(sortedJsonArray.getJSONObject("$i"))
+                            } catch (_: Exception) {
+                                listOf(JSONObject())
+                            }
+                        }
+
+                        println("${decode()[0]}")
+
+                        if (decode()[0].has("logo_bg")) {
+                            val currentChapter = decode()[0].getString("chapter")
+
+                            if (currentChapter != lastChapter) {
+                                Spacer(modifier = Modifier.height(10.dp))
+                                val displayText = if (currentChapter == "all") "All Chapters" else if (currentChapter == "miscellaneous") "Other Notes" else if (currentChapter.contains("P")) currentChapter else "Chapter $currentChapter"
+                                Text(
+                                    text = displayText,
+                                    color = Color.White,
+                                    fontFamily = poppins,
+                                    fontSize = 28.sp
+                                )
+                                lastChapter = currentChapter
+                            }
+                            println("${decode()[0]}")
+                            val r: Int
+                            val g: Int
+                            val b: Int
+
+                            try {
+                                r = decode()[0].getString("logo_bg").substring(1, 3).toInt(16)
+                                g = decode()[0].getString("logo_bg").substring(3, 5).toInt(16)
+                                b = decode()[0].getString("logo_bg").substring(5, 7).toInt(16)
+                            } catch (e: Exception) {
+                                continue
+                            }
+                            SingleNotesBox(
+                                bgRgb = Color(r, g, b),
+                                logoLetter = decode()[0].getString("logo"),
+                                nameDisplay = decode()[0].getString("publisher"),
+                                textDisplay = decode()[0].getString("title"),
+                                fileID = decode()[0].getString("fileID"),
+                            )
+
+//                        println("Stuff: $r, $g, $b -- ${decode()[1].getString("logo")} -- ${decode()[1].getString("publisher")} -- ${decode()[1].getString("title")}")
+                        }
                     }
                 }
             }
@@ -2242,12 +2315,12 @@ fun VideosResourcesScreen(context: Context) {
                         .padding(5.dp)
                         .clickable {
                             navController.popBackStack()
-                            navController.navigate("blogs")
+                            navController.navigate("ppqs")
                         },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Blogs",
+                        text = "PPQs",
                         color = Color.White
                     )
                 }
@@ -2377,36 +2450,102 @@ fun VideosResourcesScreen(context: Context) {
                     }
                     val noOfRows = jsonObject.getInt("num-of-rows")
                     println("Stuff: $noOfRows")
-                    for (i in 1..noOfRows) {
-                        fun decode(): List<JSONObject> {
-                            return try {
-                                listOf(jsonObject.getJSONObject("$i"))
-                            } catch (_: Exception) {
-                                listOf(JSONObject())
+                    if (uemail == "") {
+                        for (i in 1..noOfRows) {
+                            fun decode(): List<JSONObject> {
+                                return try {
+                                    listOf(jsonObject.getJSONObject("$i"))
+                                } catch (_: Exception) {
+                                    listOf(JSONObject())
+                                }
+                            }
+
+                            if (decode()[0].has("logo_bg")) {
+                                println("${decode()[0]}")
+                                val r: Int =
+                                    decode()[0].getString("logo_bg").substring(1, 3)
+                                        .toInt(16) // 16 for hex
+
+                                val g: Int =
+                                    decode()[0].getString("logo_bg").substring(3, 5)
+                                        .toInt(16) // 16 for hex
+
+                                val b: Int =
+                                    decode()[0].getString("logo_bg").substring(5, 7)
+                                        .toInt(16) // 16 for hex
+
+                                SingleVideoBox(
+                                    bgRgb = Color(r, g, b),
+                                    logoLetter = decode()[0].getString("logo"),
+                                    nameDisplay = decode()[0].getString("publisher"),
+                                    textDisplay = decode()[0].getString("title"),
+                                    link = decode()[0].getString("link")
+                                )
                             }
                         }
+                    } else {
+                        val sortedKeys = jsonObject.keys().asSequence()
+                            .filter { it != "num-of-rows" }
+                            .sortedBy { key ->
+                                val chapterValue = jsonObject.getJSONObject(key).getString("chapter")
+                                if (chapterValue == "all") Int.MAX_VALUE - 1 else if (chapterValue == "miscellaneous") Int.MAX_VALUE else if (chapterValue == "P1") Int.MAX_VALUE-6 else if (chapterValue == "P2") Int.MAX_VALUE-5 else if (chapterValue == "P3") Int.MAX_VALUE-4 else if (chapterValue == "P4") Int.MAX_VALUE-3 else if (chapterValue == "P6") Int.MAX_VALUE-2 else chapterValue.toInt()
+                            }
+                            .toList()
 
-                        if (decode()[0].has("logo_bg")) {
+                        val sortedJsonArray = JSONObject()
+                        sortedKeys.forEachIndexed { index, key ->
+                            sortedJsonArray.put(index.toString(), jsonObject.getJSONObject(key))
+                        }
+
+                        var lastChapter = ""
+
+                        for (i in 0..noOfRows) {
+                            fun decode(): List<JSONObject> {
+                                return try {
+                                    listOf(sortedJsonArray.getJSONObject("$i"))
+                                } catch (_: Exception) {
+                                    listOf(JSONObject())
+                                }
+                            }
+
                             println("${decode()[0]}")
-                            val r: Int =
-                                decode()[0].getString("logo_bg").substring(1, 3)
-                                    .toInt(16) // 16 for hex
 
-                            val g: Int =
-                                decode()[0].getString("logo_bg").substring(3, 5)
-                                    .toInt(16) // 16 for hex
+                            if (decode()[0].has("logo_bg")) {
+                                val currentChapter = decode()[0].getString("chapter")
 
-                            val b: Int =
-                                decode()[0].getString("logo_bg").substring(5, 7)
-                                    .toInt(16) // 16 for hex
+                                if (currentChapter != lastChapter) {
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    val displayText = if (currentChapter == "all") "All Chapters" else if (currentChapter == "miscellaneous") "Other Notes" else if (currentChapter.contains("P")) currentChapter else "Chapter $currentChapter"
+                                    Text(
+                                        text = displayText,
+                                        color = Color.White,
+                                        fontFamily = poppins,
+                                        fontSize = 28.sp
+                                    )
+                                    lastChapter = currentChapter
+                                }
+                                println("${decode()[0]}")
+                                val r: Int
+                                val g: Int
+                                val b: Int
 
-                            SingleVideoBox(
-                                bgRgb = Color(r, g, b),
-                                logoLetter = decode()[0].getString("logo"),
-                                nameDisplay = decode()[0].getString("publisher"),
-                                textDisplay = decode()[0].getString("title"),
-                                link = decode()[0].getString("link")
-                            )
+                                try {
+                                    r = decode()[0].getString("logo_bg").substring(1, 3).toInt(16)
+                                    g = decode()[0].getString("logo_bg").substring(3, 5).toInt(16)
+                                    b = decode()[0].getString("logo_bg").substring(5, 7).toInt(16)
+                                } catch (e: Exception) {
+                                    continue
+                                }
+                                SingleVideoBox(
+                                    bgRgb = Color(r, g, b),
+                                    logoLetter = decode()[0].getString("logo"),
+                                    nameDisplay = decode()[0].getString("publisher"),
+                                    textDisplay = decode()[0].getString("title"),
+                                    link = decode()[0].getString("link"),
+                                )
+
+//                        println("Stuff: $r, $g, $b -- ${decode()[1].getString("logo")} -- ${decode()[1].getString("publisher")} -- ${decode()[1].getString("title")}")
+                            }
                         }
                     }
                 } else {
@@ -2810,6 +2949,45 @@ fun PPQsScreen(context: Context) {
                     fontFamily = lexend,
                     color = Color.White
                 )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .width(80.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(Color(145, 145, 254, 255))
+                            .padding(5.dp)
+                            .clickable {
+                                navController.popBackStack()
+                                navController.navigate("notes-resources")
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Notes",
+                            color = Color.White
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Box(
+                        modifier = Modifier
+                            .width(80.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(Color(145, 145, 254, 255))
+                            .padding(5.dp)
+                            .clickable {
+                                navController.popBackStack()
+                                navController.navigate("videos-resources")
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Videos",
+                            color = Color.White
+                        )
+                    }
+                }
             }
             Column(
                 modifier = Modifier
@@ -2991,16 +3169,29 @@ fun PPQsScreen(context: Context) {
                     val mjMsMapS = TreeMap(mjMsMap)
                     val onMsMapS = TreeMap(onQpMap)
 
+                    var lastYear = ""
+
                     for (i in 0..mjQpMapS.keys.size.minus(1)) {
-                        val mjPaperQpName = mjQpMapS.keys.elementAt(i)
-                        val mjPaperMsName = mjMsMapS.keys.elementAt(i)
+                        val mjPaperQpName = mjQpMapS.keys.elementAt(mjQpMapS.keys.size.minus(i+1))
+                        val mjPaperMsName = mjMsMapS.keys.elementAt(mjMsMapS.keys.size.minus(i+1))
                         var year = "20" + mjPaperQpName.substring(6..7)
                         val mjPaper = mjPaperQpName.subSequence(12..13)
 
                         if (year != "20ow") {
 
+                            if (lastYear != year) {
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = "Year: $year",
+                                    color = Color.White,
+                                    fontFamily = poppins,
+                                    fontSize = 28.sp
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                lastYear = year
+                            }
                             Text(
-                                text = "Year: $year - Paper: $mjPaper - Session: May/June",
+                                text = "Paper: $mjPaper - Session: May/June",
                                 fontFamily = lexend,
                                 fontSize = 30.sp,
                                 color = Color.White
@@ -3021,8 +3212,8 @@ fun PPQsScreen(context: Context) {
                         var onPaper = "" as CharSequence
 
                         try {
-                            onPaperQpName = onQpMapS.keys.elementAt(i)
-                            onPaperMsName = onMsMapS.keys.elementAt(i)
+                            onPaperQpName = onQpMapS.keys.elementAt(onQpMapS.keys.size.minus(i+1))
+                            onPaperMsName = onMsMapS.keys.elementAt(onMsMapS.keys.size.minus(i+1))
                             onPaper = onPaperQpName.subSequence(12..13)
 
                             year = "20" + onPaperQpName.substring(6..7)
@@ -3031,7 +3222,7 @@ fun PPQsScreen(context: Context) {
 
                         if (onPaperQpName != "" && year != "20ow") {
                             Text(
-                                text = "Year: $year - Paper: $onPaper - Session: Oct/Nov",
+                                text = "Paper: $onPaper - Session: Oct/Nov",
                                 fontFamily = lexend,
                                 fontSize = 30.sp,
                                 color = Color.White
