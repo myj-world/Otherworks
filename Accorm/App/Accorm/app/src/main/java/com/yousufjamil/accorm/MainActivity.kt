@@ -597,16 +597,16 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
                 .fillMaxWidth()
         ) {
             if (uemail == "") {
+                Spacer(modifier = Modifier.width(15.dp))
                 Image(
                     painter = painterResource(id = R.drawable.app_ic),
                     contentDescription = "App icon",
                     modifier = Modifier
-                        .size(70.dp)
-                        .clip(RoundedCornerShape(corner = CornerSize(50.dp)))
+                        .size(70.dp),
+                    contentScale = ContentScale.FillWidth
                 )
-                Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    text = "Accorm",
+                    text = "ccorm",
                     fontFamily = lexend,
                     color = Color.White,
                     fontSize = 35.sp
@@ -2515,7 +2515,7 @@ fun VideosResourcesScreen(context: Context) {
 
                                 if (currentChapter != lastChapter) {
                                     Spacer(modifier = Modifier.height(10.dp))
-                                    val displayText = if (currentChapter == "all") "All Chapters" else if (currentChapter == "miscellaneous") "Other Notes" else if (currentChapter.contains("P")) currentChapter else "Chapter $currentChapter"
+                                    val displayText = if (currentChapter == "all") "All Chapters" else if (currentChapter == "miscellaneous") "Other Videos" else if (currentChapter.contains("P")) currentChapter else "Chapter $currentChapter"
                                     Text(
                                         text = displayText,
                                         color = Color.White,
