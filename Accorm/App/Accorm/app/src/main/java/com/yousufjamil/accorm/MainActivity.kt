@@ -42,7 +42,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.AlertDialog
@@ -63,7 +62,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -211,13 +209,21 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            var show by remember {
+            var showAvastWarning by remember {
                 mutableStateOf(true)
             }
-            val isShown =
+            val isShownAvastWarning =
                 getSharedPreferences("accorm_data", MODE_PRIVATE).getString("warning_avast", "")
                     .toString()
-            if (isShown == "" && show) {
+
+            var showMaintainanceWarning by remember {
+                mutableStateOf(false)
+            }
+            val isShownMaintainanceWarning =
+                getSharedPreferences("accorm_data", MODE_PRIVATE).getString("warning_avast", "")
+                    .toString()
+
+            if (isShownAvastWarning == "" && showAvastWarning) {
                 AlertDialog(
                     icon = {
                         Icon(Icons.Default.Warning, contentDescription = "Warning")
@@ -234,7 +240,41 @@ class MainActivity : ComponentActivity() {
                             onClick = {
                                 getSharedPreferences("accorm_data", MODE_PRIVATE).edit()
                                     .putString("warning_avast", "warning shown").apply()
-                                show = false
+                                showAvastWarning = false
+
+                                Handler().postDelayed(
+                                    {
+                                        showMaintainanceWarning = true
+                                    }, 1000
+                                )
+                            }
+                        ) {
+                            Text("OK")
+                        }
+                    }
+                )
+            } else {
+                showMaintainanceWarning = true
+            }
+
+            if (isShownMaintainanceWarning == "" && showMaintainanceWarning) {
+                AlertDialog(
+                    icon = {
+                        Icon(Icons.Default.Info, contentDescription = "Info")
+                    },
+                    title = {
+                        Text(text = "Accorm is temporarily unavailable")
+                    },
+                    text = {
+                        Text(text = "Accorm is currently under maintenance. We will be back soon!")
+                    },
+                    onDismissRequest = {},
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                getSharedPreferences("accorm_data", MODE_PRIVATE).edit()
+                                    .putString("warning_avast", "warning shown").apply()
+                                showMaintainanceWarning = false
                             }
                         ) {
                             Text("OK")
@@ -243,20 +283,9 @@ class MainActivity : ComponentActivity() {
                 )
             }
 
-//            TrackAnalytics()
-
             navController.addOnDestinationChangedListener { _, destination, _ ->
-//                val params = Bundle()
                 val sub =
                     if (destination.route == "notes-resources" || destination.route == "videos-resources" || destination.route == "ppqs") subject else null
-//                params.putString(
-//                    FirebaseAnalytics.Param.SCREEN_NAME,
-//                    "${destination.route?.substringAfter("=")} | Accorm Android ${if (sub != null) "| subject=$sub" else ""}"
-//                )
-//                params.putString(
-//                    FirebaseAnalytics.Param.SCREEN_CLASS,
-//                    "${destination.route?.substringAfter("=")} | Accorm Android ${if (sub != null) "| subject=$sub" else ""}"
-//                )
                 Thread {
                     firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
                         param(
@@ -269,7 +298,6 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 }.start()
-//                println("Logged $params")
             }
 
             var ip: String? = null
@@ -280,7 +308,7 @@ class MainActivity : ComponentActivity() {
                     connection.setRequestProperty(
                         "User-Agent",
                         "Mozilla/5.0"
-                    ) // Set a User-Agent to avoid HTTP 403 Forbidden error
+                    )
                     val inputStream = connection.getInputStream()
                     val s = java.util.Scanner(inputStream, "UTF-8").useDelimiter("\\A")
                     ip = s.next()
@@ -298,40 +326,52 @@ class MainActivity : ComponentActivity() {
                         if (thread.isAlive == false) {
                             var bgWorker = BackgroundWorker()
 
-                            Thread {
-                                bgWorker.execute(
-                                    "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing"
-                                )
-                            }.start()
+                            try {
+
+                                Thread {
+                                    bgWorker.execute(
+                                        "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing"
+                                    )
+                                }.start()
+                            } catch (_: Exception) {
+                                return@postDelayed
+                            }
 
                             fun checkStatus() {
                                 println("run1")
                                 Handler().postDelayed(
                                     {
                                         if (bgWorker.status.toString() == "FINISHED") {
-                                            println("run2")
-                                            println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing")
-                                            println(uemail + uname + ulogo + ulogobg + bgWorker.response)
-                                            if (bgWorker.response.contains("{")) {
-                                                println("run4")
-                                                val jsonObject = JSONObject(bgWorker.response)
-                                                uemail = jsonObject.getString("email")
-                                                uname = jsonObject.getString("name")
-                                                ulogo = jsonObject.getString("logo")
-                                                ulogobg = jsonObject.getString("logo_bg")
+                                            try {
+                                                println("run2")
+                                                println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing")
                                                 println(uemail + uname + ulogo + ulogobg + bgWorker.response)
+                                                if (bgWorker.response.contains("{")) {
+                                                    println("run4")
+                                                    val jsonObject = JSONObject(bgWorker.response)
+                                                    uemail = jsonObject.getString("email")
+                                                    uname = jsonObject.getString("name")
+                                                    ulogo = jsonObject.getString("logo")
+                                                    ulogobg = jsonObject.getString("logo_bg")
+                                                    println(uemail + uname + ulogo + ulogobg + bgWorker.response)
 
-                                                Toast.makeText(this@MainActivity, "Re-logged in successfully", Toast.LENGTH_SHORT).show()
-                                            } else {
-                                                println("run3")
-                                                bgWorker = BackgroundWorker()
-                                                val ug = "accormAndroidAccessing"
-                                                Thread {
-                                                    bgWorker.execute(
-                                                        "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=$ug"
-                                                    )
-                                                }.start()
-                                                checkStatus()
+                                                    Toast.makeText(
+                                                        this@MainActivity,
+                                                        "Re-logged in successfully",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                } else {
+                                                    println("run3")
+                                                    bgWorker = BackgroundWorker()
+                                                    val ug = "accormAndroidAccessing"
+                                                    Thread {
+                                                        bgWorker.execute(
+                                                            "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=$ug"
+                                                        )
+                                                    }.start()
+                                                    checkStatus()
+                                                }
+                                            } catch (e: Exception) {
                                             }
                                         } else {
                                             checkStatus()
@@ -370,27 +410,6 @@ class MainActivity : ComponentActivity() {
 
         Text(text = "Previewer")
     }
-}
-
-@Composable
-fun TrackAnalytics() {
-    navController.addOnDestinationChangedListener { _, destination, _ ->
-        val params = Bundle()
-        val sub =
-            if (destination.route == "notes-resources" || destination.route == "videos-resources" || destination.route == "ppqs") subject else null
-        params.putString(
-            FirebaseAnalytics.Param.SCREEN_NAME,
-            "${destination.route} | Accorm Android ${if (sub != null) "| subject=$sub" else ""}"
-        )
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params)
-    }
-//    DisposableEffect(key1 = Unit) {
-//        onDispose {
-//            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
-//                param(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
-//            }
-//        }
-//    }
 }
 
 @Composable
@@ -674,42 +693,51 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
 //                )
                 NavSingleButton(
                     onClick = {
+
                         val bgWorker = BackgroundWorker()
 
-                        Thread {
-                            bgWorker.execute(
-                                "https://accorm.ginastic.co/300/logout/?access-id=434&email=${
-                                    URLEncoder.encode(
-                                        uemail, "utf-8"
-                                    )
-                                }"
-                            )
-                        }.start()
+                        try {
+                            Thread {
+                                bgWorker.execute(
+                                    "https://accorm.ginastic.co/300/logout/?access-id=434&email=${
+                                        URLEncoder.encode(
+                                            uemail, "utf-8"
+                                        )
+                                    }"
+                                )
+                            }.start()
 
-                        fun checkStatus() {
-                            println("run1")
-                            Handler().postDelayed(
-                                {
-                                    if (bgWorker.status.toString() == "FINISHED") {
-                                        if (bgWorker.response == "Logged out successfully.") {
-                                            Toast.makeText(
-                                                context,
-                                                "Logged out successfully",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                            uemail = ""
-                                            uname = ""
-                                            ulogo = ""
-                                            ulogobg = ""
+                            fun checkStatus() {
+                                println("run1")
+                                Handler().postDelayed(
+                                    {
+                                        if (bgWorker.status.toString() == "FINISHED") {
+                                            if (bgWorker.response == "Logged out successfully.") {
+                                                Toast.makeText(
+                                                    context,
+                                                    "Logged out successfully",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                uemail = ""
+                                                uname = ""
+                                                ulogo = ""
+                                                ulogobg = ""
+                                            }
+                                        } else {
+                                            checkStatus()
                                         }
-                                    } else {
-                                        checkStatus()
-                                    }
-                                }, 3000
-                            )
-                        }
+                                    }, 3000
+                                )
+                            }
 
-                        checkStatus()
+                            checkStatus()
+                        } catch (_: Exception) {
+                            Toast.makeText(
+                                context,
+                                "Error logging out",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     },
                     usesImageVector = false,
                     painterResource = R.drawable.baseline_logout_24,
@@ -954,41 +982,69 @@ fun SignUpScreen(context: Context) {
 
             var bgWorker = BackgroundWorker()
 
-            Thread {
-                bgWorker.execute(
-                    "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing"
-                )
-            }.start()
+            try {
+                Thread {
+                    bgWorker.execute(
+                        "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing"
+                    )
+                }.start()
+
+                Toast.makeText(
+                    context,
+                    "Error loading",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                navController.navigate("home") {
+                    popUpToRoute
+                }
+
+                return
+            } catch (_: Exception) {
+            }
 
             fun checkStatus() {
                 println("run1")
                 Handler().postDelayed(
                     {
                         if (bgWorker.status.toString() == "FINISHED") {
-                            println("run2")
-                            println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=${webView.settings.userAgentString}")
-                            println(ip + webView.settings.userAgentString)
-                            println(uemail + uname + ulogo + ulogobg + bgWorker.response)
-                            if (bgWorker.response.contains("{")) {
-                                println("run4")
-                                val jsonObject = JSONObject(bgWorker.response)
-                                uemail = jsonObject.getString("email")
-                                uname = jsonObject.getString("name")
-                                ulogo = jsonObject.getString("logo")
-                                ulogobg = jsonObject.getString("logo_bg")
-                                display = false
+                            try {
+                                println("run2")
+                                println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=${webView.settings.userAgentString}")
+                                println(ip + webView.settings.userAgentString)
                                 println(uemail + uname + ulogo + ulogobg + bgWorker.response)
-                                navController.popBackStack()
-                            } else {
-                                println("run3")
-                                bgWorker = BackgroundWorker()
-                                val ug = webView.settings.userAgentString
-                                Thread {
-                                    bgWorker.execute(
-                                        "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=$ug"
-                                    )
-                                }.start()
-                                checkStatus()
+                                if (bgWorker.response.contains("{")) {
+                                    println("run4")
+                                    val jsonObject = JSONObject(bgWorker.response)
+                                    uemail = jsonObject.getString("email")
+                                    uname = jsonObject.getString("name")
+                                    ulogo = jsonObject.getString("logo")
+                                    ulogobg = jsonObject.getString("logo_bg")
+                                    display = false
+                                    println(uemail + uname + ulogo + ulogobg + bgWorker.response)
+                                    navController.popBackStack()
+                                } else {
+                                    println("run3")
+                                    bgWorker = BackgroundWorker()
+                                    val ug = webView.settings.userAgentString
+                                    Thread {
+                                        bgWorker.execute(
+                                            "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=$ug"
+                                        )
+                                    }.start()
+                                    checkStatus()
+                                }
+                            } catch (_: Exception) {
+                                Toast.makeText(
+                                    context,
+                                    "Error loading",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                                navController.navigate("home") {
+                                    popUpToRoute
+                                }
+                                return@postDelayed
                             }
                         } else {
                             checkStatus()
@@ -1070,41 +1126,66 @@ fun LoginScreen(context: Context) {
 
             var bgWorker = BackgroundWorker()
 
-            Thread {
-                bgWorker.execute(
-                    "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing"
-                )
-            }.start()
+            try {
+                Thread {
+                    bgWorker.execute(
+                        "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=accormAndroidAccessing"
+                    )
+                }.start()
+            } catch (_: Exception) {
+                Toast.makeText(
+                    context,
+                    "Error loading",
+                    Toast.LENGTH_SHORT
+                ).show()
+                navController.navigate("home") {
+                    popUpToRoute
+                }
+                return
+            }
 
             fun checkStatus() {
                 println("run1")
                 Handler().postDelayed(
                     {
                         if (bgWorker.status.toString() == "FINISHED") {
-                            println("run2")
-                            println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=${webView.settings.userAgentString}")
-                            println(ip + webView.settings.userAgentString)
-                            println(uemail + uname + ulogo + ulogobg + bgWorker.response)
-                            if (bgWorker.response.contains("{")) {
-                                println("run4")
-                                val jsonObject = JSONObject(bgWorker.response)
-                                uemail = jsonObject.getString("email")
-                                uname = jsonObject.getString("name")
-                                ulogo = jsonObject.getString("logo")
-                                ulogobg = jsonObject.getString("logo_bg")
-                                display = false
+                            try {
+                                println("run2")
+                                println("https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=${webView.settings.userAgentString}")
+                                println(ip + webView.settings.userAgentString)
                                 println(uemail + uname + ulogo + ulogobg + bgWorker.response)
-                                navController.popBackStack()
-                            } else {
-                                println("run3")
-                                bgWorker = BackgroundWorker()
-                                val ug = webView.settings.userAgentString
-                                Thread {
-                                    bgWorker.execute(
-                                        "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=$ug"
-                                    )
-                                }.start()
-                                checkStatus()
+                                if (bgWorker.response.contains("{")) {
+                                    println("run4")
+                                    val jsonObject = JSONObject(bgWorker.response)
+                                    uemail = jsonObject.getString("email")
+                                    uname = jsonObject.getString("name")
+                                    ulogo = jsonObject.getString("logo")
+                                    ulogobg = jsonObject.getString("logo_bg")
+                                    display = false
+                                    println(uemail + uname + ulogo + ulogobg + bgWorker.response)
+                                    navController.popBackStack()
+                                } else {
+                                    println("run3")
+                                    bgWorker = BackgroundWorker()
+                                    val ug = webView.settings.userAgentString
+                                    Thread {
+                                        bgWorker.execute(
+                                            "https://accorm.ginastic.co/300/login/?access-id=313&ip=$ip&ug=$ug"
+                                        )
+                                    }.start()
+                                    checkStatus()
+                                }
+                            } catch (_: Exception) {
+                                Toast.makeText(
+                                    context,
+                                    "Error loading",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                                navController.navigate("home") {
+                                    popUpToRoute
+                                }
+                                return@postDelayed
                             }
                         } else {
                             checkStatus()
@@ -2039,12 +2120,7 @@ fun NotesResourcesScreen(context: Context) {
                         fontFamily = poppins,
                         fontSize = 28.sp
                     )
-                    Text(
-                        text = "$e",
-                        color = Color.White,
-                        fontFamily = poppins,
-                        fontSize = 14.sp
-                    )
+                    LatestBreakoutInfo()
                     return
                 }
                 println("Stuff: $noOfRows")
@@ -2090,7 +2166,7 @@ fun NotesResourcesScreen(context: Context) {
                         .filter { it != "num-of-rows" }
                         .sortedBy { key ->
                             val chapterValue = jsonObject.getJSONObject(key).getString("chapter")
-                            if (chapterValue == "all") Int.MAX_VALUE - 1 else if (chapterValue == "miscellaneous") Int.MAX_VALUE else if (chapterValue == "P1") Int.MAX_VALUE-6 else if (chapterValue == "P2") Int.MAX_VALUE-5 else if (chapterValue == "P3") Int.MAX_VALUE-4 else if (chapterValue == "P4") Int.MAX_VALUE-3 else if (chapterValue == "P6") Int.MAX_VALUE-2 else chapterValue.toInt()
+                            if (chapterValue == "all") Int.MAX_VALUE - 1 else if (chapterValue == "miscellaneous") Int.MAX_VALUE else if (chapterValue == "P1") Int.MAX_VALUE - 6 else if (chapterValue == "P2") Int.MAX_VALUE - 5 else if (chapterValue == "P3") Int.MAX_VALUE - 4 else if (chapterValue == "P4") Int.MAX_VALUE - 3 else if (chapterValue == "P6") Int.MAX_VALUE - 2 else chapterValue.toInt()
                         }
                         .toList()
 
@@ -2117,7 +2193,11 @@ fun NotesResourcesScreen(context: Context) {
 
                             if (currentChapter != lastChapter) {
                                 Spacer(modifier = Modifier.height(10.dp))
-                                val displayText = if (currentChapter == "all") "All Chapters" else if (currentChapter == "miscellaneous") "Other Notes" else if (currentChapter.contains("P")) currentChapter else "Chapter $currentChapter"
+                                val displayText =
+                                    if (currentChapter == "all") "All Chapters" else if (currentChapter == "miscellaneous") "Other Notes" else if (currentChapter.contains(
+                                            "P"
+                                        )
+                                    ) currentChapter else "Chapter $currentChapter"
                                 Text(
                                     text = displayText,
                                     color = Color.White,
@@ -2431,7 +2511,7 @@ fun VideosResourcesScreen(context: Context) {
 
             if (canDecode) {
                 if (result != "no data available.") {
-                    var jsonObject = JSONObject()
+                    val jsonObject: JSONObject
                     try {
                         jsonObject = JSONObject(result)
                     } catch (e: Exception) {
@@ -2441,12 +2521,8 @@ fun VideosResourcesScreen(context: Context) {
                             fontFamily = poppins,
                             fontSize = 28.sp
                         )
-                        Text(
-                            text = e.toString(),
-                            color = Color.White,
-                            fontFamily = poppins,
-                            fontSize = 14.sp
-                        )
+                        LatestBreakoutInfo()
+                        return
                     }
                     val noOfRows = jsonObject.getInt("num-of-rows")
                     println("Stuff: $noOfRows")
@@ -2487,8 +2563,9 @@ fun VideosResourcesScreen(context: Context) {
                         val sortedKeys = jsonObject.keys().asSequence()
                             .filter { it != "num-of-rows" }
                             .sortedBy { key ->
-                                val chapterValue = jsonObject.getJSONObject(key).getString("chapter")
-                                if (chapterValue == "all") Int.MAX_VALUE - 1 else if (chapterValue == "miscellaneous") Int.MAX_VALUE else if (chapterValue == "P1") Int.MAX_VALUE-6 else if (chapterValue == "P2") Int.MAX_VALUE-5 else if (chapterValue == "P3") Int.MAX_VALUE-4 else if (chapterValue == "P4") Int.MAX_VALUE-3 else if (chapterValue == "P6") Int.MAX_VALUE-2 else chapterValue.toInt()
+                                val chapterValue =
+                                    jsonObject.getJSONObject(key).getString("chapter")
+                                if (chapterValue == "all") Int.MAX_VALUE - 1 else if (chapterValue == "miscellaneous") Int.MAX_VALUE else if (chapterValue == "P1") Int.MAX_VALUE - 6 else if (chapterValue == "P2") Int.MAX_VALUE - 5 else if (chapterValue == "P3") Int.MAX_VALUE - 4 else if (chapterValue == "P4") Int.MAX_VALUE - 3 else if (chapterValue == "P6") Int.MAX_VALUE - 2 else chapterValue.toInt()
                             }
                             .toList()
 
@@ -2515,7 +2592,11 @@ fun VideosResourcesScreen(context: Context) {
 
                                 if (currentChapter != lastChapter) {
                                     Spacer(modifier = Modifier.height(10.dp))
-                                    val displayText = if (currentChapter == "all") "All Chapters" else if (currentChapter == "miscellaneous") "Other Videos" else if (currentChapter.contains("P")) currentChapter else "Chapter $currentChapter"
+                                    val displayText =
+                                        if (currentChapter == "all") "All Chapters" else if (currentChapter == "miscellaneous") "Other Videos" else if (currentChapter.contains(
+                                                "P"
+                                            )
+                                        ) currentChapter else "Chapter $currentChapter"
                                     Text(
                                         text = displayText,
                                         color = Color.White,
@@ -2749,7 +2830,19 @@ fun BlogsResourcesScreen(context: Context) {
 
             if (canDecode) {
                 if (result != "no data available.") {
-                    val jsonObject = JSONObject(result)
+                    val jsonObject : JSONObject
+                    try {
+                        jsonObject = JSONObject(result)
+                    } catch (_:Exception) {
+                        Text(
+                            text = "An error occurred",
+                            color = Color.White,
+                            fontFamily = poppins,
+                            fontSize = 28.sp
+                            )
+                        LatestBreakoutInfo()
+                        return
+                    }
                     val noOfRows = jsonObject.getInt("num-of-rows")
                     println("Stuff: $noOfRows")
                     for (i in 1..noOfRows) {
@@ -2783,6 +2876,7 @@ fun BlogsResourcesScreen(context: Context) {
                         fontFamily = poppins,
                         fontSize = 28.sp
                     )
+                    LatestBreakoutInfo()
                 }
             }
 
@@ -3092,10 +3186,10 @@ fun PPQsScreen(context: Context) {
                 }
 
                 if (canDecode) {
-                    var jsonObject1 = JSONObject()
-                    var jsonObject2 = JSONObject()
-                    var jsonObject3 = JSONObject()
-                    var jsonObject4 = JSONObject()
+                    val jsonObject1: JSONObject
+                    val jsonObject2: JSONObject
+                    val jsonObject3: JSONObject
+                    val jsonObject4: JSONObject
                     try {
                         jsonObject1 = JSONObject(result1)
                         jsonObject2 = JSONObject(result2)
@@ -3108,6 +3202,8 @@ fun PPQsScreen(context: Context) {
                             fontFamily = poppins,
                             fontSize = 28.sp
                         )
+                        LatestBreakoutInfo()
+                        return
                     }
 
                     val mjQpMap: MutableMap<String, String> = HashMap()
@@ -3172,8 +3268,8 @@ fun PPQsScreen(context: Context) {
                     var lastYear = ""
 
                     for (i in 0..mjQpMapS.keys.size.minus(1)) {
-                        val mjPaperQpName = mjQpMapS.keys.elementAt(mjQpMapS.keys.size.minus(i+1))
-                        val mjPaperMsName = mjMsMapS.keys.elementAt(mjMsMapS.keys.size.minus(i+1))
+                        val mjPaperQpName = mjQpMapS.keys.elementAt(mjQpMapS.keys.size.minus(i + 1))
+                        val mjPaperMsName = mjMsMapS.keys.elementAt(mjMsMapS.keys.size.minus(i + 1))
                         var year = "20" + mjPaperQpName.substring(6..7)
                         val mjPaper = mjPaperQpName.subSequence(12..13)
 
@@ -3212,8 +3308,8 @@ fun PPQsScreen(context: Context) {
                         var onPaper = "" as CharSequence
 
                         try {
-                            onPaperQpName = onQpMapS.keys.elementAt(onQpMapS.keys.size.minus(i+1))
-                            onPaperMsName = onMsMapS.keys.elementAt(onMsMapS.keys.size.minus(i+1))
+                            onPaperQpName = onQpMapS.keys.elementAt(onQpMapS.keys.size.minus(i + 1))
+                            onPaperMsName = onMsMapS.keys.elementAt(onMsMapS.keys.size.minus(i + 1))
                             onPaper = onPaperQpName.subSequence(12..13)
 
                             year = "20" + onPaperQpName.substring(6..7)
@@ -3238,6 +3334,9 @@ fun PPQsScreen(context: Context) {
                             Spacer(modifier = Modifier.height(5.dp))
                         }
                     }
+                } else {
+                    Text(text = "Unknown error")
+                    LatestBreakoutInfo()
                 }
             }
         }
@@ -3656,8 +3755,16 @@ fun ContributeScreen(context: Context) {
             )
             Spacer(modifier = Modifier.height(15.dp))
             if (canDecode) {
-                val jsonArray = JSONObject(response)
-                val rows = jsonArray.getInt("num-of-rows")
+                val jsonArray: JSONObject
+                val rows: Int
+                try {
+                    jsonArray = JSONObject(response)
+                    rows = jsonArray.getInt("num-of-rows")
+                } catch (e: Exception) {
+                    Text(text = "Unknown error", color = Color.White)
+                    LatestBreakoutInfo()
+                    return
+                }
 
                 for (i in 0 until rows) {
                     val singleUser = jsonArray.getJSONObject("$i")
@@ -3914,4 +4021,9 @@ fun NoInternetScreen(context: Context) {
         Toast.makeText(context, "Please check your Internet Connection.", Toast.LENGTH_SHORT)
             .show()
     }
+}
+
+@Composable
+fun LatestBreakoutInfo() {
+    Text(text = "Accorm is currently under maintainance. It make take a few weeks until we come back online", color = Color.White)
 }
