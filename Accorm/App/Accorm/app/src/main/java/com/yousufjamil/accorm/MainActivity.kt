@@ -220,7 +220,7 @@ class MainActivity : ComponentActivity() {
                 mutableStateOf(false)
             }
             val isShownMaintainanceWarning =
-                getSharedPreferences("accorm_data", MODE_PRIVATE).getString("warning_avast", "")
+                getSharedPreferences("accorm_data", MODE_PRIVATE).getString("warning_maintainance", "")
                     .toString()
 
             if (isShownAvastWarning == "" && showAvastWarning) {
@@ -273,7 +273,7 @@ class MainActivity : ComponentActivity() {
                         TextButton(
                             onClick = {
                                 getSharedPreferences("accorm_data", MODE_PRIVATE).edit()
-                                    .putString("warning_avast", "warning shown").apply()
+                                    .putString("warning_maintainance", "warning shown").apply()
                                 showMaintainanceWarning = false
                             }
                         ) {
@@ -387,7 +387,8 @@ class MainActivity : ComponentActivity() {
                 )
             }
 
-            checkStatusIP()
+//            TO BRING BACK
+//            checkStatusIP()
         }
     }
 
@@ -674,12 +675,15 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
         }
         Spacer(modifier = Modifier.height(20.dp))
         Divider()
-        Spacer(modifier = Modifier.height(10.dp))
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.Start
-        ) {
-            if (uemail != "") {
+//        TO BRING BACK
+//        Spacer(modifier = Modifier.height(10.dp))
+//        Column(
+//            modifier = Modifier.fillMaxWidth(),
+//            horizontalAlignment = Alignment.Start
+//        ) {
+//            if (uemail != "") {
+
+
 //                NavSingleButton(
 //                    onClick = { Toast
 //                        .makeText(context, "Dashboard is coming soon to Accorm Android. For now, please use Accorm Web to browse through your dashboard.", Toast.LENGTH_LONG)
@@ -691,74 +695,76 @@ fun NavigationDrawer(context: Context, closeDrawer: () -> Unit) {
 //                    imageVector = Icons.Default.Person,
 //                    contentDescription = "Dashboard"
 //                )
-                NavSingleButton(
-                    onClick = {
 
-                        val bgWorker = BackgroundWorker()
-
-                        try {
-                            Thread {
-                                bgWorker.execute(
-                                    "https://accorm.ginastic.co/300/logout/?access-id=434&email=${
-                                        URLEncoder.encode(
-                                            uemail, "utf-8"
-                                        )
-                                    }"
-                                )
-                            }.start()
-
-                            fun checkStatus() {
-                                println("run1")
-                                Handler().postDelayed(
-                                    {
-                                        if (bgWorker.status.toString() == "FINISHED") {
-                                            if (bgWorker.response == "Logged out successfully.") {
-                                                Toast.makeText(
-                                                    context,
-                                                    "Logged out successfully",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                                uemail = ""
-                                                uname = ""
-                                                ulogo = ""
-                                                ulogobg = ""
-                                            }
-                                        } else {
-                                            checkStatus()
-                                        }
-                                    }, 3000
-                                )
-                            }
-
-                            checkStatus()
-                        } catch (_: Exception) {
-                            Toast.makeText(
-                                context,
-                                "Error logging out",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    },
-                    usesImageVector = false,
-                    painterResource = R.drawable.baseline_logout_24,
-                    contentDescription = "Logout"
-                )
-            } else {
-                NavSingleButton(
-                    onClick = { navController.navigate("sign-up") },
-                    usesImageVector = false,
-                    painterResource = R.drawable.baseline_person_add_alt_1_24,
-                    contentDescription = "Sign up"
-                )
-                NavSingleButton(
-                    onClick = { navController.navigate("login") },
-                    usesImageVector = false,
-                    painterResource = R.drawable.baseline_login_24,
-                    contentDescription = "Login"
-                )
-            }
-        }
-        Spacer(modifier = Modifier.height(10.dp))
+//                TO BRING BACK
+//                NavSingleButton(
+//                    onClick = {
+//
+//                        val bgWorker = BackgroundWorker()
+//
+//                        try {
+//                            Thread {
+//                                bgWorker.execute(
+//                                    "https://accorm.ginastic.co/300/logout/?access-id=434&email=${
+//                                        URLEncoder.encode(
+//                                            uemail, "utf-8"
+//                                        )
+//                                    }"
+//                                )
+//                            }.start()
+//
+//                            fun checkStatus() {
+//                                println("run1")
+//                                Handler().postDelayed(
+//                                    {
+//                                        if (bgWorker.status.toString() == "FINISHED") {
+//                                            if (bgWorker.response == "Logged out successfully.") {
+//                                                Toast.makeText(
+//                                                    context,
+//                                                    "Logged out successfully",
+//                                                    Toast.LENGTH_SHORT
+//                                                ).show()
+//                                                uemail = ""
+//                                                uname = ""
+//                                                ulogo = ""
+//                                                ulogobg = ""
+//                                            }
+//                                        } else {
+//                                            checkStatus()
+//                                        }
+//                                    }, 3000
+//                                )
+//                            }
+//
+//                            checkStatus()
+//                        } catch (_: Exception) {
+//                            Toast.makeText(
+//                                context,
+//                                "Error logging out - Accorm is under maintenance",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                        }
+//                    },
+//                    usesImageVector = false,
+//                    painterResource = R.drawable.baseline_logout_24,
+//                    contentDescription = "Logout"
+//                )
+//            } else {
+//                NavSingleButton(
+//                    onClick = { navController.navigate("sign-up") },
+//                    usesImageVector = false,
+//                    painterResource = R.drawable.baseline_person_add_alt_1_24,
+//                    contentDescription = "Sign up"
+//                )
+//                NavSingleButton(
+//                    onClick = { navController.navigate("login") },
+//                    usesImageVector = false,
+//                    painterResource = R.drawable.baseline_login_24,
+//                    contentDescription = "Login"
+//                )
+//            }
+//        }
+//        Spacer(modifier = Modifier.height(10.dp))
         Divider()
         Spacer(modifier = Modifier.height(10.dp))
         Column(
@@ -991,7 +997,7 @@ fun SignUpScreen(context: Context) {
 
                 Toast.makeText(
                     context,
-                    "Error loading",
+                    "Error loading - Accorm is under maintenance",
                     Toast.LENGTH_SHORT
                 ).show()
 
@@ -1037,7 +1043,7 @@ fun SignUpScreen(context: Context) {
                             } catch (_: Exception) {
                                 Toast.makeText(
                                     context,
-                                    "Error loading",
+                                    "Error loading - Accorm is under maintenance",
                                     Toast.LENGTH_SHORT
                                 ).show()
 
@@ -1135,7 +1141,7 @@ fun LoginScreen(context: Context) {
             } catch (_: Exception) {
                 Toast.makeText(
                     context,
-                    "Error loading",
+                    "Error loading - Accorm is under maintenance",
                     Toast.LENGTH_SHORT
                 ).show()
                 navController.navigate("home") {
@@ -1178,7 +1184,7 @@ fun LoginScreen(context: Context) {
                             } catch (_: Exception) {
                                 Toast.makeText(
                                     context,
-                                    "Error loading",
+                                    "Error loading - Accorm is under maintenance",
                                     Toast.LENGTH_SHORT
                                 ).show()
 
@@ -2871,7 +2877,7 @@ fun BlogsResourcesScreen(context: Context) {
                     }
                 } else {
                     Text(
-                        text = "Unknown Error",
+                        text = "An error occurred.",
                         color = Color.White,
                         fontFamily = poppins,
                         fontSize = 28.sp
@@ -3334,9 +3340,6 @@ fun PPQsScreen(context: Context) {
                             Spacer(modifier = Modifier.height(5.dp))
                         }
                     }
-                } else {
-                    Text(text = "Unknown error")
-                    LatestBreakoutInfo()
                 }
             }
         }
@@ -3757,8 +3760,9 @@ fun ContributeScreen(context: Context) {
             if (canDecode) {
                 val jsonArray: JSONObject
                 val rows: Int
+                jsonArray = JSONObject(response)
                 try {
-                    jsonArray = JSONObject(response)
+//                    jsonArray = JSONObject(response)
                     rows = jsonArray.getInt("num-of-rows")
                 } catch (e: Exception) {
                     Text(text = "Unknown error", color = Color.White)
