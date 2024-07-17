@@ -47,6 +47,7 @@ import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -1789,29 +1790,32 @@ fun SubjectsScreen(context: Context) {
                             tint = Color.White
                         )
                     }
-                    Spacer(modifier = Modifier.height(5.dp))
-                    Button(
-                        onClick = {
-                            subject = title
-                            navController.navigate("ppqs")
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(142, 142, 209, 255)
-                        )
-                    ) {
-                        Text(
-                            text = "PPQs",
-                            fontFamily = lexend,
-                            fontSize = 18.sp,
-                            color = Color.White
-                        )
-                        Icon(
-                            imageVector = Icons.Default.KeyboardArrowRight,
-                            contentDescription = "Browse",
-                            tint = Color.White
-                        )
+
+                    if (title != "FLE" && title != "ESL") {
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Button(
+                            onClick = {
+                                subject = title
+                                navController.navigate("ppqs")
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(142, 142, 209, 255)
+                            )
+                        ) {
+                            Text(
+                                text = "PPQs",
+                                fontFamily = lexend,
+                                fontSize = 18.sp,
+                                color = Color.White
+                            )
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowRight,
+                                contentDescription = "Browse",
+                                tint = Color.White
+                            )
+                        }
                     }
                 }
             }
@@ -1938,7 +1942,7 @@ fun NotesResourcesScreen(context: Context) {
                             }
                             withStyle(
                                 SpanStyle(
-                                    fontSize = if (!subject.contains("Pak")) 48.sp else 30.sp
+                                    fontSize = if (!subject.contains("Pak") || !subject.contains("Computer")) 48.sp else 30.sp
                                 )
                             ) {
                                 append("$subject \n\n")
@@ -1990,23 +1994,26 @@ fun NotesResourcesScreen(context: Context) {
                         color = Color.White
                     )
                 }
-                Spacer(modifier = Modifier.width(10.dp))
-                Box(
-                    modifier = Modifier
-                        .width(80.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(Color(145, 145, 254, 255))
-                        .padding(5.dp)
-                        .clickable {
-                            navController.popBackStack()
-                            navController.navigate("ppqs")
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "PPQs",
-                        color = Color.White
-                    )
+
+                if (subject != "FLE" && subject != "ESL") {
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Box(
+                        modifier = Modifier
+                            .width(80.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(Color(145, 145, 254, 255))
+                            .padding(5.dp)
+                            .clickable {
+                                navController.popBackStack()
+                                navController.navigate("ppqs")
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "PPQs",
+                            color = Color.White
+                        )
+                    }
                 }
             }
         }
@@ -2018,12 +2025,19 @@ fun NotesResourcesScreen(context: Context) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (!canDecode) {
-                Text(
-                    text = "Loading...",
-                    color = Color.White,
-                    fontFamily = poppins,
-                    fontSize = 28.sp
-                )
+                Row {
+                    CircularProgressIndicator(
+                        color = Color(142, 142, 209, 255),
+                        modifier = Modifier.size(40.dp)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = "Loading...",
+                        color = Color.White,
+                        fontFamily = poppins,
+                        fontSize = 28.sp
+                    )
+                }
             }
             @Composable
             fun SingleNotesBox(
@@ -2392,23 +2406,26 @@ fun VideosResourcesScreen(context: Context) {
                         color = Color.White
                     )
                 }
-                Spacer(modifier = Modifier.width(10.dp))
-                Box(
-                    modifier = Modifier
-                        .width(80.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(Color(145, 145, 254, 255))
-                        .padding(5.dp)
-                        .clickable {
-                            navController.popBackStack()
-                            navController.navigate("ppqs")
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "PPQs",
-                        color = Color.White
-                    )
+
+                if (subject != "FLE" && subject != "ESL") {
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Box(
+                        modifier = Modifier
+                            .width(80.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(Color(145, 145, 254, 255))
+                            .padding(5.dp)
+                            .clickable {
+                                navController.popBackStack()
+                                navController.navigate("ppqs")
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "PPQs",
+                            color = Color.White
+                        )
+                    }
                 }
             }
         }
@@ -2420,12 +2437,19 @@ fun VideosResourcesScreen(context: Context) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (!canDecode) {
-                Text(
-                    text = "Loading...",
-                    color = Color.White,
-                    fontFamily = poppins,
-                    fontSize = 28.sp
-                )
+                Row {
+                    CircularProgressIndicator(
+                        color = Color(142, 142, 209, 255),
+                        modifier = Modifier.size(40.dp)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = "Loading...",
+                        color = Color.White,
+                        fontFamily = poppins,
+                        fontSize = 28.sp
+                    )
+                }
             }
             @Composable
             fun SingleVideoBox(
@@ -3097,12 +3121,19 @@ fun PPQsScreen(context: Context) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 if (!canDecode) {
-                    Text(
-                        text = "Loading...",
-                        color = Color.White,
-                        fontFamily = poppins,
-                        fontSize = 28.sp
-                    )
+                    Row {
+                        CircularProgressIndicator(
+                            color = Color(142, 142, 209, 255),
+                            modifier = Modifier.size(40.dp)
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = "Loading...",
+                            color = Color.White,
+                            fontFamily = poppins,
+                            fontSize = 28.sp
+                        )
+                    }
                 }
                 @Composable
                 fun SinglePPQBox(
