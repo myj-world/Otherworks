@@ -21,9 +21,11 @@ navigationCompose = "2.7.7"
 navigationComposeVersion = "2.7.0-alpha07"
 playServicesBase = "18.5.0"
 playServicesMeasurementApi = "22.0.2"
+composeIcons = "1.1.0"
 
 [libraries]
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+composeIcons-fontAwesome = { module = "br.com.devsrsouza.compose.icons:font-awesome", version.ref = "composeIcons" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }

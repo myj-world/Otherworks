@@ -7,8 +7,11 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+
     id("com.google.gms.google-services")
     kotlin("plugin.serialization") version "1.9.0"
+
+    id("com.google.firebase.crashlytics")
 }
 
 kotlin {
@@ -44,6 +47,7 @@ kotlin {
 
             implementation(libs.play.services.base)
             implementation (libs.grpc.okhttp)
+            implementation(libs.composeIcons.fontAwesome)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
