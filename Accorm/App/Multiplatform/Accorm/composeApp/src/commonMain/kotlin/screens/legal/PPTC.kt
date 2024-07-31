@@ -36,6 +36,7 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.BookOpen
 import compose.icons.fontawesomeicons.solid.MailBulk
 import compose.icons.fontawesomeicons.solid.ShieldAlt
+import screens.assets.CopyrightMessage
 import screens.device
 import screens.poppins
 import screens.resources.Resources
@@ -113,7 +114,7 @@ object PPTC : Tab {
             val navigator = LocalNavigator.currentOrThrow
             Button(
                 onClick = {
-                    navigator.push(Contact())
+                    navigator.push(Contact)
                 },
                 modifier = Modifier
                     .height(50.dp)
@@ -136,6 +137,8 @@ object PPTC : Tab {
                     fontWeight = FontWeight.Bold
                 )
             }
+            Spacer(Modifier.height(30.dp))
+            CopyrightMessage()
             Spacer(Modifier.height(70.dp))
         }
     }

@@ -12,6 +12,8 @@ plugins {
     kotlin("plugin.serialization") version "1.9.0"
 
     id("com.google.firebase.crashlytics")
+
+//    id("dev.icerock.mobile.multiplatform-resources") version "0.24.1"
 }
 
 kotlin {
@@ -50,6 +52,9 @@ kotlin {
             implementation(libs.play.services.base)
             implementation (libs.grpc.okhttp)
             implementation(libs.composeIcons.fontAwesome)
+
+//            implementation(libs.resources)
+//            implementation(libs.resources.compose)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
