@@ -15,6 +15,7 @@ class MainActivity : ComponentActivity() {
             App()
         }
     }
+    val context = this
 }
 
 @Preview

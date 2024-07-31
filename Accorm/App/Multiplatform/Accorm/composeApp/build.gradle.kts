@@ -44,6 +44,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
 
             implementation(libs.navigation.compose)
+            implementation(libs.voyager.navigator)
+            implementation(libs.voyager.tab.navigator)
 
             implementation(libs.play.services.base)
             implementation (libs.grpc.okhttp)

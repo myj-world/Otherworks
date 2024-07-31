@@ -8,4 +8,4 @@ actual val poppins: FontFamily
 actual val lexend: FontFamily
     get() = Fonts().lexend
 actual val device: String
-    get() = "Desktop"
+    get() = System.getProperty("os.name")

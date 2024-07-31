@@ -22,6 +22,8 @@ navigationComposeVersion = "2.7.0-alpha07"
 playServicesBase = "18.5.0"
 playServicesMeasurementApi = "22.0.2"
 composeIcons = "1.1.0"
+voyagerNavigator = "1.1.0-beta02"
+voyagerTabNavigator = "1.1.0-beta02"
 
 [libraries]
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
@@ -46,6 +48,8 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationComposeVersion" }
 play-services-base = { module = "com.google.android.gms:play-services-base", version.ref = "playServicesBase" }
 play-services-measurement-api = { group = "com.google.android.gms", name = "play-services-measurement-api", version.ref = "playServicesMeasurementApi" }
+voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyagerNavigator" }
+voyager-tab-navigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyagerTabNavigator" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
