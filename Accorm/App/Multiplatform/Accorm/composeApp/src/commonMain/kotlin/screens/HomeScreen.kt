@@ -166,3 +166,5 @@ object HomeScreen : Tab {
         }
     }
 }
+
+expect suspend fun Connected(): Boolean

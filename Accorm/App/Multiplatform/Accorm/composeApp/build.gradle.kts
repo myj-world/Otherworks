@@ -53,6 +53,14 @@ kotlin {
             implementation (libs.grpc.okhttp)
             implementation(libs.composeIcons.fontAwesome)
 
+            implementation(libs.kamel.image)
+            implementation(libs.ktor.client.android)
+//
+//            implementation(libs.connectivity.core)
+//            implementation(libs.connectivity.http)
+//            implementation(libs.connectivity.compose)
+//            implementation(libs.connectivity.compose.http)
+//
 //            implementation(libs.resources)
 //            implementation(libs.resources.compose)
         }
@@ -100,6 +108,7 @@ android {
 }
 dependencies {
     implementation(libs.play.services.measurement.api)
+    implementation(libs.kamel.image)
 }
 
 compose.desktop {

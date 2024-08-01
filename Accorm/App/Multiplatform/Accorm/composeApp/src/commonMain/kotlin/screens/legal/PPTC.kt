@@ -17,7 +17,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -25,21 +24,18 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.BookOpen
 import compose.icons.fontawesomeicons.solid.MailBulk
 import compose.icons.fontawesomeicons.solid.ShieldAlt
+import screens.assets.Contact
 import screens.assets.CopyrightMessage
-import screens.device
 import screens.poppins
-import screens.resources.Resources
+import viewmodels.CurrentEmailName
 
 object PPTC : Tab {
     override val options: TabOptions
@@ -114,6 +110,8 @@ object PPTC : Tab {
             val navigator = LocalNavigator.currentOrThrow
             Button(
                 onClick = {
+                    CurrentEmailName.setEmail("contact@ginastic.co")
+                    CurrentEmailName.setName("Us")
                     navigator.push(Contact)
                 },
                 modifier = Modifier
