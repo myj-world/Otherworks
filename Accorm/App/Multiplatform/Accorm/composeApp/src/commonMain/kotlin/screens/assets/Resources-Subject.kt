@@ -26,6 +26,7 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ArrowRight
 import screens.device
+import screens.landscapeTablet
 import screens.poppins
 import viewmodels.CurrentSubject
 
@@ -84,7 +85,7 @@ fun Subject(
             fontSize = 28.sp,
             modifier = Modifier.padding(bottom = 10.dp)
         )
-        if (device == "Android") {
+        if (device == "Android" && !landscapeTablet) {
             Row {
                 if (notes) {
                     Button(

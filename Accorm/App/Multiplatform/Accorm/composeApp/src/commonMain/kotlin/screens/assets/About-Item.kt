@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -49,6 +50,7 @@ import io.kamel.image.asyncPainterResource
 import kotlinx.coroutines.launch
 import screens.Connected
 import screens.device
+import screens.landscapeTablet
 import screens.poppins
 import viewmodels.CurrentEmailName
 
@@ -180,65 +182,132 @@ fun Person(
                             }
                         )
                     }
-                    Row(
-                        modifier = Modifier
-                            .padding(2.dp)
-                            .height(35.dp)
-                            .border(
-                                2.dp,
-                                if (!role.majorRole) Color(114, 116, 244) else Color(145, 116, 214),
-                                RoundedCornerShape(50)
-                            )
-                            .clip(RoundedCornerShape(50))
-                            .background(
-                                if (role.majorRole) Color(145, 116, 214) else Color(
-                                    25,
-                                    25,
-                                    44
-                                )
-                            )
-                            .clickable {
-                                if (role.role.contains("Hoster") || role.role.contains("App Developer")) {
-                                    showInfo = true
-                                }
-                            }
-                            .padding(5.dp)
-                            .weight(1f),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = role.role,
-                            color = if (role.majorRole) Color.White else Color(145, 116, 244),
-                            fontFamily = poppins,
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 12.sp,
+                    if (device == "Android" && !landscapeTablet) {
+                        Row(
                             modifier = Modifier
                                 .padding(2.dp)
-                        )
-                        if (role.role.contains("Hoster") || role.role.contains("App Developer")) {
-                            Box(
-                                modifier = Modifier
-                                    .width(20.dp)
-                                    .height(20.dp)
-                                    .clip(RoundedCornerShape(100))
-                                    .background(Color.White),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Icon(
-                                    imageVector = FontAwesomeIcons.Solid.Info,
-                                    contentDescription = "Info",
-                                    tint = Color(145, 116, 244),
-                                    modifier = Modifier
-                                        .size(10.dp)
+                                .height(35.dp)
+                                .weight(1f)
+                                .border(
+                                    2.dp,
+                                    if (!role.majorRole) Color(114, 116, 244) else Color(
+                                        145,
+                                        116,
+                                        214
+                                    ),
+                                    RoundedCornerShape(50)
                                 )
+                                .clip(RoundedCornerShape(50))
+                                .background(
+                                    if (role.majorRole) Color(145, 116, 214) else Color(
+                                        25,
+                                        25,
+                                        44
+                                    )
+                                )
+                                .clickable {
+                                    if (role.role.contains("Hoster") || role.role.contains("App Developer")) {
+                                        showInfo = true
+                                    }
+                                }
+                                .padding(5.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = role.role,
+                                color = if (role.majorRole) Color.White else Color(145, 116, 244),
+                                fontFamily = poppins,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 12.sp,
+                                modifier = Modifier
+                                    .padding(horizontal = 2.dp)
+                                    .fillMaxHeight()
+                            )
+                            if (role.role.contains("Hoster") || role.role.contains("App Developer")) {
+                                Box(
+                                    modifier = Modifier
+                                        .width(20.dp)
+                                        .height(20.dp)
+                                        .clip(RoundedCornerShape(100))
+                                        .background(Color.White),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        imageVector = FontAwesomeIcons.Solid.Info,
+                                        contentDescription = "Info",
+                                        tint = Color(145, 116, 244),
+                                        modifier = Modifier
+                                            .size(10.dp)
+                                    )
+                                }
+                            }
+                        }
+                    } else {
+                        Row(
+                            modifier = Modifier
+                                .padding(2.dp)
+                                .height(35.dp)
+                                .border(
+                                    2.dp,
+                                    if (!role.majorRole) Color(114, 116, 244) else Color(
+                                        145,
+                                        116,
+                                        214
+                                    ),
+                                    RoundedCornerShape(50)
+                                )
+                                .clip(RoundedCornerShape(50))
+                                .background(
+                                    if (role.majorRole) Color(145, 116, 214) else Color(
+                                        25,
+                                        25,
+                                        44
+                                    )
+                                )
+                                .clickable {
+                                    if (role.role.contains("Hoster") || role.role.contains("App Developer")) {
+                                        showInfo = true
+                                    }
+                                }
+                                .padding(5.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = role.role,
+                                color = if (role.majorRole) Color.White else Color(145, 116, 244),
+                                fontFamily = poppins,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 12.sp,
+                                modifier = Modifier
+                                    .padding(horizontal = 2.dp)
+                                    .fillMaxHeight()
+                            )
+                            if (role.role.contains("Hoster") || role.role.contains("App Developer")) {
+                                Box(
+                                    modifier = Modifier
+                                        .width(20.dp)
+                                        .height(20.dp)
+                                        .clip(RoundedCornerShape(100))
+                                        .background(Color.White),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        imageVector = FontAwesomeIcons.Solid.Info,
+                                        contentDescription = "Info",
+                                        tint = Color(145, 116, 244),
+                                        modifier = Modifier
+                                            .size(10.dp)
+                                    )
+                                }
                             }
                         }
                     }
                 }
 
                 roleCount++
-                if (device != "Android") roleCount--
+                if (device != "Android" || landscapeTablet) roleCount--
             }
         }
         Row {
@@ -313,7 +382,7 @@ fun Person(
                 }
 
                 roleCount++
-                if (device != "Android") roleCount--
+                if (device != "Android" || landscapeTablet) roleCount--
             }
         }
     }

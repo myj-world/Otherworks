@@ -46,6 +46,10 @@ expect val lexend: FontFamily
 // Know device
 expect val device: String
 
+// Tablet in Landscape
+@get:Composable
+expect val landscapeTablet: Boolean
+
 // Main Screen
 object HomeScreen : Tab {
     private fun readResolve(): Any = HomeScreen
@@ -86,7 +90,7 @@ object HomeScreen : Tab {
             Text(
                 text = buildAnnotatedString {
                     withStyle(
-                        SpanStyle(color = Color.White, fontFamily = poppins, fontSize = 60.sp)
+                        SpanStyle(color = Color.White, fontFamily = poppins, fontSize = 60.sp, fontWeight = FontWeight.SemiBold)
                     ) {
                         append("Educate")
                         withStyle(
@@ -94,7 +98,7 @@ object HomeScreen : Tab {
                                 color = Color(144, 144, 214, 255)
                             )
                         ) {
-                            if (device == "Android") {
+                            if (device == "Android" && !landscapeTablet) {
                                 append(".\n\n\n")
                             } else {
                                 append(". ")
@@ -133,7 +137,7 @@ object HomeScreen : Tab {
                 text = "Where students and educational \ncontent blend",
                 color = Color(198, 197, 250),
                 fontFamily = poppins,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(30.dp))

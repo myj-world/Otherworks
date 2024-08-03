@@ -1,8 +1,11 @@
 package screens
 
 import android.content.Context
+import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -33,3 +36,9 @@ actual suspend fun Connected(): Boolean {
         return false
     }
 }
+
+actual val landscapeTablet: Boolean
+    @Composable
+    get() {
+        return LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE && LocalConfiguration.current.screenWidthDp > 840
+    }

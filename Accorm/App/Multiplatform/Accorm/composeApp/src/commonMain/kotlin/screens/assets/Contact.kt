@@ -23,6 +23,7 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ShieldAlt
 import screens.device
+import screens.landscapeTablet
 import screens.poppins
 import viewmodels.CurrentEmailName
 
@@ -44,7 +45,7 @@ object Contact: Tab {
 
     @Composable
     override fun Content() {
-        if (device == "Android") {
+        if (device == "Android" && !landscapeTablet) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,

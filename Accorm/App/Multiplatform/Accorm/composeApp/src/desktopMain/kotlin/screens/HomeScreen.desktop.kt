@@ -1,5 +1,6 @@
 package screens
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontFamily
 import fonts.Fonts
 import io.ktor.client.HttpClient
@@ -23,3 +24,7 @@ actual suspend fun Connected(): Boolean {
         false
     }
 }
+
+actual val landscapeTablet: Boolean
+    @Composable
+    get() = false

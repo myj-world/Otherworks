@@ -21,6 +21,7 @@ kamelImage = "0.9.5"
 kotlin = "2.0.0"
 kotlinxSerializationJson = "1.6.1"
 ktorClientAndroid = "2.3.12"
+material3 = "1.3.0-beta05"
 navigationCompose = "2.7.7"
 navigationComposeVersion = "2.7.0-alpha07"
 playServicesBase = "18.5.0"
@@ -32,6 +33,7 @@ voyagerNavigator = "1.1.0-beta02"
 voyagerTabNavigator = "1.1.0-beta02"
 
 [libraries]
+androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 connectivity-compose = { module = "dev.jordond.connectivity:connectivity-compose", version.ref = "connectivityCore" }
 connectivity-compose-http = { module = "dev.jordond.connectivity:connectivity-compose-http", version.ref = "connectivityComposeHttp" }
 connectivity-core = { module = "dev.jordond.connectivity:connectivity-core", version.ref = "connectivityCore" }

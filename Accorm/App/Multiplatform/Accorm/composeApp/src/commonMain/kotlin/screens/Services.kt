@@ -69,7 +69,7 @@ object Services : Tab {
                                 fontStyle = FontStyle.Italic
                             )
                         ) {
-                            append("Resources")
+                            append("Services")
                         }
                     }
                 }

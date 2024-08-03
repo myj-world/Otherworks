@@ -1,9 +1,14 @@
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.NavigationRail
+import androidx.compose.material.NavigationRailItem
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -23,6 +28,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import screens.AboutUs
 import screens.HomeScreen
 import screens.Services
+import screens.device
+import screens.landscapeTablet
 import screens.legal.PPTC
 import screens.resources.Resources
 
@@ -31,98 +38,84 @@ import screens.resources.Resources
 fun App() {
     MaterialTheme {
 //        HomeScreen()
+        val items = listOf("Home", "Subjects", "Services", "About", "PPTC")
+        val icons = listOf(
+            FontAwesomeIcons.Solid.Home,
+            FontAwesomeIcons.Solid.BookOpen,
+            FontAwesomeIcons.Solid.Table,
+            FontAwesomeIcons.Solid.Info,
+            FontAwesomeIcons.Solid.ShieldAlt
+        )
+        val screens = listOf(HomeScreen, Resources, Services, AboutUs, PPTC)
         TabNavigator(HomeScreen) { tabNavigator ->
             Scaffold(
                 content = {
-                    CurrentTab()
+                    Row {
+                        if (device != "Android" || landscapeTablet) {
+                            NavigationRail (
+                                backgroundColor = Color(53, 53, 93)
+                            ) {
+                                items.forEachIndexed { index, item ->
+                                    NavigationRailItem(
+                                        icon = {
+                                            Icon(
+                                                icons[index],
+                                                contentDescription = item,
+                                                tint = if (tabNavigator.current != screens[index]) Color.White else Color(
+                                                    171,
+                                                    171,
+                                                    248
+                                                ),
+                                                modifier = Modifier
+                                                    .size(24.dp)
+                                            )
+                                        },
+                                        label = {
+                                            Text(
+                                                item,
+                                                color = if (tabNavigator.current != screens[index]) Color.White else Color(
+                                                    171,
+                                                    171,
+                                                    248
+                                                )
+                                            )
+                                        },
+                                        selected = tabNavigator.current == screens[index],
+                                        onClick = { tabNavigator.current = screens[index] },
+                                        modifier = Modifier.background(
+                                            Color(53, 53, 93)
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                        CurrentTab()
+                    }
                 },
                 bottomBar = {
-                    BottomNavigation {
-                        BottomNavigationItem(
-                            selected = tabNavigator.current == HomeScreen,
-                            onClick = { tabNavigator.current = HomeScreen },
-                            label = { Text("Home") },
-                            icon = {
-                                Icon(
-                                    imageVector = FontAwesomeIcons.Solid.Home,
-                                    contentDescription = "Home",
-                                    modifier = Modifier
-                                        .size(24.dp)
+                    if (device == "Android" && !landscapeTablet) {
+                        BottomNavigation {
+                            items.forEachIndexed { index, item ->
+                                BottomNavigationItem(
+                                    selected = tabNavigator.current == screens[index],
+                                    onClick = { tabNavigator.current = screens[index] },
+                                    label = { Text(item) },
+                                    icon = {
+                                        Icon(
+                                            imageVector = icons[index],
+                                            contentDescription = item,
+                                            modifier = Modifier
+                                                .size(24.dp)
+                                        )
+                                    },
+                                    modifier = Modifier.background(
+                                        Color(53, 53, 93)
+                                    ),
+                                    selectedContentColor = Color(171, 171, 248),
+                                    unselectedContentColor = Color.White
                                 )
-                            },
-                            modifier = Modifier.background(
-                                Color(53, 53, 93)
-                            ),
-                            selectedContentColor = Color(171, 171, 248)
-                        )
-                        BottomNavigationItem(
-                            selected = tabNavigator.current == Resources,
-                            onClick = { tabNavigator.current = Resources },
-                            label = { Text("Subjects") },
-                            icon = {
-                                Icon(
-                                    imageVector = FontAwesomeIcons.Solid.BookOpen,
-                                    contentDescription = "Subjects",
-                                    modifier = Modifier
-                                        .size(24.dp)
-                                )
-                            },
-                            modifier = Modifier.background(
-                                Color(53, 53, 93)
-                            ),
-                            selectedContentColor = Color(171, 171, 248)
-                        )
-                        BottomNavigationItem(
-                            selected = tabNavigator.current == Services,
-                            onClick = { tabNavigator.current = Services },
-                            label = { Text("Services") },
-                            icon = {
-                                Icon(
-                                    imageVector = FontAwesomeIcons.Solid.Table,
-                                    contentDescription = "Services",
-                                    modifier = Modifier
-                                        .size(24.dp)
-                                )
-                            },
-                            modifier = Modifier.background(
-                                Color(53, 53, 93)
-                            ),
-                            selectedContentColor = Color(171, 171, 248)
-                        )
-                        BottomNavigationItem(
-                            selected = tabNavigator.current == AboutUs,
-                            onClick = { tabNavigator.current = AboutUs },
-                            label = { Text("About") },
-                            icon = {
-                                Icon(
-                                    imageVector = FontAwesomeIcons.Solid.Info,
-                                    contentDescription = "About",
-                                    modifier = Modifier
-                                        .size(24.dp)
-                                )
-                            },
-                            modifier = Modifier.background(
-                                Color(53, 53, 93)
-                            ),
-                            selectedContentColor = Color(171, 171, 248)
-                        )
-                        BottomNavigationItem(
-                            selected = tabNavigator.current == PPTC,
-                            onClick = { tabNavigator.current = PPTC },
-                            label = { Text("PPTC") },
-                            icon = {
-                                Icon(
-                                    imageVector = FontAwesomeIcons.Solid.ShieldAlt,
-                                    contentDescription = "Privacy & Terms",
-                                    modifier = Modifier
-                                        .size(24.dp)
-                                )
-                            },
-                            modifier = Modifier.background(
-                                Color(53, 53, 93)
-                            ),
-                            selectedContentColor = Color(171, 171, 248)
-                        )
+                            }
+                        }
                     }
                 }
             )

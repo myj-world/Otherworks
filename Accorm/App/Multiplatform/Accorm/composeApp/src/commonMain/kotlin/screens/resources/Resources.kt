@@ -5,11 +5,13 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -37,6 +39,8 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.BookOpen
 import screens.assets.CopyrightMessage
 import screens.assets.Subject
+import screens.device
+import screens.landscapeTablet
 
 object Resources : Tab {
     override val options: TabOptions
@@ -83,42 +87,83 @@ object Resources : Tab {
             var grade by remember { mutableStateOf("") }
             @Composable
             fun Option(text: String) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(75.dp)
-                        .padding(5.dp)
-                        .border(
-                            width = 2.dp,
-                            brush = Brush.linearGradient(
-                                listOf(
-                                    Color(118, 78, 255),
-                                    Color(157, 78, 255)
-                                )
-                            ),
-                            shape = RoundedCornerShape(20.dp)
+                if (device == "Android" && !landscapeTablet) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(75.dp)
+                            .padding(5.dp)
+                            .border(
+                                width = 2.dp,
+                                brush = Brush.linearGradient(
+                                    listOf(
+                                        Color(118, 78, 255),
+                                        Color(157, 78, 255)
+                                    )
+                                ),
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                            .clickable {
+                                if (text != "Coming Soon!") {
+                                    grade = text
+                                }
+                            },
+                        contentAlignment = androidx.compose.ui.Alignment.Center
+                    ) {
+                        Text(
+                            text = text,
+                            fontSize = 28.sp,
+                            color = Color.White,
+                            fontWeight = FontWeight.SemiBold
                         )
-                        .clickable {
-                            if (text != "Coming Soon!") {
-                                grade = text
-                            }
-                        },
-                    contentAlignment = androidx.compose.ui.Alignment.Center
-                ) {
-                    Text(
-                        text = text,
-                        fontSize = 28.sp,
-                        color = Color.White,
-                        fontWeight = FontWeight.SemiBold
-                    )
+                    }
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .width(350.dp)
+                            .height(350.dp)
+                            .padding(5.dp)
+                            .border(
+                                width = 2.dp,
+                                brush = Brush.linearGradient(
+                                    listOf(
+                                        Color(118, 78, 255),
+                                        Color(157, 78, 255)
+                                    )
+                                ),
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                            .clickable {
+                                if (text != "Coming Soon!") {
+                                    grade = text
+                                }
+                            },
+                        contentAlignment = androidx.compose.ui.Alignment.Center
+                    ) {
+                        Text(
+                            text = text,
+                            fontSize = 28.sp,
+                            color = Color.White,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
                 }
             }
             when (grade) {
                 "" -> {
-                    Option(text = "IGCSE / O Level")
-                    Option(text = "AS")
-                    Option(text = "A2")
-                    Option(text = "Educational Blogs")
+                    if (device == "Android" && !landscapeTablet) {
+                        Option(text = "IGCSE / O Level")
+                        Option(text = "AS")
+                        Option(text = "A2")
+                        Option(text = "Educational Blogs")
+                    } else {
+                        Row {
+                            Option(text = "IGCSE / O Level")
+                            Option(text = "AS")
+                            Option(text = "A2")
+                            Option(text = "Educational Blogs")
+                        }
+                    }
                 }
 
                 "IGCSE / O Level" -> {
