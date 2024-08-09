@@ -36,6 +36,8 @@ kotlin {
             implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.google.firebase.analytics)
             implementation(libs.firebase.crashlytics)
+
+            implementation(libs.bouquet)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

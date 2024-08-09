@@ -22,12 +22,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ArrowRight
 import screens.device
 import screens.landscapeTablet
 import screens.poppins
+import screens.resources.Notes
+import screens.resources.PPQs
+import screens.resources.Syllabus
+import screens.resources.Videos
 import viewmodels.CurrentSubject
 
 @Composable
@@ -40,17 +46,24 @@ fun Subject(
     syllabus: Boolean = true,
     grade: String
 ) {
+    val nav = LocalNavigator.currentOrThrow
+
     fun notesClick() {
         CurrentSubject.setSubject(title)
+        CurrentSubject.setLevel(grade)
+        nav.push(Notes)
     }
     fun videosClick() {
         CurrentSubject.setSubject(title)
+        nav.push(Videos)
     }
     fun ppqsClick() {
         CurrentSubject.setSubject(title)
+        nav.push(PPQs)
     }
     fun syllabusClick() {
         CurrentSubject.setSubject(title)
+        nav.push(Syllabus)
     }
 
     Column(

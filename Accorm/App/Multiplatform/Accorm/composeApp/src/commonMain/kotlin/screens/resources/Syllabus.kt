@@ -18,7 +18,7 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Book
 
-object Videos: Tab {
+object Syllabus: Tab {
     override val options: TabOptions
         @Composable
         get() {
@@ -26,7 +26,7 @@ object Videos: Tab {
             return remember {
                 TabOptions(
                     index = 99u,
-                    title = "Videos",
+                    title = "Syllabus",
                     icon = icon
                 )
             }

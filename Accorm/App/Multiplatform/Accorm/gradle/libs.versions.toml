@@ -10,6 +10,7 @@ androidx-core-ktx = "1.13.1"
 androidx-espresso-core = "3.6.1"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
+bouquet = "1.1.2"
 compose-plugin = "1.6.11"
 connectivityComposeHttp = "1.1.0"
 connectivityCore = " 1.1.0"
@@ -34,6 +35,7 @@ voyagerTabNavigator = "1.1.0-beta02"
 
 [libraries]
 androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+bouquet = { module = "io.github.grizzi91:bouquet", version.ref = "bouquet" }
 connectivity-compose = { module = "dev.jordond.connectivity:connectivity-compose", version.ref = "connectivityCore" }
 connectivity-compose-http = { module = "dev.jordond.connectivity:connectivity-compose-http", version.ref = "connectivityComposeHttp" }
 connectivity-core = { module = "dev.jordond.connectivity:connectivity-core", version.ref = "connectivityCore" }

@@ -153,15 +153,13 @@ object Resources : Tab {
                 "" -> {
                     if (device == "Android" && !landscapeTablet) {
                         Option(text = "IGCSE / O Level")
-                        Option(text = "AS")
-                        Option(text = "A2")
-                        Option(text = "Educational Blogs")
+//                        Option(text = "AS")
+//                        Option(text = "A2")
                     } else {
                         Row {
                             Option(text = "IGCSE / O Level")
-                            Option(text = "AS")
-                            Option(text = "A2")
-                            Option(text = "Educational Blogs")
+//                            Option(text = "AS")
+//                            Option(text = "A2")
                         }
                     }
                 }
@@ -274,7 +272,7 @@ object Resources : Tab {
                     Option(text = "Coming Soon!")
                 }
                 else -> {
-                    Option(text = "Coming Soon!")
+                    Option(text = "Error: Not Found")
                 }
             }
             Spacer(modifier = Modifier.height(30.dp))
