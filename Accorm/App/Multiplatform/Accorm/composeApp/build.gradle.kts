@@ -13,6 +13,8 @@ plugins {
 
     id("com.google.firebase.crashlytics")
 
+//    kotlin("jvm") version "2.0.0"
+
 //    id("dev.icerock.mobile.multiplatform-resources") version "0.24.1"
 }
 
@@ -38,6 +40,8 @@ kotlin {
             implementation(libs.firebase.crashlytics)
 
             implementation(libs.bouquet)
+
+//            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -56,7 +60,19 @@ kotlin {
             implementation(libs.composeIcons.fontAwesome)
 
             implementation(libs.kamel.image)
+
+//            implementation(libs.coil.compose.v300alpha06)
+//            implementation(libs.coil.network.ktor.v300alpha06)
+
             implementation(libs.ktor.client.android)
+
+//            implementation(libs.ktor.client.core)
+//            implementation(libs.coil.compose.core)
+//            implementation(libs.coil.compose)
+//            implementation(libs.coil.mp)
+//            implementation(libs.kotlinx.coroutines.android)
+//            implementation(libs.kotlinx.coroutines.core)
+//            implementation(libs.coil.network.ktor)
 //
 //            implementation(libs.connectivity.core)
 //            implementation(libs.connectivity.http)

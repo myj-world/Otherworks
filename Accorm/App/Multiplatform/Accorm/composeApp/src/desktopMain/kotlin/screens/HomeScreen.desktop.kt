@@ -16,7 +16,7 @@ actual val device: String
     get() = System.getProperty("os.name")
 
 actual suspend fun Connected(): Boolean {
-    val client = HttpClient() {}
+    val client = HttpClient()
     return try {
         val response = client.get("https://robinjescott.com/")
         response.status.value == 200
