@@ -1,5 +1,6 @@
 package screens.resources
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -122,7 +123,7 @@ object Notes : Tab {
         coroutineScope.launch {
             data =
                 RequestURL("https://accorm.ginastic.co/300/fetch/?access-id=65aea3e3e6184&subject=$subjectRetrieve")
-                    ?: "{\"1\": {\"unique_id\": 000000000,\"title\": \"Sample Notes\",\"url\": \"https://example.com\",\"chapter\": \"miscellaneous\",\"publisher\": \"Accorm\",\"pub_type\": \"Admin\",\"logo\": \"A\",\"logo_bg\": \"#000000\", \"specification:\": \"Sample Notes\", \"author\": \"Accorm\", \"published\": \"12/12/2023\", \"description\": \"Sample Notes\"}, \"num-of-rows\": 1}"
+                    ?: "{\"1\": {\"unique_id\": 000000000,\"title\": \"Sample Notes\",\"url\": \"https://accorm.ginastic.co/700/IGCSE/islamiyat/The%20Quranic%20Passages_373776704.pdf\",\"chapter\": \"miscellaneous\",\"publisher\": \"Accorm\",\"pub_type\": \"Admin\",\"logo\": \"A\",\"logo_bg\": \"#000000\", \"specification:\": \"Sample Notes\", \"author\": \"Accorm\", \"published\": \"12/12/2023\", \"description\": \"Sample Notes\"}, \"num-of-rows\": 1}"
         }
 
         Column(
@@ -154,8 +155,9 @@ object Notes : Tab {
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(20.dp))
                         .background(Color(28, 28, 28))
+                        .animateContentSize()
                         .clickable { isExpanded = !isExpanded }
-                        .padding(10.dp),
+                        .padding(20.dp),
                     verticalArrangement = Arrangement.SpaceBetween,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -192,7 +194,7 @@ object Notes : Tab {
                         Spacer(modifier = Modifier.height(3.dp))
                         Text(
                             text = description,
-                            fontSize = 12.sp,
+                            fontSize = 18.sp,
                             fontFamily = poppins,
                             color = Color.Gray
                         )
@@ -207,9 +209,9 @@ object Notes : Tab {
                         Spacer(modifier = Modifier.height(3.dp))
                         Text(
                             text = specification,
-                            fontSize = 12.sp,
+                            fontSize = 15.sp,
                             fontFamily = poppins,
-                            color = Color.Gray
+                            color = Color.White
                         )
 
                         Spacer(modifier = Modifier.height(10.dp))
@@ -222,9 +224,9 @@ object Notes : Tab {
                         Spacer(modifier = Modifier.height(3.dp))
                         Text(
                             text = chapter,
-                            fontSize = 12.sp,
+                            fontSize = 15.sp,
                             fontFamily = poppins,
-                            color = Color.Gray
+                            color = Color.White
                         )
 
                         Spacer(modifier = Modifier.height(10.dp))
@@ -237,9 +239,9 @@ object Notes : Tab {
                         Spacer(modifier = Modifier.height(3.dp))
                         Text(
                             text = author,
-                            fontSize = 12.sp,
+                            fontSize = 15.sp,
                             fontFamily = poppins,
-                            color = Color.Gray
+                            color = Color.White
                         )
 
                         Spacer(modifier = Modifier.height(10.dp))
@@ -252,30 +254,30 @@ object Notes : Tab {
                         Spacer(modifier = Modifier.height(3.dp))
                         Text(
                             text = published,
-                            fontSize = 12.sp,
+                            fontSize = 15.sp,
                             fontFamily = poppins,
-                            color = Color.Gray
+                            color = Color.White
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         Row {
-//                            Button(
-//                                onClick = {
-//
-//                                },
-//                                modifier = Modifier
-//                                    .fillMaxWidth(0.2f),
-//                                colors = ButtonDefaults.buttonColors(
-//                                    backgroundColor = Color.White
-//                                )
-//                            ) {
-//                                Image(
-//                                    imageVector = FontAwesomeIcons.Solid.Link,
-//                                    contentDescription = "Copy Link",
-//                                    colorFilter = ColorFilter.tint(Color(172, 172, 249)),
-//                                    modifier = Modifier
-//                                        .size(15.dp)
-//                                )
-//                            }
+                            Button(
+                                onClick = {
+
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth(0.2f),
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = Color.White
+                                )
+                            ) {
+                                Image(
+                                    imageVector = FontAwesomeIcons.Solid.Link,
+                                    contentDescription = "Copy Link",
+                                    colorFilter = ColorFilter.tint(Color(172, 172, 249)),
+                                    modifier = Modifier
+                                        .size(15.dp)
+                                )
+                            }
 
                             Spacer(modifier = Modifier.width(5.dp))
 
@@ -321,7 +323,7 @@ object Notes : Tab {
                 specification = "Sample Notes",
                 author = "Accorm",
                 published = "12/12/2023",
-                url = "https://accorm.ginastic.co/700/IGCSE/accounting/Complete%20notes%20%28Part%201%29_1014322880.pdf"
+                url = "https://accorm.ginastic.co/700/IGCSE/islamiyat/The%20Quranic%20Passages_373776704.pdf"
             )
 
             if (data != "") {
