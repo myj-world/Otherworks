@@ -59,6 +59,8 @@ kotlin {
 
             implementation(libs.kotlinx.serialization.json.v171)
 
+            implementation(libs.pdfbox)
+
 //            implementation(libs.coil.compose.v300alpha06)
 //            implementation(libs.coil.network.ktor.v300alpha06)
 
