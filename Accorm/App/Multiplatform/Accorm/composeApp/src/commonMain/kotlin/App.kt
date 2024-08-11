@@ -35,7 +35,6 @@ import screens.resources.Resources
 @Preview
 fun App() {
     MaterialTheme {
-//        HomeScreen()
         val items = listOf("Home", "Subjects", "Services", "About", "PPTC")
         val icons = listOf(
             FontAwesomeIcons.Solid.Home,

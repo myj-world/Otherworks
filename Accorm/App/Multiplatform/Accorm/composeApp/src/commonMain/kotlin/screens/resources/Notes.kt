@@ -45,12 +45,16 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Book
 import compose.icons.fontawesomeicons.solid.ExternalLinkAlt
 import compose.icons.fontawesomeicons.solid.Link
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import network.RequestURL
 import screens.assets.CopyrightMessage
 import screens.lexend
 import screens.poppins
 import viewmodels.CurrentSubject
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 object Notes : Tab {
     override val options: TabOptions
@@ -68,6 +72,59 @@ object Notes : Tab {
 
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        var subjectRetrieve by remember {
+            mutableStateOf("")
+        }
+        var subjectCode by remember {
+            mutableStateOf("")
+        }
+        var level by remember {
+            mutableStateOf("")
+        }
+        level = CurrentSubject.getLevel()
+
+        if (level == "IGCSE / O Level") {
+            subjectRetrieve = when (CurrentSubject.getSubject()) {
+                "Islamiyat" -> "islamiyat"
+                "History" -> "history"
+                "Geography" -> "geography"
+                "Accounting" -> "accounting"
+                "Physics" -> "physics"
+                "Chemistry" -> "chemistry"
+                "Biology" -> "biology"
+                "Computer Science" -> "computer_science"
+                "FLE" -> "fle"
+                "ESL" -> "esl"
+                else -> "maths"
+            }
+            subjectCode = when (CurrentSubject.getSubject()) {
+                "Islamiyat" -> "0493"
+                "History" -> "0448"
+                "Geography" -> "0448"
+                "Accounting" -> "0452"
+                "Physics" -> "0625"
+                "Chemistry" -> "0620"
+                "Biology" -> "0610"
+                "Computer Science" -> "0478"
+                "FLE" -> "0500"
+                "ESL" -> "0510"
+                else -> "0580"
+            }
+
+            println("Tests $subjectRetrieve $subjectCode")
+        } else {
+            navigator.pop()
+        }
+
+        val coroutineScope = rememberCoroutineScope()
+        var data by remember { mutableStateOf("") }
+        coroutineScope.launch {
+            data =
+                RequestURL("https://accorm.ginastic.co/300/fetch/?access-id=65aea3e3e6184&subject=$subjectRetrieve")
+                    ?: "{\"1\": {\"unique_id\": 000000000,\"title\": \"Sample Notes\",\"url\": \"https://example.com\",\"chapter\": \"miscellaneous\",\"publisher\": \"Accorm\",\"pub_type\": \"Admin\",\"logo\": \"A\",\"logo_bg\": \"#000000\", \"specification:\": \"Sample Notes\", \"author\": \"Accorm\", \"published\": \"12/12/2023\", \"description\": \"Sample Notes\"}, \"num-of-rows\": 1}"
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -75,55 +132,6 @@ object Notes : Tab {
                 .padding(20.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            val navigator = LocalNavigator.currentOrThrow
-            var subjectRetrieve by remember {
-                mutableStateOf("")
-            }
-            var subjectCode by remember {
-                mutableStateOf("")
-            }
-            var level by remember {
-                mutableStateOf("")
-            }
-            level = CurrentSubject.getLevel()
-
-            if (level == "IGCSE / O Level") {
-                subjectRetrieve = when (CurrentSubject.getSubject()) {
-                    "Islamiyat" -> "islamiyat"
-                    "History" -> "history"
-                    "Geography" -> "geography"
-                    "Accounting" -> "accounting"
-                    "Physics" -> "physics"
-                    "Chemistry" -> "chemistry"
-                    "Biology" -> "biology"
-                    "Computer Science" -> "computer_science"
-                    "FLE" -> "fle"
-                    "ESL" -> "esl"
-                    else -> "maths"
-                }
-                subjectCode = when (CurrentSubject.getSubject()) {
-                    "Islamiyat" -> "0493"
-                    "Pakistan Studies, \n \n History" -> "0448"
-                    "Pakistan Studies, \n \n Geography" -> "0448"
-                    "Accounting" -> "0452"
-                    "Physics" -> "0625"
-                    "Chemistry" -> "0620"
-                    "Biology" -> "0610"
-                    "Computer Science" -> "0478"
-                    "FLE" -> "0500"
-                    "ESL" -> "0510"
-                    else -> "0580"
-                }
-            } else {
-                navigator.pop()
-            }
-            val coroutineScope = rememberCoroutineScope()
-            var data by remember { mutableStateOf("") }
-            coroutineScope.launch {
-                data =
-                    RequestURL("https://accorm.ginastic.co/300/fetch/?access-id=65aea3e3e6184&subject=$subjectRetrieve")
-                        ?: "{\"1\": {\"unique_id\": 000000000,\"title\": \"Sample Notes\",\"url\": \"https://example.com\",\"chapter\": \"miscellaneous\",\"publisher\": \"Accorm\",\"pub_type\": \"Admin\",\"logo\": \"A\",\"logo_bg\": \"#000000\", \"specification:\": \"Sample Notes\", \"author\": \"Accorm\", \"published\": \"12/12/2023\", \"description\": \"Sample Notes\"}, \"num-of-rows\": 1}"
-            }
             @Composable
             fun Item(
                 logo: String,
@@ -146,8 +154,8 @@ object Notes : Tab {
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(20.dp))
                         .background(Color(28, 28, 28))
-                        .padding(10.dp)
-                        .clickable { isExpanded = !isExpanded },
+                        .clickable { isExpanded = !isExpanded }
+                        .padding(10.dp),
                     verticalArrangement = Arrangement.SpaceBetween,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -302,18 +310,36 @@ object Notes : Tab {
                     }
                 }
             }
+
             Item(
-                logo = "M",
-                logoColor = Color.Black,
-                publisher = "M. Yousuf Jamil",
+                logo = "A",
+                logoColor = Color(0,0,0),
+                chapter = "Miscellaneous",
+                publisher = "Accorm",
                 title = "Sample Notes",
                 description = "Sample Notes",
                 specification = "Sample Notes",
                 author = "Accorm",
-                chapter = "miscellaneous",
                 published = "12/12/2023",
-                url = "https://accorm.ginastic.co/700/IGCSE/islamiyat/The%20Life%20Of%20The%20Prophet%20%28PBUH%29_889590849.pdf"
+                url = "https://accorm.ginastic.co/700/IGCSE/accounting/Complete%20notes%20%28Part%201%29_1014322880.pdf"
             )
+
+            if (data != "") {
+                val jsonObject : JsonData
+                try {
+                    val json = Json {
+                        ignoreUnknownKeys = true
+                    }
+                    jsonObject = json.decodeFromString(JsonData.serializer(), data)
+
+                } catch (e: Exception) {
+                    println("Tests Error is $e")
+                    return
+                }
+                println("Tests $jsonObject")
+            } else {
+                println("NONE")
+            }
 
             Spacer(modifier = Modifier.height(30.dp))
             CopyrightMessage()
@@ -321,3 +347,21 @@ object Notes : Tab {
         }
     }
 }
+
+@Serializable
+data class Item(
+    val uniqueId: Int,
+    val title: String,
+    val fileId: String,
+    val chapter: String,
+    val publisher: String,
+    val pubType: String,
+    val logo: String,
+    val logoBg: String
+)
+
+@Serializable
+data class JsonData(
+    val items: Map<String, Item>,
+    val numOfRows: Int
+)

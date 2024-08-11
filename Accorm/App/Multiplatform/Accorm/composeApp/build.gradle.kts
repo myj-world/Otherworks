@@ -9,13 +9,9 @@ plugins {
     alias(libs.plugins.compose.compiler)
 
     id("com.google.gms.google-services")
-    kotlin("plugin.serialization") version "1.9.0"
+    kotlin("plugin.serialization") version "2.0.0"
 
     id("com.google.firebase.crashlytics")
-
-//    kotlin("jvm") version "2.0.0"
-
-//    id("dev.icerock.mobile.multiplatform-resources") version "0.24.1"
 }
 
 kotlin {
@@ -60,6 +56,8 @@ kotlin {
             implementation(libs.composeIcons.fontAwesome)
 
             implementation(libs.kamel.image)
+
+            implementation(libs.kotlinx.serialization.json.v171)
 
 //            implementation(libs.coil.compose.v300alpha06)
 //            implementation(libs.coil.network.ktor.v300alpha06)
