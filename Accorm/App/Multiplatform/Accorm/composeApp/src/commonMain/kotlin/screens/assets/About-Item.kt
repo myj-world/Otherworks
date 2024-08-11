@@ -173,7 +173,7 @@ fun Person(
                             text = {
                                 Text(text = role.clickPopup)
                             },
-                            onDismissRequest = {},
+                            onDismissRequest = { showInfo = false },
                             confirmButton = {
                                 TextButton(
                                     onClick = { showInfo = false }

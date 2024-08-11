@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -206,7 +207,7 @@ object Notes : Tab {
                             fontFamily = lexend,
                             color = Color.Gray
                         )
-                        Spacer(modifier = Modifier.height(3.dp))
+                        Spacer(modifier = Modifier.height(1.dp))
                         Text(
                             text = specification,
                             fontSize = 15.sp,
@@ -221,7 +222,7 @@ object Notes : Tab {
                             fontFamily = lexend,
                             color = Color.Gray
                         )
-                        Spacer(modifier = Modifier.height(3.dp))
+                        Spacer(modifier = Modifier.height(1.dp))
                         Text(
                             text = chapter,
                             fontSize = 15.sp,
@@ -236,7 +237,7 @@ object Notes : Tab {
                             fontFamily = lexend,
                             color = Color.Gray
                         )
-                        Spacer(modifier = Modifier.height(3.dp))
+                        Spacer(modifier = Modifier.height(1.dp))
                         Text(
                             text = author,
                             fontSize = 15.sp,
@@ -251,7 +252,7 @@ object Notes : Tab {
                             fontFamily = lexend,
                             color = Color.Gray
                         )
-                        Spacer(modifier = Modifier.height(3.dp))
+                        Spacer(modifier = Modifier.height(1.dp))
                         Text(
                             text = published,
                             fontSize = 15.sp,
@@ -260,12 +261,14 @@ object Notes : Tab {
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         Row {
+                            var shouldCopy by remember { mutableStateOf(false) }
                             Button(
                                 onClick = {
-
+                                    shouldCopy = true
                                 },
                                 modifier = Modifier
-                                    .fillMaxWidth(0.2f),
+                                    .fillMaxWidth(0.2f)
+                                    .height(45.dp),
                                 colors = ButtonDefaults.buttonColors(
                                     backgroundColor = Color.White
                                 )
@@ -279,6 +282,26 @@ object Notes : Tab {
                                 )
                             }
 
+                            var show by remember { mutableStateOf(false) }
+
+                            if (shouldCopy) {
+                                Copy(url)
+                                show = true
+                                shouldCopy = false
+                            }
+
+                            if (show) {
+                                AlertDialog(
+                                    onDismissRequest = { show = false },
+                                    title = { Text("Link copied to clipboard") },
+                                    confirmButton = {
+                                        Button(onClick = { show = false }) {
+                                            Text("OK")
+                                        }
+                                    }
+                                )
+                            }
+
                             Spacer(modifier = Modifier.width(5.dp))
 
                             Button(
@@ -287,7 +310,8 @@ object Notes : Tab {
                                     navigator.push(DisplayResource)
                                 },
                                 modifier = Modifier
-                                    .fillMaxWidth(),
+                                    .fillMaxWidth()
+                                    .height(45.dp),
                                 colors = ButtonDefaults.buttonColors(
                                     backgroundColor = Color(172, 172, 249)
                                 )
@@ -367,3 +391,6 @@ data class JsonData(
     val items: Map<String, Item>,
     val numOfRows: Int
 )
+
+@Composable
+expect fun Copy(url: String)

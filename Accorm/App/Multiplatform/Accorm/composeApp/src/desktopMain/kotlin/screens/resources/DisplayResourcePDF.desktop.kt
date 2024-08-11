@@ -68,7 +68,6 @@ actual suspend fun desktopLoad(url: String) : List<BitmapPainter> {
         pdf = Loader.loadPDF(file)
         pdfRenderer = PDFRenderer(pdf)
     } catch (e: Exception) {
-        println("Tests " + e)
         return listOf()
     }
 
