@@ -245,7 +245,7 @@ object Notes : Tab {
                             .width(175.dp)
                             .height(150.dp)
                             .clip(RoundedCornerShape(20.dp))
-                            .background(Color(28, 28, 28))
+                            .background(Color(172, 172, 249))
                             .padding(20.dp),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.Start
@@ -288,7 +288,7 @@ object Notes : Tab {
                             .width(175.dp)
                             .height(150.dp)
                             .clip(RoundedCornerShape(20.dp))
-                            .background(Color(28, 28, 28))
+                            .background(Color(172, 172, 249))
                             .padding(20.dp),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.Start
