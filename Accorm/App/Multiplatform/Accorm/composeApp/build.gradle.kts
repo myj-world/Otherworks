@@ -61,10 +61,10 @@ kotlin {
 
             implementation(libs.gson)
 
+            implementation(libs.ktor.client.android)
+
 //            implementation(libs.coil.compose.v300alpha06)
 //            implementation(libs.coil.network.ktor.v300alpha06)
-
-            implementation(libs.ktor.client.android)
 
 //            implementation(libs.ktor.client.core)
 //            implementation(libs.coil.compose.core)
@@ -140,12 +140,12 @@ compose.desktop {
             packageName = "Accorm"
             packageVersion = "1.0.0"
             description = "Accorm Desktop App"
-            copyright = "Copyright © 2024 Accorm"
+            copyright = "Copyright © 2023-2024 Accorm"
             windows {
-                iconFile.set(project.projectDir.resolve("src/commonMain/composeResources/drawable/ic.ico"))
+                iconFile.set(project.projectDir.resolve("src/commonMain/composeResources/drawable/ic_win.ico"))
             }
             macOS {
-                iconFile.set(project.projectDir.resolve("src/commonMain/composeResources/drawable/ic.icns"))
+                iconFile.set(project.projectDir.resolve("src/commonMain/composeResources/drawable/ic_mac.icns"))
             }
             linux {
                 iconFile.set(project.projectDir.resolve("src/commonMain/composeResources/drawable/ic.png"))

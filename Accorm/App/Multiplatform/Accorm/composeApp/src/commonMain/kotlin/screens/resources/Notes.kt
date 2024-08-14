@@ -66,6 +66,7 @@ import screens.poppins
 import viewmodels.CurrentSubject
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import screens.HomeScreen
 import screens.device
 import screens.landscapeTablet
 import kotlin.math.roundToInt
@@ -161,7 +162,10 @@ object Notes : Tab {
                 horizontalArrangement = arrangement,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
+                val titleAlignment = if (device == "Android" && !landscapeTablet) Alignment.CenterHorizontally else Alignment.Start
+                Column (
+                    horizontalAlignment = titleAlignment
+                ) {
                     Text(
                         text = subjectCode,
                         fontSize = 20.sp,
@@ -206,14 +210,123 @@ object Notes : Tab {
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(20.dp))
+            Button(
+                onClick = {
+                    navigator.pop()
+                },
+                modifier = Modifier
+                    .height(50.dp)
+                    .width(250.dp)
+                    .clip(RoundedCornerShape(20.dp)),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.White
+                )
+            ) {
+                Text(
+                    text = "Change Subject",
+                    color = Color(172, 172, 249),
+                    fontFamily = poppins,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 20.sp
+                )
+            }
+            Spacer(modifier = Modifier.height(20.dp))
             Column(
                 modifier = Modifier
-                    .padding(20.dp),
+                    .padding(horizontal = 20.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.height(10.dp))
+                Row {
+                    Column(
+                        modifier = Modifier
+                            .width(175.dp)
+                            .height(150.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(Color(28, 28, 28))
+                            .padding(20.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(
+                            text = "Resources",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = poppins,
+                            color = Color.White
+                        )
+                        Text(
+                            text = "Notes",
+                            fontSize = 16.sp,
+                            fontFamily = poppins,
+                            color = Color.White,
+                            modifier = Modifier
+                                .padding(top = 5.dp, start = 5.dp)
+                                .clickable {
+                                    navigator.pop()
+                                    navigator.push(Notes)
+                                }
+                        )
+                        Text(
+                            text = "Videos",
+                            fontSize = 16.sp,
+                            fontFamily = poppins,
+                            color = Color.White,
+                            modifier = Modifier
+                                .padding(top = 5.dp, start = 5.dp)
+                                .clickable {
+                                    navigator.pop()
+                                    navigator.push(Videos)
+                                }
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Column(
+                        modifier = Modifier
+                            .width(175.dp)
+                            .height(150.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(Color(28, 28, 28))
+                            .padding(20.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(
+                            text = "Materials",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = poppins,
+                            color = Color.White
+                        )
+                        Text(
+                            text = "PPQs",
+                            fontSize = 16.sp,
+                            fontFamily = poppins,
+                            color = Color.White,
+                            modifier = Modifier
+                                .padding(top = 5.dp, start = 5.dp)
+                                .clickable {
+                                    navigator.pop()
+                                    navigator.push(PPQs)
+                                }
+                        )
+                        Text(
+                            text = "Syllabus",
+                            fontSize = 16.sp,
+                            fontFamily = poppins,
+                            color = Color.White,
+                            modifier = Modifier
+                                .padding(top = 5.dp, start = 5.dp)
+                                .clickable {
+                                    navigator.pop()
+                                    navigator.push(Syllabus)
+                                }
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(20.dp))
                 @Composable
                 fun Item(
                     logo: String,
@@ -241,7 +354,9 @@ object Notes : Tab {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Row(
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(10.dp)
                             ) {
                                 Box(
                                     modifier = Modifier
@@ -267,7 +382,7 @@ object Notes : Tab {
                             Text(
                                 text = title,
                                 fontFamily = poppins,
-                                fontSize = 24.sp,
+                                fontSize = 22.sp,
                                 color = Color.White
                             )
                             if (isExpanded) {
@@ -409,7 +524,7 @@ object Notes : Tab {
                     } else {
                         Column(
                             modifier = Modifier
-                                .width(340.dp)
+                                .width(400.dp)
                                 .clip(RoundedCornerShape(20.dp))
                                 .background(Color(28, 28, 28))
                                 .animateContentSize()
@@ -418,7 +533,9 @@ object Notes : Tab {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Row(
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(10.dp)
                             ) {
                                 Box(
                                     modifier = Modifier
@@ -677,39 +794,6 @@ object Notes : Tab {
 
                     itemList.removeAt(0)
 
-//                if (device != "Android" || landscapeTablet) {
-//                    val numDesktopRows = (numRows / 4.0).roundToInt()
-//
-//                    var totalDone by remember { mutableIntStateOf(0) }
-//
-//                    for (i in 0 until numDesktopRows) {
-//                        var done by remember { mutableIntStateOf(0) }
-//                        var itemCount by remember { mutableIntStateOf(0) }
-//
-//                        Row {
-//                            itemList.forEach { item ->
-//                                if (done < 4 && itemCount < totalDone) {
-//                                    Item(
-//                                        logo = item.logo,
-//                                        logoColor = parseColor(item.logoBg),
-//                                        chapter = item.chapter,
-//                                        publisher = item.publisher,
-//                                        title = item.title,
-//                                        description = item.description,
-//                                        specification = item.specification,
-//                                        author = item.author,
-//                                        published = item.published,
-//                                        url = item.url
-//                                    )
-//                                    Spacer(modifier = Modifier.width(10.dp))
-//                                    done++
-//                                    totalDone++
-//                                }
-//                                itemCount++
-//                            }
-//                        }
-//                    }
-//                } else {
                     itemList.forEach { item ->
                         Item(
                             logo = item.logo,
@@ -724,7 +808,6 @@ object Notes : Tab {
                             url = item.url
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-//                    }
                     }
                 } else {
                     CircularProgressIndicator(
@@ -755,22 +838,6 @@ data class Item(
     @SerialName("published") val published: String = "Unknown",
     @SerialName("description") val description: String = "Desciption Not Provided"
 )
-
-//@Serializable
-//data class ItemsResponse(
-//    @SerialName("num-of-rows") val numOfRows: Int,
-//    val items: Map<String, Item>
-//)
-//
-//fun parseJson(jsonString: String): ItemsResponse {
-//    try {
-//        val json = Json { ignoreUnknownKeys = true }
-//        return json.decodeFromString(jsonString)
-//    } catch (e: Exception) {
-//        println(e)
-//        return ItemsResponse(0, emptyMap())
-//    }
-//}
 
 
 @Composable

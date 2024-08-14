@@ -55,14 +55,17 @@ fun Subject(
     }
     fun videosClick() {
         CurrentSubject.setSubject(title)
+        CurrentSubject.setLevel(grade)
         nav.push(Videos)
     }
     fun ppqsClick() {
         CurrentSubject.setSubject(title)
+        CurrentSubject.setLevel(grade)
         nav.push(PPQs)
     }
     fun syllabusClick() {
         CurrentSubject.setSubject(title)
+        CurrentSubject.setLevel(grade)
         nav.push(Syllabus)
     }
 
