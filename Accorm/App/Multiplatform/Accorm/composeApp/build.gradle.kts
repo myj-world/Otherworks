@@ -12,7 +12,12 @@ plugins {
     kotlin("plugin.serialization") version "2.0.0"
 
     id("com.google.firebase.crashlytics")
+
+    id("dev.hydraulic.conveyor") version "1.10"
 }
+
+group = "accorm"
+version = "2.0.1"
 
 kotlin {
     androidTarget {
@@ -102,8 +107,8 @@ android {
         applicationId = "com.yousufjamil.accorm"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 17
+        versionName = "2.0.1"
     }
     packaging {
         resources {
@@ -138,7 +143,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Accorm"
-            packageVersion = "1.0.0"
+            packageVersion = "2.0.1"
             description = "Accorm Desktop App"
             copyright = "Copyright © 2023-2024 Accorm"
             windows {

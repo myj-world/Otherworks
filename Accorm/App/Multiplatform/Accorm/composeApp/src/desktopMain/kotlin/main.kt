@@ -27,29 +27,29 @@ fun main() = application {
         App()
     }
 
-    if (device.contains("Windows")) {
-        val exist = Files.exists(
-            Paths.get(
-                System.getenv("APPDATA"),
-                "Microsoft\\Windows\\Start Menu\\Programs\\Accorm.lnk"
-            )
-        )
-
-        println(exist)
-        if (!exist) {
-            val shortcutPath = Paths.get(
-                System.getenv("APPDATA"),
-                "Microsoft\\Windows\\Start Menu\\Programs\\Accorm.lnk"
-            )
-            val targetPath = "C:\\Program Files\\Accorm\\Accorm.exe"
-            val shortcutContent = """
-        [InternetShortcut]
-        URL=file:///$targetPath
-        IconIndex=0
-        IconFile=$targetPath
-    """.trimIndent()
-
-            Files.write(shortcutPath, shortcutContent.toByteArray(), StandardOpenOption.CREATE)
-        }
-    }
+//    if (device.contains("Windows")) {
+//        val exist = Files.exists(
+//            Paths.get(
+//                System.getenv("APPDATA"),
+//                "Microsoft\\Windows\\Start Menu\\Programs\\Accorm.lnk"
+//            )
+//        )
+//
+//        println(exist)
+//        if (!exist) {
+//            val shortcutPath = Paths.get(
+//                System.getenv("APPDATA"),
+//                "Microsoft\\Windows\\Start Menu\\Programs\\Accorm.lnk"
+//            )
+//            val targetPath = "C:\\Program Files\\Accorm\\Accorm.exe"
+//            val shortcutContent = """
+//        [InternetShortcut]
+//        URL=file:///$targetPath
+//        IconIndex=0
+//        IconFile=$targetPath
+//    """.trimIndent()
+//
+//            Files.write(shortcutPath, shortcutContent.toByteArray(), StandardOpenOption.CREATE)
+//        }
+//    }
 }
