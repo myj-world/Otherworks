@@ -63,7 +63,7 @@ import screens.lexend
 import screens.poppins
 import viewmodels.CurrentSubject
 
-object Videos: Tab {
+object Videos : Tab {
     override val options: TabOptions
         @Composable
         get() {
@@ -100,7 +100,7 @@ object Videos: Tab {
                 "Physics" -> "physics"
                 "Chemistry" -> "chemistry"
                 "Biology" -> "biology"
-                "Computer Science" -> "computer%20science"
+                "Computer Science" -> "cs"
                 "FLE" -> "fle"
                 "ESL" -> "esl"
                 else -> "maths"
@@ -139,8 +139,9 @@ object Videos: Tab {
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val arrangement = if (device == "Android" && !landscapeTablet) Arrangement.Center else Arrangement.SpaceBetween
-            Row (
+            val arrangement =
+                if (device == "Android" && !landscapeTablet) Arrangement.Center else Arrangement.SpaceBetween
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
@@ -157,8 +158,9 @@ object Videos: Tab {
                 horizontalArrangement = arrangement,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val titleAlignment = if (device == "Android" && !landscapeTablet) Alignment.CenterHorizontally else Alignment.Start
-                Column (
+                val titleAlignment =
+                    if (device == "Android" && !landscapeTablet) Alignment.CenterHorizontally else Alignment.Start
+                Column(
                     horizontalAlignment = titleAlignment
                 ) {
                     Text(
@@ -491,7 +493,7 @@ object Videos: Tab {
                                     Button(
                                         onClick = {
                                             CurrentSubject.setUrl(url)
-                                            navigator.push(DisplayResourceVideo)
+                                            navigator.push(DisplayResourceExternal)
                                         },
                                         modifier = Modifier.fillMaxWidth().height(45.dp),
                                         colors = ButtonDefaults.buttonColors(
@@ -670,7 +672,7 @@ object Videos: Tab {
                                     Button(
                                         onClick = {
                                             CurrentSubject.setUrl(url)
-                                            navigator.push(DisplayResourceVideo)
+                                            navigator.push(DisplayResourceExternal)
                                         },
                                         modifier = Modifier.fillMaxWidth().height(45.dp),
                                         colors = ButtonDefaults.buttonColors(
@@ -698,7 +700,7 @@ object Videos: Tab {
                     }
                 }
 
-                if (data != "") {
+                if (data != "" && data != "no data available.") {
 
                     val itemList = MutableList(0) { VideoItem() }
                     var numRows by remember { mutableIntStateOf(0) }
@@ -729,14 +731,14 @@ object Videos: Tab {
                                             val logo = reader.nextString()
                                             reader.skipValue()
                                             val logoBg = reader.nextString()
-//                                    reader.skipValue()
-//                                    val description = reader.nextString()
-//                                    reader.skipValue()
-//                                    val specification = reader.nextString()
-//                                    reader.skipValue()
-//                                    val published = reader.nextString()
-//                                    reader.skipValue()
-//                                    val source = reader.nextString()
+                                            reader.skipValue()
+                                            val published = reader.nextString()
+                                            reader.skipValue()
+                                            val description = reader.nextString()
+                                            reader.skipValue()
+                                            val source = reader.nextString()
+                                            reader.skipValue()
+                                            val specification = reader.nextString()
 
 
                                             itemList.add(
@@ -749,10 +751,10 @@ object Videos: Tab {
                                                     pubType = pubType,
                                                     logo = logo,
                                                     logoBg = logoBg,
-//                                            specification = specification,
-//                                            author = author,
-//                                            published = published,
-//                                            description = description
+                                                    specification = specification,
+                                                    source = source,
+                                                    published = published,
+                                                    description = description
                                                 )
                                             )
                                         } catch (e: Exception) {
@@ -767,22 +769,23 @@ object Videos: Tab {
                             }
                             println(itemList)
                         }
-                    } catch (_: Exception) {
+                    } catch (e: Exception) {
+                        println(e)
                         numRows = 0
                         itemList.add(
                             VideoItem(
                                 uniqueId = 0,
-                                title = "Sample Notes",
-                                url = "https://accorm.ginastic.co/700/IGCSE/islamiyat/The%20Quranic%20Passages_373776704.pdf",
+                                title = "Sample Video",
+                                url = "https://youtu.be/uixWHUCES4I?si=Wl72mcCy_PhQczms",
                                 chapter = "miscellaneous",
                                 publisher = "Accorm",
                                 pubType = "Admin",
                                 logo = "A",
                                 logoBg = "#000000",
-                                specification = "Sample Notes",
+                                specification = "Sample Video",
                                 source = "Accorm",
                                 published = "12/12/2023",
-                                description = "Sample Notes"
+                                description = "Sample Video"
                             )
                         )
                     }
@@ -804,6 +807,14 @@ object Videos: Tab {
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                     }
+                } else if (data == "no data available.") {
+                    Text(
+                        text = "No Videos Uploaded Yet!",
+                        fontSize = 20.sp,
+                        fontFamily = poppins,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.White
+                    )
                 } else {
                     CircularProgressIndicator(
                         color = Color.White

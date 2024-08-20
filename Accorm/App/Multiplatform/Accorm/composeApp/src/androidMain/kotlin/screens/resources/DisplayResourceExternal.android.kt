@@ -6,6 +6,10 @@ import androidx.compose.ui.platform.LocalUriHandler
 @Composable
 actual fun launchURL(url: String): Boolean {
     val uriHandler = LocalUriHandler.current
-    uriHandler.openUri(url)
-    return true
+    return try {
+        uriHandler.openUri(url)
+        true
+    } catch (e: Exception) {
+        false
+    }
 }

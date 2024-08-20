@@ -22,12 +22,10 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -47,7 +45,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import compose.icons.FontAwesomeIcons
@@ -55,7 +52,6 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Book
 import compose.icons.fontawesomeicons.solid.ExternalLinkAlt
 import compose.icons.fontawesomeicons.solid.Link
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -64,12 +60,8 @@ import screens.assets.CopyrightMessage
 import screens.lexend
 import screens.poppins
 import viewmodels.CurrentSubject
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
-import screens.HomeScreen
 import screens.device
 import screens.landscapeTablet
-import kotlin.math.roundToInt
 
 object Notes : Tab {
     override val options: TabOptions
@@ -105,7 +97,7 @@ object Notes : Tab {
                 "Physics" -> "physics"
                 "Chemistry" -> "chemistry"
                 "Biology" -> "biology"
-                "Computer Science" -> "computer_science"
+                "Computer Science" -> "cs"
                 "FLE" -> "fle"
                 "ESL" -> "esl"
                 else -> "maths"
@@ -133,7 +125,7 @@ object Notes : Tab {
         var data by remember { mutableStateOf("") }
         coroutineScope.launch {
             data =
-                RequestURL("https://accorm.ginastic.co/300/fetch/?access-id=65aea3e3e6184&subject=$subjectRetrieve")
+                RequestURL("https://accorm.ginastic.co/300/notes/?access-id=65aea3e3e6184&subject=$subjectRetrieve")
                     ?: "{\"1\": {\"unique_id\": 000000000,\"title\": \"Sample Notes\",\"url\": \"https://accorm.ginastic.co/700/IGCSE/islamiyat/The%20Quranic%20Passages_373776704.pdf\",\"chapter\": \"miscellaneous\",\"publisher\": \"Accorm\",\"pub_type\": \"Admin\",\"logo\": \"A\",\"logo_bg\": \"#000000\", \"specification:\": \"Sample Notes\", \"author\": \"Accorm\", \"published\": \"12/12/2023\", \"description\": \"Sample Notes\"}, \"num-of-rows\": 1}"
         }
 
@@ -144,8 +136,9 @@ object Notes : Tab {
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val arrangement = if (device == "Android" && !landscapeTablet) Arrangement.Center else Arrangement.SpaceBetween
-            Row (
+            val arrangement =
+                if (device == "Android" && !landscapeTablet) Arrangement.Center else Arrangement.SpaceBetween
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
@@ -162,8 +155,9 @@ object Notes : Tab {
                 horizontalArrangement = arrangement,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val titleAlignment = if (device == "Android" && !landscapeTablet) Alignment.CenterHorizontally else Alignment.Start
-                Column (
+                val titleAlignment =
+                    if (device == "Android" && !landscapeTablet) Alignment.CenterHorizontally else Alignment.Start
+                Column(
                     horizontalAlignment = titleAlignment
                 ) {
                     Text(
@@ -336,7 +330,6 @@ object Notes : Tab {
                     title: String,
                     description: String,
                     specification: String,
-                    author: String,
                     published: String,
                     url: String
                 ) {
@@ -426,21 +419,6 @@ object Notes : Tab {
 
                                 Spacer(modifier = Modifier.height(10.dp))
                                 Text(
-                                    text = "Author",
-                                    fontSize = 12.sp,
-                                    fontFamily = lexend,
-                                    color = Color.Gray
-                                )
-                                Spacer(modifier = Modifier.height(1.dp))
-                                Text(
-                                    text = author,
-                                    fontSize = 15.sp,
-                                    fontFamily = poppins,
-                                    color = Color.White
-                                )
-
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
                                     text = "Published on",
                                     fontSize = 12.sp,
                                     fontFamily = lexend,
@@ -496,7 +474,7 @@ object Notes : Tab {
                                     Button(
                                         onClick = {
                                             CurrentSubject.setUrl(url)
-                                            navigator.push(DisplayResource)
+                                            navigator.push(DisplayResourcePDF)
                                         },
                                         modifier = Modifier.fillMaxWidth().height(45.dp),
                                         colors = ButtonDefaults.buttonColors(
@@ -605,21 +583,6 @@ object Notes : Tab {
 
                                 Spacer(modifier = Modifier.height(10.dp))
                                 Text(
-                                    text = "Author",
-                                    fontSize = 12.sp,
-                                    fontFamily = lexend,
-                                    color = Color.Gray
-                                )
-                                Spacer(modifier = Modifier.height(1.dp))
-                                Text(
-                                    text = author,
-                                    fontSize = 15.sp,
-                                    fontFamily = poppins,
-                                    color = Color.White
-                                )
-
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
                                     text = "Published on",
                                     fontSize = 12.sp,
                                     fontFamily = lexend,
@@ -675,7 +638,7 @@ object Notes : Tab {
                                     Button(
                                         onClick = {
                                             CurrentSubject.setUrl(url)
-                                            navigator.push(DisplayResource)
+                                            navigator.push(DisplayResourcePDF)
                                         },
                                         modifier = Modifier.fillMaxWidth().height(45.dp),
                                         colors = ButtonDefaults.buttonColors(
@@ -703,7 +666,7 @@ object Notes : Tab {
                     }
                 }
 
-                if (data != "") {
+                if (data != "" && data != "no data available.") {
 
                     val itemList = MutableList(0) { Item() }
                     var numRows by remember { mutableIntStateOf(0) }
@@ -734,14 +697,12 @@ object Notes : Tab {
                                             val logo = reader.nextString()
                                             reader.skipValue()
                                             val logoBg = reader.nextString()
-//                                    reader.skipValue()
-//                                    val specification = reader.nextString()
-//                                    reader.skipValue()
-//                                    val author = reader.nextString()
-//                                    reader.skipValue()
-//                                    val published = reader.nextString()
-//                                    reader.skipValue()
-//                                    val description = reader.nextString()
+                                            reader.skipValue()
+                                            val published = reader.nextString()
+                                            reader.skipValue()
+                                            val description = reader.nextString()
+                                            reader.skipValue()
+                                            val specification = reader.nextString()
 
 
                                             itemList.add(
@@ -754,10 +715,9 @@ object Notes : Tab {
                                                     pubType = pubType,
                                                     logo = logo,
                                                     logoBg = logoBg,
-//                                            specification = specification,
-//                                            author = author,
-//                                            published = published,
-//                                            description = description
+                                                    specification = specification,
+                                                    published = published,
+                                                    description = description
                                                 )
                                             )
                                         } catch (e: Exception) {
@@ -785,7 +745,6 @@ object Notes : Tab {
                                 logo = "A",
                                 logoBg = "#000000",
                                 specification = "Sample Notes",
-                                author = "Accorm",
                                 published = "12/12/2023",
                                 description = "Sample Notes"
                             )
@@ -803,12 +762,19 @@ object Notes : Tab {
                             title = item.title,
                             description = item.description,
                             specification = item.specification,
-                            author = item.author,
                             published = item.published,
                             url = item.url
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                     }
+                }  else if (data == "no data available.") {
+                    Text(
+                        text = "No Notes Uploaded Yet!",
+                        fontSize = 20.sp,
+                        fontFamily = poppins,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.White
+                    )
                 } else {
                     CircularProgressIndicator(
                         color = Color.White
@@ -834,7 +800,6 @@ data class Item(
     @SerialName("logo") val logo: String = "U",
     @SerialName("logo_bg") val logoBg: String = "#acacf9",
     @SerialName("specification") val specification: String = "Specification Not Provided",
-    @SerialName("author") val author: String = "Unknown",
     @SerialName("published") val published: String = "Unknown",
     @SerialName("description") val description: String = "Desciption Not Provided"
 )
