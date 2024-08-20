@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
+import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleOwner
+import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
@@ -36,8 +38,8 @@ import screens.device
 import viewmodels.CurrentSubject
 
 var data = listOf<BitmapPainter>()
-object DisplayResourcePDF : Tab {
-    private fun readResolve(): Any = DisplayResourcePDF
+class DisplayResourcePDF : Tab, ScreenLifecycleOwner {
+    private fun readResolve(): Any = DisplayResourcePDF()
     override val options: TabOptions
         @Composable
         get() {
@@ -155,8 +157,12 @@ object DisplayResourcePDF : Tab {
             }
         }
     }
-}
 
+    override fun onDispose(screen: Screen) {
+        CurrentSubject.setUrl("")
+        super.onDispose(screen)
+    }
+}
 expect suspend fun downloadFile(url: String): Boolean
 
 @Composable

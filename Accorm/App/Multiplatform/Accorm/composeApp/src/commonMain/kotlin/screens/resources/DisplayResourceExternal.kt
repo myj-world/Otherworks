@@ -25,8 +25,8 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Book
 import viewmodels.CurrentSubject
 
-object DisplayResourceExternal : Tab {
-    private fun readResolve(): Any = DisplayResourcePDF
+class DisplayResourceExternal : Tab {
+    private fun readResolve(): Any = DisplayResourcePDF()
     override val options: TabOptions
         @Composable
         get() {

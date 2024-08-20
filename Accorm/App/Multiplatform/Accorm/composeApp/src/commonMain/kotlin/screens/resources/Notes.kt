@@ -474,7 +474,7 @@ object Notes : Tab {
                                     Button(
                                         onClick = {
                                             CurrentSubject.setUrl(url)
-                                            navigator.push(DisplayResourcePDF)
+                                            navigator.push(DisplayResourcePDF())
                                         },
                                         modifier = Modifier.fillMaxWidth().height(45.dp),
                                         colors = ButtonDefaults.buttonColors(
@@ -638,7 +638,7 @@ object Notes : Tab {
                                     Button(
                                         onClick = {
                                             CurrentSubject.setUrl(url)
-                                            navigator.push(DisplayResourcePDF)
+                                            navigator.push(DisplayResourcePDF())
                                         },
                                         modifier = Modifier.fillMaxWidth().height(45.dp),
                                         colors = ButtonDefaults.buttonColors(

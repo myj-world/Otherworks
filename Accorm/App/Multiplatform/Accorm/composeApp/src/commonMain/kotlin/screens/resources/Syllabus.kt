@@ -57,6 +57,7 @@ import screens.poppins
 import viewmodels.CurrentSubject
 
 object Syllabus : Tab {
+    private fun readResolve(): Any = Syllabus
     override val options: TabOptions
         @Composable
         get() {
@@ -411,7 +412,7 @@ object Syllabus : Tab {
                         Button(
                             onClick = {
                                 CurrentSubject.setUrl(syllabusLink)
-                                navigator.push(DisplayResourceExternal)
+                                navigator.push(DisplayResourceExternal())
                             },
                             modifier = Modifier
                                 .height(50.dp)

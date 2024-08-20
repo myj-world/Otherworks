@@ -493,7 +493,7 @@ object Videos : Tab {
                                     Button(
                                         onClick = {
                                             CurrentSubject.setUrl(url)
-                                            navigator.push(DisplayResourceExternal)
+                                            navigator.push(DisplayResourceExternal())
                                         },
                                         modifier = Modifier.fillMaxWidth().height(45.dp),
                                         colors = ButtonDefaults.buttonColors(
@@ -672,7 +672,7 @@ object Videos : Tab {
                                     Button(
                                         onClick = {
                                             CurrentSubject.setUrl(url)
-                                            navigator.push(DisplayResourceExternal)
+                                            navigator.push(DisplayResourceExternal())
                                         },
                                         modifier = Modifier.fillMaxWidth().height(45.dp),
                                         colors = ButtonDefaults.buttonColors(

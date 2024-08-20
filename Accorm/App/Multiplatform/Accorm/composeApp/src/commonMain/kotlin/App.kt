@@ -44,7 +44,9 @@ fun App() {
             FontAwesomeIcons.Solid.ShieldAlt
         )
         val screens = listOf(HomeScreen, Resources, Services, AboutUs, PPTC)
-        TabNavigator(HomeScreen) { tabNavigator ->
+        TabNavigator(
+            tab = HomeScreen
+        ) { tabNavigator ->
             Scaffold(
                 content = {
                     Row {
