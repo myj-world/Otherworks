@@ -42,6 +42,8 @@ kotlin {
 
             implementation(libs.bouquet)
 
+            implementation(libs.jetpdfvue)
+
 //            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {

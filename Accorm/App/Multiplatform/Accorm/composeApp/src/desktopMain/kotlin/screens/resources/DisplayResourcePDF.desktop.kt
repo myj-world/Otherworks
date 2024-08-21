@@ -76,5 +76,8 @@ actual suspend fun desktopLoad(url: String) : List<BitmapPainter> {
         list.add(BitmapPainter(image.toImage().toComposeImageBitmap()))
     }
     list.removeAt(0)
+
+    file.delete()
+
     return list
 }

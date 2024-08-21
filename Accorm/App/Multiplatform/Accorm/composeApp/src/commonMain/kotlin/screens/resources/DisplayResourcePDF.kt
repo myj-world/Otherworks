@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
@@ -24,6 +25,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleOwner
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -35,6 +38,7 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Book
 import kotlinx.coroutines.launch
 import screens.device
+import screens.poppins
 import viewmodels.CurrentSubject
 
 var data = listOf<BitmapPainter>()
@@ -124,7 +128,17 @@ class DisplayResourcePDF : Tab, ScreenLifecycleOwner {
 //                )
 //            }
             if (device == "Android") {
-                openFile(url = CurrentSubject.getUrl())
+                val opened = openFile(url = CurrentSubject.getUrl())
+                if (!opened) {
+                    Text(
+                        text = "An error occurred.",
+                        color = Color.Red,
+                        fontFamily = poppins,
+                        fontSize = 30.sp,
+                        modifier = Modifier
+                            .padding(20.dp)
+                    )
+                }
             } else {
                 var isComplete by remember { mutableStateOf(false) }
                 coroutine.launch {

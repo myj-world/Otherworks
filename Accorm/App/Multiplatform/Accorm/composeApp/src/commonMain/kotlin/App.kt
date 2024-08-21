@@ -13,6 +13,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import compose.icons.FontAwesomeIcons
@@ -47,11 +49,12 @@ fun App() {
         TabNavigator(
             tab = HomeScreen
         ) { tabNavigator ->
+//            val navigator = LocalNavigator.currentOrThrow
             Scaffold(
                 content = {
                     Row {
                         if (device != "Android" || landscapeTablet) {
-                            NavigationRail (
+                            NavigationRail(
                                 backgroundColor = Color(53, 53, 93)
                             ) {
                                 items.forEachIndexed { index, item ->
@@ -80,7 +83,10 @@ fun App() {
                                             )
                                         },
                                         selected = tabNavigator.current == screens[index],
-                                        onClick = { tabNavigator.current = screens[index] },
+                                        onClick = {
+//                                            navigator.popUntilRoot()
+                                            tabNavigator.current = screens[index]
+                                        },
                                         modifier = Modifier.background(
                                             Color(53, 53, 93)
                                         )

@@ -23,6 +23,7 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Book
+import screens.poppins
 import viewmodels.CurrentSubject
 
 class DisplayResourceExternal : Tab {
@@ -53,7 +54,8 @@ class DisplayResourceExternal : Tab {
                 Text(
                     text = "Error launching URL",
                     color = Color.Red,
-                    fontSize = 28.sp
+                    fontSize = 28.sp,
+                    fontFamily = poppins
                 )
                 Text(
                     text = "Please manually search ${CurrentSubject.getUrl()}",
