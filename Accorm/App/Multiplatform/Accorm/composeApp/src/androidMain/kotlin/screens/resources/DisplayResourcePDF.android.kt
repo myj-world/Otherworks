@@ -1,10 +1,13 @@
 package screens.resources
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.pdf.PdfDocument
 import android.graphics.pdf.PdfRenderer
 import android.os.Handler
 import android.os.Looper
 import android.os.ParcelFileDescriptor
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -42,14 +45,15 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.pratikk.jetpdfvue.HorizontalVueReader
-import com.pratikk.jetpdfvue.VueHorizontalSlider
-import com.pratikk.jetpdfvue.state.VueFileType
-import com.pratikk.jetpdfvue.state.VueLoadState
-import com.pratikk.jetpdfvue.state.VueResourceType
-import com.pratikk.jetpdfvue.state.rememberHorizontalVueReaderState
+//import com.pratikk.jetpdfvue.HorizontalVueReader
+//import com.pratikk.jetpdfvue.VueHorizontalSlider
+//import com.pratikk.jetpdfvue.state.VueFileType
+//import com.pratikk.jetpdfvue.state.VueLoadState
+//import com.pratikk.jetpdfvue.state.VueResourceType
+//import com.pratikk.jetpdfvue.state.rememberHorizontalVueReaderState
 import com.rizzi.bouquet.ResourceType
 import com.rizzi.bouquet.VerticalPDFReader
 import com.rizzi.bouquet.rememberVerticalPdfReaderState
@@ -63,6 +67,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+//import org.apache.pdfbox.Loader
+//import org.apache.pdfbox.pdmodel.PDDocument
+//import org.apache.pdfbox.rendering.PDFRenderer
 import screens.poppins
 import viewmodels.CurrentSubject
 import java.io.File
@@ -77,56 +84,198 @@ actual fun openFile(url: String): Boolean {
         mutableStateOf(false)
     }
 
-    val file = File.createTempFile("file", ".pdf")
-    file.deleteOnExit()
-    LaunchedEffect(true) {
-        val response = withContext(Dispatchers.IO) {
-            val client = OkHttpClient()
-            val request = Request.Builder().url(url).build()
-            val body = client.newCall(request).execute().body()
-            println(body.contentType())
-            body.bytes()
-        }
-        file.writeBytes(response)
+    val state = rememberVerticalPdfReaderState(
+        resource = ResourceType.Remote(url),
+        isZoomEnable = true
+    )
 
-        display = true
-    }
+    VerticalPDFReader(state = state, modifier = Modifier.fillMaxSize())
 
-    if (display) {
-        val parcelFileDescriptor =
-            ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
-        val pdfRenderer: PdfRenderer
-        try {
-            pdfRenderer = PdfRenderer(parcelFileDescriptor)
-        } catch (e: Exception) {
-            println(e)
-            return false
-        }
-        val pages = mutableListOf<ImageBitmap>()
-        for (i in 0 until pdfRenderer.pageCount) {
-            val page = pdfRenderer.openPage(i)
-            val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
-            page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-            pages.add(bitmap.asImageBitmap())
-            page.close()
-        }
-        pdfRenderer.close()
-        parcelFileDescriptor.close()
-        file.delete()
+    Toast.makeText(LocalContext.current, "If file doesn't load, relaunch app", Toast.LENGTH_LONG).show()
 
-        LazyColumn {
-            pages.forEach { image ->
-                item {
-                    Image(
-                        bitmap = image,
-                        contentDescription = "PDF page"
-                    )
-                }
-            }
-        }
-    } else {
-        CircularProgressIndicator(color = Color.White)
-    }
+    return true
+
+//    val file = File.createTempFile("file", ".pdf")
+//    file.deleteOnExit()
+//    LaunchedEffect(true) {
+//        try {
+//            val response = withContext(Dispatchers.IO) {
+//                val client = OkHttpClient()
+//                val request = Request.Builder().url(url).build()
+//                val body = client.newCall(request).execute().body()
+//                println(body.contentType())
+//                println(body.bytes())
+//                body.bytes()
+//            }
+//            file.writeBytes(response)
+//
+//            println(file.canRead())
+//
+//            display = true
+//        } catch (e: Exception) {
+//            println(e)
+//            return@LaunchedEffect
+//        }
+//    }
+//
+//    if (display) {
+//        val parcelFileDescriptor =
+//            ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
+//        val pdfRenderer: PdfRenderer
+//        try {
+//            pdfRenderer = PdfRenderer(parcelFileDescriptor)
+//        } catch (e: Exception) {
+//            println(e)
+//            return false
+//        }
+//        val pages = mutableListOf<ImageBitmap>()
+//        for (i in 0 until pdfRenderer.pageCount) {
+//            val page = pdfRenderer.openPage(i)
+//            val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
+//            page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+//            pages.add(bitmap.asImageBitmap())
+//            page.close()
+//        }
+//        pdfRenderer.close()
+//        parcelFileDescriptor.close()
+//        file.delete()
+//
+//        LazyColumn {
+//            pages.forEach { image ->
+//                item {
+//                    Image(
+//                        bitmap = image,
+//                        contentDescription = "PDF page"
+//                    )
+//                }
+//            }
+//        }
+//    } else {
+//        CircularProgressIndicator(color = Color.White)
+//    }
+//    return true
+
+
+//    var display by remember {
+//        mutableStateOf(false)
+//    }
+//
+//    val file = File.createTempFile("file", ".pdf")
+//    file.deleteOnExit()
+//    LaunchedEffect(true) {
+//        val response = withContext(Dispatchers.IO) {
+//            val client = OkHttpClient()
+//            val request = Request.Builder().url(url).build()
+//            val body = client.newCall(request).execute().body()
+//            println(body.contentType())
+//            body.bytes()
+//        }
+//        file.writeBytes(response)
+//
+//        display = true
+//    }
+//
+//    if (display) {
+//        println(file.exists())
+//        LazyColumn {
+//            val pdfRenderer = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
+////        val pdf = PdfDocument()
+//            val renderer = PdfRenderer(pdfRenderer)
+//            val pageCount = renderer.pageCount
+//            for (i in 1 until pageCount + 1) {
+//                println(file.exists())
+//                item {
+//                    println(file.exists())
+//                    val page = renderer.openPage(i)
+//                    val bitmap = Bitmap.createBitmap(
+//                        page.width,
+//                        page.height,
+//                        Bitmap.Config.ARGB_8888
+//                    )
+//                    page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+//                    Image(
+//                        bitmap = bitmap.asImageBitmap(),
+//                        contentDescription = "PDF page"
+//                    )
+//                    page.close()
+//                }
+//            }
+//        }
+
+//        val inputStream = file.inputStream()
+//        val bitmap = BitmapFactory.decodeStream(inputStream)
+//        inputStream.close()
+//        Image(
+//            bitmap = bitmap.asImageBitmap(),
+//            contentDescription = "PDF page"
+//        )
+
+//        val parcelFileDescriptor =
+//            ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
+//        val pdfRenderer: PdfRenderer
+//        try {
+//            pdfRenderer = PdfRenderer(parcelFileDescriptor)
+//        } catch (e: Exception) {
+//            println(e)
+//            return false
+//        }
+//        val pages = mutableListOf<ImageBitmap>()
+//        for (i in 0 until pdfRenderer.pageCount) {
+//            val page = pdfRenderer.openPage(i)
+//            val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
+//            page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+//            pages.add(bitmap.asImageBitmap())
+//            page.close()
+//        }
+//        pdfRenderer.close()
+//        parcelFileDescriptor.close()
+//        val pdf: PDDocument
+//        val pdfRenderer: PDFRenderer
+
+//        try {
+////            pdf = Loader.loadPDF(file)
+////            pdfRenderer = PDFRenderer(pdf)
+////            for (i in 0 until pdf.numberOfPages) {
+////                val image = pdfRenderer
+////            }
+////            pdf.close()
+//        } catch (e: Exception) {
+//            return false
+//        }
+
+//        AndroidView(
+//            factory = { context ->
+//                val adView = PdfDocument().
+//                adView.fromStream(inputStream)
+//                    .enableDoubletap(true)
+//                    .spacing(10)
+//                    .load()
+//                adView
+//            },
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(bottom = 8.dp),
+//            update = { pdfViewer ->
+//                pdfViewer.doOnLayout {
+//
+//                }
+//            })
+
+//        file.delete()
+
+//        LazyColumn {
+//            pages.forEach { image ->
+//                item {
+//                    Image(
+//                        bitmap = image,
+//                        contentDescription = "PDF page"
+//                    )
+//                }
+//            }
+//        }
+//    } else {
+//        CircularProgressIndicator(color = Color.White)
+//    }
 
 //    val urlLoad = url
 //    val pdfState = rememberVerticalPdfReaderState(
@@ -390,7 +539,7 @@ actual fun openFile(url: String): Boolean {
 //        }
 //        Check()
 //    }
-    return true
+//    return true
 }
 
 actual suspend fun desktopLoad(url: String): List<BitmapPainter> {

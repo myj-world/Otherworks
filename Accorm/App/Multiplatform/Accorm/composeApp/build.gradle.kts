@@ -40,9 +40,9 @@ kotlin {
             implementation(libs.google.firebase.analytics)
             implementation(libs.firebase.crashlytics)
 
-            implementation(libs.bouquet)
-
-            implementation(libs.jetpdfvue)
+//            implementation(libs.bouquet)
+//
+//            implementation(libs.jetpdfvue)
 
 //            implementation(libs.ktor.client.okhttp)
         }
@@ -69,6 +69,8 @@ kotlin {
             implementation(libs.gson)
 
             implementation(libs.ktor.client.android)
+
+            implementation(libs.bouquet)
 
 //            implementation(libs.coil.compose.v300alpha06)
 //            implementation(libs.coil.network.ktor.v300alpha06)
@@ -107,8 +109,8 @@ android {
 
     defaultConfig {
         applicationId = "com.yousufjamil.accorm"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        minSdk = 26
+        targetSdk = 34
         versionCode = 17
         versionName = "2.0.2"
     }

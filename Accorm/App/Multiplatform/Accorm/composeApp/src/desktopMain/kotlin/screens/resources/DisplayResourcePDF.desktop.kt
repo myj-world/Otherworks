@@ -1,8 +1,6 @@
 package screens.resources
 
-import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.toComposeImageBitmap
@@ -12,16 +10,13 @@ import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsChannel
 import io.ktor.util.toByteArray
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.PDFRenderer
 import org.jetbrains.skiko.toImage
-import java.awt.image.BufferedImage
 import java.io.File
 import java.io.FileOutputStream
-import java.net.URI
 
 actual suspend fun downloadFile(url: String): Boolean {
     return try {
@@ -61,7 +56,9 @@ actual suspend fun desktopLoad(url: String) : List<BitmapPainter> {
                 println("Downloaded $bytesSentTotal of $contentLength")
             }
         }.bodyAsChannel().toByteArray()
-        file = File.createTempFile("file", ".pdf")
+        file = withContext(Dispatchers.IO) {
+            File.createTempFile("file", ".pdf")
+        }
         file.writeBytes(response)
         file.deleteOnExit()
 
@@ -72,7 +69,7 @@ actual suspend fun desktopLoad(url: String) : List<BitmapPainter> {
     }
 
     for (i in 0 until pdf.numberOfPages) {
-        val image = pdfRenderer.renderImage(1)
+        val image = pdfRenderer.renderImage(i)
         list.add(BitmapPainter(image.toImage().toComposeImageBitmap()))
     }
     list.removeAt(0)
