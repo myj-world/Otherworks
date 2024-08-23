@@ -47,15 +47,7 @@ voyagerTabNavigator = "1.1.0-beta02"
 
 [libraries]
 androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
-bouquet = { module = "io.github.grizzi91:bouquet", version.ref = "bouquet" }
-coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
-coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil3" }
-coil-compose-v300alpha06 = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
-coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil3" }
-coil-mp = { module = "io.coil-kt.coil3:coil", version.ref = "coil3" }
-coil-network-ktor-v300alpha06 = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coilNetworkKtor" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
-jetpdfvue = { module = "com.github.pratikksahu:JetPDFVue", version.ref = "jetpdfvue" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 kotlinx-serialization-json-v171 = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJsonVersion" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }

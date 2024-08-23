@@ -39,12 +39,6 @@ kotlin {
             implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.google.firebase.analytics)
             implementation(libs.firebase.crashlytics)
-
-//            implementation(libs.bouquet)
-//
-//            implementation(libs.jetpdfvue)
-
-//            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -69,27 +63,6 @@ kotlin {
             implementation(libs.gson)
 
             implementation(libs.ktor.client.android)
-
-            implementation(libs.bouquet)
-
-//            implementation(libs.coil.compose.v300alpha06)
-//            implementation(libs.coil.network.ktor.v300alpha06)
-
-//            implementation(libs.ktor.client.core)
-//            implementation(libs.coil.compose.core)
-//            implementation(libs.coil.compose)
-//            implementation(libs.coil.mp)
-//            implementation(libs.kotlinx.coroutines.android)
-//            implementation(libs.kotlinx.coroutines.core)
-//            implementation(libs.coil.network.ktor)
-//
-//            implementation(libs.connectivity.core)
-//            implementation(libs.connectivity.http)
-//            implementation(libs.connectivity.compose)
-//            implementation(libs.connectivity.compose.http)
-//
-//            implementation(libs.resources)
-//            implementation(libs.resources.compose)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -109,7 +82,7 @@ android {
 
     defaultConfig {
         applicationId = "com.yousufjamil.accorm"
-        minSdk = 26
+        minSdk = 21
         targetSdk = 34
         versionCode = 17
         versionName = "2.0.2"
