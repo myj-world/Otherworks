@@ -1,5 +1,6 @@
 package screens.resources
 
+import analytics.LogEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -85,6 +86,7 @@ object Resources : Tab {
             )
             Spacer(Modifier.height(10.dp))
             var grade by remember { mutableStateOf("") }
+
             @Composable
             fun Option(text: String) {
                 if (device == "Android" && !landscapeTablet) {
@@ -153,18 +155,19 @@ object Resources : Tab {
                 "" -> {
                     if (device == "Android" && !landscapeTablet) {
                         Option(text = "IGCSE / O Level")
-//                        Option(text = "AS")
+                        Option(text = "AS")
 //                        Option(text = "A2")
                     } else {
                         Row {
                             Option(text = "IGCSE / O Level")
-//                            Option(text = "AS")
+                            Option(text = "AS")
 //                            Option(text = "A2")
                         }
                     }
                 }
 
                 "IGCSE / O Level" -> {
+                    LogEvent("Subjects_IGCSE O Level")
                     Subject(
                         title = "Accounting",
                         code = "0452/7077",
@@ -265,12 +268,21 @@ object Resources : Tab {
                         grade = "IGCSE / O Level"
                     )
                 }
+
                 "AS" -> {
-                    Option(text = "Coming Soon!")
+                    LogEvent("Subjects_AS")
+                    Text(
+                        text = "This window will open soon.",
+                        fontSize = 18.sp,
+                        color = Color.Gray,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
+
                 "A2" -> {
                     Option(text = "Coming Soon!")
                 }
+
                 else -> {
                     Option(text = "Error: Not Found")
                 }

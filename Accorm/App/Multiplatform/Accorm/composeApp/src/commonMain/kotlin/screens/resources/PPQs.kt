@@ -1,5 +1,6 @@
 package screens.resources
 
+import analytics.LogEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -62,6 +63,8 @@ object PPQs : Tab {
 
     @Composable
     override fun Content() {
+        LogEvent("Load PPQs ${CurrentSubject.getSubject()}")
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -350,6 +353,7 @@ object PPQs : Tab {
                                 Button(
                                     onClick = {
                                         CurrentSubject.setUrl(msLink)
+                                        CurrentSubject.setUrlFileName(title)
                                         navigator.push(DisplayResourcePDF())
                                     },
                                     colors = ButtonDefaults.buttonColors(
@@ -369,6 +373,7 @@ object PPQs : Tab {
                                 Button(
                                     onClick = {
                                         CurrentSubject.setUrl(qpLink)
+                                        CurrentSubject.setUrlFileName(title)
                                         navigator.push(DisplayResourcePDF())
                                     },
                                     colors = ButtonDefaults.buttonColors(
@@ -407,6 +412,7 @@ object PPQs : Tab {
                             Button(
                                 onClick = {
                                     CurrentSubject.setUrl(msLink)
+                                    CurrentSubject.setUrlFileName(title)
                                     navigator.push(DisplayResourcePDF())
                                 },
                                 colors = ButtonDefaults.buttonColors(
@@ -427,6 +433,7 @@ object PPQs : Tab {
                             Button(
                                 onClick = {
                                     CurrentSubject.setUrl(qpLink)
+                                    CurrentSubject.setUrlFileName(title)
                                     navigator.push(DisplayResourcePDF())
                                 },
                                 colors = ButtonDefaults.buttonColors(

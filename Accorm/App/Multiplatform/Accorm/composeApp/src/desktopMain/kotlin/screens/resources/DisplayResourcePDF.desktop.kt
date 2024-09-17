@@ -18,7 +18,7 @@ import org.jetbrains.skiko.toImage
 import java.io.File
 import java.io.FileOutputStream
 
-actual suspend fun downloadFile(url: String): Boolean {
+actual suspend fun downloadFile(title: String, url: String): Boolean {
     return try {
         val response = HttpClient().get(url) {
             onDownload { bytesSentTotal, contentLength ->
@@ -27,7 +27,7 @@ actual suspend fun downloadFile(url: String): Boolean {
         }.bodyAsChannel().toByteArray()
 
         val downloadsDir = System.getProperty("user.home") + "/Downloads"
-        val file = File(downloadsDir, "file_${System.currentTimeMillis()}.pdf")
+        val file = File(downloadsDir, "${title}_${System.currentTimeMillis()}.pdf")
         file.parentFile?.mkdirs()
         withContext(Dispatchers.IO) {
             FileOutputStream(file).use { output ->
@@ -41,7 +41,7 @@ actual suspend fun downloadFile(url: String): Boolean {
 }
 
 @Composable
-actual fun openFile(url: String): Boolean {
+actual fun openFile(title: String, url: String): Boolean {
     return true
 }
 

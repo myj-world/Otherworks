@@ -1,5 +1,6 @@
 package screens.resources
 
+import analytics.LogEvent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -73,6 +74,8 @@ object Syllabus : Tab {
 
     @Composable
     override fun Content() {
+        LogEvent("Load syllabus ${CurrentSubject.getSubject()}")
+
         val navigator = LocalNavigator.currentOrThrow
         var subjectRetrieve by remember {
             mutableStateOf("")

@@ -1,5 +1,6 @@
 package screens.resources
 
+import analytics.LogEvent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -50,6 +51,7 @@ import com.google.gson.stream.JsonToken
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Book
+import compose.icons.fontawesomeicons.solid.Download
 import compose.icons.fontawesomeicons.solid.ExternalLinkAlt
 import compose.icons.fontawesomeicons.solid.Link
 import kotlinx.coroutines.launch
@@ -76,6 +78,8 @@ object Notes : Tab {
 
     @Composable
     override fun Content() {
+        LogEvent("Load Notes ${CurrentSubject.getSubject()}")
+
         val navigator = LocalNavigator.currentOrThrow
         var subjectRetrieve by remember {
             mutableStateOf("")
@@ -434,8 +438,10 @@ object Notes : Tab {
                                 Spacer(modifier = Modifier.height(10.dp))
                                 Row {
                                     var shouldCopy by remember { mutableStateOf(false) }
+                                    var msg by remember { mutableStateOf("") }
                                     Button(
                                         onClick = {
+                                            msg = "Link Copied to clipboard"
                                             shouldCopy = true
                                         },
                                         modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
@@ -461,7 +467,7 @@ object Notes : Tab {
 
                                     if (show) {
                                         AlertDialog(onDismissRequest = { show = false },
-                                            title = { Text("Link copied to clipboard") },
+                                            title = { Text(msg) },
                                             confirmButton = {
                                                 Button(onClick = { show = false }) {
                                                     Text("OK")
@@ -471,9 +477,33 @@ object Notes : Tab {
 
                                     Spacer(modifier = Modifier.width(5.dp))
 
+//                                    Button(
+//                                        onClick = {
+//                                            coroutineScope.launch {
+//                                                downloadFile(title = title, url = url)
+//                                                msg = "File saved to downloads"
+//                                                show = true
+//                                            }
+//                                        },
+//                                        modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
+//                                        colors = ButtonDefaults.buttonColors(
+//                                            backgroundColor = Color.White
+//                                        )
+//                                    ) {
+//                                        Image(
+//                                            imageVector = FontAwesomeIcons.Solid.Download,
+//                                            contentDescription = "Download",
+//                                            colorFilter = ColorFilter.tint(Color(172, 172, 249)),
+//                                            modifier = Modifier.size(15.dp)
+//                                        )
+//                                    }
+//
+//                                    Spacer(modifier = Modifier.width(5.dp))
+
                                     Button(
                                         onClick = {
                                             CurrentSubject.setUrl(url)
+                                            CurrentSubject.setUrlFileName(title)
                                             navigator.push(DisplayResourcePDF())
                                         },
                                         modifier = Modifier.fillMaxWidth().height(45.dp),
@@ -598,8 +628,10 @@ object Notes : Tab {
                                 Spacer(modifier = Modifier.height(10.dp))
                                 Row {
                                     var shouldCopy by remember { mutableStateOf(false) }
+                                    var msg by remember { mutableStateOf("") }
                                     Button(
                                         onClick = {
+                                            msg = "Link Copied to clipboard"
                                             shouldCopy = true
                                         },
                                         modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
@@ -625,7 +657,7 @@ object Notes : Tab {
 
                                     if (show) {
                                         AlertDialog(onDismissRequest = { show = false },
-                                            title = { Text("Link copied to clipboard") },
+                                            title = { Text(msg) },
                                             confirmButton = {
                                                 Button(onClick = { show = false }) {
                                                     Text("OK")
@@ -637,7 +669,31 @@ object Notes : Tab {
 
                                     Button(
                                         onClick = {
+                                            coroutineScope.launch {
+                                                downloadFile(title = title, url = url)
+                                                msg = "File saved to downloads"
+                                                show = true
+                                            }
+                                        },
+                                        modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
+                                        colors = ButtonDefaults.buttonColors(
+                                            backgroundColor = Color.White
+                                        )
+                                    ) {
+                                        Image(
+                                            imageVector = FontAwesomeIcons.Solid.Download,
+                                            contentDescription = "Download",
+                                            colorFilter = ColorFilter.tint(Color(172, 172, 249)),
+                                            modifier = Modifier.size(15.dp)
+                                        )
+                                    }
+
+                                    Spacer(modifier = Modifier.width(5.dp))
+
+                                    Button(
+                                        onClick = {
                                             CurrentSubject.setUrl(url)
+                                            CurrentSubject.setUrlFileName(title)
                                             navigator.push(DisplayResourcePDF())
                                         },
                                         modifier = Modifier.fillMaxWidth().height(45.dp),

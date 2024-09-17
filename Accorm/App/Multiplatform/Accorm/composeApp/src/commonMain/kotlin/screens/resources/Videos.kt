@@ -1,5 +1,6 @@
 package screens.resources
 
+import analytics.LogEvent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -79,6 +80,8 @@ object Videos : Tab {
 
     @Composable
     override fun Content() {
+        LogEvent("Load videos ${CurrentSubject.getSubject()}")
+
         val navigator = LocalNavigator.currentOrThrow
         var subjectRetrieve by remember {
             mutableStateOf("")

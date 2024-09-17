@@ -1,14 +1,16 @@
 package screens.resources
 
+import analytics.LogEvent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
@@ -59,6 +61,7 @@ class DisplayResourcePDF : Tab, ScreenLifecycleOwner {
 
     @Composable
     override fun Content() {
+        LogEvent("Load Resource ${CurrentSubject.getUrl()}")
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -128,7 +131,9 @@ class DisplayResourcePDF : Tab, ScreenLifecycleOwner {
 //                )
 //            }
             if (device == "Android") {
-                val opened = openFile(url = CurrentSubject.getUrl())
+                val url = CurrentSubject.getUrl()
+                val urlFileName = CurrentSubject.getUrlFileName()
+                val opened = openFile(title = urlFileName, url = url)
                 if (!opened) {
                     Text(
                         text = "An error occurred.",
@@ -147,20 +152,23 @@ class DisplayResourcePDF : Tab, ScreenLifecycleOwner {
                 }
 
                 if (isComplete) {
-                    Column(
+                    LazyColumn(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState()),
+                            .fillMaxSize(),
+//                            .verticalScroll(rememberScrollState()),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         data.forEach {
-                            Image(
-                                painter = it,
-                                contentDescription = "PDF page",
-                                modifier = Modifier
-                                    .fillMaxWidth(0.8f),
-                                contentScale = ContentScale.FillWidth
-                            )
+                            item {
+                                Image(
+                                    painter = it,
+                                    contentDescription = "PDF page",
+                                    modifier = Modifier
+                                        .fillMaxWidth(0.8f),
+                                    contentScale = ContentScale.FillWidth
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                            }
                         }
                     }
                 } else {
@@ -177,9 +185,9 @@ class DisplayResourcePDF : Tab, ScreenLifecycleOwner {
         super.onDispose(screen)
     }
 }
-expect suspend fun downloadFile(url: String): Boolean
+expect suspend fun downloadFile(title: String, url: String): Boolean
 
 @Composable
-expect fun openFile(url: String): Boolean
+expect fun openFile(title: String, url: String): Boolean
 
 expect suspend fun desktopLoad(url: String): List<BitmapPainter>

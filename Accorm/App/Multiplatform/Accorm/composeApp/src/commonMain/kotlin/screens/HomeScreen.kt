@@ -1,5 +1,6 @@
 package screens
 
+import analytics.LogEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -69,6 +70,7 @@ object HomeScreen : Tab {
 
     @Composable
     override fun Content() {
+        LogEvent("Home Screen")
 //    Main Outer Container
         Column(
             modifier = Modifier

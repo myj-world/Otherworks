@@ -1,5 +1,6 @@
 package screens.assets
 
+import analytics.LogEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -45,6 +46,7 @@ object Contact: Tab {
 
     @Composable
     override fun Content() {
+        LogEvent("Contact: ${CurrentEmailName.getName()}")
         if (device == "Android" && !landscapeTablet) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,

@@ -63,6 +63,8 @@ kotlin {
             implementation(libs.gson)
 
             implementation(libs.ktor.client.android)
+
+            implementation(libs.firebase.analytics.gitlive)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -82,7 +84,7 @@ android {
 
     defaultConfig {
         applicationId = "com.yousufjamil.accorm"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 34
         versionCode = 19
         versionName = "2.1.4"

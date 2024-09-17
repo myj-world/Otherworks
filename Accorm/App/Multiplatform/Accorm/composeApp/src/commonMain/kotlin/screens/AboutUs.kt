@@ -1,5 +1,6 @@
 package screens
 
+import analytics.LogEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,16 +26,10 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.Bars
-import compose.icons.fontawesomeicons.solid.BezierCurve
-import compose.icons.fontawesomeicons.solid.File
 import compose.icons.fontawesomeicons.solid.Info
-import compose.icons.fontawesomeicons.solid.User
-import compose.icons.fontawesomeicons.solid.Video
 import screens.assets.CopyrightMessage
 import screens.assets.Person
 import screens.assets.Role
-import screens.assets.Service
 
 object AboutUs : Tab {
     override val options: TabOptions
@@ -53,6 +48,8 @@ object AboutUs : Tab {
 
     @Composable
     override fun Content() {
+        LogEvent("About Us")
+
         Column(
             modifier = Modifier
                 .fillMaxSize()

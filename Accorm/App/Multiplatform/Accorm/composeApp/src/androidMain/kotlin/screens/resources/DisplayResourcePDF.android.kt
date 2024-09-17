@@ -28,27 +28,34 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 
-actual suspend fun downloadFile(url: String): Boolean {
+actual suspend fun downloadFile(title: String, url: String): Boolean {
     return try {
+        println("Downloading file")
         val response =
             OkHttpClient().newCall(Request.Builder().url(url).build()).execute().body().bytes()
+        println("Downloading file")
         val downloadsDir =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        val file = File(downloadsDir, "file_${System.currentTimeMillis()}.pdf")
+        println("Downloading file")
+        val file = File(downloadsDir, "${title}_${System.currentTimeMillis()}.pdf")
+        println("Downloading file")
         file.parentFile?.mkdirs()
         withContext(Dispatchers.IO) {
             FileOutputStream(file).use { output ->
                 output.write(response)
             }
         }
+        println("File downloaded")
         true
     } catch (e: Exception) {
+        println("Error downloading file")
+        println(e)
         false
     }
 }
 
 @Composable
-actual fun openFile(url: String): Boolean {
+actual fun openFile(title: String, url: String): Boolean {
     var display by remember {
         mutableStateOf(false)
     }
@@ -62,7 +69,7 @@ actual fun openFile(url: String): Boolean {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    val file = File.createTempFile("file", "pdf")
+    val file = File.createTempFile(title, "pdf")
     file.deleteOnExit()
     LaunchedEffect(true) {
         try {

@@ -16,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.Material.Light.NoActionBar">
 
+        <meta-data
+            android:name="com.google.firebase.analytics.enable"
+            android:value="true" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.yousufjamil.accorm.provider"
