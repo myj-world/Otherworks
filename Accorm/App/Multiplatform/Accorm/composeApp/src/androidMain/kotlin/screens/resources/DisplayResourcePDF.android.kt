@@ -69,7 +69,7 @@ actual fun openFile(title: String, url: String): Boolean {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    val file = File.createTempFile(title, "pdf")
+    val file = File.createTempFile("Accorm"+title.filter { it.isLetterOrDigit() }, ".pdf")
     file.deleteOnExit()
     LaunchedEffect(true) {
         try {

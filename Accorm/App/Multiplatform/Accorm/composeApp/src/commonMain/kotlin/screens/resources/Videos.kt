@@ -329,6 +329,7 @@ object Videos : Tab {
                 Spacer(modifier = Modifier.height(20.dp))
                 @Composable
                 fun Item(
+                    uniqueId: Int,
                     logo: String,
                     logoColor: Color,
                     chapter: String,
@@ -476,7 +477,11 @@ object Videos : Tab {
                                     var show by remember { mutableStateOf(false) }
 
                                     if (shouldCopy) {
-                                        Copy(url)
+                                        val shareUrl by remember { mutableStateOf(
+                                            "https://accorm.ginastic.co/view/v/?s=$subjectRetrieve&id=$uniqueId"
+                                        ) }
+
+                                        Copy(shareUrl)
                                         show = true
                                         shouldCopy = false
                                     }
@@ -655,7 +660,11 @@ object Videos : Tab {
                                     var show by remember { mutableStateOf(false) }
 
                                     if (shouldCopy) {
-                                        Copy(url)
+                                        val shareUrl by remember { mutableStateOf(
+                                            "https://accorm.ginastic.co/view/v/?s=$subjectRetrieve&id=$uniqueId"
+                                        ) }
+
+                                        Copy(shareUrl)
                                         show = true
                                         shouldCopy = false
                                     }
@@ -797,6 +806,7 @@ object Videos : Tab {
 
                     itemList.forEach { item ->
                         Item(
+                            uniqueId = item.uniqueId,
                             logo = item.logo,
                             logoColor = parseColor(item.logoBg),
                             chapter = item.chapter,
@@ -809,6 +819,15 @@ object Videos : Tab {
                             url = item.url
                         )
                         Spacer(modifier = Modifier.height(10.dp))
+                    }
+                    if (itemList.isEmpty()) {
+                        Text(
+                            text = "No Internet Connection!",
+                            fontSize = 20.sp,
+                            fontFamily = poppins,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White
+                        )
                     }
                 } else if (data == "no data available.") {
                     Text(

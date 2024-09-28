@@ -63,9 +63,6 @@ fun Person(
     roles: List<Role>
 ) {
     val navigator = LocalNavigator.currentOrThrow
-    fun itemClick() {
-        navigator.push(Resources)
-    }
 
     var connected by remember { mutableStateOf(true) }
 
@@ -92,7 +89,6 @@ fun Person(
             )
             .clip(RoundedCornerShape(20.dp))
             .background(Color(25, 25, 44))
-            .clickable { itemClick() }
             .padding(15.dp)
     ) {
         if (name != "Taqi Ahmed") {

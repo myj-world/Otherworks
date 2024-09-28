@@ -126,7 +126,7 @@ object AboutUs : Tab {
             )
             Person(
                 name = "M. Yousuf Jamil",
-                icon = "https://accorm.ginastic.co/pfp/yousuf.png",
+                icon = "https://accorm.ginastic.co/pfp/yousuf-jamil.png",
                 email = "muhammadyousufjamil@gmail.com",
                 roles = listOf(
                     Role(

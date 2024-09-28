@@ -130,7 +130,7 @@ object Notes : Tab {
         coroutineScope.launch {
             data =
                 RequestURL("https://accorm.ginastic.co/300/notes/?access-id=65aea3e3e6184&subject=$subjectRetrieve")
-                    ?: "{\"1\": {\"unique_id\": 000000000,\"title\": \"Sample Notes\",\"url\": \"https://accorm.ginastic.co/700/IGCSE/islamiyat/The%20Quranic%20Passages_373776704.pdf\",\"chapter\": \"miscellaneous\",\"publisher\": \"Accorm\",\"pub_type\": \"Admin\",\"logo\": \"A\",\"logo_bg\": \"#000000\", \"specification:\": \"Sample Notes\", \"author\": \"Accorm\", \"published\": \"12/12/2023\", \"description\": \"Sample Notes\"}, \"num-of-rows\": 1}"
+                    ?: "{\"1\": {\"unique_id\": 000000000,\"title\": \"Sample Notes\",\"url\": \"https://myj.rf.gd/Assets/Accorm/Accorm%20error.pdf\",\"chapter\": \"miscellaneous\",\"publisher\": \"Accorm\",\"pub_type\": \"Admin\",\"logo\": \"A\",\"logo_bg\": \"#000000\", \"specification:\": \"Sample Notes\", \"author\": \"Accorm\", \"published\": \"12/12/2023\", \"description\": \"Sample Notes\"}, \"num-of-rows\": 1}"
         }
 
         Column(
@@ -327,6 +327,7 @@ object Notes : Tab {
                 Spacer(modifier = Modifier.height(20.dp))
                 @Composable
                 fun Item(
+                    uniqueId: Int,
                     logo: String,
                     logoColor: Color,
                     chapter: String,
@@ -460,7 +461,11 @@ object Notes : Tab {
                                     var show by remember { mutableStateOf(false) }
 
                                     if (shouldCopy) {
-                                        Copy(url)
+                                        val shareUrl by remember { mutableStateOf(
+                                            "https://accorm.ginastic.co/view/n/?s=$subjectRetrieve&id=$uniqueId"
+                                        ) }
+
+                                        Copy(shareUrl)
                                         show = true
                                         shouldCopy = false
                                     }
@@ -650,7 +655,11 @@ object Notes : Tab {
                                     var show by remember { mutableStateOf(false) }
 
                                     if (shouldCopy) {
-                                        Copy(url)
+                                        val shareUrl by remember { mutableStateOf(
+                                            "https://accorm.ginastic.co/view/n/?s=$subjectRetrieve&id=$uniqueId"
+                                        ) }
+
+                                        Copy(shareUrl)
                                         show = true
                                         shouldCopy = false
                                     }
@@ -811,6 +820,7 @@ object Notes : Tab {
 
                     itemList.forEach { item ->
                         Item(
+                            uniqueId = item.uniqueId,
                             logo = item.logo,
                             logoColor = parseColor(item.logoBg),
                             chapter = item.chapter,
@@ -822,6 +832,16 @@ object Notes : Tab {
                             url = item.url
                         )
                         Spacer(modifier = Modifier.height(10.dp))
+                    }
+
+                    if (itemList.isEmpty()) {
+                        Text(
+                            text = "No Internet Connection!",
+                            fontSize = 20.sp,
+                            fontFamily = poppins,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White
+                        )
                     }
                 }  else if (data == "no data available.") {
                     Text(

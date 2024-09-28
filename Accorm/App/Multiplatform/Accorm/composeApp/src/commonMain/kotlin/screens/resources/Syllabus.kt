@@ -411,6 +411,17 @@ object Syllabus : Tab {
                                 Chapter(number, title)
                             }
                         }
+
+                        if (resultArray.isEmpty()) {
+                            Text(
+                                text = "No Internet Connection!",
+                                fontSize = 20.sp,
+                                fontFamily = poppins,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color.White
+                            )
+                        }
+
                         Spacer(modifier = Modifier.height(20.dp))
                         Button(
                             onClick = {

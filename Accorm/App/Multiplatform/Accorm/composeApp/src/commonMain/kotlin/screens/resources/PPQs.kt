@@ -328,6 +328,8 @@ object PPQs : Tab {
                 @Composable
                 fun Paper(
                     title: String,
+                    session: String,
+                    year: String,
                     qpLink: String,
                     msLink: String
                 ) {
@@ -336,19 +338,39 @@ object PPQs : Tab {
                     if (device != "Android" || landscapeTablet) {
                         Row(
                             modifier = Modifier
-                                .fillMaxWidth()
                                 .clip(RoundedCornerShape(20.dp))
-                                .background(Color(138, 138, 250))
-                                .padding(20.dp),
+                                .background(
+                                    Brush.radialGradient(
+                                        listOf(
+                                            Color(155, 138, 250),
+                                            Color(138, 138, 250)
+                                        ),
+                                        radius = 1500f,
+                                        center = Offset(-0.5f, -0.5f)
+                                    )
+                                )
+                                .fillMaxWidth(0.8f)
+                                .padding(20.dp)
+                                .height(80.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text(
-                                text = title,
-                                color = Color.White,
-                                fontFamily = poppins,
-                                fontSize = 20.sp
-                            )
+                            Column {
+                                Text(
+                                    text = title,
+                                    color = Color.White,
+                                    fontFamily = poppins,
+                                    fontSize = 30.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Spacer(modifier = Modifier.height(5.dp))
+                                Text(
+                                    text = "$session - $year",
+                                    color = Color.White,
+                                    fontFamily = poppins,
+                                    fontSize = 20.sp
+                                )
+                            }
                             Row {
                                 Button(
                                     onClick = {
@@ -360,16 +382,20 @@ object PPQs : Tab {
                                         backgroundColor = Color(108, 108, 221)
                                     ),
                                     modifier = Modifier
+                                        .height(55.dp)
                                         .clip(RoundedCornerShape(20.dp))
                                 ) {
                                     Text(
                                         text = "MS",
                                         color = Color.White,
                                         fontFamily = poppins,
-                                        fontSize = 16.sp
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold
                                     )
                                 }
+
                                 Spacer(modifier = Modifier.width(10.dp))
+
                                 Button(
                                     onClick = {
                                         CurrentSubject.setUrl(qpLink)
@@ -380,79 +406,231 @@ object PPQs : Tab {
                                         backgroundColor = Color(160, 160, 243)
                                     ),
                                     modifier = Modifier
+                                        .height(55.dp)
                                         .clip(RoundedCornerShape(20.dp))
                                 ) {
                                     Text(
                                         text = "QP",
                                         color = Color.White,
                                         fontFamily = poppins,
-                                        fontSize = 16.sp
+                                        fontSize = 24.sp,
+                                        fontWeight = FontWeight.Bold
                                     )
                                 }
                             }
+
                         }
-                        Spacer(modifier = Modifier.height(20.dp))
                     } else {
                         Column(
                             modifier = Modifier
-                                .fillMaxWidth()
                                 .clip(RoundedCornerShape(20.dp))
-                                .background(Color(138, 138, 250))
-                                .padding(20.dp),
-                            verticalArrangement = Arrangement.Center,
+                                .background(
+                                    Brush.radialGradient(
+                                        listOf(
+                                            Color(155, 138, 250),
+                                            Color(138, 138, 250)
+                                        ),
+                                        radius = 1500f,
+                                        center = Offset(-0.5f, -0.5f)
+                                    )
+                                )
+                                .fillMaxWidth(0.8f)
+                                .padding(20.dp)
+                                .height(150.dp),
+                            verticalArrangement = Arrangement.SpaceBetween,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(
-                                text = title,
-                                color = Color.White,
-                                fontFamily = poppins,
-                                fontSize = 20.sp
-                            )
-                            Spacer(modifier = Modifier.height(20.dp))
-                            Button(
-                                onClick = {
-                                    CurrentSubject.setUrl(msLink)
-                                    CurrentSubject.setUrlFileName(title)
-                                    navigator.push(DisplayResourcePDF())
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    backgroundColor = Color(108, 108, 221)
-                                ),
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(20.dp))
-                                    .fillMaxWidth()
-                            ) {
+                            Column {
                                 Text(
-                                    text = "MS",
+                                    text = title,
                                     color = Color.White,
                                     fontFamily = poppins,
-                                    fontSize = 16.sp
+                                    fontSize = 23.sp,
+                                    fontWeight = FontWeight.Bold
                                 )
-                            }
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Button(
-                                onClick = {
-                                    CurrentSubject.setUrl(qpLink)
-                                    CurrentSubject.setUrlFileName(title)
-                                    navigator.push(DisplayResourcePDF())
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    backgroundColor = Color(160, 160, 243)
-                                ),
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(20.dp))
-                                    .fillMaxWidth()
-                            ) {
+                                Spacer(modifier = Modifier.height(5.dp))
                                 Text(
-                                    text = "QP",
+                                    text = "$session - $year",
                                     color = Color.White,
                                     fontFamily = poppins,
-                                    fontSize = 16.sp
+                                    fontSize = 18.sp
                                 )
                             }
+                            Row {
+                                Button(
+                                    onClick = {
+                                        CurrentSubject.setUrl(msLink)
+                                        CurrentSubject.setUrlFileName(title)
+                                        navigator.push(DisplayResourcePDF())
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color(108, 108, 221)
+                                    ),
+                                    modifier = Modifier
+                                        .height(55.dp)
+                                        .weight(1f)
+                                        .clip(RoundedCornerShape(20.dp))
+                                ) {
+                                    Text(
+                                        text = "MS",
+                                        color = Color.White,
+                                        fontFamily = poppins,
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.width(10.dp))
+
+                                Button(
+                                    onClick = {
+                                        CurrentSubject.setUrl(qpLink)
+                                        CurrentSubject.setUrlFileName(title)
+                                        navigator.push(DisplayResourcePDF())
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color(160, 160, 243)
+                                    ),
+                                    modifier = Modifier
+                                        .height(55.dp)
+                                        .weight(1f)
+                                        .clip(RoundedCornerShape(20.dp))
+                                ) {
+                                    Text(
+                                        text = "QP",
+                                        color = Color.White,
+                                        fontFamily = poppins,
+                                        fontSize = 24.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                            }
+
                         }
-                        Spacer(modifier = Modifier.height(20.dp))
                     }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+//                    if (device != "Android" || landscapeTablet) {
+//                        Row(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .clip(RoundedCornerShape(20.dp))
+//                                .background(Color(138, 138, 250))
+//                                .padding(20.dp),
+//                            verticalAlignment = Alignment.CenterVertically,
+//                            horizontalArrangement = Arrangement.SpaceBetween
+//                        ) {
+//                            Text(
+//                                text = title,
+//                                color = Color.White,
+//                                fontFamily = poppins,
+//                                fontSize = 20.sp
+//                            )
+//                            Row {
+//                                Button(
+//                                    onClick = {
+//                                        CurrentSubject.setUrl(msLink)
+//                                        CurrentSubject.setUrlFileName(title)
+//                                        navigator.push(DisplayResourcePDF())
+//                                    },
+//                                    colors = ButtonDefaults.buttonColors(
+//                                        backgroundColor = Color(108, 108, 221)
+//                                    ),
+//                                    modifier = Modifier
+//                                        .clip(RoundedCornerShape(20.dp))
+//                                ) {
+//                                    Text(
+//                                        text = "MS",
+//                                        color = Color.White,
+//                                        fontFamily = poppins,
+//                                        fontSize = 16.sp
+//                                    )
+//                                }
+//                                Spacer(modifier = Modifier.width(10.dp))
+//                                Button(
+//                                    onClick = {
+//                                        CurrentSubject.setUrl(qpLink)
+//                                        CurrentSubject.setUrlFileName(title)
+//                                        navigator.push(DisplayResourcePDF())
+//                                    },
+//                                    colors = ButtonDefaults.buttonColors(
+//                                        backgroundColor = Color(160, 160, 243)
+//                                    ),
+//                                    modifier = Modifier
+//                                        .clip(RoundedCornerShape(20.dp))
+//                                ) {
+//                                    Text(
+//                                        text = "QP",
+//                                        color = Color.White,
+//                                        fontFamily = poppins,
+//                                        fontSize = 16.sp
+//                                    )
+//                                }
+//                            }
+//                        }
+//                        Spacer(modifier = Modifier.height(20.dp))
+//                    } else {
+//                        Column(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .clip(RoundedCornerShape(20.dp))
+//                                .background(Color(138, 138, 250))
+//                                .padding(20.dp),
+//                            verticalArrangement = Arrangement.Center,
+//                            horizontalAlignment = Alignment.CenterHorizontally
+//                        ) {
+//                            Text(
+//                                text = title,
+//                                color = Color.White,
+//                                fontFamily = poppins,
+//                                fontSize = 20.sp
+//                            )
+//                            Spacer(modifier = Modifier.height(20.dp))
+//                            Button(
+//                                onClick = {
+//                                    CurrentSubject.setUrl(msLink)
+//                                    CurrentSubject.setUrlFileName(title)
+//                                    navigator.push(DisplayResourcePDF())
+//                                },
+//                                colors = ButtonDefaults.buttonColors(
+//                                    backgroundColor = Color(108, 108, 221)
+//                                ),
+//                                modifier = Modifier
+//                                    .clip(RoundedCornerShape(20.dp))
+//                                    .fillMaxWidth()
+//                            ) {
+//                                Text(
+//                                    text = "MS",
+//                                    color = Color.White,
+//                                    fontFamily = poppins,
+//                                    fontSize = 16.sp
+//                                )
+//                            }
+//                            Spacer(modifier = Modifier.height(10.dp))
+//                            Button(
+//                                onClick = {
+//                                    CurrentSubject.setUrl(qpLink)
+//                                    CurrentSubject.setUrlFileName(title)
+//                                    navigator.push(DisplayResourcePDF())
+//                                },
+//                                colors = ButtonDefaults.buttonColors(
+//                                    backgroundColor = Color(160, 160, 243)
+//                                ),
+//                                modifier = Modifier
+//                                    .clip(RoundedCornerShape(20.dp))
+//                                    .fillMaxWidth()
+//                            ) {
+//                                Text(
+//                                    text = "QP",
+//                                    color = Color.White,
+//                                    fontFamily = poppins,
+//                                    fontSize = 16.sp
+//                                )
+//                            }
+//                        }
+//                        Spacer(modifier = Modifier.height(20.dp))
+//                    }
                 }
 
                 val papers = KnowPapersBySubject(CurrentSubject.getSubject())
@@ -467,7 +645,7 @@ object PPQs : Tab {
                             text = "$year - $session",
                             color = Color.White,
                             fontFamily = poppins,
-                            fontSize = 30.sp,
+                            fontSize = if (device == "Android" && !landscapeTablet) 25.sp else 50.sp,
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.height(20.dp))
@@ -479,11 +657,23 @@ object PPQs : Tab {
 
                             Paper(
                                 title = "$subjectCode ${CurrentSubject.getSubject()} - Paper $paper",
+                                session = session,
+                                year = year.toString(),
                                 qpLink = "https://accorm.ginastic.co/200/$levelRetrieve/$subjectRetrieve/QP/" + codeRetrieve + "_" + sessionRetrieve + yearRetrieve + "_qp_$paper.pdf",
                                 msLink = "https://accorm.ginastic.co/200/$levelRetrieve/$subjectRetrieve/MS/" + codeRetrieve + "_" + sessionRetrieve + yearRetrieve + "_ms_$paper.pdf"
                             )
                         }
                     }
+                }
+
+                if (years.isEmpty()) {
+                    Text(
+                        text = "No Internet Connection!",
+                        fontSize = 20.sp,
+                        fontFamily = poppins,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.White
+                    )
                 }
                 Spacer(modifier = Modifier.height(30.dp))
                 CopyrightMessage()
