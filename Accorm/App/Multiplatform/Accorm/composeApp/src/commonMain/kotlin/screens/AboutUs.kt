@@ -130,9 +130,9 @@ object AboutUs : Tab {
                 email = "muhammadyousufjamil@gmail.com",
                 roles = listOf(
                     Role(
-                        role = "Multiplatfirn App Developer",
+                        role = "Multiplatform App Developer",
                         majorRole = true,
-                        clickPopup = "Accorm App for Android and Desktop is developed by Yousuf Jamil. Accorm is available for download on Play Store and on the download page via his account."
+                        clickPopup = "Accorm App for Android and Desktop is developed by Yousuf Jamil. Accorm is available for download on Play Store and on the Desktop download page via his account."
                     )
                 )
             )
