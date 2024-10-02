@@ -196,7 +196,7 @@ object HomeScreen : Tab {
                         .background(color = Color(88,101,242))
                         .padding(10.dp)
                         .clickable {
-                            CurrentSubject.setUrl("https://discord.gg/e52JQwBn")
+                            CurrentSubject.setUrl("https://discord.gg/nbmc3TnrMS")
                             navigator.current = DisplayResourceExternal()
                         },
                     contentAlignment = Alignment.Center
