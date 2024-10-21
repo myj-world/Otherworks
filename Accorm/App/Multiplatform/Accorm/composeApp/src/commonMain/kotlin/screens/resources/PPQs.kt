@@ -135,7 +135,24 @@ object PPQs : Tab {
 
                 println("Tests $subjectRetrieve $subjectCode")
             } else {
-                navigator.pop()
+                subjectRetrieve = when (CurrentSubject.getSubject()) {
+                    "Physics" -> "physics"
+                    "Chemistry" -> "chemistry"
+                    "Biology" -> "biology"
+                    "CS" -> "cs"
+                    else -> "maths"
+                }
+                subjectCode = when (CurrentSubject.getSubject()) {
+                    "Physics" -> "9702"
+                    "Chemistry" -> "9701"
+                    "Biology" -> "9700"
+                    "CS" -> "9618"
+                    else -> "9709"
+                }
+                codeRetrieve = subjectCode
+                levelRetrieve = level
+
+                println("Tests $subjectRetrieve $subjectCode")
             }
 
             val arrangement =
@@ -633,7 +650,7 @@ object PPQs : Tab {
 //                    }
                 }
 
-                val papers = KnowPapersBySubject(CurrentSubject.getSubject())
+                val papers = KnowPapersBySubject(CurrentSubject.getSubject(), CurrentSubject.getLevel())
                 val years = KnowYearsBySubject(CurrentSubject.getSubject())
                 val sessions = KnowSessionsBySubject(CurrentSubject.getSubject())
 

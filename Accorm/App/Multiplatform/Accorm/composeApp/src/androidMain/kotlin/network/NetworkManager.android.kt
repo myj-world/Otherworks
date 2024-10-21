@@ -14,6 +14,7 @@ actual suspend fun getResponse(url: String): String? {
         }
         return response
     } catch (e: Exception) {
+        println("Error: ${e.message} $e")
         return null
     }
 }

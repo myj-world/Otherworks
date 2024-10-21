@@ -17,7 +17,7 @@ plugins {
 }
 
 group = "accorm"
-version = "2.2.2"
+version = "2.2.4"
 
 kotlin {
     androidTarget {
@@ -39,6 +39,9 @@ kotlin {
             implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.google.firebase.analytics)
             implementation(libs.firebase.crashlytics)
+
+            implementation(libs.app.update)
+            implementation(libs.app.update.ktx)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -86,8 +89,8 @@ android {
         applicationId = "com.yousufjamil.accorm"
         minSdk = 23
         targetSdk = 35
-        versionCode = 21
-        versionName = "2.2.2"
+        versionCode = 24
+        versionName = "2.2.4"
     }
     packaging {
         resources {
@@ -122,7 +125,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Accorm"
-            packageVersion = "2.2.2"
+            packageVersion = "2.2.4"
             description = "Accorm Desktop App"
             copyright = "Copyright © 2023-2024 Accorm"
             windows {

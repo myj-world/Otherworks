@@ -86,6 +86,12 @@ object Syllabus : Tab {
         var level by remember {
             mutableStateOf("")
         }
+        var codeRetrieve by remember {
+            mutableStateOf("")
+        }
+        var levelRetrieve by remember {
+            mutableStateOf("")
+        }
         level = CurrentSubject.getLevel()
 
         if (level == "IGCSE / O Level") {
@@ -115,10 +121,41 @@ object Syllabus : Tab {
                 "ESL" -> "0510"
                 else -> "0580/4024"
             }
+            codeRetrieve = when (CurrentSubject.getSubject()) {
+                "Islamiyat" -> "0493"
+                "History" -> "04481"
+                "Geography" -> "04482"
+                "Accounting" -> "0452"
+                "Physics" -> "0625"
+                "Chemistry" -> "0620"
+                "Biology" -> "0610"
+                "CS" -> "0478"
+                "FLE" -> "0500"
+                "ESL" -> "0510"
+                else -> "0580"
+            }
+            levelRetrieve = "IGCSE".lowercase()
 
             println("Tests $subjectRetrieve $subjectCode")
         } else {
-            navigator.pop()
+            subjectRetrieve = when (CurrentSubject.getSubject()) {
+                "Physics" -> "physics"
+                "Chemistry" -> "chemistry"
+                "Biology" -> "biology"
+                "CS" -> "cs"
+                else -> "maths"
+            }
+            subjectCode = when (CurrentSubject.getSubject()) {
+                "Physics" -> "9702"
+                "Chemistry" -> "9701"
+                "Biology" -> "9700"
+                "CS" -> "9618"
+                else -> "9709"
+            }
+            codeRetrieve = subjectCode
+            levelRetrieve = level.lowercase()
+
+            println("Tests $subjectRetrieve $subjectCode")
         }
         var result by remember {
             mutableStateOf("")
@@ -128,7 +165,8 @@ object Syllabus : Tab {
         }
         val coroutineScope = rememberCoroutineScope()
         coroutineScope.launch {
-            result = RequestURL("https://accorm.ginastic.co/400/$subjectRetrieve.json").toString()
+            result = RequestURL("https://accorm.ginastic.co/400/$levelRetrieve/$codeRetrieve.json").toString()
+            println(result)
         }
 
         val resultArray = mutableMapOf<Int, String>()

@@ -124,15 +124,32 @@ object Videos : Tab {
 
             println("Tests $subjectRetrieve $subjectCode")
         } else {
-            navigator.pop()
+            subjectRetrieve = when (CurrentSubject.getSubject()) {
+                "Physics" -> "physics"
+                "Chemistry" -> "chemistry"
+                "Biology" -> "biology"
+                "CS" -> "cs"
+                else -> "maths"
+            }
+            subjectCode = when (CurrentSubject.getSubject()) {
+                "Physics" -> "9702"
+                "Chemistry" -> "9701"
+                "Biology" -> "9700"
+                "CS" -> "9618"
+                else -> "9709"
+            }
+
+            println("Tests $subjectRetrieve $subjectCode")
         }
 
         val coroutineScope = rememberCoroutineScope()
         var data by remember { mutableStateOf("") }
         coroutineScope.launch {
+            val levelRetrieve = if (level == "IGCSE / O Level") "IGCSE" else level
             data =
-                RequestURL("https://accorm.ginastic.co/300/vids/?access-id=5ece4797eaf5e&subject=$subjectRetrieve")
+                RequestURL("https://accorm.ginastic.co/300/vids/?access-id=5ece4797eaf5e&subject=$subjectRetrieve&level=$levelRetrieve")
                     ?: "{\"1\": {\"unique_id\": 000000000,\"title\": \"Sample Notes\",\"url\": \"https://youtu.be/uixWHUCES4I?si=Wl72mcCy_PhQczms\",\"chapter\": \"miscellaneous\",\"publisher\": \"Accorm\",\"pub_type\": \"Admin\",\"logo\": \"A\",\"logo_bg\": \"#000000\", \"specification:\": \"Sample Notes\", \"author\": \"Accorm\", \"published\": \"12/12/2023\", \"description\": \"Sample Notes\"}, \"num-of-rows\": 1}"
+            println("https://accorm.ginastic.co/300/vids/?access-id=5ece4797eaf5e&subject=$subjectRetrieve&level=$levelRetrieve")
         }
 
         Column(

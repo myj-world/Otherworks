@@ -64,6 +64,7 @@ import screens.poppins
 import viewmodels.CurrentSubject
 import screens.device
 import screens.landscapeTablet
+import viewmodels.CurrentEmailName
 
 object Notes : Tab {
     override val options: TabOptions
@@ -122,15 +123,32 @@ object Notes : Tab {
 
             println("Tests $subjectRetrieve $subjectCode")
         } else {
-            navigator.pop()
+            subjectRetrieve = when (CurrentSubject.getSubject()) {
+                "Physics" -> "physics"
+                "Chemistry" -> "chemistry"
+                "Biology" -> "biology"
+                "CS" -> "cs"
+                else -> "maths"
+            }
+            subjectCode = when (CurrentSubject.getSubject()) {
+                "Physics" -> "9702"
+                "Chemistry" -> "9701"
+                "Biology" -> "9700"
+                "CS" -> "9618"
+                else -> "9709"
+            }
+
+            println("Tests $subjectRetrieve $subjectCode")
         }
 
         val coroutineScope = rememberCoroutineScope()
         var data by remember { mutableStateOf("") }
         coroutineScope.launch {
+            val levelRetrieve = if (level == "IGCSE / O Level") "IGCSE" else level
             data =
-                RequestURL("https://accorm.ginastic.co/300/notes/?access-id=65aea3e3e6184&subject=$subjectRetrieve")
+                RequestURL("https://accorm.ginastic.co/300/notes/?access-id=65aea3e3e6184&subject=$subjectRetrieve&level=$levelRetrieve&appv=2")
                     ?: "{\"1\": {\"unique_id\": 000000000,\"title\": \"Sample Notes\",\"url\": \"https://myj.rf.gd/Assets/Accorm/Accorm%20error.pdf\",\"chapter\": \"miscellaneous\",\"publisher\": \"Accorm\",\"pub_type\": \"Admin\",\"logo\": \"A\",\"logo_bg\": \"#000000\", \"specification:\": \"Sample Notes\", \"author\": \"Accorm\", \"published\": \"12/12/2023\", \"description\": \"Sample Notes\"}, \"num-of-rows\": 1}"
+            println("https://accorm.ginastic.co/300/notes/?access-id=65aea3e3e6184&subject=$subjectRetrieve&level=$levelRetrieve&appv=2")
         }
 
         Column(
@@ -336,7 +354,9 @@ object Notes : Tab {
                     description: String,
                     specification: String,
                     published: String,
-                    url: String
+                    url: String,
+                    credit: String,
+                    creditUrl: String
                 ) {
                     var isExpanded by remember { mutableStateOf(false) }
 
@@ -420,6 +440,26 @@ object Notes : Tab {
                                     fontSize = 15.sp,
                                     fontFamily = poppins,
                                     color = Color.White
+                                )
+
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = "Credit",
+                                    fontSize = 12.sp,
+                                    fontFamily = lexend,
+                                    color = Color.Gray
+                                )
+                                Spacer(modifier = Modifier.height(1.dp))
+                                Text(
+                                    text = credit,
+                                    fontSize = 15.sp,
+                                    fontFamily = poppins,
+                                    color = Color.White,
+                                    modifier = Modifier
+                                        .clickable {
+                                            CurrentSubject.setUrl(creditUrl)
+                                            navigator.push(DisplayResourceExternal())
+                                        }
                                 )
 
                                 Spacer(modifier = Modifier.height(10.dp))
@@ -737,6 +777,7 @@ object Notes : Tab {
                     var numRows by remember { mutableIntStateOf(0) }
 
                     try {
+                        println(data)
                         JsonReader(data.reader()).use { reader ->
                             reader.beginObject()
                             while (reader.hasNext()) {
@@ -768,6 +809,10 @@ object Notes : Tab {
                                             val description = reader.nextString()
                                             reader.skipValue()
                                             val specification = reader.nextString()
+                                            reader.skipValue()
+                                            val credit = reader.nextString()
+                                            reader.skipValue()
+                                            val creditUrl = reader.nextString()
 
 
                                             itemList.add(
@@ -782,7 +827,9 @@ object Notes : Tab {
                                                     logoBg = logoBg,
                                                     specification = specification,
                                                     published = published,
-                                                    description = description
+                                                    description = description,
+                                                    credit = credit,
+                                                    creditUrl = creditUrl
                                                 )
                                             )
                                         } catch (e: Exception) {
@@ -829,7 +876,9 @@ object Notes : Tab {
                             description = item.description,
                             specification = item.specification,
                             published = item.published,
-                            url = item.url
+                            url = item.url,
+                            credit = item.credit,
+                            creditUrl = item.creditUrl
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                     }
@@ -877,7 +926,9 @@ data class Item(
     @SerialName("logo_bg") val logoBg: String = "#acacf9",
     @SerialName("specification") val specification: String = "Specification Not Provided",
     @SerialName("published") val published: String = "Unknown",
-    @SerialName("description") val description: String = "Desciption Not Provided"
+    @SerialName("description") val description: String = "Desciption Not Provided",
+    @SerialName("credit") val credit: String = "Accorm",
+    @SerialName("author") val creditUrl: String = "https://accorm.ginastic.co"
 )
 
 

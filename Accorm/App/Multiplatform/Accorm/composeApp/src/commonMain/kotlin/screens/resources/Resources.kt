@@ -156,12 +156,12 @@ object Resources : Tab {
                     if (device == "Android" && !landscapeTablet) {
                         Option(text = "IGCSE / O Level")
                         Option(text = "AS")
-//                        Option(text = "A2")
+                        Option(text = "A2")
                     } else {
                         Row {
                             Option(text = "IGCSE / O Level")
                             Option(text = "AS")
-//                            Option(text = "A2")
+                            Option(text = "A2")
                         }
                     }
                 }
@@ -271,16 +271,100 @@ object Resources : Tab {
 
                 "AS" -> {
                     LogEvent("Subjects_AS")
-                    Text(
-                        text = "This window will open soon.",
-                        fontSize = 18.sp,
-                        color = Color.Gray,
-                        fontWeight = FontWeight.SemiBold
+                    Subject(
+                        title = "Maths",
+                        code = "9709",
+                        notes = true,
+                        videos = true,
+                        ppqs = true,
+                        syllabus = true,
+                        grade = "AS"
+                    )
+                    Subject(
+                        title = "Physics",
+                        code = "9702",
+                        notes = true,
+                        videos = true,
+                        ppqs = true,
+                        syllabus = true,
+                        grade = "AS"
+                    )
+                    Subject(
+                        title = "Chemistry",
+                        code = "9701",
+                        notes = true,
+                        videos = true,
+                        ppqs = true,
+                        syllabus = true,
+                        grade = "AS"
+                    )
+                    Subject(
+                        title = "Biology",
+                        code = "9700",
+                        notes = true,
+                        videos = true,
+                        ppqs = true,
+                        syllabus = true,
+                        grade = "AS"
+                    )
+                    Subject(
+                        title = "CS",
+                        code = "9618",
+                        notes = true,
+                        videos = true,
+                        ppqs = true,
+                        syllabus = true,
+                        grade = "AS"
                     )
                 }
 
                 "A2" -> {
-                    Option(text = "Coming Soon!")
+                    LogEvent("Subjects_A2")
+                    Subject(
+                        title = "Maths",
+                        code = "9709",
+                        notes = true,
+                        videos = true,
+                        ppqs = true,
+                        syllabus = true,
+                        grade = "AS"
+                    )
+                    Subject(
+                        title = "Physics",
+                        code = "9702",
+                        notes = true,
+                        videos = true,
+                        ppqs = true,
+                        syllabus = true,
+                        grade = "AS"
+                    )
+                    Subject(
+                        title = "Chemistry",
+                        code = "9701",
+                        notes = true,
+                        videos = true,
+                        ppqs = true,
+                        syllabus = true,
+                        grade = "AS"
+                    )
+                    Subject(
+                        title = "Biology",
+                        code = "9700",
+                        notes = true,
+                        videos = true,
+                        ppqs = true,
+                        syllabus = true,
+                        grade = "AS"
+                    )
+                    Subject(
+                        title = "CS",
+                        code = "9618",
+                        notes = true,
+                        videos = true,
+                        ppqs = true,
+                        syllabus = true,
+                        grade = "AS"
+                    )
                 }
 
                 else -> {
