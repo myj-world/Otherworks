@@ -64,7 +64,7 @@ class DisplayResourceExternal : Tab {
             } else {
                 val navigator = LocalNavigator.currentOrThrow
                 navigator.pop()
-                if (CurrentSubject.getUrl().contains("youtu.be")||CurrentSubject.getUrl().contains("youtube.com")) navigator.push(Videos) else if (CurrentSubject.getUrl().contains("discord") || CurrentSubject.getUrl().contains("instagram")) navigator.push(HomeScreen)  else navigator.push(Syllabus)
+                if (CurrentSubject.getUrl().contains("youtu.be")||CurrentSubject.getUrl().contains("youtube.com")) navigator.push(Videos) else if (CurrentSubject.getUrl().contains("discord") || CurrentSubject.getUrl().contains("instagram")) navigator.push(HomeScreen) else if (CurrentSubject.getUrl().contains("docs.google.com")) navigator.push(Syllabus) else navigator.push(Notes)
             }
         }
     }

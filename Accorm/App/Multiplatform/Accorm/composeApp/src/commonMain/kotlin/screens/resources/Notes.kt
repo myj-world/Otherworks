@@ -39,7 +39,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -444,7 +446,7 @@ object Notes : Tab {
 
                                 Spacer(modifier = Modifier.height(10.dp))
                                 Text(
-                                    text = "Credit",
+                                    text = "Author",
                                     fontSize = 12.sp,
                                     fontFamily = lexend,
                                     color = Color.Gray
@@ -459,7 +461,8 @@ object Notes : Tab {
                                         .clickable {
                                             CurrentSubject.setUrl(creditUrl)
                                             navigator.push(DisplayResourceExternal())
-                                        }
+                                        },
+                                    textDecoration = TextDecoration.Underline
                                 )
 
                                 Spacer(modifier = Modifier.height(10.dp))
@@ -654,6 +657,27 @@ object Notes : Tab {
                                     fontSize = 15.sp,
                                     fontFamily = poppins,
                                     color = Color.White
+                                )
+
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = "Author",
+                                    fontSize = 12.sp,
+                                    fontFamily = lexend,
+                                    color = Color.Gray
+                                )
+                                Spacer(modifier = Modifier.height(1.dp))
+                                Text(
+                                    text = credit,
+                                    fontSize = 15.sp,
+                                    fontFamily = poppins,
+                                    color = Color.White,
+                                    modifier = Modifier
+                                        .clickable {
+                                            CurrentSubject.setUrl(creditUrl)
+                                            navigator.push(DisplayResourceExternal())
+                                        },
+                                    textDecoration = TextDecoration.Underline
                                 )
 
                                 Spacer(modifier = Modifier.height(10.dp))
