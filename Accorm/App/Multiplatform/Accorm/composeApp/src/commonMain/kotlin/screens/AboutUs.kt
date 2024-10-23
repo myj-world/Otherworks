@@ -74,6 +74,13 @@ object AboutUs : Tab {
                     }
                 }
             )
+            Spacer(Modifier.height(20.dp))
+            Text(
+                text = "Developers Team",
+                color = Color.White,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold
+            )
             Spacer(Modifier.height(10.dp))
             Person(
                 name = "M. Musab Khan",
@@ -132,17 +139,25 @@ object AboutUs : Tab {
                     Role(
                         role = "Multiplatform App Developer",
                         majorRole = true,
-                        clickPopup = "Accorm App for Android and Desktop is developed by Yousuf Jamil. Accorm is available for download on Play Store and on the Desktop download page via his account."
+                        clickPopup = "Accorm App for Android, Windows, Linux & Mac is developed by Yousuf Jamil. Accorm is available for download via his account in Google Play Store."
                     )
                 )
             )
+            Spacer(Modifier.height(10.dp))
+            Text(
+                text = "Content Team",
+                color = Color.White,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            Spacer(Modifier.height(10.dp))
             Person(
                 name = "M. Faizan Ali",
                 icon = "https://accorm.ginastic.co/pfp/faizan.png",
                 email = "adamcroft715@gmail.com",
                 roles = listOf(
                     Role(
-                        role = "Premier Content Provider",
+                        role = "Premier Conducer",
                         majorRole = true,
                         clickPopup = ""
                     ),
@@ -159,25 +174,8 @@ object AboutUs : Tab {
                 email = "mylifechoice96@gmail.com",
                 roles = listOf(
                     Role(
-                        role = "Premier Content Provider",
+                        role = "Premier Conducer",
                         majorRole = true,
-                        clickPopup = ""
-                    ),
-                    Role(
-                        role = "Advisor",
-                        majorRole = false,
-                        clickPopup = ""
-                    )
-                )
-            )
-            Person(
-                name = "Abdullah Kamil",
-                icon = "https://accorm.ginastic.co/pfp/abdkamil.png",
-                email = "abdullahkamil1107@gmail.com",
-                roles = listOf(
-                    Role(
-                        role = "Content Provider",
-                        majorRole = false,
                         clickPopup = ""
                     ),
                     Role(
@@ -199,6 +197,91 @@ object AboutUs : Tab {
                     )
                 )
             )
+            Spacer(Modifier.height(20.dp))
+            Text(
+                text = "Marketing Team",
+                color = Color.White,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            Person(
+                name = "Abdullah Kamil",
+                icon = "https://accorm.ginastic.co/pfp/abdkamil.png",
+                email = "abdullahkamil1107@gmail.com",
+                roles = listOf(
+                    Role(
+                        role = "Discord Manager",
+                        majorRole = true,
+                        clickPopup = ""
+                    ),
+                    Role(
+                        role = "Advisor",
+                        majorRole = false,
+                        clickPopup = ""
+                    )
+                )
+            )
+            Person(
+                name = "Ali Yousuf",
+                icon = "https://accorm.ginastic.co/pfp/ali-yousuf.jpeg",
+                email = "",
+                roles = listOf(
+                    Role(
+                        role = "Instagram Manager",
+                        majorRole = true,
+                        clickPopup = ""
+                    )
+                )
+            )
+            Person(
+                name = "Fawwaz Imam",
+                icon = "https://accorm.ginastic.co/pfp/fawwaz-imam.png",
+                email = "",
+                roles = listOf(
+                    Role(
+                        role = "Y10 Proxy",
+                        majorRole = false,
+                        clickPopup = ""
+                    )
+                )
+            )
+            Person(
+                name = "Ibrahim Faisal",
+                icon = "https://accorm.ginastic.co/pfp/ibrahim-faisal.png",
+                email = "",
+                roles = listOf(
+                    Role(
+                        role = "Y10 Proxy",
+                        majorRole = false,
+                        clickPopup = ""
+                    )
+                )
+            )
+            Person(
+                name = "Abdullah Khan",
+                icon = "https://accorm.ginastic.co/pfp/abd-khan.png",
+                email = "",
+                roles = listOf(
+                    Role(
+                        role = "Y9 Proxy",
+                        majorRole = false,
+                        clickPopup = ""
+                    )
+                )
+            )
+            Person(
+                name = "Ayaan Asif",
+                icon = "https://accorm.ginastic.co/pfp/ayaan-asif.png",
+                email = "",
+                roles = listOf(
+                    Role(
+                        role = "Y9 Proxy",
+                        majorRole = false,
+                        clickPopup = ""
+                    )
+                )
+            )
+            Spacer(Modifier.height(10.dp))
             Spacer(modifier = Modifier.height(30.dp))
             CopyrightMessage()
             Spacer(modifier = Modifier.height(70.dp))

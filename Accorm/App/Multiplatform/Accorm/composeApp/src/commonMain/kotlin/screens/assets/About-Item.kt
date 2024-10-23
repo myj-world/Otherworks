@@ -91,7 +91,7 @@ fun Person(
             .background(Color(25, 25, 44))
             .padding(15.dp)
     ) {
-        if (name != "Taqi Ahmed") {
+        if (email != "") {
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.CenterEnd
@@ -153,6 +153,9 @@ fun Person(
         val maxRowCount = when (name) {
             "M. Musab Khan" -> 3
             "Abdullah Kamil" -> 2
+            "Majid M." -> 2
+            "M. Faizan Ali" -> 2
+            "M. Abdullah Umair" -> 2
             else -> 1
         }
         var roleCount by remember { mutableIntStateOf(0) }
