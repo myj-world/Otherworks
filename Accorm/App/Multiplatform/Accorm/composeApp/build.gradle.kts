@@ -60,6 +60,8 @@ kotlin {
 
             implementation(libs.app.update)
             implementation(libs.app.update.ktx)
+
+            implementation(libs.firebase.messaging)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -136,6 +138,7 @@ android {
 dependencies {
     implementation(libs.play.services.measurement.api)
     implementation(libs.kamel.image)
+    implementation(libs.firebase.messaging.ktx)
 }
 
 compose.desktop {

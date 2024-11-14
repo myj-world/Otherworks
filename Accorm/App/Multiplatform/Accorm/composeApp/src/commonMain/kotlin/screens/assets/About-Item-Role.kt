@@ -1,7 +1,8 @@
 package screens.assets
 
+import androidx.compose.ui.graphics.vector.ImageVector
+
 data class Role (
-    val role: String,
-    val majorRole: Boolean,
-    val clickPopup: String
+    val roleName: String,
+    val roleIcon: ImageVector
 )
