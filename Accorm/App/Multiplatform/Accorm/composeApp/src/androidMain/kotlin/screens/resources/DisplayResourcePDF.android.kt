@@ -17,14 +17,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.squareup.okhttp.OkHttpClient
-import com.squareup.okhttp.Request
+//import com.squareup.okhttp.OkHttpClient
+//import com.squareup.okhttp.Request
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.ResponseBody
 import java.io.File
 import java.io.FileOutputStream
 
@@ -32,7 +35,7 @@ actual suspend fun downloadFile(title: String, url: String): Boolean {
     return try {
         println("Downloading file")
         val response =
-            OkHttpClient().newCall(Request.Builder().url(url).build()).execute().body().bytes()
+            OkHttpClient().newCall(Request.Builder().url(url).build()).execute().body()?.bytes()
         println("Downloading file")
         val downloadsDir =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
@@ -73,18 +76,18 @@ actual fun openFile(title: String, url: String): Boolean {
     file.deleteOnExit()
     LaunchedEffect(true) {
         try {
-            val contentLength: Long
-            val body: com.squareup.okhttp.ResponseBody
+            val contentLength: Long?
+            val body: ResponseBody?
 
             response = withContext(Dispatchers.IO) {
                 mutex.withLock {
                     val client = OkHttpClient()
                     val request = Request.Builder().url(url).build()
                     body = client.newCall(request).execute().body()
-                    contentLength = body.contentLength()
+                    contentLength = body?.contentLength()
                     println(contentLength)
-                    println(body.contentType())
-                    body.bytes()
+                    println(body?.contentType())
+                    body?.bytes()
                 }
             }
             coroutineScope.launch {
@@ -111,7 +114,7 @@ actual fun openFile(title: String, url: String): Boolean {
 
 //            file.writeBytes(response)
 
-            if (body.contentType().toString() != "application/pdf") {
+            if (body?.contentType().toString() != "application/pdf") {
                 println("Not a pdf")
                 error = true
                 return@LaunchedEffect

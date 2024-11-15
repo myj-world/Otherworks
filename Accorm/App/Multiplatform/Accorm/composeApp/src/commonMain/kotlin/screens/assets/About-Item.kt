@@ -1,5 +1,6 @@
 package screens.assets
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -40,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import compose.icons.FontAwesomeIcons
@@ -66,7 +68,7 @@ fun Member(
     roles: List<Role>,
     description: String
 ) {
-    val navigator = LocalNavigator.currentOrThrow
+    var expanded by remember { mutableStateOf(false) }
 
     var connected by remember { mutableStateOf(true) }
 
@@ -76,10 +78,12 @@ fun Member(
     }
 
     Column(
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
+            .animateContentSize()
             .requiredWidth(300.dp)
-            .height(250.dp)
+            .height(if (!expanded) 275.dp else 315.dp)
             .padding(10.dp)
             .border(
                 width = 2.dp,
@@ -93,7 +97,8 @@ fun Member(
             )
             .clip(RoundedCornerShape(20.dp))
             .background(Color(25, 25, 44))
-            .padding(15.dp)
+            .clickable { expanded = !expanded }
+            .padding(15.dp),
     ) {
         if (tag != null) {
             Box(
@@ -108,8 +113,15 @@ fun Member(
                         .size(20.dp)
                 )
             }
+        } else {
+            Box(
+                modifier = Modifier.fillMaxWidth()
+            )
         }
-        Row {
+        Column (
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             if (connected) {
                 val resource = asyncPainterResource(imageUrl)
                 when (resource) {
@@ -124,6 +136,7 @@ fun Member(
                             contentScale = ContentScale.Crop
                         )
                     }
+
                     else -> {
                         Box(
                             modifier = Modifier
@@ -166,10 +179,44 @@ fun Member(
                 text = name,
                 color = Color.White,
                 fontFamily = poppins,
-                fontWeight = FontWeight.Black,
+                fontWeight = FontWeight.Bold,
                 fontSize = 28.sp,
-                modifier = Modifier.padding(vertical = 10.dp)
+                modifier = Modifier.padding(vertical = 10.dp),
+                textAlign = TextAlign.Center
             )
+            Spacer(modifier = Modifier.height(20.dp))
+            for (role in roles) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = role.roleIcon,
+                        contentDescription = role.roleName,
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(14.dp)
+                    )
+                    Spacer(Modifier.width(10.dp))
+                    Text(
+                        text = role.roleName,
+                        color = Color.White,
+                        fontFamily = poppins,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 14.sp
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            if (expanded) {
+                Text(
+                    text = description,
+                    color = Color.White,
+                    fontFamily = poppins,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 14.sp
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+            }
         }
     }
 }

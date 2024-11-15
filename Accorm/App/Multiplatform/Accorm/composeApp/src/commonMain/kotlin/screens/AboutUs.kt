@@ -49,6 +49,7 @@ import compose.icons.fontawesomeicons.solid.PeopleArrows
 import compose.icons.fontawesomeicons.solid.PeopleCarry
 import compose.icons.fontawesomeicons.solid.PersonBooth
 import compose.icons.fontawesomeicons.solid.Trophy
+import compose.icons.fontawesomeicons.solid.User
 import screens.assets.CopyrightMessage
 import screens.assets.Member
 import screens.assets.Role
@@ -103,7 +104,7 @@ object AboutUs : Tab {
                 TeamMember(
                     name = "M. Musab Khan",
                     imageUrl = "https://accorm.ginastic.co/pfp/musab1.jpg",
-                    tag = FontAwesomeIcons.Solid.PeopleCarry,
+                    tag = FontAwesomeIcons.Solid.User,
                     roles = listOf(
                         Role(
                             roleName = "Frontend Dev.",
@@ -120,7 +121,7 @@ object AboutUs : Tab {
                 TeamMember(
                     name = "M. Yousuf Jamil",
                     imageUrl = "https://accorm.ginastic.co/pfp/yousuf-jamil.png",
-                    tag = FontAwesomeIcons.Solid.PeopleCarry,
+                    tag = FontAwesomeIcons.Solid.User,
                     roles = listOf(
                         Role(
                             roleName = "Multiplatform App Dev.",
@@ -133,7 +134,7 @@ object AboutUs : Tab {
                 TeamMember(
                     name = "M. Abdullah Umair",
                     imageUrl = "https://accorm.ginastic.co/pfp/abd.jpg",
-                    tag = FontAwesomeIcons.Solid.PeopleCarry,
+                    tag = FontAwesomeIcons.Solid.User,
                     roles = listOf(
                         Role(
                             roleName = "Frontend Dev.",
@@ -153,7 +154,7 @@ object AboutUs : Tab {
                 TeamMember(
                     name = "Faizan",
                     imageUrl = "https://accorm.ginastic.co/pfp/faizan.png",
-                    tag = FontAwesomeIcons.Solid.PeopleCarry,
+                    tag = FontAwesomeIcons.Solid.User,
                     roles = listOf(
                         Role(
                             roleName = "Content Manager",
@@ -170,7 +171,7 @@ object AboutUs : Tab {
                 TeamMember(
                     name = "Majid M.",
                     imageUrl = "https://accorm.ginastic.co/pfp/majid3.png",
-                    tag = FontAwesomeIcons.Solid.PeopleCarry,
+                    tag = FontAwesomeIcons.Solid.User,
                     roles = listOf(
                         Role(
                             roleName = "Premier Conducer",
@@ -229,7 +230,7 @@ object AboutUs : Tab {
                 TeamMember(
                     name = "Abdullah Kamil",
                     imageUrl = "https://accorm.ginastic.co/pfp/abdkamil.png",
-                    tag = FontAwesomeIcons.Solid.PeopleCarry,
+                    tag = FontAwesomeIcons.Solid.User,
                     roles = listOf(
                         Role(
                             roleName = "Discord Manager",
@@ -320,7 +321,7 @@ object AboutUs : Tab {
             )
 
             LazyVerticalGrid(
-                columns = if (device == "Android" && !landscapeTablet) GridCells.Fixed(2) else GridCells.Fixed(3),
+                columns = GridCells.Adaptive(300.dp),
                 modifier = Modifier.fillMaxHeight()
             ) {
                 item (
@@ -331,7 +332,7 @@ object AboutUs : Tab {
                     Text(
                         text = "Developers Team",
                         color = Color.White,
-                        fontSize = 24.sp,
+                        fontSize = 28.sp,
                         fontWeight = FontWeight.SemiBold
                     )
                     Spacer(Modifier.height(20.dp))
@@ -364,7 +365,7 @@ object AboutUs : Tab {
                     Text(
                         text = "Content Team",
                         color = Color.White,
-                        fontSize = 24.sp,
+                        fontSize = 28.sp,
                         fontWeight = FontWeight.SemiBold
                     )
                     Spacer(Modifier.height(20.dp))
@@ -397,7 +398,7 @@ object AboutUs : Tab {
                     Text(
                         text = "Marketing Team",
                         color = Color.White,
-                        fontSize = 24.sp,
+                        fontSize = 28.sp,
                         fontWeight = FontWeight.SemiBold
                     )
                     Spacer(Modifier.height(20.dp))

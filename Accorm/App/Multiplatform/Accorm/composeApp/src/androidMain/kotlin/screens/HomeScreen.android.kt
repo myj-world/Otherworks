@@ -9,13 +9,15 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import com.squareup.okhttp.OkHttpClient
-import com.squareup.okhttp.Request
+//import com.squareup.okhttp.OkHttpClient
+//import com.squareup.okhttp.Request
 import com.yousufjamil.accorm.MainActivity
 import com.yousufjamil.accorm.R
 import fonts.Fonts
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
 actual val poppins: FontFamily
     get() = Fonts().poppins
