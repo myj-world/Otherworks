@@ -37,6 +37,7 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.brands.Discord
 import compose.icons.fontawesomeicons.brands.Instagram
 import compose.icons.fontawesomeicons.solid.Ad
+import compose.icons.fontawesomeicons.solid.Building
 import compose.icons.fontawesomeicons.solid.CaretSquareUp
 import compose.icons.fontawesomeicons.solid.Clone
 import compose.icons.fontawesomeicons.solid.Code
@@ -50,6 +51,7 @@ import compose.icons.fontawesomeicons.solid.PeopleCarry
 import compose.icons.fontawesomeicons.solid.PersonBooth
 import compose.icons.fontawesomeicons.solid.Trophy
 import compose.icons.fontawesomeicons.solid.User
+import compose.icons.fontawesomeicons.solid.Wifi
 import screens.assets.CopyrightMessage
 import screens.assets.Member
 import screens.assets.Role
@@ -324,6 +326,50 @@ object AboutUs : Tab {
                 columns = GridCells.Adaptive(300.dp),
                 modifier = Modifier.fillMaxHeight()
             ) {
+                item (
+                    span = {
+                        GridItemSpan(maxLineSpan)
+                    }
+                ) {
+                    Text(
+                        text = "CEO",
+                        color = Color.White,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(Modifier.height(20.dp))
+                }
+                item {
+                    Member(
+                        name = "Musab Khan",
+                        imageUrl = "https://accorm.ginastic.co/pfp/musab1.jpg",
+                        tag = null,
+                        roles = listOf(
+                            Role(
+                                roleName = "CEO",
+                                roleIcon = FontAwesomeIcons.Solid.User
+                            ),
+                            Role(
+                                roleName = "Founder",
+                                roleIcon = FontAwesomeIcons.Solid.Building
+                            ),
+                            Role(
+                                roleName = "Hoster",
+                                roleIcon = FontAwesomeIcons.Solid.Wifi
+                            )
+                        ),
+                        description = "Developer, goal-chaser, oppurtunity navigator - here to support you."
+                    )
+                    Spacer(Modifier.height(10.dp))
+                }
+                item (
+                    span = {
+                        GridItemSpan(maxLineSpan)
+                    }
+                ) {
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+
                 item (
                     span = {
                         GridItemSpan(maxLineSpan)

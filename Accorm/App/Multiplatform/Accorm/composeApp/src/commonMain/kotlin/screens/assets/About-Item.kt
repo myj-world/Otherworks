@@ -154,6 +154,7 @@ fun Member(
                                     .size(20.dp)
                             )
                         }
+                        println("Error: $resource")
                     }
                 }
             } else {
@@ -173,6 +174,7 @@ fun Member(
                             .size(20.dp)
                     )
                 }
+                println("No Internet Connected!")
             }
             Spacer(Modifier.width(10.dp))
             Text(
