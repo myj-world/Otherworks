@@ -327,7 +327,7 @@ object Resources : Tab {
                         videos = true,
                         ppqs = true,
                         syllabus = true,
-                        grade = "AS"
+                        grade = "A2"
                     )
                     Subject(
                         title = "Physics",
@@ -336,7 +336,7 @@ object Resources : Tab {
                         videos = true,
                         ppqs = true,
                         syllabus = true,
-                        grade = "AS"
+                        grade = "A2"
                     )
                     Subject(
                         title = "Chemistry",
@@ -345,7 +345,7 @@ object Resources : Tab {
                         videos = true,
                         ppqs = true,
                         syllabus = true,
-                        grade = "AS"
+                        grade = "A2"
                     )
                     Subject(
                         title = "Biology",
@@ -354,7 +354,7 @@ object Resources : Tab {
                         videos = true,
                         ppqs = true,
                         syllabus = true,
-                        grade = "AS"
+                        grade = "A2"
                     )
                     Subject(
                         title = "CS",
@@ -363,7 +363,7 @@ object Resources : Tab {
                         videos = true,
                         ppqs = true,
                         syllabus = true,
-                        grade = "AS"
+                        grade = "A2"
                     )
                 }
 

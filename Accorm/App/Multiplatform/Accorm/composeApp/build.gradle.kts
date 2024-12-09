@@ -17,7 +17,7 @@ plugins {
 }
 
 group = "accorm"
-version = "2.2.9"
+version = "2.2.10"
 
 kotlin {
     androidTarget {
@@ -112,8 +112,8 @@ android {
         applicationId = "com.yousufjamil.accorm"
         minSdk = 23
         targetSdk = 35
-        versionCode = 29
-        versionName = "2.2.9"
+        versionCode = 30
+        versionName = "2.2.10"
     }
     packaging {
         resources {
@@ -149,7 +149,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Accorm"
-            packageVersion = "2.2.9"
+            packageVersion = "2.2.10"
             description = "Accorm Desktop App"
             copyright = "Copyright © 2023-2024 Accorm"
             windows {
