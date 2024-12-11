@@ -1,28 +1,41 @@
 package screens
 
-import android.content.Context
+import accorm.composeapp.generated.resources.Res
+import accorm.composeapp.generated.resources.lexend_bold
+import accorm.composeapp.generated.resources.lexend_regular
+import accorm.composeapp.generated.resources.lexend_thin
+import accorm.composeapp.generated.resources.poppins_bold
+import accorm.composeapp.generated.resources.poppins_light
+import accorm.composeapp.generated.resources.poppins_regular
+import accorm.composeapp.generated.resources.poppins_semibold
+import accorm.composeapp.generated.resources.poppins_thin
 import android.content.res.Configuration
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.text.font.Font
+import org.jetbrains.compose.resources.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-//import com.squareup.okhttp.OkHttpClient
-//import com.squareup.okhttp.Request
-import com.yousufjamil.accorm.MainActivity
-import com.yousufjamil.accorm.R
-import fonts.Fonts
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
 actual val poppins: FontFamily
-    get() = Fonts().poppins
+    @Composable
+    get() = FontFamily(
+        Font(Res.font.poppins_thin, FontWeight.Thin),
+        Font(Res.font.poppins_light, FontWeight.Light),
+        Font(Res.font.poppins_bold, FontWeight.Bold),
+        Font(Res.font.poppins_semibold, FontWeight.SemiBold),
+        Font(Res.font.poppins_regular, FontWeight.Normal)
+    )
 actual val lexend: FontFamily
-    get() = Fonts().lexend
+    @Composable
+    get() = FontFamily(
+        Font(Res.font.lexend_thin, FontWeight.Thin),
+        Font(Res.font.lexend_regular, FontWeight.Normal),
+        Font(Res.font.lexend_bold, FontWeight.Bold)
+    )
 actual val device: String
     get() = "Android"
 
