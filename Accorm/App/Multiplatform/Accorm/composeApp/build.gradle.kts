@@ -90,6 +90,9 @@ kotlin {
 
             implementation(libs.firebase.analytics.gitlive)
 
+            implementation(libs.multiplatform.settings)
+            implementation(libs.multiplatform.settings.no.arg)
+
             implementation("org.jetbrains.skiko:skiko-awt-runtime-$target:$version")
         }
         desktopMain.dependencies {

@@ -36,6 +36,8 @@ ktorClientAndroid = "2.3.12"
 ktor = "3.0.0-wasm2"
 ktorClientOkhttp = "3.0.0-alpha06"
 material3 = "1.3.1"
+multiplatformSettings = "1.2.0"
+multiplatformSettingsNoArg = "1.2.0"
 navigationCompose = "2.7.7"
 navigationComposeVersion = "2.7.0-alpha07"
 pdfbox = "3.0.3"
@@ -84,6 +86,8 @@ androidx-activity-compose = { module = "androidx.activity:activity-compose", ver
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktorClientAndroid" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorClientOkhttp" }
+multiplatform-settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
+multiplatform-settings-no-arg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettingsNoArg" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationComposeVersion" }
 pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox" }
 play-services-base = { module = "com.google.android.gms:play-services-base", version.ref = "playServicesBase" }

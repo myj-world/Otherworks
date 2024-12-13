@@ -83,64 +83,6 @@ object Blogs : Tab {
         LogEvent("Load Notes ${CurrentSubject.getSubject()}")
 
         val navigator = LocalNavigator.currentOrThrow
-//        var subjectRetrieve by remember {
-//            mutableStateOf("")
-//        }
-//        var subjectCode by remember {
-//            mutableStateOf("")
-//        }
-//        var level by remember {
-//            mutableStateOf("")
-//        }
-//        level = CurrentSubject.getLevel()
-//
-//        if (level == "IGCSE / O Level") {
-//            subjectRetrieve = when (CurrentSubject.getSubject()) {
-//                "Islamiyat" -> "islamiyat"
-//                "History" -> "history"
-//                "Geography" -> "geography"
-//                "Accounting" -> "accounting"
-//                "Physics" -> "physics"
-//                "Chemistry" -> "chemistry"
-//                "Biology" -> "biology"
-//                "CS" -> "cs"
-//                "FLE" -> "fle"
-//                "ESL" -> "esl"
-//                else -> "maths"
-//            }
-//            subjectCode = when (CurrentSubject.getSubject()) {
-//                "Islamiyat" -> "0493/2058"
-//                "History" -> "0448/2059"
-//                "Geography" -> "0448/2059"
-//                "Accounting" -> "0452/7077"
-//                "Physics" -> "0625/5054"
-//                "Chemistry" -> "0620/5070"
-//                "Biology" -> "0610/5090"
-//                "CS" -> "0478/2210"
-//                "FLE" -> "0500"
-//                "ESL" -> "0510"
-//                else -> "0580/4024"
-//            }
-//
-//            println("Tests $subjectRetrieve $subjectCode")
-//        } else {
-//            subjectRetrieve = when (CurrentSubject.getSubject()) {
-//                "Physics" -> "physics"
-//                "Chemistry" -> "chemistry"
-//                "Biology" -> "biology"
-//                "CS" -> "cs"
-//                else -> "maths"
-//            }
-//            subjectCode = when (CurrentSubject.getSubject()) {
-//                "Physics" -> "9702"
-//                "Chemistry" -> "9701"
-//                "Biology" -> "9700"
-//                "CS" -> "9618"
-//                else -> "9709"
-//            }
-//
-//            println("Tests $subjectRetrieve $subjectCode")
-//        }
 
         val coroutineScope = rememberCoroutineScope()
         var data by remember { mutableStateOf("") }

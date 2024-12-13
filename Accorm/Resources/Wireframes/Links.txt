@@ -1,6 +1,8 @@
 Notes: https://accorm.ginastic.co/300/fetch/?access-id=65aea3e3e6184&subject=islamiyat
 Videos: https://accorm.ginastic.co/300/vids/?access-id=5ece4797eaf5e&subject=computer%20science
 Blogs: https://accorm.ginastic.co/300/blogs/?access-id=65c3ad4b976e3
-Signup/Login Status Check: https://accorm.ginastic.co/300/login/?access-id=313&ip=[user ip address]&ug=[user agent, e.g. device, browser ips, etc]
-Logout: https://accorm.ginastic.co/300/logout/?access-id=434&email=[user email]
+[ENDED] Signup/Login Status Check: https://accorm.ginastic.co/300/login/?access-id=313&ip=[user ip address]&ug=[user agent, e.g. device, browser ips, etc]
+[ENDED] Logout: https://accorm.ginastic.co/300/logout/?access-id=434&email=[user email]
 [ENDED] Contributors: https://accorm.ginastic.co/300/contributors/?access-id=65aea3e3e6184
+Login encrypt key: https://accorm.ginastic.co/300/login/est/?access-id=[ id ]&email=[ email url encoded ] where access id: 3s4w9vd304 and returns "email does not exist" if user inputted an email which doesnt exist in the accounts db, "new record" if first login via app, "updated record" if not first time login
+Login: https://accorm.ginastic.co/300/login/?access-id=w943vf3h9&email=[ email urlencoded ]&pswd=[ pswd urlencoded+encrypted ]

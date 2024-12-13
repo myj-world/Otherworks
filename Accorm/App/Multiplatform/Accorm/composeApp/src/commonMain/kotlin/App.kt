@@ -2,6 +2,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +24,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
@@ -44,6 +47,9 @@ import screens.Services
 import screens.device
 import screens.landscapeTablet
 import screens.Blogs
+import screens.accounts.Dashboard
+import screens.accounts.Login
+import screens.accounts.Signup
 import screens.resources.Resources
 
 @Composable
@@ -58,11 +64,10 @@ fun App() {
             FontAwesomeIcons.Solid.Blog,
             FontAwesomeIcons.Solid.EllipsisH
         )
-        val screens = listOf(HomeScreen, Resources, Services, Blogs, MoreItems)
+        val screens = listOf(HomeScreen, Resources, Dashboard, Blogs, MoreItems)
         TabNavigator(
             tab = HomeScreen
         ) { tabNavigator ->
-//            val navigator = LocalNavigator.currentOrThrow
             Scaffold(
                 content = {
                     Row {
@@ -115,13 +120,30 @@ fun App() {
                                                     .height(92.dp)
                                                     .width(92.dp)
                                                     .padding(8.dp)
+                                                    .shadow(
+                                                        elevation = 5.dp,
+                                                        shape = RoundedCornerShape(100)
+                                                    )
                                                     .clip(
                                                         RoundedCornerShape(100)
                                                     )
                                                     .background(
-                                                        if (tabNavigator.current == screens[index]) Color(
-                                                            0xFFacacf9
-                                                        ) else Color(0xFF473e5f)
+                                                        brush =
+                                                        if (tabNavigator.current != Dashboard && tabNavigator.current != Login && tabNavigator.current != Signup) {
+                                                            Brush.radialGradient(
+                                                                listOf(
+                                                                    Color(0xFF5d5d7d),
+                                                                    Color(0xFF49496d)
+                                                                )
+                                                            )
+                                                        } else {
+                                                            Brush.linearGradient(
+                                                                listOf(
+                                                                    Color(0xFF72728e),
+                                                                    Color(0xFF72728e)
+                                                                )
+                                                            )
+                                                        }
                                                     )
                                                     .clickable {
                                                         tabNavigator.current = screens[index]
@@ -155,6 +177,24 @@ fun App() {
                 },
                 bottomBar = {
                     if (device == "Android" && !landscapeTablet) {
+                        @Composable
+                        fun Divider() {
+                            Box(
+                                modifier = Modifier
+                                    .width(1.dp)
+                                    .height(56.dp)
+                                    .background(
+                                        brush = Brush.linearGradient(
+                                            listOf(
+                                                Color(53, 53, 93),
+                                                Color(0xFF86869e),
+                                                Color(53, 53, 93)
+                                            )
+                                        )
+                                    )
+                            )
+                        }
+
                         BottomNavigation(
                             backgroundColor = Color(53, 53, 93),
                         ) {
@@ -167,7 +207,12 @@ fun App() {
                                         BottomNavigationItem(
                                             selected = tabNavigator.current == screens[index],
                                             onClick = { tabNavigator.current = screens[index] },
-                                            label = { Text(item) },
+                                            label = {
+                                                Text(
+                                                    text = item,
+                                                    fontSize = 12.sp
+                                                )
+                                            },
                                             icon = {
                                                 Icon(
                                                     imageVector = icons[index],
@@ -176,12 +221,15 @@ fun App() {
                                                         .size(24.dp)
                                                 )
                                             },
-                                            modifier = Modifier.padding(2.dp).background(
-                                                Color(53, 53, 93)
-                                            ),
+                                            modifier = Modifier
+                                                .padding(2.dp)
+                                                .background(
+                                                    Color(53, 53, 93)
+                                                ),
                                             selectedContentColor = Color(171, 171, 248),
                                             unselectedContentColor = Color.White
                                         )
+                                        if (index != items.lastIndex) Divider()
                                     } else {
                                         Column(
                                             modifier = Modifier
@@ -189,13 +237,30 @@ fun App() {
                                                 .height(92.dp)
                                                 .width(92.dp)
                                                 .padding(8.dp)
+                                                .shadow(
+                                                    elevation = 5.dp,
+                                                    shape = RoundedCornerShape(100)
+                                                )
                                                 .clip(
                                                     RoundedCornerShape(100)
                                                 )
                                                 .background(
-                                                    if (tabNavigator.current == screens[index]) Color(
-                                                        0xFFacacf9
-                                                    ) else Color(0xFF473e5f)
+                                                    brush =
+                                                    if (tabNavigator.current != Dashboard && tabNavigator.current != Login && tabNavigator.current != Signup) {
+                                                        Brush.radialGradient(
+                                                            listOf(
+                                                                Color(0xFF5d5d7d),
+                                                                Color(0xFF49496d)
+                                                            )
+                                                        )
+                                                    } else {
+                                                        Brush.linearGradient(
+                                                            listOf(
+                                                                Color(0xFF72728e),
+                                                                Color(0xFF72728e)
+                                                            )
+                                                        )
+                                                    }
                                                 )
                                                 .clickable {
                                                     tabNavigator.current = screens[index]
@@ -219,6 +284,7 @@ fun App() {
                                                 fontSize = 12.sp
                                             )
                                         }
+                                        Divider()
                                     }
                                 }
                             }
