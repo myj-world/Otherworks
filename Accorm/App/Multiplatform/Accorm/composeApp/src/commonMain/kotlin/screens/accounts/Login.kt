@@ -62,6 +62,7 @@ import screens.poppins
 import screens.resources.DisplayResourceExternal
 import viewmodels.CurrentEmailName
 import java.net.URLEncoder
+import kotlin.random.Random
 
 object Login : Tab {
     private fun readResolve(): Any = Login
@@ -91,7 +92,8 @@ object Login : Tab {
             }
             println("Encoded Email: $encodedEmail")
 
-            var encryptionKey = RequestURL("https://accorm.ginastic.co/300/login/est/?access-id=3s4w9vd304&email=$encodedEmail") ?: throw Exception()
+            var encryptionKey = RequestURL("https://accorm.ginastic.co/300/login/est/?access-id=3s4w9vd304&email=$encodedEmail") ?: ""
+            println("Url: https://accorm.ginastic.co/300/login/est/?access-id=3s4w9vd304&email=$encodedEmail")
             println("Server Response: $encryptionKey")
 
             encryptionKey = encryptionKey.substring(0..4)
@@ -117,6 +119,7 @@ object Login : Tab {
                         charType == "Upper" && modifiedCharCode > 'Z'.code -> (modifiedCharCode - 25).toChar().toString()
                         charType == "Lower" && modifiedCharCode > 'z'.code -> (modifiedCharCode - 25).toChar().toString()
                         charType == "Number" && modifiedCharCode > '9'.code -> (modifiedCharCode - 10).toChar().toString()
+                        charType == "Special" -> i
                         else -> modifiedCharCode.toChar().toString()
                     }
 
@@ -134,7 +137,8 @@ object Login : Tab {
                 }
                 println("Encoded Encrypted Password: $encodedEncryptedPassword")
 
-                val response = RequestURL("https://accorm.ginastic.co/300/login/?access-id=w943vf3h9&email=$encodedEmail&pswd=$encodedEncryptedPassword") ?: throw Exception()
+                val response = RequestURL("https://accorm.ginastic.co/300/login/?access-id=w943vf3h9&email=$encodedEmail&pswd=$encodedEncryptedPassword") ?: ""
+                println("Url 2: https://accorm.ginastic.co/300/login/?access-id=w943vf3h9&email=$encodedEmail&pswd=$encodedEncryptedPassword")
                 println("Server Response: $response")
 
                 try {
@@ -153,10 +157,36 @@ object Login : Tab {
             val userId = LoginStatus.getUserID()
 
 //            TEMP CODE
-            LoginStatus.updateEmail("martian@accorm.ginastic.co")
-            LoginStatus.updateName("Martian")
-            LoginStatus.updateLogo("M")
-            LoginStatus.updateLogoBg("#ad6242")
+            val emails = listOf(
+                "jupiter@accorm.ginastic.co",
+                "venus@accorm.ginastic.co",
+                "earth@accorm.ginastic.co",
+                "person@accorm.ginastic.co",
+                "martian@accorm.ginastic.co",
+                "neptunian@accorm.ginastic.co",
+            )
+            val names = listOf(
+                "Jupiter",
+                "Venus",
+                "Earth",
+                "Person",
+                "Martian",
+                "Neptunian"
+            )
+            val logoBgs = listOf(
+                "#6A5177",
+                "#FFC649",
+                "#806043",
+                "#000000",
+                "#ad6242",
+                "#7CB7BB"
+            )
+            val random = Random.nextInt(0, emails.size)
+
+            LoginStatus.updateEmail(emails[random])
+            LoginStatus.updateName(names[random])
+            LoginStatus.updateLogo(names[random][0].toString())
+            LoginStatus.updateLogoBg(logoBgs[random])
             navigator.push(Dashboard)
         }
 
@@ -298,21 +328,7 @@ object Login : Tab {
                         colorFilter = ColorFilter.tint(Color.White)
                     )
                 }
-                val navigator = LocalNavigator.currentOrThrow
                 Spacer(modifier = Modifier.height(15.dp))
-                Text(
-                    text = "Forgot Password? Contact us to reset.",
-                    color = Color.White,
-                    fontFamily = poppins,
-                    fontSize = 16.sp,
-                    modifier = Modifier
-                        .clickable {
-                            CurrentEmailName.setEmail("contact@accorm.ginastic.co")
-                            CurrentEmailName.setName("Us")
-                            navigator.push(Contact)
-                        }
-                )
-                Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = "Don't have an account? Sign Up",
                     color = Color.White,
@@ -327,7 +343,7 @@ object Login : Tab {
                 val coroutineScope = rememberCoroutineScope()
                 Button(
                     onClick = {
-                        if (validEmail) {
+                        if (validEmail && password.isNotEmpty()) {
                             coroutineScope.launch {
                                 try {
                                     login(email, password)
@@ -337,11 +353,12 @@ object Login : Tab {
                                     }
                                 } catch (e: Exception) {
                                     println("Error: ${e.message}")
-                                    loginResponse = "Something went wrong"
                                 }
                             }
-                        } else {
+                        } else if (!validEmail) {
                             loginResponse = "Invalid email"
+                        } else {
+                            loginResponse = "Password cannot be empty"
                         }
                     },
                     modifier = Modifier
@@ -356,7 +373,7 @@ object Login : Tab {
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                if (loginResponse == "Something went wrong" || loginResponse == "Wrong email" || loginResponse == "Wrong password" || loginResponse == "Invalid email") {
+                if (loginResponse == "Something went wrong" || loginResponse == "Wrong email" || loginResponse == "Wrong password" || loginResponse == "Invalid email" || loginResponse == "Password cannot be empty") {
                     Text(
                         text = loginResponse,
                         color = Color.Red,
