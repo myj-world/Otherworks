@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -96,22 +97,41 @@ class DisplayResourcePDF : Tab, ScreenLifecycleOwner {
             }
             if (show2) {
                 AlertDialog(
-                    onDismissRequest = { navigator.pop() },
-                    confirmButton = {
-                        Button(onClick = { navigator.pop() }) {
-                            Text("OK")
-                        }
+                    onDismissRequest = {
+                        navigator.pop()
                     },
                     title = {
                         Text(
-                            text = "File saved to downloads"
+                            text = "File saved to downloads",
+                            fontSize = 20.sp,
+                            fontFamily = poppins,
+                            color = Color(0xFF181829)
                         )
                     },
                     text = {
                         Text(
-                            text = "Please check your downloads folder. The file is named file.pdf"
+                            text = "Please check the downloads folder for file.pdf",
+                            fontSize = 18.sp,
+                            fontFamily = poppins,
+                            color = Color(0xFF1f1f36)
                         )
-                    }
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = { navigator.pop() },
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = Color(0xFF1f1f36)
+                            )
+                        ) {
+                            Text(
+                                text = "Got it.",
+                                fontSize = 18.sp,
+                                fontFamily = poppins,
+                                color = Color(0xFFffffff)
+                            )
+                        }
+                    },
+                    backgroundColor = Color.White
                 )
             }
 

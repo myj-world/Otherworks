@@ -6,3 +6,6 @@ Blogs: https://accorm.ginastic.co/300/blogs/?access-id=65c3ad4b976e3
 [ENDED] Contributors: https://accorm.ginastic.co/300/contributors/?access-id=65aea3e3e6184
 Login encrypt key: https://accorm.ginastic.co/300/login/est/?access-id=[ id ]&email=[ email url encoded ] where access id: 3s4w9vd304 and returns "email does not exist" if user inputted an email which doesnt exist in the accounts db, "new record" if first login via app, "updated record" if not first time login
 Login: https://accorm.ginastic.co/300/login/?access-id=w943vf3h9&email=[ email urlencoded ]&pswd=[ pswd urlencoded+encrypted ]
+User Data: https://accorm.ginastic.co/300/login/UserData/?access-id=4954kvti4&unique-id=[unique_id]
+Data at id of subject: https://accorm.ginastic.co/300/login/RsrcsData/?access-id=230gri5q4&unique-id=[ unique_id ]&subject=[ subject ]
+Check network connection: https://accorm.ginastic.co/300/true/

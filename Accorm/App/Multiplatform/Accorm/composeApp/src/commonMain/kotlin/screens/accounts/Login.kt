@@ -44,6 +44,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
+import com.google.gson.stream.JsonReader
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.CheckCircle
@@ -54,8 +55,12 @@ import compose.icons.fontawesomeicons.solid.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import network.RequestURL
 import screens.assets.Contact
+import screens.assets.CopyrightMessage
 import screens.device
 import screens.landscapeTablet
 import screens.poppins
@@ -81,9 +86,14 @@ object Login : Tab {
 
     @Composable
     override fun Content() {
+        if (LoginStatus.getLoginStatus()) {
+            val navigator = LocalNavigator.currentOrThrow
+            navigator.push(Dashboard)
+        }
 
         var loginResponse by remember { mutableStateOf("") }
         val navigator = LocalNavigator.currentOrThrow
+        val coroutineScope = rememberCoroutineScope()
 
         suspend fun login(email: String, password: String) {
             loginResponse = ""
@@ -92,7 +102,9 @@ object Login : Tab {
             }
             println("Encoded Email: $encodedEmail")
 
-            var encryptionKey = RequestURL("https://accorm.ginastic.co/300/login/est/?access-id=3s4w9vd304&email=$encodedEmail") ?: ""
+            var encryptionKey =
+                RequestURL("https://accorm.ginastic.co/300/login/est/?access-id=3s4w9vd304&email=$encodedEmail")
+                    ?: ""
             println("Url: https://accorm.ginastic.co/300/login/est/?access-id=3s4w9vd304&email=$encodedEmail")
             println("Server Response: $encryptionKey")
 
@@ -111,14 +123,23 @@ object Login : Tab {
 
                 var encryptionKeyChar = 0
                 for (i in password) {
-                    val charType = if (i.isUpperCase()) "Upper" else if (i.isLowerCase()) "Lower" else if (i.isDigit()) "Number" else "Special"
+                    val charType =
+                        if (i.isUpperCase()) "Upper" else if (i.isLowerCase()) "Lower" else if (i.isDigit()) "Number" else "Special"
 
-                    val modifiedCharCode = i.code + encryptionKey.substring(encryptionKeyChar, encryptionKeyChar + 1).toInt()
+                    val modifiedCharCode =
+                        i.code + encryptionKey.substring(encryptionKeyChar, encryptionKeyChar + 1)
+                            .toInt()
 
                     val modifiedChar = when {
-                        charType == "Upper" && modifiedCharCode > 'Z'.code -> (modifiedCharCode - 25).toChar().toString()
-                        charType == "Lower" && modifiedCharCode > 'z'.code -> (modifiedCharCode - 25).toChar().toString()
-                        charType == "Number" && modifiedCharCode > '9'.code -> (modifiedCharCode - 10).toChar().toString()
+                        charType == "Upper" && modifiedCharCode > 'Z'.code -> (modifiedCharCode - 25).toChar()
+                            .toString()
+
+                        charType == "Lower" && modifiedCharCode > 'z'.code -> (modifiedCharCode - 25).toChar()
+                            .toString()
+
+                        charType == "Number" && modifiedCharCode > '9'.code -> (modifiedCharCode - 10).toChar()
+                            .toString()
+
                         charType == "Special" -> i
                         else -> modifiedCharCode.toChar().toString()
                     }
@@ -137,7 +158,9 @@ object Login : Tab {
                 }
                 println("Encoded Encrypted Password: $encodedEncryptedPassword")
 
-                val response = RequestURL("https://accorm.ginastic.co/300/login/?access-id=w943vf3h9&email=$encodedEmail&pswd=$encodedEncryptedPassword") ?: ""
+                val response =
+                    RequestURL("https://accorm.ginastic.co/300/login/?access-id=w943vf3h9&email=$encodedEmail&pswd=$encodedEncryptedPassword")
+                        ?: ""
                 println("Url 2: https://accorm.ginastic.co/300/login/?access-id=w943vf3h9&email=$encodedEmail&pswd=$encodedEncryptedPassword")
                 println("Server Response: $response")
 
@@ -151,43 +174,34 @@ object Login : Tab {
             }
         }
 
-        fun retrieveUserData() {
+        fun retrieveUserData(email: String) {
             LoginStatus.updateLoginStatus(true)
 
             val userId = LoginStatus.getUserID()
 
-//            TEMP CODE
-            val emails = listOf(
-                "jupiter@accorm.ginastic.co",
-                "venus@accorm.ginastic.co",
-                "earth@accorm.ginastic.co",
-                "person@accorm.ginastic.co",
-                "martian@accorm.ginastic.co",
-                "neptunian@accorm.ginastic.co",
-            )
-            val names = listOf(
-                "Jupiter",
-                "Venus",
-                "Earth",
-                "Person",
-                "Martian",
-                "Neptunian"
-            )
-            val logoBgs = listOf(
-                "#6A5177",
-                "#FFC649",
-                "#806043",
-                "#000000",
-                "#ad6242",
-                "#7CB7BB"
-            )
-            val random = Random.nextInt(0, emails.size)
+            coroutineScope.launch {
+                val userData =
+                    RequestURL("https://accorm.ginastic.co/300/login/UserData/?access-id=4954kvti4&unique-id=$userId")
+                        ?: ""
 
-            LoginStatus.updateEmail(emails[random])
-            LoginStatus.updateName(names[random])
-            LoginStatus.updateLogo(names[random][0].toString())
-            LoginStatus.updateLogoBg(logoBgs[random])
-            navigator.push(Dashboard)
+                try {
+                    println(userData)
+                    val json = Json { ignoreUnknownKeys = true }
+                    val loginData = json.decodeFromString<LoginData>(userData)
+                    println(loginData)
+                    LoginStatus.updateName(loginData.accountData.name)
+                    LoginStatus.updateEmail(email)
+                    LoginStatus.updateLogoBg(loginData.accountData.colour)
+                    LoginStatus.updateLogo(loginData.accountData.name.substring(0, 1))
+                    LoginStatus.updateFavourites(loginData.addons.favs)
+                    LoginStatus.updateLoginStatus(true)
+                    navigator.push(Dashboard)
+                } catch (e: Exception) {
+                    println(e.message)
+                    loginResponse = "Something went wrong"
+                    LoginStatus.clearSavedLoginData()
+                }
+            }
         }
 
         Column(
@@ -340,7 +354,6 @@ object Login : Tab {
                         }
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-                val coroutineScope = rememberCoroutineScope()
                 Button(
                     onClick = {
                         if (validEmail && password.isNotEmpty()) {
@@ -349,7 +362,7 @@ object Login : Tab {
                                     login(email, password)
                                     if (loginResponse.toInt() > 0) {
                                         LoginStatus.updateUserID(loginResponse)
-                                        retrieveUserData()
+                                        retrieveUserData(email)
                                     }
                                 } catch (e: Exception) {
                                     println("Error: ${e.message}")
@@ -383,6 +396,26 @@ object Login : Tab {
                     )
                 }
             }
+            Spacer(modifier = Modifier.height(50.dp))
+            CopyrightMessage()
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }
+
+@Serializable
+data class LoginData(
+    @SerialName("profile") val accountData: AccountData,
+    @SerialName("add-ons") val addons: addons
+)
+
+@Serializable
+data class AccountData(
+    @SerialName("name") val name: String,
+    @SerialName("colour") val colour: String
+)
+
+@Serializable
+data class addons(
+    @SerialName("favs") val favs: String
+)

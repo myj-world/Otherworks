@@ -1,5 +1,6 @@
 package screens.accounts
 
+import accounts.LoginStatus
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +33,7 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.User
+import screens.assets.CopyrightMessage
 import screens.device
 import screens.landscapeTablet
 import screens.poppins
@@ -55,6 +57,11 @@ object Signup : Tab {
 
     @Composable
     override fun Content() {
+        if (LoginStatus.getLoginStatus()) {
+            val navigator = LocalNavigator.currentOrThrow
+            navigator.push(Dashboard)
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -134,7 +141,9 @@ object Signup : Tab {
                     )
                 }
             }
-
+            Spacer(modifier = Modifier.height(50.dp))
+            CopyrightMessage()
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }

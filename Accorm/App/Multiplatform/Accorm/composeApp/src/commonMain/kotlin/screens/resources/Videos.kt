@@ -1,5 +1,6 @@
 package screens.resources
 
+import accounts.LoginStatus
 import analytics.LogEvent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -344,390 +345,6 @@ object Videos : Tab {
                     }
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-                @Composable
-                fun Item(
-                    uniqueId: Int,
-                    logo: String,
-                    logoColor: Color,
-                    chapter: String,
-                    publisher: String,
-                    title: String,
-                    description: String,
-                    specification: String,
-                    source: String,
-                    published: String,
-                    url: String
-                ) {
-                    var isExpanded by remember { mutableStateOf(false) }
-
-                    if (device == "Android" && !landscapeTablet) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(20.dp))
-                                .background(Color(28, 28, 28))
-                                .animateContentSize()
-                                .clickable { isExpanded = !isExpanded }.padding(20.dp),
-                            verticalArrangement = Arrangement.SpaceBetween,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(10.dp)
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .clip(RoundedCornerShape(100))
-                                        .background(logoColor)
-                                        .size(30.dp), contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        text = logo,
-                                        color = Color.White,
-                                        fontFamily = poppins,
-                                        fontSize = 14.sp
-                                    )
-                                }
-                                Spacer(modifier = Modifier.width(10.dp))
-                                Text(
-                                    text = publisher,
-                                    color = Color.White,
-                                    fontFamily = poppins,
-                                    fontSize = 18.sp
-                                )
-                            }
-                            Text(
-                                text = title,
-                                fontFamily = poppins,
-                                fontSize = 22.sp,
-                                color = Color.White
-                            )
-                            if (isExpanded) {
-                                Spacer(modifier = Modifier.height(3.dp))
-                                Text(
-                                    text = description,
-                                    fontSize = 18.sp,
-                                    fontFamily = poppins,
-                                    color = Color.Gray
-                                )
-
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
-                                    text = "Specification",
-                                    fontSize = 12.sp,
-                                    fontFamily = lexend,
-                                    color = Color.Gray
-                                )
-                                Spacer(modifier = Modifier.height(1.dp))
-                                Text(
-                                    text = specification,
-                                    fontSize = 15.sp,
-                                    fontFamily = poppins,
-                                    color = Color.White
-                                )
-
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
-                                    text = "Chapter/Section/Paper",
-                                    fontSize = 12.sp,
-                                    fontFamily = lexend,
-                                    color = Color.Gray
-                                )
-                                Spacer(modifier = Modifier.height(1.dp))
-                                Text(
-                                    text = chapter,
-                                    fontSize = 15.sp,
-                                    fontFamily = poppins,
-                                    color = Color.White
-                                )
-
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
-                                    text = "Source",
-                                    fontSize = 12.sp,
-                                    fontFamily = lexend,
-                                    color = Color.Gray
-                                )
-                                Spacer(modifier = Modifier.height(1.dp))
-                                Text(
-                                    text = source,
-                                    fontSize = 15.sp,
-                                    fontFamily = poppins,
-                                    color = Color.White
-                                )
-
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
-                                    text = "Published on",
-                                    fontSize = 12.sp,
-                                    fontFamily = lexend,
-                                    color = Color.Gray
-                                )
-                                Spacer(modifier = Modifier.height(1.dp))
-                                Text(
-                                    text = published,
-                                    fontSize = 15.sp,
-                                    fontFamily = poppins,
-                                    color = Color.White
-                                )
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Row {
-                                    var shouldCopy by remember { mutableStateOf(false) }
-                                    Button(
-                                        onClick = {
-                                            shouldCopy = true
-                                        },
-                                        modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
-                                        colors = ButtonDefaults.buttonColors(
-                                            backgroundColor = Color.White
-                                        )
-                                    ) {
-                                        Image(
-                                            imageVector = FontAwesomeIcons.Solid.Link,
-                                            contentDescription = "Copy Link",
-                                            colorFilter = ColorFilter.tint(Color(172, 172, 249)),
-                                            modifier = Modifier.size(15.dp)
-                                        )
-                                    }
-
-                                    var show by remember { mutableStateOf(false) }
-
-                                    if (shouldCopy) {
-                                        val shareUrl by remember { mutableStateOf(
-                                            "https://accorm.ginastic.co/view/v/?s=$subjectRetrieve&id=$uniqueId"
-                                        ) }
-
-                                        Copy(shareUrl)
-                                        show = true
-                                        shouldCopy = false
-                                    }
-
-                                    if (show) {
-                                        AlertDialog(onDismissRequest = { show = false },
-                                            title = { Text("Link copied to clipboard") },
-                                            confirmButton = {
-                                                Button(onClick = { show = false }) {
-                                                    Text("OK")
-                                                }
-                                            })
-                                    }
-
-                                    Spacer(modifier = Modifier.width(5.dp))
-
-                                    Button(
-                                        onClick = {
-                                            CurrentSubject.setUrl(url)
-                                            navigator.push(DisplayResourceExternal())
-                                        },
-                                        modifier = Modifier.fillMaxWidth().height(45.dp),
-                                        colors = ButtonDefaults.buttonColors(
-                                            backgroundColor = Color(172, 172, 249)
-                                        )
-                                    ) {
-                                        Image(
-                                            imageVector = FontAwesomeIcons.Solid.ExternalLinkAlt,
-                                            contentDescription = "Watch",
-                                            colorFilter = ColorFilter.tint(Color.White),
-                                            modifier = Modifier.size(15.dp)
-                                        )
-                                        Spacer(modifier = Modifier.width(10.dp))
-                                        Text(
-                                            text = "Watch",
-                                            fontSize = 20.sp,
-                                            fontFamily = poppins,
-                                            fontWeight = FontWeight.SemiBold,
-                                            color = Color.White
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        Column(
-                            modifier = Modifier
-                                .width(400.dp)
-                                .clip(RoundedCornerShape(20.dp))
-                                .background(Color(28, 28, 28))
-                                .animateContentSize()
-                                .clickable { isExpanded = !isExpanded }.padding(20.dp),
-                            verticalArrangement = Arrangement.SpaceBetween,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(10.dp)
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .clip(RoundedCornerShape(100))
-                                        .background(logoColor)
-                                        .size(30.dp), contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        text = logo,
-                                        color = Color.White,
-                                        fontFamily = poppins,
-                                        fontSize = 14.sp
-                                    )
-                                }
-                                Spacer(modifier = Modifier.width(10.dp))
-                                Text(
-                                    text = publisher,
-                                    color = Color.White,
-                                    fontFamily = poppins,
-                                    fontSize = 18.sp
-                                )
-                            }
-                            Text(
-                                text = title,
-                                fontFamily = poppins,
-                                fontSize = 24.sp,
-                                color = Color.White
-                            )
-                            if (isExpanded) {
-                                Spacer(modifier = Modifier.height(3.dp))
-                                Text(
-                                    text = description,
-                                    fontSize = 18.sp,
-                                    fontFamily = poppins,
-                                    color = Color.Gray
-                                )
-
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
-                                    text = "Specification",
-                                    fontSize = 12.sp,
-                                    fontFamily = lexend,
-                                    color = Color.Gray
-                                )
-                                Spacer(modifier = Modifier.height(1.dp))
-                                Text(
-                                    text = specification,
-                                    fontSize = 15.sp,
-                                    fontFamily = poppins,
-                                    color = Color.White
-                                )
-
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
-                                    text = "Chapter/Section/Paper",
-                                    fontSize = 12.sp,
-                                    fontFamily = lexend,
-                                    color = Color.Gray
-                                )
-                                Spacer(modifier = Modifier.height(1.dp))
-                                Text(
-                                    text = chapter,
-                                    fontSize = 15.sp,
-                                    fontFamily = poppins,
-                                    color = Color.White
-                                )
-
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
-                                    text = "Source",
-                                    fontSize = 12.sp,
-                                    fontFamily = lexend,
-                                    color = Color.Gray
-                                )
-                                Spacer(modifier = Modifier.height(1.dp))
-                                Text(
-                                    text = source,
-                                    fontSize = 15.sp,
-                                    fontFamily = poppins,
-                                    color = Color.White
-                                )
-
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
-                                    text = "Published on",
-                                    fontSize = 12.sp,
-                                    fontFamily = lexend,
-                                    color = Color.Gray
-                                )
-                                Spacer(modifier = Modifier.height(1.dp))
-                                Text(
-                                    text = published,
-                                    fontSize = 15.sp,
-                                    fontFamily = poppins,
-                                    color = Color.White
-                                )
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Row {
-                                    var shouldCopy by remember { mutableStateOf(false) }
-                                    Button(
-                                        onClick = {
-                                            shouldCopy = true
-                                        },
-                                        modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
-                                        colors = ButtonDefaults.buttonColors(
-                                            backgroundColor = Color.White
-                                        )
-                                    ) {
-                                        Image(
-                                            imageVector = FontAwesomeIcons.Solid.Link,
-                                            contentDescription = "Copy Link",
-                                            colorFilter = ColorFilter.tint(Color(172, 172, 249)),
-                                            modifier = Modifier.size(15.dp)
-                                        )
-                                    }
-
-                                    var show by remember { mutableStateOf(false) }
-
-                                    if (shouldCopy) {
-                                        val shareUrl by remember { mutableStateOf(
-                                            "https://accorm.ginastic.co/view/v/?s=$subjectRetrieve&id=$uniqueId"
-                                        ) }
-
-                                        Copy(shareUrl)
-                                        show = true
-                                        shouldCopy = false
-                                    }
-
-                                    if (show) {
-                                        AlertDialog(onDismissRequest = { show = false },
-                                            title = { Text("Link copied to clipboard") },
-                                            confirmButton = {
-                                                Button(onClick = { show = false }) {
-                                                    Text("OK")
-                                                }
-                                            })
-                                    }
-
-                                    Spacer(modifier = Modifier.width(5.dp))
-
-                                    Button(
-                                        onClick = {
-                                            CurrentSubject.setUrl(url)
-                                            navigator.push(DisplayResourceExternal())
-                                        },
-                                        modifier = Modifier.fillMaxWidth().height(45.dp),
-                                        colors = ButtonDefaults.buttonColors(
-                                            backgroundColor = Color(172, 172, 249)
-                                        )
-                                    ) {
-                                        Image(
-                                            imageVector = FontAwesomeIcons.Solid.ExternalLinkAlt,
-                                            contentDescription = "Watch",
-                                            colorFilter = ColorFilter.tint(Color.White),
-                                            modifier = Modifier.size(15.dp)
-                                        )
-                                        Spacer(modifier = Modifier.width(10.dp))
-                                        Text(
-                                            text = "Watch",
-                                            fontSize = 20.sp,
-                                            fontFamily = poppins,
-                                            fontWeight = FontWeight.SemiBold,
-                                            color = Color.White
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
 
                 if (data != "" && data != "no data available.") {
 
@@ -821,8 +438,64 @@ object Videos : Tab {
 
                     itemList.removeAt(0)
 
+                    if (LoginStatus.getLoginStatus()) {
+                        itemList.sortBy { it.chapter.toIntOrNull() }
+                        val tempList1 = mutableListOf<VideoItem>()
+                        itemList.forEach {
+                            tempList1.add(it)
+                        }
+                        val tempList2 = mutableListOf<VideoItem>()
+                        itemList.forEach {
+                            tempList2.add(it)
+                        }
+
+                        itemList.sortBy { it.chapter }
+                        val tempList3 = mutableListOf<VideoItem>()
+                        itemList.forEach {
+                            tempList3.add(it)
+                        }
+                        val tempList4 = mutableListOf<VideoItem>()
+                        itemList.forEach {
+                            tempList4.add(it)
+                        }
+
+                        tempList1.forEach {
+                            val isChapNum = it.chapter.toIntOrNull()
+                            if (isChapNum == null) {
+                                tempList2.remove(it)
+                            }
+                        }
+                        tempList3.forEach {
+                            val isChapNum = it.chapter.toIntOrNull()
+                            if (isChapNum != null) {
+                                tempList4.remove(it)
+                            }
+                        }
+                        tempList4.sortBy { it.chapter }
+                        itemList.clear()
+                        itemList.addAll(tempList4)
+                        itemList.addAll(tempList2)
+                    }
+
+                    var previousChapter = ""
+
                     itemList.forEach { item ->
-                        Item(
+                        if (previousChapter != item.chapter && LoginStatus.getLoginStatus()) {
+                            previousChapter = item.chapter
+                            val isNumber = item.chapter.toIntOrNull()
+                            Spacer(modifier = Modifier.height(10.dp))
+                            Text(
+                                text = if (isNumber == null) "${item.chapter.replaceFirstChar { it.uppercase() }} Resources" else "Chapter ${item.chapter}",
+                                fontSize = 20.sp,
+                                fontFamily = poppins,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                        }
+
+                        DisplayVideosItem(
+                            subjectRetrieve = subjectRetrieve,
                             uniqueId = item.uniqueId,
                             logo = item.logo,
                             logoColor = parseColor(item.logoBg),
@@ -883,3 +556,452 @@ data class VideoItem(
     @SerialName("published") val published: String = "Unknown",
     @SerialName("description") val description: String = "Desciption Not Provided"
 )
+
+@Composable
+fun DisplayVideosItem(
+    subjectRetrieve: String,
+    uniqueId: Int,
+    logo: String,
+    logoColor: Color,
+    chapter: String,
+    publisher: String,
+    title: String,
+    description: String,
+    specification: String,
+    source: String,
+    published: String,
+    url: String,
+    backgroundColor: Color = Color(28, 28, 28)
+) {
+    var isExpanded by remember { mutableStateOf(false) }
+    val navigator = LocalNavigator.currentOrThrow
+    val coroutineScope = rememberCoroutineScope()
+
+    if (device == "Android" && !landscapeTablet) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(20.dp))
+                .background(backgroundColor)
+                .animateContentSize()
+                .clickable { isExpanded = !isExpanded }.padding(20.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(100))
+                        .background(logoColor)
+                        .size(30.dp), contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = logo,
+                        color = Color.White,
+                        fontFamily = poppins,
+                        fontSize = 14.sp
+                    )
+                }
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = publisher,
+                    color = Color.White,
+                    fontFamily = poppins,
+                    fontSize = 18.sp
+                )
+            }
+            Text(
+                text = title,
+                fontFamily = poppins,
+                fontSize = 22.sp,
+                color = Color.White
+            )
+            if (isExpanded) {
+                Spacer(modifier = Modifier.height(3.dp))
+                Text(
+                    text = description,
+                    fontSize = 18.sp,
+                    fontFamily = poppins,
+                    color = Color.Gray
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Specification",
+                    fontSize = 12.sp,
+                    fontFamily = lexend,
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.height(1.dp))
+                Text(
+                    text = specification,
+                    fontSize = 15.sp,
+                    fontFamily = poppins,
+                    color = Color.White
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Chapter/Section/Paper",
+                    fontSize = 12.sp,
+                    fontFamily = lexend,
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.height(1.dp))
+                Text(
+                    text = chapter,
+                    fontSize = 15.sp,
+                    fontFamily = poppins,
+                    color = Color.White
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Source",
+                    fontSize = 12.sp,
+                    fontFamily = lexend,
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.height(1.dp))
+                Text(
+                    text = source,
+                    fontSize = 15.sp,
+                    fontFamily = poppins,
+                    color = Color.White
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Published on",
+                    fontSize = 12.sp,
+                    fontFamily = lexend,
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.height(1.dp))
+                Text(
+                    text = published,
+                    fontSize = 15.sp,
+                    fontFamily = poppins,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Row {
+                    var shouldCopy by remember { mutableStateOf(false) }
+                    Button(
+                        onClick = {
+                            shouldCopy = true
+                        },
+                        modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color.White
+                        )
+                    ) {
+                        Image(
+                            imageVector = FontAwesomeIcons.Solid.Link,
+                            contentDescription = "Copy Link",
+                            colorFilter = ColorFilter.tint(Color(172, 172, 249)),
+                            modifier = Modifier.size(15.dp)
+                        )
+                    }
+
+                    var show by remember { mutableStateOf(false) }
+
+                    if (shouldCopy) {
+                        val shareUrl by remember { mutableStateOf(
+                            "https://accorm.ginastic.co/view/v/?s=$subjectRetrieve&id=$uniqueId"
+                        ) }
+
+                        Copy(shareUrl)
+                        show = true
+                        shouldCopy = false
+                    }
+
+                    if (show) {
+                        AlertDialog(
+                            onDismissRequest = {
+                                show = false
+                            },
+                            title = {
+                                Text(
+                                    text = "Copied to clipboard",
+                                    fontSize = 20.sp,
+                                    fontFamily = poppins,
+                                    color = Color(0xFF181829)
+                                )
+                            },
+                            text = {
+                                Text(
+                                    text = "Link copied to clipboard.",
+                                    fontSize = 18.sp,
+                                    fontFamily = poppins,
+                                    color = Color(0xFF1f1f36)
+                                )
+                            },
+                            confirmButton = {
+                                Button(
+                                    onClick = { show = false },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color(0xFF1f1f36)
+                                    )
+                                ) {
+                                    Text(
+                                        text = "Ready to share!",
+                                        fontSize = 18.sp,
+                                        fontFamily = poppins,
+                                        color = Color(0xFFffffff)
+                                    )
+                                }
+                            },
+                            backgroundColor = Color.White
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(5.dp))
+
+                    Button(
+                        onClick = {
+                            CurrentSubject.setUrl(url)
+                            navigator.push(DisplayResourceExternal())
+                        },
+                        modifier = Modifier.fillMaxWidth().height(45.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color(172, 172, 249)
+                        )
+                    ) {
+                        Image(
+                            imageVector = FontAwesomeIcons.Solid.ExternalLinkAlt,
+                            contentDescription = "Watch",
+                            colorFilter = ColorFilter.tint(Color.White),
+                            modifier = Modifier.size(15.dp)
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = "Watch",
+                            fontSize = 20.sp,
+                            fontFamily = poppins,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White
+                        )
+                    }
+                }
+            }
+        }
+    } else {
+        Column(
+            modifier = Modifier
+                .width(400.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .background(Color(28, 28, 28))
+                .animateContentSize()
+                .clickable { isExpanded = !isExpanded }.padding(20.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(100))
+                        .background(logoColor)
+                        .size(30.dp), contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = logo,
+                        color = Color.White,
+                        fontFamily = poppins,
+                        fontSize = 14.sp
+                    )
+                }
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = publisher,
+                    color = Color.White,
+                    fontFamily = poppins,
+                    fontSize = 18.sp
+                )
+            }
+            Text(
+                text = title,
+                fontFamily = poppins,
+                fontSize = 24.sp,
+                color = Color.White
+            )
+            if (isExpanded) {
+                Spacer(modifier = Modifier.height(3.dp))
+                Text(
+                    text = description,
+                    fontSize = 18.sp,
+                    fontFamily = poppins,
+                    color = Color.Gray
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Specification",
+                    fontSize = 12.sp,
+                    fontFamily = lexend,
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.height(1.dp))
+                Text(
+                    text = specification,
+                    fontSize = 15.sp,
+                    fontFamily = poppins,
+                    color = Color.White
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Chapter/Section/Paper",
+                    fontSize = 12.sp,
+                    fontFamily = lexend,
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.height(1.dp))
+                Text(
+                    text = chapter,
+                    fontSize = 15.sp,
+                    fontFamily = poppins,
+                    color = Color.White
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Source",
+                    fontSize = 12.sp,
+                    fontFamily = lexend,
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.height(1.dp))
+                Text(
+                    text = source,
+                    fontSize = 15.sp,
+                    fontFamily = poppins,
+                    color = Color.White
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Published on",
+                    fontSize = 12.sp,
+                    fontFamily = lexend,
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.height(1.dp))
+                Text(
+                    text = published,
+                    fontSize = 15.sp,
+                    fontFamily = poppins,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Row {
+                    var shouldCopy by remember { mutableStateOf(false) }
+                    Button(
+                        onClick = {
+                            shouldCopy = true
+                        },
+                        modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color.White
+                        )
+                    ) {
+                        Image(
+                            imageVector = FontAwesomeIcons.Solid.Link,
+                            contentDescription = "Copy Link",
+                            colorFilter = ColorFilter.tint(Color(172, 172, 249)),
+                            modifier = Modifier.size(15.dp)
+                        )
+                    }
+
+                    var show by remember { mutableStateOf(false) }
+
+                    if (shouldCopy) {
+                        val shareUrl by remember { mutableStateOf(
+                            "https://accorm.ginastic.co/view/v/?s=$subjectRetrieve&id=$uniqueId"
+                        ) }
+
+                        Copy(shareUrl)
+                        show = true
+                        shouldCopy = false
+                    }
+
+                    if (show) {
+                        AlertDialog(
+                            onDismissRequest = {
+                                show = false
+                            },
+                            title = {
+                                Text(
+                                    text = "Copied to clipboard",
+                                    fontSize = 20.sp,
+                                    fontFamily = poppins,
+                                    color = Color(0xFF181829)
+                                )
+                            },
+                            text = {
+                                Text(
+                                    text = "Link copied to clipboard.",
+                                    fontSize = 18.sp,
+                                    fontFamily = poppins,
+                                    color = Color(0xFF1f1f36)
+                                )
+                            },
+                            confirmButton = {
+                                Button(
+                                    onClick = { show = false },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color(0xFF1f1f36)
+                                    )
+                                ) {
+                                    Text(
+                                        text = "Ready to share!",
+                                        fontSize = 18.sp,
+                                        fontFamily = poppins,
+                                        color = Color(0xFFffffff)
+                                    )
+                                }
+                            },
+                            backgroundColor = Color.White
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(5.dp))
+
+                    Button(
+                        onClick = {
+                            CurrentSubject.setUrl(url)
+                            navigator.push(DisplayResourceExternal())
+                        },
+                        modifier = Modifier.fillMaxWidth().height(45.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color(172, 172, 249)
+                        )
+                    ) {
+                        Image(
+                            imageVector = FontAwesomeIcons.Solid.ExternalLinkAlt,
+                            contentDescription = "Watch",
+                            colorFilter = ColorFilter.tint(Color.White),
+                            modifier = Modifier.size(15.dp)
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = "Watch",
+                            fontSize = 20.sp,
+                            fontFamily = poppins,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White
+                        )
+                    }
+                }
+            }
+        }
+    }
+}

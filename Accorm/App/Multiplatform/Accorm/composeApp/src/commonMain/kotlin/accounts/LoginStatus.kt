@@ -21,7 +21,7 @@ object LoginStatus {
     }
 
     fun getUserID(): String {
-        return settings.getString("userID", "")
+        return settings.getString("userID", "0")
     }
 
 
@@ -32,7 +32,7 @@ object LoginStatus {
     }
 
     fun getEmail(): String {
-        return settings.getString("email", "")
+        return settings.getString("email", "error@example.com")
     }
 
 
@@ -42,7 +42,7 @@ object LoginStatus {
     }
 
     fun getName(): String {
-        return settings.getString("name", "")
+        return settings.getString("name", "Error")
     }
 
 
@@ -52,7 +52,7 @@ object LoginStatus {
     }
 
     fun getLogo(): String {
-        return settings.getString("logo", "")
+        return settings.getString("logo", "E")
     }
 
 
@@ -62,13 +62,29 @@ object LoginStatus {
     }
 
     fun getLogoBg(): String {
-        return settings.getString("ulogobg", "")
+        return settings.getString("ulogobg", "#FF0000")
     }
 
 
 
-    fun clearSavedData(): Boolean {
-        settings.clear()
+    fun updateFavourites(favourites: String) {
+        settings.putString("favourites", favourites)
+    }
+
+    fun getFavourites(): String {
+        return settings.getString("favourites", "")
+    }
+
+
+
+    fun clearSavedLoginData(): Boolean {
+        settings.remove("loggedIn")
+        settings.remove("userID")
+        settings.remove("email")
+        settings.remove("name")
+        settings.remove("logo")
+        settings.remove("ulogobg")
+        settings.remove("favourites")
         return true
     }
 }
