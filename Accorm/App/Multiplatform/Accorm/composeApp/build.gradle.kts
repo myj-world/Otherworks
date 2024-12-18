@@ -14,6 +14,8 @@ plugins {
     id("com.google.firebase.crashlytics")
 
     id("dev.hydraulic.conveyor") version "1.10"
+
+    id("app.cash.sqldelight") version "2.0.2"
 }
 
 group = "accorm"
@@ -99,6 +101,8 @@ kotlin {
             implementation(compose.desktop.currentOs)
 
             implementation(libs.pdfbox)
+
+            implementation(libs.sqlite.driver)
         }
     }
 }
@@ -143,6 +147,7 @@ dependencies {
     implementation(libs.play.services.measurement.api)
     implementation(libs.kamel.image)
     implementation(libs.firebase.messaging.ktx)
+    implementation(libs.android.driver)
 }
 
 compose.desktop {
@@ -164,6 +169,14 @@ compose.desktop {
             linux {
                 iconFile.set(project.projectDir.resolve("src/commonMain/composeResources/drawable/ic.png"))
             }
+        }
+    }
+}
+
+sqldelight {
+    databases {
+        create("Accorm") {
+            packageName.set("com.yousufjamil.accorm")
         }
     }
 }

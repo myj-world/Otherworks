@@ -1,0 +1,32 @@
+CREATE TABLE Downloads (
+    downlaodid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    uniqueid INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    publisher TEXT NOT NULL,
+    publisherlogobg TEXT NOT NULL,
+    publisherlogo TEXT NOT NULL,
+    descirption TEXT NOT NULL,
+    specification TEXT NOT NULL,
+    chapter TEXT NOT NULL,
+    author TEXT NOT NULL,
+    authorcrediturl TEXT NOT NULL,
+    publisheddate TEXT NOT NULL,
+    file1nameondisk TEXT NOT NULL,
+    file2nameondisk TEXT NOT NULL
+);
+
+addDownload:
+INSERT OR REPLACE INTO Downloads VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+
+retrieveSpecificDownloadData:
+SELECT * FROM Downloads WHERE uniqueid = :idToFind;
+
+retrieveAllDownloads:
+SELECT * FROM Downloads;
+
+deleteDownload:
+DELETE FROM Downloads WHERE uniqueid = :idToDelete;
+
+checkDownloadExists:
+SELECT COUNT(*) FROM Downloads WHERE uniqueid = :idToFind;
+

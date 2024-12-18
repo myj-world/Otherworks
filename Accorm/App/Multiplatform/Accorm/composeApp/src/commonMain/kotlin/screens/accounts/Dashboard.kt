@@ -78,118 +78,122 @@ object Dashboard : Tab {
 
     @Composable
     override fun Content() {
-        var response by remember { mutableStateOf("") }
+//        var response by remember { mutableStateOf("") }
         var refreshFavs by remember { mutableIntStateOf(0) }
+        var connected: String? by remember { mutableStateOf("") }
+        val favs by remember { mutableStateOf(mutableListOf<SingleFavData>()) }
+        var favsAdditionalData by remember { mutableStateOf(mutableListOf<FavsInfo>()) }
+        var canLoad by remember { mutableStateOf(false) }
 
-        suspend fun retrieveFromUrl(
-            subject: String,
-            url: String,
-            itemToFind: String,
-            type: String
-        ): FavouriteItem {
-            println("$subject $url $itemToFind")
-
-            response = RequestURL(url) ?: ""
-            println(response)
-
-            return if (response != "false") {
-
-                var item = FavouriteItem(
-                    subject = "",
-                    type = "",
-                    id = "0",
-                    publisherLogo = "",
-                    publisherLogoBg = "",
-                    publisherName = "",
-                    name = "",
-                    description = "",
-                    specification = "",
-                    chapter = "",
-                    author = "",
-                    authorUrl = "",
-                    publishedDate = "",
-                    link = ""
-                )
-
-                try {
-                    JsonReader(response.reader()).use { reader ->
-                        reader.beginObject()
-                        while (reader.hasNext()) {
-                            try {
-                                reader.skipValue()
-                                val typeFav = reader.nextString()
-                                reader.skipValue()
-                                val specification = reader.nextString()
-                                reader.skipValue()
-                                val logo = reader.nextString()
-                                reader.skipValue()
-                                val logoBg = reader.nextString()
-                                reader.skipValue()
-                                val publisher = reader.nextString()
-                                reader.skipValue()
-                                val title = reader.nextString()
-                                reader.skipValue()
-                                val description = reader.nextString()
-                                reader.skipValue()
-                                val chapter = reader.nextString()
-                                reader.skipValue()
-                                val author = reader.nextString()
-                                reader.skipValue()
-                                val authorUrl = reader.nextString()
-                                reader.skipValue()
-                                val published = reader.nextString()
-                                reader.skipValue()
-                                val link = reader.nextString()
-
-                                item = FavouriteItem(
-                                    subject = subject,
-                                    type = typeFav,
-                                    id = itemToFind,
-                                    publisherLogo = logo,
-                                    publisherLogoBg = logoBg,
-                                    publisherName = publisher,
-                                    name = title,
-                                    description = description,
-                                    specification = specification,
-                                    chapter = chapter,
-                                    author = author,
-                                    authorUrl = authorUrl,
-                                    publishedDate = published,
-                                    link = link
-                                )
-                                println("Assigned")
-                            } catch (e: Exception) {
-                                println(reader.peek())
-                            }
-                            reader.endObject()
-                        }
-                    }
-                } catch (e: Exception) {
-                    println(e.message)
-                }
-
-                item
-            } else {
-                println("Negative response")
-
-                FavouriteItem(
-                    subject = subject,
-                    type = type,
-                    id = itemToFind,
-                    publisherLogo = "",
-                    publisherLogoBg = "",
-                    publisherName = "",
-                    name = "",
-                    description = "",
-                    specification = "",
-                    chapter = "",
-                    author = "",
-                    authorUrl = "",
-                    publishedDate = "",
-                    link = ""
-                )
-            }
-        }
+//        suspend fun retrieveFromUrl(
+//            subject: String,
+//            url: String,
+//            itemToFind: String,
+//            type: String
+//        ): FavouriteItem {
+//            println("$subject $url $itemToFind")
+//
+//            response = RequestURL(url) ?: ""
+//            println(response)
+//
+//            return if (response != "false") {
+//
+//                var item = FavouriteItem(
+//                    subject = "",
+//                    type = "",
+//                    id = "0",
+//                    publisherLogo = "",
+//                    publisherLogoBg = "",
+//                    publisherName = "",
+//                    name = "",
+//                    description = "",
+//                    specification = "",
+//                    chapter = "",
+//                    author = "",
+//                    authorUrl = "",
+//                    publishedDate = "",
+//                    link = ""
+//                )
+//
+//                try {
+//                    JsonReader(response.reader()).use { reader ->
+//                        reader.beginObject()
+//                        while (reader.hasNext()) {
+//                            try {
+//                                reader.skipValue()
+//                                val typeFav = reader.nextString()
+//                                reader.skipValue()
+//                                val specification = reader.nextString()
+//                                reader.skipValue()
+//                                val logo = reader.nextString()
+//                                reader.skipValue()
+//                                val logoBg = reader.nextString()
+//                                reader.skipValue()
+//                                val publisher = reader.nextString()
+//                                reader.skipValue()
+//                                val title = reader.nextString()
+//                                reader.skipValue()
+//                                val description = reader.nextString()
+//                                reader.skipValue()
+//                                val chapter = reader.nextString()
+//                                reader.skipValue()
+//                                val author = reader.nextString()
+//                                reader.skipValue()
+//                                val authorUrl = reader.nextString()
+//                                reader.skipValue()
+//                                val published = reader.nextString()
+//                                reader.skipValue()
+//                                val link = reader.nextString()
+//
+//                                item = FavouriteItem(
+//                                    subject = subject,
+//                                    type = typeFav,
+//                                    id = itemToFind,
+//                                    publisherLogo = logo,
+//                                    publisherLogoBg = logoBg,
+//                                    publisherName = publisher,
+//                                    name = title,
+//                                    description = description,
+//                                    specification = specification,
+//                                    chapter = chapter,
+//                                    author = author,
+//                                    authorUrl = authorUrl,
+//                                    publishedDate = published,
+//                                    link = link
+//                                )
+//                                println("Assigned")
+//                            } catch (e: Exception) {
+//                                println(reader.peek())
+//                            }
+//                            reader.endObject()
+//                        }
+//                    }
+//                } catch (e: Exception) {
+//                    println(e.message)
+//                }
+//
+//                item
+//            } else {
+//                println("Negative response")
+//
+//                FavouriteItem(
+//                    subject = subject,
+//                    type = type,
+//                    id = itemToFind,
+//                    publisherLogo = "",
+//                    publisherLogoBg = "",
+//                    publisherName = "",
+//                    name = "",
+//                    description = "",
+//                    specification = "",
+//                    chapter = "",
+//                    author = "",
+//                    authorUrl = "",
+//                    publishedDate = "",
+//                    link = ""
+//                )
+//            }
+//        }
 
         suspend fun refreshFavourites() {
             val userId = LoginStatus.getUserID()
@@ -210,11 +214,9 @@ object Dashboard : Tab {
             if (refreshFavs > 10) refreshFavs -= 1 else refreshFavs += 1
         }
 
-        suspend fun parseFavourites(): List<String> {
-            val favourites = LoginStatus.getFavourites().split(" ")
+        suspend fun parseFavourites() {
+            val favourites = LoginStatus.getFavourites().trim().split(" ")
             println(favourites)
-
-            val modifiedFavourites = mutableListOf<String>()
 
             favourites.forEach {
                 val fav = it.split("-")
@@ -228,24 +230,39 @@ object Dashboard : Tab {
                     "fl" -> "fle"
                     "es" -> "esl"
                     "hi" -> "history"
-                    else -> "ge"
+                    "ma" -> "maths"
+                    else -> "geography"
                 }
 
-                val data = RequestURL("accorm.ginastic.co/300/login/RsrcsData/?access-id=230gri5q4&unique-id=${fav[0]}&subject=$subject") ?: ""
+                val data =
+                    RequestURL("https://accorm.ginastic.co/300/login/RsrcsData/?access-id=230gri5q4&unique-id=${fav[1]}&subject=$subject")
+                        ?: ""
+                println("https://accorm.ginastic.co/300/login/RsrcsData/?access-id=230gri5q4&unique-id=${fav[1]}&subject=$subject")
+                println(data)
 
                 if (data != "") {
                     val json = Json { ignoreUnknownKeys = true }
                     val favData = json.decodeFromString<SingleFavData>(data)
 
-                    modifiedFavourites.add("${favData.specification}-$subject-${favData.type}-${fav[0]}")
+                    favs.add(favData)
+                    favsAdditionalData.add(
+                        FavsInfo(
+                            subject = subject,
+                            id = fav[1]
+                        )
+                    )
                 }
             }
-
-            return modifiedFavourites
         }
 
         LaunchedEffect(Unit) {
-            refreshFavourites()
+            connected = RequestURL("https://accorm.ginastic.co/300/true/")
+
+            if (connected == "true") {
+                refreshFavourites()
+                parseFavourites()
+                canLoad = true
+            }
         }
 
         Column(
@@ -375,7 +392,6 @@ object Dashboard : Tab {
                         .fillMaxWidth()
                         .padding(20.dp)
                 )
-                var favourites by remember { mutableStateOf(listOf<String>()) }
 
                 @Composable
                 fun FavouriteDisplayItem(item: FavouriteItem) {
@@ -386,7 +402,7 @@ object Dashboard : Tab {
                                 subjectRetrieve = item.subject,
                                 uniqueId = item.id.toInt(),
                                 logo = item.publisherLogo,
-                                logoColor = parseColor(item.publisherLogoBg),
+                                logoColor = parseColor("#ffce4d"),
                                 publisher = item.publisherName,
                                 title = item.name,
                                 description = item.description,
@@ -396,14 +412,14 @@ object Dashboard : Tab {
                                 url = item.link,
                                 credit = item.author,
                                 creditUrl = item.authorUrl,
-                                backgroundColor = Color(0xFFfa8616)
+                                backgroundColor = Color(0xFFffb900)
                             )
                         } else {
                             DisplayVideosItem(
                                 subjectRetrieve = item.subject,
                                 uniqueId = item.id.toInt(),
                                 logo = item.publisherLogo,
-                                logoColor = parseColor(item.publisherLogoBg),
+                                logoColor = parseColor("#ffce4d"),
                                 publisher = item.publisherName,
                                 title = item.name,
                                 description = item.description,
@@ -412,108 +428,45 @@ object Dashboard : Tab {
                                 published = item.publishedDate,
                                 url = item.link,
                                 source = item.link.substringAfter("://").substringBefore("/"),
-                                backgroundColor = Color(0xFFfa8616)
+                                backgroundColor = Color(0xFFffb900)
                             )
                         }
                     }
                 }
 
-                var connected: String? by remember { mutableStateOf("") }
 
-                if (LoginStatus.getFavourites() != "" && refreshFavs >= 0) {
 
-                    val coroutineScope = rememberCoroutineScope()
-                    coroutineScope.launch {
-                        connected = RequestURL("https://accorm.ginastic.co/300/true/")
-                    }
+                if (canLoad && favs.isNotEmpty()) {
 
-                    if (connected == "true") {
-                        var canLoad by remember { mutableStateOf(false) }
+                    var i = 0
 
-                        coroutineScope.launch {
-                            favourites = parseFavourites()
-                            println(favourites)
-                            canLoad = true
-                        }
-
-                        if (canLoad && favourites.isNotEmpty()) {
-                            favourites.forEach {
-                                var item by remember {
-                                    mutableStateOf(
-                                        FavouriteItem(
-                                            subject = "",
-                                            type = "",
-                                            id = "",
-                                            publisherLogo = "",
-                                            publisherLogoBg = "",
-                                            publisherName = "",
-                                            name = "",
-                                            description = "",
-                                            specification = "",
-                                            chapter = "",
-                                            author = "",
-                                            authorUrl = "",
-                                            publishedDate = "",
-                                            link = ""
-                                        )
-                                    )
-                                }
-
-                                var canDisplay by remember { mutableStateOf(false) }
-
-                                println(it)
-
-                                val parsedData = it.split("-")
-
-                                println(parsedData)
-
-                                coroutineScope.launch {
-                                    item = retrieveFromUrl(
-                                        subject = parsedData[1],
-                                        url = "https://accorm.ginastic.co/300/login/RsrcsData/?access-id=230gri5q4&unique-id=${parsedData[3]}&subject=${parsedData[1]}",
-                                        itemToFind = parsedData[3],
-                                        type = parsedData[2]
-                                    )
-                                    canDisplay = true
-                                }
-
-                                if (canDisplay) {
-                                    FavouriteDisplayItem(item)
-                                } else {
-                                    Box(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        CircularProgressIndicator(color = Color.White)
-                                    }
-                                }
-                                Spacer(modifier = Modifier.height(10.dp))
-                            }
-                        } else if (favourites.isEmpty()) {
-                            Text(
-                                text = "Something went wrong",
-                                color = Color.Red,
-                                fontFamily = poppins,
-                                fontSize = 24.sp,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center
-                            )
-                        } else {
-                            CircularProgressIndicator(color = Color.White)
-                        }
-                    } else if (connected == "") {
-                        CircularProgressIndicator(color = Color.White)
-                    } else {
-                        Text(
-                            text = "Favourites requires an internet connection",
-                            color = Color.White,
-                            fontFamily = poppins,
-                            fontSize = 24.sp,
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center
+                    favs.forEach {
+                        val item = FavouriteItem(
+                            subject = favsAdditionalData[i].subject,
+                            type = it.type,
+                            id = favsAdditionalData[i].id,
+                            publisherLogo = it.logo,
+                            publisherLogoBg = it.logoBg,
+                            publisherName = it.publisher,
+                            name = it.title,
+                            description = it.description,
+                            specification = it.specification,
+                            chapter = it.chapter,
+                            author = it.author,
+                            authorUrl = it.authorUrl,
+                            publishedDate = it.published,
+                            link = it.link
                         )
+
+                        FavouriteDisplayItem(
+                            item = item
+                        )
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        i++
                     }
-                } else {
+                } else if (LoginStatus.getFavourites().trim().split(" ").isEmpty()) {
                     Text(
                         text = "No favourites",
                         color = Color.White,
@@ -522,6 +475,13 @@ object Dashboard : Tab {
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
+                } else {
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(color = Color.White)
+                    }
                 }
                 Spacer(modifier = Modifier.height(50.dp))
                 CopyrightMessage()
@@ -562,4 +522,9 @@ data class SingleFavData(
     @SerialName("author_url") val authorUrl: String,
     @SerialName("published_date") val published: String,
     @SerialName("link") val link: String
+)
+
+data class FavsInfo(
+    val subject: String,
+    val id: String
 )

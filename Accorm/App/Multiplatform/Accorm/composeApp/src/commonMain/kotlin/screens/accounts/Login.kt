@@ -23,6 +23,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,6 +54,7 @@ import compose.icons.fontawesomeicons.solid.EyeSlash
 import compose.icons.fontawesomeicons.solid.TimesCircle
 import compose.icons.fontawesomeicons.solid.User
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
@@ -174,15 +176,18 @@ object Login : Tab {
             }
         }
 
+        @Composable
         fun retrieveUserData(email: String) {
             LoginStatus.updateLoginStatus(true)
 
             val userId = LoginStatus.getUserID()
 
-            coroutineScope.launch {
+            LaunchedEffect(Unit) {
                 val userData =
-                    RequestURL("https://accorm.ginastic.co/300/login/UserData/?access-id=4954kvti4&unique-id=$userId")
+                    RequestURL("https://accorm.ginastic.co/300/login/UserData/?access-id=4954kvti4&unique-id=$userId")?.trim()
                         ?: ""
+
+                delay(1000)
 
                 try {
                     println(userData)
@@ -354,6 +359,7 @@ object Login : Tab {
                         }
                 )
                 Spacer(modifier = Modifier.height(20.dp))
+                var callRetrieveData by remember { mutableStateOf(false) }
                 Button(
                     onClick = {
                         if (validEmail && password.isNotEmpty()) {
@@ -362,7 +368,7 @@ object Login : Tab {
                                     login(email, password)
                                     if (loginResponse.toInt() > 0) {
                                         LoginStatus.updateUserID(loginResponse)
-                                        retrieveUserData(email)
+                                        callRetrieveData = true
                                     }
                                 } catch (e: Exception) {
                                     println("Error: ${e.message}")
@@ -384,6 +390,9 @@ object Login : Tab {
                         fontFamily = poppins,
                         fontSize = 16.sp
                     )
+                }
+                if (callRetrieveData) {
+                    retrieveUserData(email)
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 if (loginResponse == "Something went wrong" || loginResponse == "Wrong email" || loginResponse == "Wrong password" || loginResponse == "Invalid email" || loginResponse == "Password cannot be empty") {
