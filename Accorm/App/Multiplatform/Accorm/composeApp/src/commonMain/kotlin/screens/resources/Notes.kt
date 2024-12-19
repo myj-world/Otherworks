@@ -871,7 +871,7 @@ fun DisplayNotesItem(
 
                     Spacer(modifier = Modifier.width(5.dp))
 
-                    if (LoginStatus.getLoginStatus()) {
+                    if (LoginStatus.getLoginStatus() && !isDownload && downloadIconColor != Color.Black) {
                         Button(
                             onClick = {
                                 coroutineScope.launch {
@@ -968,7 +968,7 @@ fun DisplayNotesItem(
             modifier = Modifier
                 .width(400.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color(28, 28, 28))
+                .background(backgroundColor)
                 .animateContentSize()
                 .clickable { isExpanded = !isExpanded }.padding(20.dp),
             verticalArrangement = Arrangement.SpaceBetween,
@@ -1180,7 +1180,7 @@ fun DisplayNotesItem(
                         Image(
                             imageVector = FontAwesomeIcons.Solid.Link,
                             contentDescription = "Copy Link",
-                            colorFilter = ColorFilter.tint(downloadIconColor),
+                            colorFilter = ColorFilter.tint(backgroundColor),
                             modifier = Modifier.size(15.dp)
                         )
                     }

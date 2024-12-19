@@ -8,6 +8,7 @@ import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsChannel
 import io.ktor.util.toByteArray
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.rendering.PDFRenderer
@@ -66,18 +67,22 @@ actual object FileManager {
             outputStream.close()
         }
 
-        val pdf = Loader.loadPDF(tempFile)
-        val pdfRenderer = PDFRenderer(pdf)
-        val imgs = mutableListOf<BitmapPainter>()
-        for (i in 0 until pdf.numberOfPages) {
-            val image = pdfRenderer.renderImage(i)
-            imgs.add(BitmapPainter(image.toImage().toComposeImageBitmap()))
-        }
-        if (Desktop.getDesktop().isSupported(Desktop.Action.APP_OPEN_FILE)) {
+//        val pdf = Loader.loadPDF(tempFile)
+//        val pdfRenderer = PDFRenderer(pdf)
+//        val imgs = mutableListOf<BitmapPainter>()
+//        for (i in 0 until pdf.numberOfPages) {
+//            val image = pdfRenderer.renderImage(i)
+//            imgs.add(BitmapPainter(image.toImage().toComposeImageBitmap()))
+//        }
+        if (Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
             withContext(Dispatchers.IO) {
                 Desktop.getDesktop().open(tempFile)
             }
+        } else {
+            println("Desktop not supported")
         }
+
+        delay(5000)
     }
 
     actual suspend fun deleteFileFromStorage(file1: String, file2: String) {

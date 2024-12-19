@@ -167,7 +167,8 @@ object Dashboard : Tab {
                 .background(Color(31, 31, 54))
                 .padding(20.dp)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (!LoginStatus.getLoginStatus()) {
                 LoginStatus.clearSavedLoginData()

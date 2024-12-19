@@ -798,7 +798,7 @@ fun DisplayVideosItem(
             modifier = Modifier
                 .width(400.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color(28, 28, 28))
+                .background(backgroundColor)
                 .animateContentSize()
                 .clickable { isExpanded = !isExpanded }.padding(20.dp),
             verticalArrangement = Arrangement.SpaceBetween,
