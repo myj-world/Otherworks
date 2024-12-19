@@ -1,7 +1,7 @@
-package Database
+package database
 
 import app.cash.sqldelight.db.SqlDriver
 
-expect class DatabaseDriverFactory {
+expect object DatabaseDriverFactory {
     fun create(): SqlDriver
 }

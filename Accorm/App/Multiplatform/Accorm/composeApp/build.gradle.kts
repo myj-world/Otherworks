@@ -148,6 +148,7 @@ dependencies {
     implementation(libs.kamel.image)
     implementation(libs.firebase.messaging.ktx)
     implementation(libs.android.driver)
+    implementation(libs.androidx.startup.runtime)
 }
 
 compose.desktop {

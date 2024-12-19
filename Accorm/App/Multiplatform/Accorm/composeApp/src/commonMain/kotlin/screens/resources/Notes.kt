@@ -56,10 +56,12 @@ import compose.icons.fontawesomeicons.solid.Book
 import compose.icons.fontawesomeicons.solid.Download
 import compose.icons.fontawesomeicons.solid.ExternalLinkAlt
 import compose.icons.fontawesomeicons.solid.Link
+import compose.icons.fontawesomeicons.solid.Trash
 import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import network.RequestURL
+import screens.accounts.Dashboard
 import screens.assets.CopyrightMessage
 import screens.lexend
 import screens.poppins
@@ -499,7 +501,7 @@ object Notes : Tab {
                             subjectRetrieve = subjectRetrieve,
                             uniqueId = item.uniqueId,
                             logo = item.logo,
-                            logoColor = parseColor(item.logoBg),
+                            logoBg = item.logoBg,
                             chapter = item.chapter,
                             publisher = item.publisher,
                             title = item.title,
@@ -522,7 +524,7 @@ object Notes : Tab {
                             color = Color.White
                         )
                     }
-                }  else if (data == "no data available.") {
+                } else if (data == "no data available.") {
                     Text(
                         text = "No Notes Uploaded Yet!",
                         fontSize = 20.sp,
@@ -566,21 +568,30 @@ fun DisplayNotesItem(
     subjectRetrieve: String,
     uniqueId: Int,
     logo: String,
-    logoColor: Color,
+    logoBg: String,
     chapter: String,
     publisher: String,
     title: String,
     description: String,
     specification: String,
     published: String,
-    url: String,
+    url: String = "",
     credit: String,
     creditUrl: String,
-    backgroundColor: Color = Color(28, 28, 28)
+    backgroundColor: Color = Color(28, 28, 28),
+    textColor: Color = Color.White,
+    labelColor: Color = Color.Gray,
+    logoTextColour: Color = Color.White,
+    downloadIconColor: Color = Color(0xFFacacf9),
+    isDownload: Boolean = false
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     val navigator = LocalNavigator.currentOrThrow
     val coroutineScope = rememberCoroutineScope()
+    val logoColor = parseColor(logoBg)
+
+    var downloadDeleteConfirm by remember { mutableStateOf(false) }
+    var blockUser by remember { mutableStateOf(false) }
 
     if (device == "Android" && !landscapeTablet) {
         Column(
@@ -594,36 +605,119 @@ fun DisplayNotesItem(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
+                Row(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(100))
-                        .background(logoColor)
-                        .size(30.dp), contentAlignment = Alignment.Center
+                        .fillMaxWidth(0.8f)
+                        .padding(10.dp)
                 ) {
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(100))
+                            .background(logoColor)
+                            .size(30.dp), contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = logo,
+                            color = logoTextColour,
+                            fontFamily = poppins,
+                            fontSize = 14.sp
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = logo,
-                        color = Color.White,
+                        text = publisher,
+                        color = textColor,
                         fontFamily = poppins,
-                        fontSize = 14.sp
+                        fontSize = 18.sp
                     )
                 }
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = publisher,
-                    color = Color.White,
-                    fontFamily = poppins,
-                    fontSize = 18.sp
-                )
+                if (isDownload) {
+                    var showdeleteMsg by remember { mutableStateOf(false) }
+                    Image(
+                        imageVector = FontAwesomeIcons.Solid.Trash,
+                        contentDescription = "Delete",
+                        colorFilter = ColorFilter.tint(Color.Red),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable {
+                                showdeleteMsg = true
+                            }
+                    )
+
+                    if (showdeleteMsg) {
+                        AlertDialog(
+                            onDismissRequest = {
+                                showdeleteMsg = false
+                            },
+                            title = {
+                                Text(
+                                    text = "Delete Download?",
+                                    fontSize = 20.sp,
+                                    fontFamily = poppins,
+                                    color = Color(0xFF181829)
+                                )
+                            },
+                            text = {
+                                Text(
+                                    text = "Are you sure you want to delete this download?",
+                                    fontSize = 18.sp,
+                                    fontFamily = poppins,
+                                    color = Color(0xFF1f1f36)
+                                )
+                            },
+                            confirmButton = {
+                                Button(
+                                    onClick = {
+                                        coroutineScope.launch {
+                                            deleteDownload(uniqueid = uniqueId)
+                                        }
+                                        downloadDeleteConfirm = false
+                                        showdeleteMsg = false
+                                        blockUser = true
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color(0xFFffffff)
+                                    )
+                                ) {
+                                    Text(
+                                        text = "Yes",
+                                        fontSize = 18.sp,
+                                        fontFamily = poppins,
+                                        color = Color(0xFF1f1f36)
+                                    )
+                                }
+                            },
+                            dismissButton = {
+                                Button(
+                                    onClick = {
+                                        showdeleteMsg = false
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color(0xFF1f1f36)
+                                    )
+                                ) {
+                                    Text(
+                                        text = "No",
+                                        fontSize = 18.sp,
+                                        fontFamily = poppins,
+                                        color = Color(0xFFffffff)
+                                    )
+                                }
+                            },
+                            backgroundColor = Color.White
+                        )
+                    }
+                }
             }
             Text(
                 text = title,
                 fontFamily = poppins,
                 fontSize = 22.sp,
-                color = Color.White
+                color = textColor
             )
             if (isExpanded) {
                 Spacer(modifier = Modifier.height(3.dp))
@@ -631,7 +725,7 @@ fun DisplayNotesItem(
                     text = description,
                     fontSize = 18.sp,
                     fontFamily = poppins,
-                    color = Color.Gray
+                    color = labelColor
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -639,14 +733,14 @@ fun DisplayNotesItem(
                     text = "Specification",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = specification,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White
+                    color = textColor
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -654,14 +748,14 @@ fun DisplayNotesItem(
                     text = "Chapter/Section/Paper",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = chapter,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White
+                    color = textColor
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -669,14 +763,14 @@ fun DisplayNotesItem(
                     text = "Author",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = credit,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White,
+                    color = textColor,
                     modifier = Modifier
                         .clickable {
                             CurrentSubject.setUrl(creditUrl)
@@ -690,14 +784,14 @@ fun DisplayNotesItem(
                     text = "Published on",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = published,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White
+                    color = textColor
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Row {
@@ -710,13 +804,13 @@ fun DisplayNotesItem(
                         },
                         modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.White
+                            backgroundColor = logoTextColour
                         )
                     ) {
                         Image(
                             imageVector = FontAwesomeIcons.Solid.Link,
                             contentDescription = "Copy Link",
-                            colorFilter = ColorFilter.tint(Color(172, 172, 249)),
+                            colorFilter = ColorFilter.tint(logoColor),
                             modifier = Modifier.size(15.dp)
                         )
                     }
@@ -724,9 +818,11 @@ fun DisplayNotesItem(
                     var show by remember { mutableStateOf(false) }
 
                     if (shouldCopy) {
-                        val shareUrl by remember { mutableStateOf(
-                            "https://accorm.ginastic.co/view/n/?s=$subjectRetrieve&id=$uniqueId"
-                        ) }
+                        val shareUrl by remember {
+                            mutableStateOf(
+                                "https://accorm.ginastic.co/view/n/?s=$subjectRetrieve&id=$uniqueId"
+                            )
+                        }
 
                         Copy(shareUrl)
                         show = true
@@ -740,7 +836,7 @@ fun DisplayNotesItem(
                             },
                             title = {
                                 Text(
-                                    text = "Copied",
+                                    text = if (msg == "Link Copied to clipboard") "Copied to clipboard" else if (msg == "Download does not exist") "Error." else if (msg == "File downloaded. Please access from Account.") "Download Success" else "Download Error",
                                     fontSize = 20.sp,
                                     fontFamily = poppins,
                                     color = Color(0xFF181829)
@@ -762,7 +858,7 @@ fun DisplayNotesItem(
                                     )
                                 ) {
                                     Text(
-                                        text = "Ready to share!",
+                                        text = if (msg == "Link Copied to clipboard") "Ready to share!" else if (msg == "Download does not exist") "Uh Oh. I'll re-download it." else if (msg == "File downloaded. Please access from Account.") "Will study from them!" else "OK",
                                         fontSize = 18.sp,
                                         fontFamily = poppins,
                                         color = Color(0xFFffffff)
@@ -775,44 +871,84 @@ fun DisplayNotesItem(
 
                     Spacer(modifier = Modifier.width(5.dp))
 
-//                                    Button(
-//                                        onClick = {
-//                                            coroutineScope.launch {
-//                                                downloadFile(title = title, url = url)
-//                                                msg = "File saved to downloads"
-//                                                show = true
-//                                            }
-//                                        },
-//                                        modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
-//                                        colors = ButtonDefaults.buttonColors(
-//                                            backgroundColor = Color.White
-//                                        )
-//                                    ) {
-//                                        Image(
-//                                            imageVector = FontAwesomeIcons.Solid.Download,
-//                                            contentDescription = "Download",
-//                                            colorFilter = ColorFilter.tint(Color(172, 172, 249)),
-//                                            modifier = Modifier.size(15.dp)
-//                                        )
-//                                    }
-//
-//                                    Spacer(modifier = Modifier.width(5.dp))
+                    if (LoginStatus.getLoginStatus()) {
+                        Button(
+                            onClick = {
+                                coroutineScope.launch {
+                                    try {
+                                        DownloadToInternal(
+                                            uniqueid = uniqueId,
+                                            title = title,
+                                            subject = subjectRetrieve,
+                                            type = "notes",
+                                            publisher = publisher,
+                                            publisherlogobg = logoBg,
+                                            publisherlogo = logo,
+                                            description = description,
+                                            specification = specification,
+                                            chapter = chapter,
+                                            author = credit,
+                                            authorcrediturl = creditUrl,
+                                            publisheddate = published,
+                                            link = url
+                                        )
+                                        msg = "File downloaded. Please access from Account."
+                                        show = true
+                                    } catch (e: Exception) {
+                                        msg = e.message.toString()
+                                        show = true
+                                        println(e.message)
+                                    }
+                                }
+//                            coroutineScope.launch {
+//                                downloadFile(title = title, url = url)
+//                                msg = "File saved to downloads"
+//                                show = true
+//                            }
+                            },
+                            modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = Color.White
+                            )
+                        ) {
+                            Image(
+                                imageVector = FontAwesomeIcons.Solid.Download,
+                                contentDescription = "Download",
+                                colorFilter = ColorFilter.tint(downloadIconColor),
+                                modifier = Modifier.size(15.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.width(5.dp))
 
                     Button(
                         onClick = {
-                            CurrentSubject.setUrl(url)
-                            CurrentSubject.setUrlFileName(title)
-                            navigator.push(DisplayResourcePDF())
+                            if (isDownload) {
+                                coroutineScope.launch {
+                                    try {
+                                        launchDownload(uniqueid = uniqueId)
+                                    } catch (e: Exception) {
+                                        msg = e.message.toString()
+                                        show = true
+                                        println(e.message)
+                                    }
+                                }
+                            } else {
+                                CurrentSubject.setUrl(url)
+                                CurrentSubject.setUrlFileName(title)
+                                navigator.push(DisplayResourcePDF())
+                            }
                         },
                         modifier = Modifier.fillMaxWidth().height(45.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color(172, 172, 249)
+                            backgroundColor = logoColor
                         )
                     ) {
                         Image(
                             imageVector = FontAwesomeIcons.Solid.ExternalLinkAlt,
                             contentDescription = "Open",
-                            colorFilter = ColorFilter.tint(Color.White),
+                            colorFilter = ColorFilter.tint(logoTextColour),
                             modifier = Modifier.size(15.dp)
                         )
                         Spacer(modifier = Modifier.width(10.dp))
@@ -821,7 +957,7 @@ fun DisplayNotesItem(
                             fontSize = 20.sp,
                             fontFamily = poppins,
                             fontWeight = FontWeight.SemiBold,
-                            color = Color.White
+                            color = logoTextColour
                         )
                     }
                 }
@@ -839,36 +975,119 @@ fun DisplayNotesItem(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
+                modifier = Modifier.fillMaxWidth(0.8f),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
+                Row(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(100))
-                        .background(logoColor)
-                        .size(30.dp), contentAlignment = Alignment.Center
+                        .fillMaxWidth()
+                        .padding(10.dp)
                 ) {
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(100))
+                            .background(logoColor)
+                            .size(30.dp), contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = logo,
+                            color = logoTextColour,
+                            fontFamily = poppins,
+                            fontSize = 14.sp
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = logo,
-                        color = Color.White,
+                        text = publisher,
+                        color = textColor,
                         fontFamily = poppins,
-                        fontSize = 14.sp
+                        fontSize = 18.sp
                     )
                 }
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = publisher,
-                    color = Color.White,
-                    fontFamily = poppins,
-                    fontSize = 18.sp
-                )
+                if (isDownload) {
+                    var showdeleteMsg by remember { mutableStateOf(false) }
+                    Image(
+                        imageVector = FontAwesomeIcons.Solid.Trash,
+                        contentDescription = "Delete",
+                        colorFilter = ColorFilter.tint(Color.Red),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable {
+                                showdeleteMsg = true
+                            }
+                    )
+
+                    if (showdeleteMsg) {
+                        AlertDialog(
+                            onDismissRequest = {
+                                showdeleteMsg = false
+                            },
+                            title = {
+                                Text(
+                                    text = "Delete Download?",
+                                    fontSize = 20.sp,
+                                    fontFamily = poppins,
+                                    color = Color(0xFF181829)
+                                )
+                            },
+                            text = {
+                                Text(
+                                    text = "Are you sure you want to delete this download?",
+                                    fontSize = 18.sp,
+                                    fontFamily = poppins,
+                                    color = Color(0xFF1f1f36)
+                                )
+                            },
+                            confirmButton = {
+                                Button(
+                                    onClick = {
+                                        coroutineScope.launch {
+                                            deleteDownload(uniqueid = uniqueId)
+                                        }
+                                        downloadDeleteConfirm = false
+                                        showdeleteMsg = false
+                                        blockUser = true
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color(0xFFffffff)
+                                    )
+                                ) {
+                                    Text(
+                                        text = "Yes",
+                                        fontSize = 18.sp,
+                                        fontFamily = poppins,
+                                        color = Color(0xFF1f1f36)
+                                    )
+                                }
+                            },
+                            dismissButton = {
+                                Button(
+                                    onClick = {
+                                        showdeleteMsg = false
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color(0xFF1f1f36)
+                                    )
+                                ) {
+                                    Text(
+                                        text = "No",
+                                        fontSize = 18.sp,
+                                        fontFamily = poppins,
+                                        color = Color(0xFFffffff)
+                                    )
+                                }
+                            },
+                            backgroundColor = Color.White
+                        )
+                    }
+                }
             }
             Text(
                 text = title,
                 fontFamily = poppins,
                 fontSize = 24.sp,
-                color = Color.White
+                color = textColor
             )
             if (isExpanded) {
                 Spacer(modifier = Modifier.height(3.dp))
@@ -876,7 +1095,7 @@ fun DisplayNotesItem(
                     text = description,
                     fontSize = 18.sp,
                     fontFamily = poppins,
-                    color = Color.Gray
+                    color = labelColor
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -884,14 +1103,14 @@ fun DisplayNotesItem(
                     text = "Specification",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = specification,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White
+                    color = textColor
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -899,14 +1118,14 @@ fun DisplayNotesItem(
                     text = "Chapter/Section/Paper",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = chapter,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White
+                    color = textColor
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -914,14 +1133,14 @@ fun DisplayNotesItem(
                     text = "Author",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = credit,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White,
+                    color = textColor,
                     modifier = Modifier
                         .clickable {
                             CurrentSubject.setUrl(creditUrl)
@@ -935,14 +1154,14 @@ fun DisplayNotesItem(
                     text = "Published on",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = published,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White
+                    color = textColor
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Row {
@@ -955,13 +1174,13 @@ fun DisplayNotesItem(
                         },
                         modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.White
+                            backgroundColor = logoTextColour
                         )
                     ) {
                         Image(
                             imageVector = FontAwesomeIcons.Solid.Link,
                             contentDescription = "Copy Link",
-                            colorFilter = ColorFilter.tint(Color(172, 172, 249)),
+                            colorFilter = ColorFilter.tint(downloadIconColor),
                             modifier = Modifier.size(15.dp)
                         )
                     }
@@ -969,9 +1188,11 @@ fun DisplayNotesItem(
                     var show by remember { mutableStateOf(false) }
 
                     if (shouldCopy) {
-                        val shareUrl by remember { mutableStateOf(
-                            "https://accorm.ginastic.co/view/n/?s=$subjectRetrieve&id=$uniqueId"
-                        ) }
+                        val shareUrl by remember {
+                            mutableStateOf(
+                                "https://accorm.ginastic.co/view/n/?s=$subjectRetrieve&id=$uniqueId"
+                            )
+                        }
 
                         Copy(shareUrl)
                         show = true
@@ -985,7 +1206,7 @@ fun DisplayNotesItem(
                             },
                             title = {
                                 Text(
-                                    text = "Copied to clipboard",
+                                    text = if (msg == "Link Copied to clipboard") "Copied to clipboard" else if (msg == "Download does not exist") "Error." else if (msg == "File downloaded. Please access from Account.") "Download Success" else "Download Error",
                                     fontSize = 20.sp,
                                     fontFamily = poppins,
                                     color = Color(0xFF181829)
@@ -1007,7 +1228,7 @@ fun DisplayNotesItem(
                                     )
                                 ) {
                                     Text(
-                                        text = "Ready to share!",
+                                        text = if (msg == "Link Copied to clipboard") "Ready to share!" else if (msg == "Download does not exist") "Uh Oh. I'll re-download it." else if (msg == "File downloaded. Please access from Account.") "Will study from them!" else "OK",
                                         fontSize = 18.sp,
                                         fontFamily = poppins,
                                         color = Color(0xFFffffff)
@@ -1020,25 +1241,69 @@ fun DisplayNotesItem(
 
                     Spacer(modifier = Modifier.width(5.dp))
 
-                    Button(
-                        onClick = {
-                            coroutineScope.launch {
-                                downloadFile(title = title, url = url)
-                                msg = "File saved to downloads"
-                                show = true
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.White
-                        )
-                    ) {
-                        Image(
-                            imageVector = FontAwesomeIcons.Solid.Download,
-                            contentDescription = "Download",
-                            colorFilter = ColorFilter.tint(Color(172, 172, 249)),
-                            modifier = Modifier.size(15.dp)
-                        )
+                    if (LoginStatus.getLoginStatus() && !isDownload && downloadIconColor != Color.Black) {
+                        Button(
+                            onClick = {
+                                coroutineScope.launch {
+                                    try {
+                                        DownloadToInternal(
+                                            uniqueid = uniqueId,
+                                            title = title,
+                                            subject = subjectRetrieve,
+                                            type = "notes",
+                                            publisher = publisher,
+                                            publisherlogobg = logoBg,
+                                            publisherlogo = logo,
+                                            description = description,
+                                            specification = specification,
+                                            chapter = chapter,
+                                            author = credit,
+                                            authorcrediturl = creditUrl,
+                                            publisheddate = published,
+                                            link = url
+                                        )
+                                        msg = "File downloaded. Please access from Account."
+                                        show = true
+                                    } catch (e: Exception) {
+                                        msg = e.message.toString()
+                                        show = true
+                                        println(e.message)
+                                    }
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = Color.White
+                            )
+                        ) {
+                            Image(
+                                imageVector = FontAwesomeIcons.Solid.Download,
+                                contentDescription = "Download",
+                                colorFilter = ColorFilter.tint(textColor),
+                                modifier = Modifier.size(15.dp)
+                            )
+                        }
+
+//                        Button(
+//                            onClick = {
+//                                coroutineScope.launch {
+//                                    downloadFile(title = title, url = url)
+//                                    msg = "File saved to downloads"
+//                                    show = true
+//                                }
+//                            },
+//                            modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
+//                            colors = ButtonDefaults.buttonColors(
+//                                backgroundColor = logoTextColour
+//                            )
+//                        ) {
+//                            Image(
+//                                imageVector = FontAwesomeIcons.Solid.Download,
+//                                contentDescription = "Download",
+//                                colorFilter = ColorFilter.tint(logoColor),
+//                                modifier = Modifier.size(15.dp)
+//                            )
+//                        }
                     }
 
                     Spacer(modifier = Modifier.width(5.dp))
@@ -1051,13 +1316,13 @@ fun DisplayNotesItem(
                         },
                         modifier = Modifier.fillMaxWidth().height(45.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color(172, 172, 249)
+                            backgroundColor = logoColor
                         )
                     ) {
                         Image(
                             imageVector = FontAwesomeIcons.Solid.ExternalLinkAlt,
                             contentDescription = "Open",
-                            colorFilter = ColorFilter.tint(Color.White),
+                            colorFilter = ColorFilter.tint(logoTextColour),
                             modifier = Modifier.size(15.dp)
                         )
                         Spacer(modifier = Modifier.width(10.dp))
@@ -1066,12 +1331,35 @@ fun DisplayNotesItem(
                             fontSize = 20.sp,
                             fontFamily = poppins,
                             fontWeight = FontWeight.SemiBold,
-                            color = Color.White
+                            color = logoTextColour
                         )
                     }
                 }
             }
         }
+    }
+
+    if (blockUser) {
+        AlertDialog(
+            onDismissRequest = {},
+            title = {
+                Text(
+                    text = "App Relaunch Required",
+                    fontSize = 20.sp,
+                    fontFamily = poppins,
+                    color = Color(0xFF181829)
+                )
+            },
+            text = {
+                Text(
+                    text = "Please relaunch the app",
+                    fontSize = 18.sp,
+                    fontFamily = poppins,
+                    color = Color(0xFF1f1f36)
+                )
+            },
+            confirmButton = {}
+        )
     }
 }
 

@@ -1,18 +1,20 @@
-package Database
+package database
 
 import com.yousufjamil.accorm.Accorm
 import com.yousufjamil.accorm.Downloads
 
-class DataSource (private val db: Accorm) {
+class DownloadsDataSource (private val db: Accorm) {
     private val queries = db.downloadsQueries
 
     fun insertDownload(
         uniqueid: Int,
         title: String,
+        subject: String,
+        type: String,
         publisher: String,
         publisherlogobg: String,
         publisherlogo: String,
-        descirption: String,
+        description: String,
         specification: String,
         chapter: String,
         author: String,
@@ -25,10 +27,12 @@ class DataSource (private val db: Accorm) {
             downlaodid = null,
             uniqueid = uniqueid.toLong(),
             title = title,
+            subject = subject,
+            type = type,
             publisher = publisher,
             publisherlogobg = publisherlogobg,
             publisherlogo = publisherlogo,
-            descirption = descirption,
+            description = description,
             specification = specification,
             chapter = chapter,
             author = author,

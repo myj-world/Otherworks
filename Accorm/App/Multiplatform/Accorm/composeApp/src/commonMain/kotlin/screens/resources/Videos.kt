@@ -571,7 +571,10 @@ fun DisplayVideosItem(
     source: String,
     published: String,
     url: String,
-    backgroundColor: Color = Color(28, 28, 28)
+    backgroundColor: Color = Color(28, 28, 28),
+    textColor: Color = Color.White,
+    labelColor: Color = Color.Gray,
+    logoTextColour: Color = Color.White
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     val navigator = LocalNavigator.currentOrThrow
@@ -601,7 +604,7 @@ fun DisplayVideosItem(
                 ) {
                     Text(
                         text = logo,
-                        color = Color.White,
+                        color = logoTextColour,
                         fontFamily = poppins,
                         fontSize = 14.sp
                     )
@@ -609,7 +612,7 @@ fun DisplayVideosItem(
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
                     text = publisher,
-                    color = Color.White,
+                    color = textColor,
                     fontFamily = poppins,
                     fontSize = 18.sp
                 )
@@ -618,7 +621,7 @@ fun DisplayVideosItem(
                 text = title,
                 fontFamily = poppins,
                 fontSize = 22.sp,
-                color = Color.White
+                color = textColor
             )
             if (isExpanded) {
                 Spacer(modifier = Modifier.height(3.dp))
@@ -626,7 +629,7 @@ fun DisplayVideosItem(
                     text = description,
                     fontSize = 18.sp,
                     fontFamily = poppins,
-                    color = Color.Gray
+                    color = labelColor
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -634,14 +637,14 @@ fun DisplayVideosItem(
                     text = "Specification",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = specification,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White
+                    color = textColor
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -649,14 +652,14 @@ fun DisplayVideosItem(
                     text = "Chapter/Section/Paper",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = chapter,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White
+                    color = textColor
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -664,14 +667,14 @@ fun DisplayVideosItem(
                     text = "Source",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = source,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White
+                    color = textColor
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -679,14 +682,14 @@ fun DisplayVideosItem(
                     text = "Published on",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = published,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White
+                    color = textColor
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Row {
@@ -697,13 +700,13 @@ fun DisplayVideosItem(
                         },
                         modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.White
+                            backgroundColor = logoTextColour
                         )
                     ) {
                         Image(
                             imageVector = FontAwesomeIcons.Solid.Link,
                             contentDescription = "Copy Link",
-                            colorFilter = ColorFilter.tint(Color(172, 172, 249)),
+                            colorFilter = ColorFilter.tint(logoColor),
                             modifier = Modifier.size(15.dp)
                         )
                     }
@@ -769,13 +772,13 @@ fun DisplayVideosItem(
                         },
                         modifier = Modifier.fillMaxWidth().height(45.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color(172, 172, 249)
+                            backgroundColor = logoColor
                         )
                     ) {
                         Image(
                             imageVector = FontAwesomeIcons.Solid.ExternalLinkAlt,
                             contentDescription = "Watch",
-                            colorFilter = ColorFilter.tint(Color.White),
+                            colorFilter = ColorFilter.tint(logoTextColour),
                             modifier = Modifier.size(15.dp)
                         )
                         Spacer(modifier = Modifier.width(10.dp))
@@ -784,7 +787,7 @@ fun DisplayVideosItem(
                             fontSize = 20.sp,
                             fontFamily = poppins,
                             fontWeight = FontWeight.SemiBold,
-                            color = Color.White
+                            color = logoTextColour
                         )
                     }
                 }
@@ -814,7 +817,7 @@ fun DisplayVideosItem(
                 ) {
                     Text(
                         text = logo,
-                        color = Color.White,
+                        color = logoTextColour,
                         fontFamily = poppins,
                         fontSize = 14.sp
                     )
@@ -822,7 +825,7 @@ fun DisplayVideosItem(
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
                     text = publisher,
-                    color = Color.White,
+                    color = textColor,
                     fontFamily = poppins,
                     fontSize = 18.sp
                 )
@@ -831,7 +834,7 @@ fun DisplayVideosItem(
                 text = title,
                 fontFamily = poppins,
                 fontSize = 24.sp,
-                color = Color.White
+                color = textColor
             )
             if (isExpanded) {
                 Spacer(modifier = Modifier.height(3.dp))
@@ -839,7 +842,7 @@ fun DisplayVideosItem(
                     text = description,
                     fontSize = 18.sp,
                     fontFamily = poppins,
-                    color = Color.Gray
+                    color = labelColor
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -847,14 +850,14 @@ fun DisplayVideosItem(
                     text = "Specification",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = specification,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White
+                    color = textColor
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -862,14 +865,14 @@ fun DisplayVideosItem(
                     text = "Chapter/Section/Paper",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = chapter,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White
+                    color = textColor
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -877,14 +880,14 @@ fun DisplayVideosItem(
                     text = "Source",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = source,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White
+                    color = textColor
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -892,14 +895,14 @@ fun DisplayVideosItem(
                     text = "Published on",
                     fontSize = 12.sp,
                     fontFamily = lexend,
-                    color = Color.Gray
+                    color = labelColor
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = published,
                     fontSize = 15.sp,
                     fontFamily = poppins,
-                    color = Color.White
+                    color = textColor
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Row {
@@ -910,13 +913,13 @@ fun DisplayVideosItem(
                         },
                         modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.White
+                            backgroundColor = logoTextColour
                         )
                     ) {
                         Image(
                             imageVector = FontAwesomeIcons.Solid.Link,
                             contentDescription = "Copy Link",
-                            colorFilter = ColorFilter.tint(Color(172, 172, 249)),
+                            colorFilter = ColorFilter.tint(logoColor),
                             modifier = Modifier.size(15.dp)
                         )
                     }
@@ -982,13 +985,13 @@ fun DisplayVideosItem(
                         },
                         modifier = Modifier.fillMaxWidth().height(45.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color(172, 172, 249)
+                            backgroundColor = logoColor
                         )
                     ) {
                         Image(
                             imageVector = FontAwesomeIcons.Solid.ExternalLinkAlt,
                             contentDescription = "Watch",
-                            colorFilter = ColorFilter.tint(Color.White),
+                            colorFilter = ColorFilter.tint(logoTextColour),
                             modifier = Modifier.size(15.dp)
                         )
                         Spacer(modifier = Modifier.width(10.dp))
@@ -997,7 +1000,7 @@ fun DisplayVideosItem(
                             fontSize = 20.sp,
                             fontFamily = poppins,
                             fontWeight = FontWeight.SemiBold,
-                            color = Color.White
+                            color = logoTextColour
                         )
                     }
                 }

@@ -2,10 +2,12 @@ CREATE TABLE Downloads (
     downlaodid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     uniqueid INTEGER NOT NULL,
     title TEXT NOT NULL,
+    subject TEXT NOT NULL,
+    type TEXT NOT NULL,
     publisher TEXT NOT NULL,
     publisherlogobg TEXT NOT NULL,
     publisherlogo TEXT NOT NULL,
-    descirption TEXT NOT NULL,
+    description TEXT NOT NULL,
     specification TEXT NOT NULL,
     chapter TEXT NOT NULL,
     author TEXT NOT NULL,
@@ -16,7 +18,7 @@ CREATE TABLE Downloads (
 );
 
 addDownload:
-INSERT OR REPLACE INTO Downloads VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+INSERT OR REPLACE INTO Downloads VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
 
 retrieveSpecificDownloadData:
 SELECT * FROM Downloads WHERE uniqueid = :idToFind;

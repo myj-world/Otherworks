@@ -1,90 +1,97 @@
 package accounts
 
-import com.russhwolf.settings.Settings
+import com.yousufjamil.accorm.Accounts
+import database.AccormDatabase
+import database.AccountsDataSource
 
 object LoginStatus {
     //    Store the login details of the user
-    val settings: Settings = Settings()
+
+    val db = AccountsDataSource(AccormDatabase.database)
 
     fun updateLoginStatus(status: Boolean) {
-        settings.putBoolean("loggedIn", status)
+        db.updateLoginStatus(status)
     }
 
     fun getLoginStatus(): Boolean {
-        return settings.getBoolean("loggedIn", false)
+        return db.getLoginStatus()
     }
 
 
 
     fun updateUserID(userID: String) {
-        settings.putString("userID", userID)
+        db.updateUserID(userID.toInt())
     }
 
     fun getUserID(): String {
-        return settings.getString("userID", "0")
+        return db.getUserID().toString()
     }
 
 
 
 
     fun updateEmail(email: String) {
-        settings.putString("email", email)
+        db.updateEmail(email)
     }
 
     fun getEmail(): String {
-        return settings.getString("email", "error@example.com")
+        return db.getEmail()
     }
 
 
 
     fun updateName(name: String) {
-        settings.putString("name", name)
+        db.updateName(name)
     }
 
     fun getName(): String {
-        return settings.getString("name", "Error")
+        return db.getName()
     }
 
 
 
     fun updateLogo(logo: String) {
-        settings.putString("logo", logo)
+        db.updateLogo(logo)
     }
 
     fun getLogo(): String {
-        return settings.getString("logo", "E")
+        return db.getLogo()
     }
 
 
 
     fun updateLogoBg(logoBg: String) {
-        settings.putString("ulogobg", logoBg)
+        db.updateLogoBg(logoBg)
     }
 
     fun getLogoBg(): String {
-        return settings.getString("ulogobg", "#FF0000")
+        return db.getLogoBg()
     }
 
 
 
     fun updateFavourites(favourites: String) {
-        settings.putString("favourites", favourites)
+        db.updateFavourites(favourites)
     }
 
     fun getFavourites(): String {
-        return settings.getString("favourites", "")
+        return db.getFavourites()
     }
 
 
 
     fun clearSavedLoginData(): Boolean {
-        settings.remove("loggedIn")
-        settings.remove("userID")
-        settings.remove("email")
-        settings.remove("name")
-        settings.remove("logo")
-        settings.remove("ulogobg")
-        settings.remove("favourites")
+        db.clearSavedLoginData()
         return true
+    }
+
+
+    fun initializeForNoUser(): Boolean {
+        db.initializeForNoUser()
+        return true
+    }
+
+    fun getUser(): List<Accounts> {
+        return db.getUser()
     }
 }

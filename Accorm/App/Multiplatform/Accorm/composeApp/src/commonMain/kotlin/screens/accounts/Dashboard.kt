@@ -27,7 +27,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,12 +42,12 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import com.google.gson.stream.JsonReader
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.SignOutAlt
 import compose.icons.fontawesomeicons.solid.User
-import kotlinx.coroutines.launch
+import database.AccormDatabase
+import database.DownloadsDataSource
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -84,116 +83,7 @@ object Dashboard : Tab {
         val favs by remember { mutableStateOf(mutableListOf<SingleFavData>()) }
         var favsAdditionalData by remember { mutableStateOf(mutableListOf<FavsInfo>()) }
         var canLoad by remember { mutableStateOf(false) }
-
-//        suspend fun retrieveFromUrl(
-//            subject: String,
-//            url: String,
-//            itemToFind: String,
-//            type: String
-//        ): FavouriteItem {
-//            println("$subject $url $itemToFind")
-//
-//            response = RequestURL(url) ?: ""
-//            println(response)
-//
-//            return if (response != "false") {
-//
-//                var item = FavouriteItem(
-//                    subject = "",
-//                    type = "",
-//                    id = "0",
-//                    publisherLogo = "",
-//                    publisherLogoBg = "",
-//                    publisherName = "",
-//                    name = "",
-//                    description = "",
-//                    specification = "",
-//                    chapter = "",
-//                    author = "",
-//                    authorUrl = "",
-//                    publishedDate = "",
-//                    link = ""
-//                )
-//
-//                try {
-//                    JsonReader(response.reader()).use { reader ->
-//                        reader.beginObject()
-//                        while (reader.hasNext()) {
-//                            try {
-//                                reader.skipValue()
-//                                val typeFav = reader.nextString()
-//                                reader.skipValue()
-//                                val specification = reader.nextString()
-//                                reader.skipValue()
-//                                val logo = reader.nextString()
-//                                reader.skipValue()
-//                                val logoBg = reader.nextString()
-//                                reader.skipValue()
-//                                val publisher = reader.nextString()
-//                                reader.skipValue()
-//                                val title = reader.nextString()
-//                                reader.skipValue()
-//                                val description = reader.nextString()
-//                                reader.skipValue()
-//                                val chapter = reader.nextString()
-//                                reader.skipValue()
-//                                val author = reader.nextString()
-//                                reader.skipValue()
-//                                val authorUrl = reader.nextString()
-//                                reader.skipValue()
-//                                val published = reader.nextString()
-//                                reader.skipValue()
-//                                val link = reader.nextString()
-//
-//                                item = FavouriteItem(
-//                                    subject = subject,
-//                                    type = typeFav,
-//                                    id = itemToFind,
-//                                    publisherLogo = logo,
-//                                    publisherLogoBg = logoBg,
-//                                    publisherName = publisher,
-//                                    name = title,
-//                                    description = description,
-//                                    specification = specification,
-//                                    chapter = chapter,
-//                                    author = author,
-//                                    authorUrl = authorUrl,
-//                                    publishedDate = published,
-//                                    link = link
-//                                )
-//                                println("Assigned")
-//                            } catch (e: Exception) {
-//                                println(reader.peek())
-//                            }
-//                            reader.endObject()
-//                        }
-//                    }
-//                } catch (e: Exception) {
-//                    println(e.message)
-//                }
-//
-//                item
-//            } else {
-//                println("Negative response")
-//
-//                FavouriteItem(
-//                    subject = subject,
-//                    type = type,
-//                    id = itemToFind,
-//                    publisherLogo = "",
-//                    publisherLogoBg = "",
-//                    publisherName = "",
-//                    name = "",
-//                    description = "",
-//                    specification = "",
-//                    chapter = "",
-//                    author = "",
-//                    authorUrl = "",
-//                    publishedDate = "",
-//                    link = ""
-//                )
-//            }
-//        }
+        var show by remember { mutableStateOf(false) }
 
         suspend fun refreshFavourites() {
             val userId = LoginStatus.getUserID()
@@ -256,12 +146,18 @@ object Dashboard : Tab {
         }
 
         LaunchedEffect(Unit) {
-            connected = RequestURL("https://accorm.ginastic.co/300/true/")
 
-            if (connected == "true") {
-                refreshFavourites()
-                parseFavourites()
-                canLoad = true
+            try {
+                connected = RequestURL("https://accorm.ginastic.co/300/true/")
+
+                if (connected == "true") {
+                    refreshFavourites()
+                    parseFavourites()
+                    canLoad = true
+                }
+            } catch (e: Exception) {
+                println(e.message)
+                show = true
             }
         }
 
@@ -373,15 +269,72 @@ object Dashboard : Tab {
                         .padding(20.dp)
                 )
                 Spacer(modifier = Modifier.height(5.dp))
-                Text(
-                    text = "No Downloads",
-                    color = Color.White,
-                    fontFamily = poppins,
-                    fontSize = 24.sp,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
+
+                @Composable
+                fun DownloadDisplayItem(item: DownloadItem) {
+                    println(item)
+                    DisplayNotesItem(
+                        subjectRetrieve = item.subject,
+                        uniqueId = item.id.toInt(),
+                        logo = item.publisherLogo,
+                        logoBg = "#acacf9",
+                        publisher = item.publisherName,
+                        title = item.name,
+                        description = item.description,
+                        specification = item.specification,
+                        chapter = item.chapter,
+                        published = item.publishedDate,
+                        credit = item.author,
+                        creditUrl = item.authorUrl,
+                        backgroundColor = Color(0xFF56567d),
+                        textColor = Color.White,
+                        labelColor = Color.Gray,
+                        logoTextColour = Color.White,
+                        isDownload = true
+                    )
+                }
+
+
+                val downloadsDataSource = DownloadsDataSource(AccormDatabase.database)
+                val downloads = downloadsDataSource.retrieveAllDownloads()
+
+                if (downloads.isNotEmpty()) {
+                    downloads.forEach {
+                        val item = DownloadItem(
+                            subject = it.subject,
+                            type = it.type,
+                            id = it.uniqueid.toString(),
+                            publisherLogo = it.publisherlogo,
+                            publisherLogoBg = it.publisherlogobg,
+                            publisherName = it.publisher,
+                            name = it.title,
+                            description = it.description,
+                            specification = it.specification,
+                            chapter = it.chapter,
+                            author = it.author,
+                            authorUrl = it.authorcrediturl,
+                            publishedDate = it.publisheddate,
+                            file1nameondisk = it.file1nameondisk,
+                            file2nameondisk = it.file2nameondisk
+                        )
+                        DownloadDisplayItem(
+                            item = item
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+                } else {
+                    Text(
+                        text = "No Downloads",
+                        color = Color.White,
+                        fontFamily = poppins,
+                        fontSize = 24.sp,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
                 Spacer(modifier = Modifier.height(10.dp))
+
                 Text(
                     text = "My Favourites",
                     color = Color.White,
@@ -402,7 +355,7 @@ object Dashboard : Tab {
                                 subjectRetrieve = item.subject,
                                 uniqueId = item.id.toInt(),
                                 logo = item.publisherLogo,
-                                logoColor = parseColor("#ffce4d"),
+                                logoBg = "#ffce4d",
                                 publisher = item.publisherName,
                                 title = item.name,
                                 description = item.description,
@@ -412,7 +365,11 @@ object Dashboard : Tab {
                                 url = item.link,
                                 credit = item.author,
                                 creditUrl = item.authorUrl,
-                                backgroundColor = Color(0xFFffb900)
+                                backgroundColor = Color(0xFFffb900),
+                                textColor = Color.Black,
+                                labelColor = Color(0xFF373120),
+                                logoTextColour = Color.Black,
+                                downloadIconColor = Color.Black
                             )
                         } else {
                             DisplayVideosItem(
@@ -428,15 +385,16 @@ object Dashboard : Tab {
                                 published = item.publishedDate,
                                 url = item.link,
                                 source = item.link.substringAfter("://").substringBefore("/"),
-                                backgroundColor = Color(0xFFffb900)
+                                backgroundColor = Color(0xFFffb900),
+                                textColor = Color.Black,
+                                labelColor = Color(0xFF373120),
+                                logoTextColour = Color.Black
                             )
                         }
                     }
                 }
 
-
-
-                if (canLoad && favs.isNotEmpty()) {
+                if (canLoad && favs.isNotEmpty() && !show) {
 
                     var i = 0
 
@@ -466,7 +424,7 @@ object Dashboard : Tab {
 
                         i++
                     }
-                } else if (LoginStatus.getFavourites().trim().split(" ").isEmpty()) {
+                } else if (LoginStatus.getFavourites().trim().split(" ").isEmpty() || show) {
                     Text(
                         text = "No favourites",
                         color = Color.White,
@@ -527,4 +485,22 @@ data class SingleFavData(
 data class FavsInfo(
     val subject: String,
     val id: String
+)
+
+data class DownloadItem(
+    val subject: String,
+    val type: String,
+    val id: String,
+    val publisherLogo: String,
+    val publisherLogoBg: String,
+    val publisherName: String,
+    val name: String,
+    val description: String,
+    val specification: String,
+    val chapter: String,
+    val author: String,
+    val authorUrl: String,
+    val publishedDate: String,
+    val file1nameondisk: String,
+    val file2nameondisk: String
 )

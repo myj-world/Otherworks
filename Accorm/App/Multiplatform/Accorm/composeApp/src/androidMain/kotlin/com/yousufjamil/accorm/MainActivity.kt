@@ -27,11 +27,13 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.messaging.FirebaseMessaging
 import com.yousufjamil.accorm.cloudmessaging.CloudMessaging
+import database.DatabaseDriverFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import network.getResponse
+import screens.resources.FileManager
 import kotlin.properties.Delegates
 
 class MainActivity : ComponentActivity() {
@@ -41,6 +43,9 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect (
                 Unit
             ) {
+                DatabaseDriverFactory.initContext(this@MainActivity)
+                FileManager.initContext(this@MainActivity)
+
                 checkLatest()
             }
 

@@ -1,0 +1,72 @@
+import kotlin.Boolean;
+
+CREATE TABLE Accounts (
+    localID INTEGER NOT NULL PRIMARY KEY,
+    loginStatus INTEGER AS Boolean NOT NULL DEFAULT FALSE,
+    uniqueId INTEGER NOT NULL DEFAULT 0,
+    name TEXT NOT NULL DEFAULT "Error",
+    email TEXT NOT NULL DEFAULT "error@example.com",
+    logo TEXT NOT NULL DEFAULT "E",
+    logoBg TEXT NOT NULL DEFAULT "#FF0000",
+    favs TEXT NOT NULL DEFAULT ""
+);
+
+getUser:
+SELECT * FROM Accounts;
+
+
+initializeForNoUsers:
+INSERT INTO Accounts DEFAULT VALUES;
+
+
+clearSavedLoginData:
+DELETE FROM Accounts;
+
+
+getLoginStatus:
+SELECT loginStatus FROM Accounts;
+
+updateLoginStatus:
+UPDATE Accounts SET loginStatus=?;
+
+
+getUserID:
+SELECT uniqueId FROM Accounts;
+
+updateUserID:
+UPDATE Accounts SET uniqueId=?;
+
+
+getEmail:
+SELECT email FROM Accounts;
+
+updateEmail:
+UPDATE Accounts SET email=?;
+
+
+getName:
+SELECT name FROM Accounts;
+
+updateName:
+UPDATE Accounts SET name=?;
+
+
+getLogo:
+SELECT logo FROM Accounts;
+
+updateLogo:
+UPDATE Accounts SET logo=?;
+
+
+getLogoBg:
+SELECT logoBg FROM Accounts;
+
+updateLogoBg:
+UPDATE Accounts SET logoBg=?;
+
+
+getFavourites:
+SELECT favs FROM Accounts;
+
+updateFavourites:
+UPDATE Accounts SET favs=?;
