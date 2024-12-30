@@ -964,13 +964,19 @@ fun DisplayNotesItem(
             }
         }
     } else {
+        var showdeleteMsg by remember { mutableStateOf(false) }
         Column(
             modifier = Modifier
                 .width(400.dp)
                 .clip(RoundedCornerShape(20.dp))
                 .background(backgroundColor)
                 .animateContentSize()
-                .clickable { isExpanded = !isExpanded }.padding(20.dp),
+                .clickable {
+                    isExpanded = !isExpanded
+                    if (isDownload) {
+                        showdeleteMsg = true
+                    }
+                }.padding(20.dp),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -1006,16 +1012,12 @@ fun DisplayNotesItem(
                     )
                 }
                 if (isDownload) {
-                    var showdeleteMsg by remember { mutableStateOf(false) }
-                    Image(
-                        imageVector = FontAwesomeIcons.Solid.Trash,
-                        contentDescription = "Delete",
-                        colorFilter = ColorFilter.tint(Color.Red),
+                    Text(
+                        text = "🗑️",
+                        color = Color.Red,
+                        fontSize = 20.sp,
                         modifier = Modifier
-                            .size(20.dp)
-                            .clickable {
-                                showdeleteMsg = true
-                            }
+                            .clickable { showdeleteMsg = true }
                     )
 
                     if (showdeleteMsg) {
@@ -1279,7 +1281,7 @@ fun DisplayNotesItem(
                             Image(
                                 imageVector = FontAwesomeIcons.Solid.Download,
                                 contentDescription = "Download",
-                                colorFilter = ColorFilter.tint(textColor),
+                                colorFilter = ColorFilter.tint(downloadIconColor),
                                 modifier = Modifier.size(15.dp)
                             )
                         }

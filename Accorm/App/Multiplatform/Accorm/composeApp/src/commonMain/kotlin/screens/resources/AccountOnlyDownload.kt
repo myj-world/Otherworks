@@ -20,37 +20,42 @@ suspend fun DownloadToInternal(
     link: String
 ) {
     val db = AccormDatabase.database
+    val download = DownloadsDataSource(db = db)
 
-    val data: List<String>
-    try {
-        data = FileManager.downloadToAppStorage(link = link)
-        if (data.isEmpty()) {
-            println("Download failed")
+    if (!download.checkDownloadExists(uniqueid)) {
+
+        val data: List<String>
+        try {
+            data = FileManager.downloadToAppStorage(link = link)
+            if (data.isEmpty()) {
+                println("Download failed")
+                return
+            }
+        } catch (e: Exception) {
+            println(e.message)
             return
         }
-    } catch (e: Exception) {
-        println(e.message)
-        return
-    }
-    val download = DownloadsDataSource(db = db)
-    download.insertDownload(
-        uniqueid = uniqueid,
-        title = title,
-        subject = subject,
-        type = type,
-        publisher = publisher,
-        publisherlogobg = publisherlogobg,
-        publisherlogo = publisherlogo,
-        description = description,
-        specification = specification,
-        chapter = chapter,
-        author = author,
-        authorcrediturl = authorcrediturl,
-        publisheddate = publisheddate,
-        file1nameondisk = data[0],
-        file2nameondisk = data[1]
-    )
 
+        download.insertDownload(
+            uniqueid = uniqueid,
+            title = title,
+            subject = subject,
+            type = type,
+            publisher = publisher,
+            publisherlogobg = publisherlogobg,
+            publisherlogo = publisherlogo,
+            description = description,
+            specification = specification,
+            chapter = chapter,
+            author = author,
+            authorcrediturl = authorcrediturl,
+            publisheddate = publisheddate,
+            file1nameondisk = data[0],
+            file2nameondisk = data[1]
+        )
+    } else {
+        throw Exception("Download already exists")
+    }
 }
 
 suspend fun launchDownload(
