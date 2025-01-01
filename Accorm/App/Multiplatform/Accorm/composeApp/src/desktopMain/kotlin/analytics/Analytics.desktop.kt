@@ -8,7 +8,7 @@ import network.getResponse
 actual fun LogEvent(
     name: String,
     uniqueId: Int?,
-    resourceName: String?
+    subject: String?
 ) {
     LaunchedEffect(Unit) {
         if (uniqueId != null) getResponse("https://example.com")

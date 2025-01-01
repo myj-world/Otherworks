@@ -1,6 +1,5 @@
 package analytics
 
-import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
@@ -13,7 +12,7 @@ import network.getResponse
 actual fun LogEvent(
     name: String,
     uniqueId: Int?,
-    resourceName: String?
+    subject: String?
 ) {
     LaunchedEffect(Unit) {
         if (uniqueId != null) getResponse("https://example.com")

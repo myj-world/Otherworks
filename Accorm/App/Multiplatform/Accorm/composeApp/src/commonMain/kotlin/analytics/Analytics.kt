@@ -6,5 +6,5 @@ import androidx.compose.runtime.Composable
 expect fun LogEvent(
     name: String,
     uniqueId: Int?,
-    resourceName: String?,
+    subject: String?,
 )
