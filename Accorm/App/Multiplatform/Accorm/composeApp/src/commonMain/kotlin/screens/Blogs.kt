@@ -133,7 +133,7 @@ object Blogs : Tab {
                     )
                     Text(
                         text = "Educational Blogs",
-                        fontSize = if (device == "Android" && !landscapeTablet) 36.sp else 56.sp,
+                        fontSize = if (device == "Android" && !landscapeTablet) 26.sp else 56.sp,
                         fontFamily = poppins,
                         fontWeight = FontWeight.Bold,
                         color = Color.White

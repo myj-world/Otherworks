@@ -1,10 +1,16 @@
 package analytics
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import network.getResponse
 
 @Composable
 actual fun LogEvent(
-    name: String
+    name: String,
+    uniqueId: Int?,
+    resourceName: String?
 ) {
-    println("Support will be added soon")
+    LaunchedEffect(Unit) {
+        if (uniqueId != null) getResponse("")
+    }
 }

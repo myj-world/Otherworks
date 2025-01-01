@@ -53,10 +53,13 @@ import com.google.gson.stream.JsonToken
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Book
+import compose.icons.fontawesomeicons.solid.CheckCircle
 import compose.icons.fontawesomeicons.solid.Download
 import compose.icons.fontawesomeicons.solid.ExternalLinkAlt
 import compose.icons.fontawesomeicons.solid.Link
 import compose.icons.fontawesomeicons.solid.Trash
+import database.AccormDatabase
+import database.DownloadsDataSource
 import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -591,7 +594,15 @@ fun DisplayNotesItem(
     val logoColor = parseColor(logoBg)
 
     var downloadDeleteConfirm by remember { mutableStateOf(false) }
+    var isDownloading by remember { mutableStateOf(false) }
+    var isDownloaded by remember { mutableStateOf(false) }
     var blockUser by remember { mutableStateOf(false) }
+
+    coroutineScope.launch {
+        val db = AccormDatabase.database
+        val download = DownloadsDataSource(db = db)
+        isDownloaded = download.checkDownloadExists(uniqueId)
+    }
 
     if (device == "Android" && !landscapeTablet) {
         Column(
@@ -874,6 +885,7 @@ fun DisplayNotesItem(
                     if (LoginStatus.getLoginStatus() && !isDownload && downloadIconColor != Color.Black) {
                         Button(
                             onClick = {
+                                isDownloading = true
                                 coroutineScope.launch {
                                     try {
                                         DownloadToInternal(
@@ -894,10 +906,13 @@ fun DisplayNotesItem(
                                         )
                                         msg = "File downloaded. Please access from Account."
                                         show = true
+                                        isDownloaded = true
+                                        isDownloading = false
                                     } catch (e: Exception) {
                                         msg = e.message.toString()
                                         show = true
                                         println(e.message)
+                                        isDownloading = false
                                     }
                                 }
 //                            coroutineScope.launch {
@@ -909,14 +924,26 @@ fun DisplayNotesItem(
                             modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
                             colors = ButtonDefaults.buttonColors(
                                 backgroundColor = Color.White
-                            )
+                            ),
+                            enabled = !isDownloaded && !isDownloading
                         ) {
-                            Image(
-                                imageVector = FontAwesomeIcons.Solid.Download,
-                                contentDescription = "Download",
-                                colorFilter = ColorFilter.tint(downloadIconColor),
-                                modifier = Modifier.size(15.dp)
-                            )
+                            if (!isDownloaded && !isDownloading) {
+                                Image(
+                                    imageVector = FontAwesomeIcons.Solid.Download,
+                                    contentDescription = "Download",
+                                    colorFilter = ColorFilter.tint(downloadIconColor),
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            } else if (isDownloading) {
+                                CircularProgressIndicator(color = Color.White)
+                            } else {
+                                Image(
+                                    imageVector = FontAwesomeIcons.Solid.CheckCircle,
+                                    contentDescription = "Download",
+                                    colorFilter = ColorFilter.tint(downloadIconColor),
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
                         }
                     }
 
@@ -927,7 +954,7 @@ fun DisplayNotesItem(
                             if (isDownload) {
                                 coroutineScope.launch {
                                     try {
-                                        launchDownload(uniqueid = uniqueId)
+                                        launchDownload(navigator = navigator, uniqueid = uniqueId)
                                     } catch (e: Exception) {
                                         msg = e.message.toString()
                                         show = true
@@ -1246,6 +1273,7 @@ fun DisplayNotesItem(
                     if (LoginStatus.getLoginStatus() && !isDownload && downloadIconColor != Color.Black) {
                         Button(
                             onClick = {
+                                isDownloading = true
                                 coroutineScope.launch {
                                     try {
                                         DownloadToInternal(
@@ -1266,24 +1294,39 @@ fun DisplayNotesItem(
                                         )
                                         msg = "File downloaded. Please access from Account."
                                         show = true
+                                        isDownloaded = true
+                                        isDownloading = false
                                     } catch (e: Exception) {
                                         msg = e.message.toString()
                                         show = true
                                         println(e.message)
+                                        isDownloading = false
                                     }
                                 }
                             },
                             modifier = Modifier.fillMaxWidth(0.2f).height(45.dp),
                             colors = ButtonDefaults.buttonColors(
                                 backgroundColor = Color.White
-                            )
+                            ),
+                            enabled = !isDownloaded && !isDownloading
                         ) {
-                            Image(
-                                imageVector = FontAwesomeIcons.Solid.Download,
-                                contentDescription = "Download",
-                                colorFilter = ColorFilter.tint(downloadIconColor),
-                                modifier = Modifier.size(15.dp)
-                            )
+                            if (!isDownloaded && !isDownloading) {
+                                Image(
+                                    imageVector = FontAwesomeIcons.Solid.Download,
+                                    contentDescription = "Download",
+                                    colorFilter = ColorFilter.tint(downloadIconColor),
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            } else if (isDownloading) {
+                                CircularProgressIndicator(color = Color.White)
+                            } else {
+                                Image(
+                                    imageVector = FontAwesomeIcons.Solid.CheckCircle,
+                                    contentDescription = "Download",
+                                    colorFilter = ColorFilter.tint(downloadIconColor),
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
                         }
 
 //                        Button(
@@ -1312,9 +1355,21 @@ fun DisplayNotesItem(
 
                     Button(
                         onClick = {
-                            CurrentSubject.setUrl(url)
-                            CurrentSubject.setUrlFileName(title)
-                            navigator.push(DisplayResourcePDF())
+                            if (isDownload) {
+                                coroutineScope.launch {
+                                    try {
+                                        launchDownload(navigator = navigator, uniqueid = uniqueId)
+                                    } catch (e: Exception) {
+                                        msg = e.message.toString()
+                                        show = true
+                                        println(e.message)
+                                    }
+                                }
+                            } else {
+                                CurrentSubject.setUrl(url)
+                                CurrentSubject.setUrlFileName(title)
+                                navigator.push(DisplayResourcePDF())
+                            }
                         },
                         modifier = Modifier.fillMaxWidth().height(45.dp),
                         colors = ButtonDefaults.buttonColors(

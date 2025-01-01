@@ -3,6 +3,7 @@ package screens.resources
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.core.content.FileProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -53,7 +54,7 @@ actual object FileManager {
         name: String,
         file1: String,
         file2: String
-    ) {
+    ) : List<BitmapPainter> {
         val file1Bytes = File(file1).readBytes()
         val file2Bytes = File(file2).readBytes()
 
@@ -80,6 +81,7 @@ actual object FileManager {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         }
         context?.startActivity(intent)
+        return emptyList()
     }
 
     actual suspend fun deleteFileFromStorage(file1: String, file2: String) {

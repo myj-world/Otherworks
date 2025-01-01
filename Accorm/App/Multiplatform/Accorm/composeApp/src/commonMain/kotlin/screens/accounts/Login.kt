@@ -19,6 +19,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -96,6 +97,7 @@ object Login : Tab {
         var loginResponse by remember { mutableStateOf("") }
         val navigator = LocalNavigator.currentOrThrow
         val coroutineScope = rememberCoroutineScope()
+        var isLoggingIn by remember { mutableStateOf(false) }
 
         suspend fun login(email: String, password: String) {
             loginResponse = ""
@@ -288,7 +290,8 @@ object Login : Tab {
                             unfocusedIndicatorColor = Color(0xFFacacf9),
                             disabledIndicatorColor = Color(0xFFacacf9)
                         ),
-                        maxLines = 1
+                        maxLines = 1,
+                        enabled = !isLoggingIn
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Image(
@@ -335,7 +338,8 @@ object Login : Tab {
                             disabledIndicatorColor = Color(0xFFacacf9)
                         ),
                         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        maxLines = 1
+                        maxLines = 1,
+                        enabled = !isLoggingIn
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Image(
@@ -362,6 +366,7 @@ object Login : Tab {
                 var callRetrieveData by remember { mutableStateOf(false) }
                 Button(
                     onClick = {
+                        isLoggingIn = true
                         if (validEmail && password.isNotEmpty()) {
                             coroutineScope.launch {
                                 try {
@@ -376,20 +381,27 @@ object Login : Tab {
                             }
                         } else if (!validEmail) {
                             loginResponse = "Invalid email"
+                            isLoggingIn = false
                         } else {
                             loginResponse = "Password cannot be empty"
+                            isLoggingIn = false
                         }
                     },
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
-                        .height(50.dp)
+                        .height(50.dp),
+                    enabled = !isLoggingIn
                 ) {
-                    Text(
-                        text = "Log In",
-                        color = Color.White,
-                        fontFamily = poppins,
-                        fontSize = 16.sp
-                    )
+                    if (!isLoggingIn) {
+                        Text(
+                            text = "Log In",
+                            color = Color.White,
+                            fontFamily = poppins,
+                            fontSize = 16.sp
+                        )
+                    } else {
+                        CircularProgressIndicator(color = Color.White)
+                    }
                 }
                 if (callRetrieveData) {
                     retrieveUserData(email)

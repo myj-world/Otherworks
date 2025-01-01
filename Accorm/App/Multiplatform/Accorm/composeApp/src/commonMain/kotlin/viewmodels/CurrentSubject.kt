@@ -1,10 +1,14 @@
 package viewmodels
 
+import androidx.compose.ui.graphics.painter.BitmapPainter
+
 object CurrentSubject {
     private var subject = ""
     private var url = ""
     private var urlFileName = ""
     private var setLevel = ""
+    private var downloadedImgs = listOf<BitmapPainter>()
+    private var isDownload = false
 
     fun getSubject(): String {
         return  subject
@@ -32,5 +36,19 @@ object CurrentSubject {
     }
     fun setUrlFileName (name: String) {
         urlFileName = name
+    }
+
+    fun getImages(): List<BitmapPainter> {
+        return downloadedImgs
+    }
+    fun setImages(images: List<BitmapPainter>) {
+        downloadedImgs = images
+    }
+
+    fun checkIsDownload(): Boolean {
+        return isDownload
+    }
+    fun updateIsDownload(status: Boolean) {
+        isDownload = status
     }
 }

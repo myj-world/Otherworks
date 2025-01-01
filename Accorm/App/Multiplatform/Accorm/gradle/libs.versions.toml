@@ -47,6 +47,8 @@ playServicesMeasurementApi = "22.1.2"
 composeIcons = "1.1.0"
 resources = "0.24.1"
 resourcesCompose = "0.24.1"
+review = "2.0.2"
+reviewKtx = "2.0.2"
 voyagerNavigator = "1.1.0-beta03"
 voyagerTabNavigator = "1.1.0-beta02"
 firebaseMessagingKtx = "24.1.0"
@@ -97,6 +99,8 @@ play-services-base = { module = "com.google.android.gms:play-services-base", ver
 play-services-measurement-api = { group = "com.google.android.gms", name = "play-services-measurement-api", version.ref = "playServicesMeasurementApi" }
 resources = { module = "dev.icerock.moko:resources", version.ref = "resources" }
 resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "resourcesCompose" }
+review = { module = "com.google.android.play:review", version.ref = "review" }
+review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "reviewKtx" }
 sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "androidDriver" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyagerNavigator" }
 voyager-tab-navigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyagerTabNavigator" }

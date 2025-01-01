@@ -65,6 +65,9 @@ kotlin {
 
             implementation(libs.firebase.messaging)
             implementation(libs.androidx.fragment.ktx)
+
+            implementation(libs.review)
+            implementation(libs.review.ktx)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

@@ -52,7 +52,8 @@ actual object FileManager {
         name: String,
         file1: String,
         file2: String
-    ) {
+    ) : List<BitmapPainter> {
+        println("CALLED")
         val file1Bytes = File(file1).readBytes()
         val file2Bytes = File(file2).readBytes()
         val tempFile = withContext(Dispatchers.IO) {
@@ -67,22 +68,25 @@ actual object FileManager {
             outputStream.close()
         }
 
-//        val pdf = Loader.loadPDF(tempFile)
-//        val pdfRenderer = PDFRenderer(pdf)
-//        val imgs = mutableListOf<BitmapPainter>()
-//        for (i in 0 until pdf.numberOfPages) {
-//            val image = pdfRenderer.renderImage(i)
-//            imgs.add(BitmapPainter(image.toImage().toComposeImageBitmap()))
-//        }
-        if (Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
-            withContext(Dispatchers.IO) {
-                Desktop.getDesktop().open(tempFile)
-            }
-        } else {
-            println("Desktop not supported")
+        val pdf = Loader.loadPDF(tempFile)
+        val pdfRenderer = PDFRenderer(pdf)
+        val imgs = mutableListOf<BitmapPainter>()
+        for (i in 0 until pdf.numberOfPages) {
+            val image = pdfRenderer.renderImage(i)
+            imgs.add(BitmapPainter(image.toImage().toComposeImageBitmap()))
         }
+//        if (Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+//            withContext(Dispatchers.IO) {
+//                Desktop.getDesktop().open(tempFile)
+//            }
+//        } else {
+//            println("Desktop not supported")
+//        }
+//
+//        delay(5000)
+        println(imgs)
 
-        delay(5000)
+        return imgs
     }
 
     actual suspend fun deleteFileFromStorage(file1: String, file2: String) {

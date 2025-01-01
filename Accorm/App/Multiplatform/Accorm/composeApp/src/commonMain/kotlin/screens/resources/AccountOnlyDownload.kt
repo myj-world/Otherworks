@@ -1,7 +1,11 @@
 package screens.resources
 
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import cafe.adriel.voyager.navigator.Navigator
 import database.AccormDatabase
 import database.DownloadsDataSource
+import screens.device
+import viewmodels.CurrentSubject
 
 suspend fun DownloadToInternal(
     uniqueid: Int,
@@ -59,6 +63,7 @@ suspend fun DownloadToInternal(
 }
 
 suspend fun launchDownload(
+    navigator: Navigator,
     uniqueid: Int
 ) {
     val db = AccormDatabase.database
@@ -67,12 +72,21 @@ suspend fun launchDownload(
         val downloadData = download.retrieveSpecificDownloadData(idToFind = uniqueid)
         println("Download Exists $downloadData")
 
-        FileManager.loadFileFromStorage(
+        val  images = FileManager.loadFileFromStorage(
             name = downloadData[0].title,
             file1 = downloadData[0].file1nameondisk,
             file2 = downloadData[0].file2nameondisk
         )
 
+        println(images)
+
+        if (device != "Android") {
+            CurrentSubject.updateIsDownload(true)
+            CurrentSubject.setImages(images)
+            println(CurrentSubject.checkIsDownload())
+            println(CurrentSubject.getImages())
+            navigator.push(DisplayResourcePDF())
+        }
     } else {
         println("Download does not exist")
         throw Exception("Download does not exist")
@@ -95,6 +109,6 @@ suspend fun deleteDownload(
 
 expect object FileManager {
     suspend fun downloadToAppStorage(link: String): List<String>
-    suspend fun loadFileFromStorage(name: String, file1: String, file2: String)
+    suspend fun loadFileFromStorage(name: String, file1: String, file2: String): List<BitmapPainter>
     suspend fun deleteFileFromStorage(file1: String, file2: String)
 }

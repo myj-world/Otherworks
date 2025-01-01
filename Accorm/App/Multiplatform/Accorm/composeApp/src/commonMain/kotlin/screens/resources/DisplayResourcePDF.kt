@@ -150,6 +150,8 @@ class DisplayResourcePDF : Tab, ScreenLifecycleOwner {
 //                        .padding(20.dp)
 //                )
 //            }
+            val isDownload = CurrentSubject.checkIsDownload()
+
             if (device == "Android") {
                 val url = CurrentSubject.getUrl()
                 val urlFileName = CurrentSubject.getUrlFileName()
@@ -166,12 +168,17 @@ class DisplayResourcePDF : Tab, ScreenLifecycleOwner {
                 }
             } else {
                 var isComplete by remember { mutableStateOf(false) }
-                coroutine.launch {
-                    data = desktopLoad(url = CurrentSubject.getUrl())
+                if (!isDownload) {
+                    coroutine.launch {
+                        data = desktopLoad(url = CurrentSubject.getUrl())
+                        isComplete = true
+                    }
+                } else {
+                    data = CurrentSubject.getImages()
                     isComplete = true
                 }
 
-                if (isComplete) {
+                if (isComplete && data.isNotEmpty()) {
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize(),
@@ -191,6 +198,15 @@ class DisplayResourcePDF : Tab, ScreenLifecycleOwner {
                             }
                         }
                     }
+                } else if (isComplete) {
+                    Text(
+                        text = "An error occurred.",
+                        color = Color.Red,
+                        fontFamily = poppins,
+                        fontSize = 30.sp,
+                        modifier = Modifier
+                            .padding(20.dp)
+                    )
                 } else {
                     CircularProgressIndicator(
                         color = Color.White
@@ -202,6 +218,8 @@ class DisplayResourcePDF : Tab, ScreenLifecycleOwner {
 
     override fun onDispose(screen: Screen) {
         CurrentSubject.setUrl("")
+        CurrentSubject.setImages(emptyList())
+        CurrentSubject.updateIsDownload(false)
         super.onDispose(screen)
     }
 }
