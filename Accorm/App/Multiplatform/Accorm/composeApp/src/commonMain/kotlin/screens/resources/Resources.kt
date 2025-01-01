@@ -169,7 +169,7 @@ object Resources : Tab {
                 }
 
                 "IGCSE / O Level" -> {
-                    LogEvent("Subjects_IGCSE O Level")
+                    LogEvent("Subjects_IGCSE O Level", null, null)
                     Subject(
                         title = "Accounting",
                         code = "0452/7077",
@@ -272,7 +272,7 @@ object Resources : Tab {
                 }
 
                 "AS" -> {
-                    LogEvent("Subjects_AS")
+                    LogEvent("Subjects_AS", null, null)
                     Subject(
                         title = "Maths",
                         code = "9709",
@@ -321,7 +321,7 @@ object Resources : Tab {
                 }
 
                 "A2" -> {
-                    LogEvent("Subjects_A2")
+                    LogEvent("Subjects_A2", null, null)
                     Subject(
                         title = "Maths",
                         code = "9709",

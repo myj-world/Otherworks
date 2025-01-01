@@ -11,6 +11,6 @@ actual fun LogEvent(
     resourceName: String?
 ) {
     LaunchedEffect(Unit) {
-        if (uniqueId != null) getResponse("")
+        if (uniqueId != null) getResponse("https://example.com")
     }
 }

@@ -63,7 +63,7 @@ object PPQs : Tab {
 
     @Composable
     override fun Content() {
-        LogEvent("Load PPQs ${CurrentSubject.getSubject()}")
+        LogEvent("Load PPQs ${CurrentSubject.getSubject()}", null, null)
 
         Column(
             modifier = Modifier

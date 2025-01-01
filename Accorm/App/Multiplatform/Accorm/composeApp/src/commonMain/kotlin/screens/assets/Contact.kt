@@ -46,7 +46,7 @@ object Contact: Tab {
 
     @Composable
     override fun Content() {
-        LogEvent("Contact: ${CurrentEmailName.getName()}")
+        LogEvent("Contact: ${CurrentEmailName.getName()}", null, null)
         if (device == "Android" && !landscapeTablet) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,

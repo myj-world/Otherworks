@@ -74,7 +74,7 @@ object Syllabus : Tab {
 
     @Composable
     override fun Content() {
-        LogEvent("Load syllabus ${CurrentSubject.getSubject()}")
+        LogEvent("Load syllabus ${CurrentSubject.getSubject()}", null, null)
 
         val navigator = LocalNavigator.currentOrThrow
         var subjectRetrieve by remember {

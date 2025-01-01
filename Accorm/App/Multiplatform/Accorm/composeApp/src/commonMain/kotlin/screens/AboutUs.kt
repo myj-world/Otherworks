@@ -75,7 +75,7 @@ object AboutUs : Tab {
 
     @Composable
     override fun Content() {
-        LogEvent("About Us")
+        LogEvent("About Us", null, null)
 
         Column(
             modifier = Modifier

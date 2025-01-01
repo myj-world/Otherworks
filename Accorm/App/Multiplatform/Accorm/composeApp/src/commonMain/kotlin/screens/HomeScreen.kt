@@ -87,7 +87,7 @@ object HomeScreen : Tab {
 
     @Composable
     override fun Content() {
-        LogEvent("Home Screen")
+        LogEvent("Home Screen", null, null)
 //    Main Outer Container
         Column(
             modifier = Modifier

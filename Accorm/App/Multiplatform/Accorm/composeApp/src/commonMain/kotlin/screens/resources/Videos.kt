@@ -81,7 +81,7 @@ object Videos : Tab {
 
     @Composable
     override fun Content() {
-        LogEvent("Load videos ${CurrentSubject.getSubject()}")
+        LogEvent("Load videos ${CurrentSubject.getSubject()}", null, null)
 
         val navigator = LocalNavigator.currentOrThrow
         var subjectRetrieve by remember {
@@ -436,8 +436,6 @@ object Videos : Tab {
                         )
                     }
 
-                    itemList.removeAt(0)
-
                     if (LoginStatus.getLoginStatus()) {
                         itemList.sortBy { it.chapter.toIntOrNull() }
                         val tempList1 = mutableListOf<VideoItem>()
@@ -494,21 +492,23 @@ object Videos : Tab {
                             Spacer(modifier = Modifier.height(10.dp))
                         }
 
-                        DisplayVideosItem(
-                            subjectRetrieve = subjectRetrieve,
-                            uniqueId = item.uniqueId,
-                            logo = item.logo,
-                            logoColor = parseColor(item.logoBg),
-                            chapter = item.chapter,
-                            publisher = item.publisher,
-                            title = item.title,
-                            description = item.description,
-                            specification = item.specification,
-                            source = item.source,
-                            published = item.published,
-                            url = item.url
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
+                        if (item.uniqueId != 111111111) {
+                            DisplayVideosItem(
+                                subjectRetrieve = subjectRetrieve,
+                                uniqueId = item.uniqueId,
+                                logo = item.logo,
+                                logoColor = parseColor(item.logoBg),
+                                chapter = item.chapter,
+                                publisher = item.publisher,
+                                title = item.title,
+                                description = item.description,
+                                specification = item.specification,
+                                source = item.source,
+                                published = item.published,
+                                url = item.url
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                        }
                     }
                     if (itemList.isEmpty()) {
                         Text(
@@ -714,9 +714,11 @@ fun DisplayVideosItem(
                     var show by remember { mutableStateOf(false) }
 
                     if (shouldCopy) {
-                        val shareUrl by remember { mutableStateOf(
-                            "https://accorm.ginastic.co/view/v/?s=$subjectRetrieve&id=$uniqueId"
-                        ) }
+                        val shareUrl by remember {
+                            mutableStateOf(
+                                "https://accorm.ginastic.co/view/v/?s=$subjectRetrieve&id=$uniqueId"
+                            )
+                        }
 
                         Copy(shareUrl)
                         show = true
@@ -765,10 +767,15 @@ fun DisplayVideosItem(
 
                     Spacer(modifier = Modifier.width(5.dp))
 
+                    var reportAnalytics by remember { mutableStateOf(false) }
+                    if (reportAnalytics) {
+                        LogEvent("Open notes $uniqueId ${CurrentSubject.getSubject()}", uniqueId, CurrentSubject.getSubject())
+                    }
                     Button(
                         onClick = {
                             CurrentSubject.setUrl(url)
                             navigator.push(DisplayResourceExternal())
+                            reportAnalytics = true
                         },
                         modifier = Modifier.fillMaxWidth().height(45.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -927,9 +934,11 @@ fun DisplayVideosItem(
                     var show by remember { mutableStateOf(false) }
 
                     if (shouldCopy) {
-                        val shareUrl by remember { mutableStateOf(
-                            "https://accorm.ginastic.co/view/v/?s=$subjectRetrieve&id=$uniqueId"
-                        ) }
+                        val shareUrl by remember {
+                            mutableStateOf(
+                                "https://accorm.ginastic.co/view/v/?s=$subjectRetrieve&id=$uniqueId"
+                            )
+                        }
 
                         Copy(shareUrl)
                         show = true
@@ -978,10 +987,16 @@ fun DisplayVideosItem(
 
                     Spacer(modifier = Modifier.width(5.dp))
 
+                    var reportAnalytics by remember { mutableStateOf(false) }
+                    if (reportAnalytics) {
+                        LogEvent("Open notes $uniqueId ${CurrentSubject.getSubject()}", uniqueId, CurrentSubject.getSubject())
+                    }
+
                     Button(
                         onClick = {
                             CurrentSubject.setUrl(url)
                             navigator.push(DisplayResourceExternal())
+                            reportAnalytics = true
                         },
                         modifier = Modifier.fillMaxWidth().height(45.dp),
                         colors = ButtonDefaults.buttonColors(

@@ -51,7 +51,7 @@ object Services : Tab {
 
     @Composable
     override fun Content() {
-        LogEvent("Services")
+        LogEvent("Services", null, null)
 
         Column (
             modifier = Modifier

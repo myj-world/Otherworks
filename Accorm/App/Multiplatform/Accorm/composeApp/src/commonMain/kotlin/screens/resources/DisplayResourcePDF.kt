@@ -62,7 +62,7 @@ class DisplayResourcePDF : Tab, ScreenLifecycleOwner {
 
     @Composable
     override fun Content() {
-        LogEvent("Load Resource ${CurrentSubject.getUrl()}")
+        LogEvent("Load Resource ${CurrentSubject.getUrl()}", null, null)
         Column(
             modifier = Modifier
                 .fillMaxSize()

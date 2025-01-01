@@ -80,7 +80,7 @@ object Blogs : Tab {
 
     @Composable
     override fun Content() {
-        LogEvent("Load Notes ${CurrentSubject.getSubject()}")
+        LogEvent("Load Blogs", null, null)
 
         val navigator = LocalNavigator.currentOrThrow
 

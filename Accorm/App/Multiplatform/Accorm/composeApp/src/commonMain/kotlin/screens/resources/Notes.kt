@@ -85,7 +85,7 @@ object Notes : Tab {
 
     @Composable
     override fun Content() {
-        LogEvent("Load Notes ${CurrentSubject.getSubject()}")
+        LogEvent("Load Notes ${CurrentSubject.getSubject()}", null, null)
 
         val navigator = LocalNavigator.currentOrThrow
         var subjectRetrieve by remember {
@@ -442,8 +442,6 @@ object Notes : Tab {
                         )
                     }
 
-                    itemList.removeAt(0)
-
                     if (LoginStatus.getLoginStatus()) {
                         itemList.sortBy { it.chapter.toIntOrNull() }
                         val tempList1 = mutableListOf<Item>()
@@ -500,22 +498,24 @@ object Notes : Tab {
                             Spacer(modifier = Modifier.height(10.dp))
                         }
 
-                        DisplayNotesItem(
-                            subjectRetrieve = subjectRetrieve,
-                            uniqueId = item.uniqueId,
-                            logo = item.logo,
-                            logoBg = item.logoBg,
-                            chapter = item.chapter,
-                            publisher = item.publisher,
-                            title = item.title,
-                            description = item.description,
-                            specification = item.specification,
-                            published = item.published,
-                            url = item.url,
-                            credit = item.credit,
-                            creditUrl = item.creditUrl
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
+                        if (item.uniqueId != 111111111) {
+                            DisplayNotesItem(
+                                subjectRetrieve = subjectRetrieve,
+                                uniqueId = item.uniqueId,
+                                logo = item.logo,
+                                logoBg = item.logoBg,
+                                chapter = item.chapter,
+                                publisher = item.publisher,
+                                title = item.title,
+                                description = item.description,
+                                specification = item.specification,
+                                published = item.published,
+                                url = item.url,
+                                credit = item.credit,
+                                creditUrl = item.creditUrl
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                        }
                     }
 
                     if (itemList.isEmpty()) {
@@ -949,6 +949,11 @@ fun DisplayNotesItem(
 
                     Spacer(modifier = Modifier.width(5.dp))
 
+                    var reportAnalytics by remember { mutableStateOf(false) }
+                    if (reportAnalytics) {
+                        LogEvent("Open notes $uniqueId ${CurrentSubject.getSubject()}", uniqueId, CurrentSubject.getSubject())
+                        reportAnalytics = false
+                    }
                     Button(
                         onClick = {
                             if (isDownload) {
@@ -966,6 +971,7 @@ fun DisplayNotesItem(
                                 CurrentSubject.setUrlFileName(title)
                                 navigator.push(DisplayResourcePDF())
                             }
+                            reportAnalytics = true
                         },
                         modifier = Modifier.fillMaxWidth().height(45.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -1353,6 +1359,11 @@ fun DisplayNotesItem(
 
                     Spacer(modifier = Modifier.width(5.dp))
 
+                    var reportAnalytics by remember { mutableStateOf(false) }
+                    if (reportAnalytics) {
+                        LogEvent("Open notes $uniqueId ${CurrentSubject.getSubject()}", uniqueId, CurrentSubject.getSubject())
+                        reportAnalytics = false
+                    }
                     Button(
                         onClick = {
                             if (isDownload) {
@@ -1370,6 +1381,7 @@ fun DisplayNotesItem(
                                 CurrentSubject.setUrlFileName(title)
                                 navigator.push(DisplayResourcePDF())
                             }
+                            reportAnalytics = true
                         },
                         modifier = Modifier.fillMaxWidth().height(45.dp),
                         colors = ButtonDefaults.buttonColors(
