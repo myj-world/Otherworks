@@ -15,7 +15,7 @@ actual fun LogEvent(
     subject: String?
 ) {
     LaunchedEffect(Unit) {
-        if (uniqueId != null) getResponse("https://example.com")
+        if (uniqueId != null) getResponse("https://accorm.ginastic.co/300/analytics/opens/?access-id=594igfk54&subject=$subject&unique-id=$uniqueId")
     }
     val nameMod = "${name.replace(" ", "_")}_Accorm_Android"
 

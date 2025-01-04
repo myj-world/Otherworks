@@ -9,3 +9,4 @@ Login: https://accorm.ginastic.co/300/login/?access-id=w943vf3h9&email=[ email u
 User Data: https://accorm.ginastic.co/300/login/UserData/?access-id=4954kvti4&unique-id=[unique_id]
 Data at id of subject: https://accorm.ginastic.co/300/login/RsrcsData/?access-id=230gri5q4&unique-id=[ unique_id ]&subject=[ subject ]
 Check network connection: https://accorm.ginastic.co/300/true/
+Analytics for opens: accorm.ginastic.co/300/analytics/opens/?access-id=594igfk54&subject=[ subject ]&unique-id=[ unique_id ]
