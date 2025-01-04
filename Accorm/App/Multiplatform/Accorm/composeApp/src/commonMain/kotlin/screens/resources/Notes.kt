@@ -482,6 +482,7 @@ object Notes : Tab {
                     }
 
                     var previousChapter = ""
+                    var removeItem  = Item()
 
                     itemList.forEach { item ->
                         if (previousChapter != item.chapter && LoginStatus.getLoginStatus()) {
@@ -498,7 +499,7 @@ object Notes : Tab {
                             Spacer(modifier = Modifier.height(10.dp))
                         }
 
-                        if (item.uniqueId != 111111111) {
+                        if (item.title != "Sample Notes") {
                             DisplayNotesItem(
                                 subjectRetrieve = subjectRetrieve,
                                 uniqueId = item.uniqueId,
@@ -515,7 +516,13 @@ object Notes : Tab {
                                 creditUrl = item.creditUrl
                             )
                             Spacer(modifier = Modifier.height(10.dp))
+                        } else {
+                            removeItem = item
                         }
+                    }
+
+                    if (removeItem.uniqueId != 111111111) {
+                        itemList.remove(removeItem)
                     }
 
                     if (itemList.isEmpty()) {

@@ -476,6 +476,7 @@ object Videos : Tab {
                     }
 
                     var previousChapter = ""
+                    var removeItem  = VideoItem()
 
                     itemList.forEach { item ->
                         if (previousChapter != item.chapter && LoginStatus.getLoginStatus()) {
@@ -492,7 +493,7 @@ object Videos : Tab {
                             Spacer(modifier = Modifier.height(10.dp))
                         }
 
-                        if (item.uniqueId != 111111111) {
+                        if (item.title != "Sample Video") {
                             DisplayVideosItem(
                                 subjectRetrieve = subjectRetrieve,
                                 uniqueId = item.uniqueId,
@@ -508,8 +509,17 @@ object Videos : Tab {
                                 url = item.url
                             )
                             Spacer(modifier = Modifier.height(10.dp))
+                        } else {
+                            removeItem = item
                         }
                     }
+
+
+
+                    if (removeItem.uniqueId != 111111111) {
+                        itemList.remove(removeItem)
+                    }
+
                     if (itemList.isEmpty()) {
                         Text(
                             text = "No Internet Connection!",
