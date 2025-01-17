@@ -105,23 +105,10 @@ object PPQs : Tab {
                     "ESL" -> "0510"
                     else -> "0580/4024"
                 }
-                subjectRetrieve = when (CurrentSubject.getSubject()) {
-                    "Islamiyat" -> "islamiyat"
-                    "History" -> "history"
-                    "Geography" -> "geography"
-                    "Accounting" -> "accounting"
-                    "Physics" -> "physics"
-                    "Chemistry" -> "chemistry"
-                    "Biology" -> "biology"
-                    "CS" -> "cs"
-                    "FLE" -> "fle"
-                    "ESL" -> "esl"
-                    else -> "maths"
-                }
                 codeRetrieve = when (CurrentSubject.getSubject()) {
                     "Islamiyat" -> "0493"
-                    "History" -> "04481"
-                    "Geography" -> "04482"
+                    "History" -> "0448"
+                    "Geography" -> "0448"
                     "Accounting" -> "0452"
                     "Physics" -> "0625"
                     "Chemistry" -> "0620"
@@ -131,17 +118,20 @@ object PPQs : Tab {
                     "ESL" -> "0510"
                     else -> "0580"
                 }
+                subjectRetrieve = when (CurrentSubject.getSubject()) {
+                    "CS" -> "Computer-Science-$codeRetrieve"
+                    "Maths" -> "Mathematics-$codeRetrieve"
+                    "FLE" -> "English-First-Language-$codeRetrieve"
+                    "ESL" -> "English-Second-Language-oral-endorsement-$codeRetrieve"
+                    "Islamiyat" -> "Islamiyat%20-%20-$codeRetrieve"
+                    "History" -> "Pakistan-Studies-$codeRetrieve"
+                    "Geography" -> "Pakistan-Studies-$codeRetrieve"
+                    else -> "${CurrentSubject.getSubject()}-$codeRetrieve"
+                }
                 levelRetrieve = "IGCSE"
 
                 println("Tests $subjectRetrieve $subjectCode")
             } else {
-                subjectRetrieve = when (CurrentSubject.getSubject()) {
-                    "Physics" -> "physics"
-                    "Chemistry" -> "chemistry"
-                    "Biology" -> "biology"
-                    "CS" -> "cs"
-                    else -> "maths"
-                }
                 subjectCode = when (CurrentSubject.getSubject()) {
                     "Physics" -> "9702"
                     "Chemistry" -> "9701"
@@ -150,7 +140,12 @@ object PPQs : Tab {
                     else -> "9709"
                 }
                 codeRetrieve = subjectCode
-                levelRetrieve = level
+                subjectRetrieve = when (CurrentSubject.getSubject()) {
+                    "Maths" -> "Mathematics-$codeRetrieve"
+                    "CS" -> "Computer%20Science%20(for%20first%20examination%20in%202021)%20($codeRetrieve)"
+                    else -> "${CurrentSubject.getSubject()}-$codeRetrieve"
+                }
+                levelRetrieve = "A-Level"
 
                 println("Tests $subjectRetrieve $subjectCode")
             }
@@ -527,127 +522,6 @@ object PPQs : Tab {
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
-
-//                    if (device != "Android" || landscapeTablet) {
-//                        Row(
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .clip(RoundedCornerShape(20.dp))
-//                                .background(Color(138, 138, 250))
-//                                .padding(20.dp),
-//                            verticalAlignment = Alignment.CenterVertically,
-//                            horizontalArrangement = Arrangement.SpaceBetween
-//                        ) {
-//                            Text(
-//                                text = title,
-//                                color = Color.White,
-//                                fontFamily = poppins,
-//                                fontSize = 20.sp
-//                            )
-//                            Row {
-//                                Button(
-//                                    onClick = {
-//                                        CurrentSubject.setUrl(msLink)
-//                                        CurrentSubject.setUrlFileName(title)
-//                                        navigator.push(DisplayResourcePDF())
-//                                    },
-//                                    colors = ButtonDefaults.buttonColors(
-//                                        backgroundColor = Color(108, 108, 221)
-//                                    ),
-//                                    modifier = Modifier
-//                                        .clip(RoundedCornerShape(20.dp))
-//                                ) {
-//                                    Text(
-//                                        text = "MS",
-//                                        color = Color.White,
-//                                        fontFamily = poppins,
-//                                        fontSize = 16.sp
-//                                    )
-//                                }
-//                                Spacer(modifier = Modifier.width(10.dp))
-//                                Button(
-//                                    onClick = {
-//                                        CurrentSubject.setUrl(qpLink)
-//                                        CurrentSubject.setUrlFileName(title)
-//                                        navigator.push(DisplayResourcePDF())
-//                                    },
-//                                    colors = ButtonDefaults.buttonColors(
-//                                        backgroundColor = Color(160, 160, 243)
-//                                    ),
-//                                    modifier = Modifier
-//                                        .clip(RoundedCornerShape(20.dp))
-//                                ) {
-//                                    Text(
-//                                        text = "QP",
-//                                        color = Color.White,
-//                                        fontFamily = poppins,
-//                                        fontSize = 16.sp
-//                                    )
-//                                }
-//                            }
-//                        }
-//                        Spacer(modifier = Modifier.height(20.dp))
-//                    } else {
-//                        Column(
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .clip(RoundedCornerShape(20.dp))
-//                                .background(Color(138, 138, 250))
-//                                .padding(20.dp),
-//                            verticalArrangement = Arrangement.Center,
-//                            horizontalAlignment = Alignment.CenterHorizontally
-//                        ) {
-//                            Text(
-//                                text = title,
-//                                color = Color.White,
-//                                fontFamily = poppins,
-//                                fontSize = 20.sp
-//                            )
-//                            Spacer(modifier = Modifier.height(20.dp))
-//                            Button(
-//                                onClick = {
-//                                    CurrentSubject.setUrl(msLink)
-//                                    CurrentSubject.setUrlFileName(title)
-//                                    navigator.push(DisplayResourcePDF())
-//                                },
-//                                colors = ButtonDefaults.buttonColors(
-//                                    backgroundColor = Color(108, 108, 221)
-//                                ),
-//                                modifier = Modifier
-//                                    .clip(RoundedCornerShape(20.dp))
-//                                    .fillMaxWidth()
-//                            ) {
-//                                Text(
-//                                    text = "MS",
-//                                    color = Color.White,
-//                                    fontFamily = poppins,
-//                                    fontSize = 16.sp
-//                                )
-//                            }
-//                            Spacer(modifier = Modifier.height(10.dp))
-//                            Button(
-//                                onClick = {
-//                                    CurrentSubject.setUrl(qpLink)
-//                                    CurrentSubject.setUrlFileName(title)
-//                                    navigator.push(DisplayResourcePDF())
-//                                },
-//                                colors = ButtonDefaults.buttonColors(
-//                                    backgroundColor = Color(160, 160, 243)
-//                                ),
-//                                modifier = Modifier
-//                                    .clip(RoundedCornerShape(20.dp))
-//                                    .fillMaxWidth()
-//                            ) {
-//                                Text(
-//                                    text = "QP",
-//                                    color = Color.White,
-//                                    fontFamily = poppins,
-//                                    fontSize = 16.sp
-//                                )
-//                            }
-//                        }
-//                        Spacer(modifier = Modifier.height(20.dp))
-//                    }
                 }
 
                 val papers = KnowPapersBySubject(CurrentSubject.getSubject(), CurrentSubject.getLevel())
@@ -671,13 +545,15 @@ object PPQs : Tab {
                             val yearRetrieve = year.toString().substring(2, 4)
                             val sessionRetrieve =
                                 if (session == "May/June") "s" else if (session == "Oct/Nov") "w" else "m"
+                            val sessionDirectoryRetrieve =
+                                if (session == "May/June") "May-June" else "Oct-Nov"
 
                             Paper(
                                 title = "$subjectCode ${CurrentSubject.getSubject()} - Paper $paper",
                                 session = session,
                                 year = year.toString(),
-                                qpLink = "https://accorm.ginastic.co/200/$levelRetrieve/$subjectRetrieve/QP/" + codeRetrieve + "_" + sessionRetrieve + yearRetrieve + "_qp_$paper.pdf",
-                                msLink = "https://accorm.ginastic.co/200/$levelRetrieve/$subjectRetrieve/MS/" + codeRetrieve + "_" + sessionRetrieve + yearRetrieve + "_ms_$paper.pdf"
+                                qpLink = "https://pastpapers.co/cie/$levelRetrieve/$subjectRetrieve/$year-$sessionDirectoryRetrieve/" + codeRetrieve + "_" + sessionRetrieve + yearRetrieve + "_qp_$paper.pdf",
+                                msLink = "https://pastpapers.co/cie/$levelRetrieve/$subjectRetrieve/$year-$sessionDirectoryRetrieve/" + codeRetrieve + "_" + sessionRetrieve + yearRetrieve + "_ms_$paper.pdf",
                             )
                         }
                     }

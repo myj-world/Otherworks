@@ -165,6 +165,8 @@ fun KnowYearsBySubject(subject: String): IntRange {
 
 fun KnowSessionsBySubject(subject: String): List<String> {
     return when(subject) {
+        "History" -> listOf("May/June")
+        "Geography" -> listOf("May/June")
         else -> listOf("May/June", "Oct/Nov")
     }
 }
