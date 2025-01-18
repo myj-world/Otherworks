@@ -107,6 +107,7 @@ class MainActivity : ComponentActivity() {
                 var show by remember { mutableStateOf(true) }
                 var agreedReview by remember { mutableStateOf(false) }
                 var displayThanks by remember { mutableStateOf(false) }
+                var errorOccurred by remember { mutableStateOf(false) }
 
                 if (show) {
                     AlertDialog(
@@ -186,6 +187,7 @@ class MainActivity : ComponentActivity() {
                                 (task.exception as ReviewException).errorCode
                             println(reviewErrorCode)
                             reviewMessageDismissed = true
+                            errorOccurred = true
                         }
                     }
                 }
@@ -222,6 +224,46 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 Text(
                                     text = "You're welcome",
+                                    fontSize = 18.sp,
+                                    fontFamily = poppins,
+                                    color = Color(0xFFffffff)
+                                )
+                            }
+                        },
+                        backgroundColor = Color.White
+                    )
+                } else if (errorOccurred) {
+                    AlertDialog(
+                        onDismissRequest = {
+                            displayThanks = false
+                        },
+                        title = {
+                            Text(
+                                text = "Error Posting Review.",
+                                fontSize = 20.sp,
+                                fontFamily = poppins,
+                                color = Color(0xFF181829)
+                            )
+                        },
+                        text = {
+                            Text(
+                                text = "Please try again later.",
+                                fontSize = 18.sp,
+                                fontFamily = poppins,
+                                color = Color(0xFF1f1f36)
+                            )
+                        },
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    displayThanks = false
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = Color(0xFF1f1f36)
+                                )
+                            ) {
+                                Text(
+                                    text = "Ok",
                                     fontSize = 18.sp,
                                     fontFamily = poppins,
                                     color = Color(0xFFffffff)

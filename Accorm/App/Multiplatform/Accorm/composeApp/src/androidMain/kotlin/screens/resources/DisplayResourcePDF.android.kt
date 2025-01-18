@@ -2,6 +2,8 @@ package screens.resources
 
 import android.content.Intent
 import android.os.Environment
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,12 +13,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.rajat.pdfviewer.compose.PdfRendererViewCompose
 //import com.squareup.okhttp.OkHttpClient
 //import com.squareup.okhttp.Request
 import kotlinx.coroutines.Dispatchers
@@ -69,11 +73,7 @@ actual fun openFile(title: String, url: String): Boolean {
         mutableStateOf<ByteArray?>(null)
     }
     val mutex = Mutex()
-    val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
 
-    val file = File.createTempFile("Accorm"+title.filter { it.isLetterOrDigit() }, ".pdf")
-    file.deleteOnExit()
     LaunchedEffect(true) {
         try {
             val contentLength: Long?
@@ -90,29 +90,7 @@ actual fun openFile(title: String, url: String): Boolean {
                     body?.bytes()
                 }
             }
-            coroutineScope.launch {
-                withContext(Dispatchers.IO) {
-                    mutex.withLock {
-                        FileOutputStream(file).use { output ->
-                            output.write(response)
-                        }
-                    }
-                    println("File downloaded")
-                    println(file.length())
-                    val pdfUri = FileProvider.getUriForFile(context, "com.yousufjamil.accorm.provider", file)
-
-                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                        setDataAndType(pdfUri, "application/pdf")
-                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    }
-                    context.startActivity(intent)
-
-                    display = true
-                }
-            }
-
-//            file.writeBytes(response)
+            display = true
 
             if (body?.contentType().toString() != "application/pdf") {
                 println("Not a pdf")
@@ -133,8 +111,21 @@ actual fun openFile(title: String, url: String): Boolean {
     }
 
     if (display && !error) {
+        val file = File.createTempFile("Accorm"+title.filter { it.isLetterOrDigit() }, ".pdf")
+        file.writeBytes(response!!)
+
         val navigator = LocalNavigator.currentOrThrow
-        navigator.pop()
+
+        println(file.exists())
+        PdfRendererViewCompose(
+            file = file,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        BackHandler {
+            file.deleteOnExit()
+            navigator.pop()
+        }
     } else if (!error) {
         CircularProgressIndicator(color = Color.White)
     } else {

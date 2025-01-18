@@ -19,7 +19,7 @@ plugins {
 }
 
 group = "accorm"
-version = "2.3.2"
+version = "2.3.3"
 
 kotlin {
     androidTarget {
@@ -68,6 +68,8 @@ kotlin {
 
             implementation(libs.review)
             implementation(libs.review.ktx)
+
+            implementation(libs.pdf.viewer)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -122,8 +124,8 @@ android {
         applicationId = "com.yousufjamil.accorm"
         minSdk = 23
         targetSdk = 35
-        versionCode = 32
-        versionName = "2.3.2"
+        versionCode = 33
+        versionName = "2.3.3"
     }
     packaging {
         resources {
@@ -161,7 +163,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Accorm"
-            packageVersion = "2.3.2"
+            packageVersion = "2.3.3"
             description = "Accorm Desktop App"
             copyright = "Copyright © 2023-2024 Accorm"
             windows {

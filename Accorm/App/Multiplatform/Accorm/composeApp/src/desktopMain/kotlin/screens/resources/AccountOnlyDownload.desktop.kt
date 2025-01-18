@@ -29,7 +29,7 @@ actual object FileManager {
             val response1 = response.copyOfRange(0, response.size / 2)
             val response2 = response.copyOfRange(response.size / 2, response.size)
 
-            val downloadsDir = System.getProperty("user.dir") + "/Accorm/AppData"
+            val downloadsDir = System.getProperty("user.home") + "/Accorm/AppData"
             val file1 = File(downloadsDir, "file1${System.currentTimeMillis()}.pdf")
             val file2 = File(downloadsDir, "file2${System.currentTimeMillis()}.pdf")
             file1.parentFile?.mkdirs()
