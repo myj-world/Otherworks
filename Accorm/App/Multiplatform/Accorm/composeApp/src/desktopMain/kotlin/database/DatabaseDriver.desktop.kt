@@ -9,10 +9,12 @@ actual object DatabaseDriverFactory {
     actual fun create(): SqlDriver {
 //        val driver: SqlDriver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
         val dbFile = File(System.getProperty("user.home"), "/Accorm/Database/accorm.db")
-        dbFile.parentFile.mkdirs()
-        dbFile.createNewFile()
         val driver: SqlDriver = JdbcSqliteDriver(url = "jdbc:sqlite:${dbFile.absolutePath}")
-        Accorm.Schema.create(driver)
+        if (!dbFile.exists()) {
+            dbFile.parentFile.mkdirs()
+            dbFile.createNewFile()
+            Accorm.Schema.create(driver)
+        }
         return driver
     }
 }
