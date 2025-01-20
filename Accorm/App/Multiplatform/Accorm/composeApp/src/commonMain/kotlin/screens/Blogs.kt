@@ -332,13 +332,43 @@ object Blogs : Tab {
                                 }
 
                                 if (show) {
-                                    AlertDialog(onDismissRequest = { show = false },
-                                        title = { Text(msg) },
+                                    AlertDialog(
+                                        onDismissRequest = {
+                                            show = false
+                                        },
+                                        title = {
+                                            Text(
+                                                text = "Copied to Clipboard",
+                                                fontSize = 20.sp,
+                                                fontFamily = poppins,
+                                                color = Color(0xFF181829)
+                                            )
+                                        },
+                                        text = {
+                                            Text(
+                                                text = msg,
+                                                fontSize = 18.sp,
+                                                fontFamily = poppins,
+                                                color = Color(0xFF1f1f36)
+                                            )
+                                        },
                                         confirmButton = {
-                                            Button(onClick = { show = false }) {
-                                                Text("OK")
+                                            Button(
+                                                onClick = { show = false },
+                                                colors = ButtonDefaults.buttonColors(
+                                                    backgroundColor = Color(0xFF1f1f36)
+                                                )
+                                            ) {
+                                                Text(
+                                                    text = "Read to share!",
+                                                    fontSize = 18.sp,
+                                                    fontFamily = poppins,
+                                                    color = Color(0xFFffffff)
+                                                )
                                             }
-                                        })
+                                        },
+                                        backgroundColor = Color.White
+                                    )
                                 }
 
                                 Spacer(modifier = Modifier.width(5.dp))
@@ -521,13 +551,43 @@ object Blogs : Tab {
                                 }
 
                                 if (show) {
-                                    AlertDialog(onDismissRequest = { show = false },
-                                        title = { Text(msg) },
+                                    AlertDialog(
+                                        onDismissRequest = {
+                                            show = false
+                                        },
+                                        title = {
+                                            Text(
+                                                text = "Copied to Clipboard",
+                                                fontSize = 20.sp,
+                                                fontFamily = poppins,
+                                                color = Color(0xFF181829)
+                                            )
+                                        },
+                                        text = {
+                                            Text(
+                                                text = msg,
+                                                fontSize = 18.sp,
+                                                fontFamily = poppins,
+                                                color = Color(0xFF1f1f36)
+                                            )
+                                        },
                                         confirmButton = {
-                                            Button(onClick = { show = false }) {
-                                                Text("OK")
+                                            Button(
+                                                onClick = { show = false },
+                                                colors = ButtonDefaults.buttonColors(
+                                                    backgroundColor = Color(0xFF1f1f36)
+                                                )
+                                            ) {
+                                                Text(
+                                                    text = "Read to share!",
+                                                    fontSize = 18.sp,
+                                                    fontFamily = poppins,
+                                                    color = Color(0xFFffffff)
+                                                )
                                             }
-                                        })
+                                        },
+                                        backgroundColor = Color.White
+                                    )
                                 }
 
                                 Spacer(modifier = Modifier.width(5.dp))

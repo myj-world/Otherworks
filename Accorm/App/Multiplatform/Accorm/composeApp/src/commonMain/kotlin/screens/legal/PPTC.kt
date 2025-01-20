@@ -95,7 +95,7 @@ object PPTC : Tab {
                 fontFamily = poppins,
                 fontWeight = FontWeight.Bold
             )
-            body("Last Updated: 24/09/24")
+            body("Last Updated: 20/01/25")
             Spacer(Modifier.height(20.dp))
             body("Accorm is a sub-service of Ginastic, and all the Ginastic Terms & Conditions, and Privacy Policies apply to Accorm")
             subHeading("Introduction")
@@ -144,6 +144,8 @@ object PPTC : Tab {
                     fontWeight = FontWeight.Bold
                 )
             }
+            Spacer(Modifier.height(30.dp))
+            body("Cambridge has restrictions on publicly sharing their resources, which includes past papers and related content. In order to fulfill the all-in-one goal of the platform, we are fetching past papers directly from PastPapers.co.")
             Spacer(Modifier.height(30.dp))
             CopyrightMessage()
             Spacer(Modifier.height(70.dp))
