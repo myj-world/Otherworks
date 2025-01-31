@@ -159,7 +159,8 @@ fun KnowPapersBySubject(subject: String, level: String): List<String> {
 
 fun KnowYearsBySubject(subject: String): IntRange {
     return when(subject) {
-        else -> 2020..2023
+        "CS" -> 2021..2024
+        else -> 2018..2024
     }
 }
 

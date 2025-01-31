@@ -20,7 +20,7 @@ plugins {
 }
 
 group = "accorm"
-version = "2.3.6"
+version = "2.3.7"
 
 kotlin {
     androidTarget {
@@ -31,24 +31,6 @@ kotlin {
     }
     
     jvm("desktop")
-
-//    val osName = System.getProperty("os.name")
-//    val targetOs = when {
-//        osName == "Mac OS X" -> "macos"
-//        osName.startsWith("Win") -> "windows"
-//        osName.startsWith("Linux") -> "linux"
-//        else -> error("Unsupported OS: $osName")
-//    }
-//
-//    val osArch = System.getProperty("os.arch")
-//    val targetArch = when (osArch) {
-//        "x86_64", "amd64" -> "x64"
-//        "aarch64" -> "arm64"
-//        else -> error("Unsupported arch: $osArch")
-//    }
-//
-//    val version = "0.8.9"
-//    val target = "${targetOs}-${targetArch}"
     
     sourceSets {
         val desktopMain by getting
@@ -100,10 +82,6 @@ kotlin {
 
             implementation(libs.multiplatform.settings)
             implementation(libs.multiplatform.settings.no.arg)
-
-
-
-//            implementation("org.jetbrains.skiko:skiko-awt-runtime-$target:$version")
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -127,8 +105,8 @@ android {
         applicationId = "com.yousufjamil.accorm"
         minSdk = 23
         targetSdk = 35
-        versionCode = 36
-        versionName = "2.3.6"
+        versionCode = 37
+        versionName = "2.3.7"
     }
     packaging {
         resources {
@@ -167,7 +145,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Accorm"
-            packageVersion = "2.3.6"
+            packageVersion = "2.3.7"
             description = "Accorm Desktop App"
             copyright = "Copyright © 2023-$currentYear Accorm"
             windows {

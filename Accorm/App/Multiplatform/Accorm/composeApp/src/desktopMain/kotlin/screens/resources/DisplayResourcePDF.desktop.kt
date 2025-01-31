@@ -69,7 +69,7 @@ actual suspend fun desktopLoad(url: String) : List<BitmapPainter> {
     }
 
     for (i in 0 until pdf.numberOfPages) {
-        val image = pdfRenderer.renderImage(i)
+        val image = pdfRenderer.renderImage(i,2f)
         list.add(BitmapPainter(image.toImage().toComposeImageBitmap()))
     }
     list.removeAt(0)
