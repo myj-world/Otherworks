@@ -10,6 +10,7 @@ import accorm.composeapp.generated.resources.poppins_regular
 import accorm.composeapp.generated.resources.poppins_semibold
 import accorm.composeapp.generated.resources.poppins_thin
 import android.content.res.Configuration
+import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import org.jetbrains.compose.resources.Font
@@ -57,3 +58,5 @@ actual val landscapeTablet: Boolean
     get() {
         return LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE && LocalConfiguration.current.screenWidthDp > 840
     }
+actual val deviceCompatibleWithBlur: Boolean
+    get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S

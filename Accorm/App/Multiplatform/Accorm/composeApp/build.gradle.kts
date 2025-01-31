@@ -1,6 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Calendar
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -19,7 +20,7 @@ plugins {
 }
 
 group = "accorm"
-version = "2.3.5"
+version = "2.3.6"
 
 kotlin {
     androidTarget {
@@ -100,6 +101,8 @@ kotlin {
             implementation(libs.multiplatform.settings)
             implementation(libs.multiplatform.settings.no.arg)
 
+
+
 //            implementation("org.jetbrains.skiko:skiko-awt-runtime-$target:$version")
         }
         desktopMain.dependencies {
@@ -124,8 +127,8 @@ android {
         applicationId = "com.yousufjamil.accorm"
         minSdk = 23
         targetSdk = 35
-        versionCode = 35
-        versionName = "2.3.5"
+        versionCode = 36
+        versionName = "2.3.6"
     }
     packaging {
         resources {
@@ -157,15 +160,16 @@ dependencies {
 }
 
 compose.desktop {
+    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
     application {
         mainClass = "MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Accorm"
-            packageVersion = "2.3.5"
+            packageVersion = "2.3.6"
             description = "Accorm Desktop App"
-            copyright = "Copyright © 2023-2024 Accorm"
+            copyright = "Copyright © 2023-$currentYear Accorm"
             windows {
                 iconFile.set(project.projectDir.resolve("src/commonMain/composeResources/drawable/ic_win.ico"))
             }

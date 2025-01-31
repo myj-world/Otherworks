@@ -74,3 +74,5 @@ actual suspend fun Connected(): Boolean {
 actual val landscapeTablet: Boolean
     @Composable
     get() = false
+actual val deviceCompatibleWithBlur: Boolean
+    get() = true

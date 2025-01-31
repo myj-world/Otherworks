@@ -35,6 +35,7 @@ import screens.assets.CopyrightMessage
 import screens.assets.Service
 
 object Services : Tab {
+    private fun readResolve(): Any = Services
     override val options: TabOptions
         @Composable
         get() {

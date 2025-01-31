@@ -39,6 +39,7 @@ import compose.icons.fontawesomeicons.solid.EllipsisH
 import compose.icons.fontawesomeicons.solid.Info
 import compose.icons.fontawesomeicons.solid.ShieldAlt
 import compose.icons.fontawesomeicons.solid.Table
+import compose.icons.fontawesomeicons.solid.Trophy
 import screens.assets.CopyrightMessage
 import screens.legal.PPTC
 
@@ -60,13 +61,14 @@ object MoreItems : Tab {
 
     @Composable
     override fun Content() {
-        val extraItems = listOf("Services", "About", "Privacy & Terms")
+        val extraItems = listOf("Services", "About", "Spotlight", "Privacy & Terms")
         val extraIcons = listOf(
             FontAwesomeIcons.Solid.Table,
             FontAwesomeIcons.Solid.Info,
+            FontAwesomeIcons.Solid.Trophy,
             FontAwesomeIcons.Solid.ShieldAlt
         )
-        val extraScreens = listOf(Services, AboutUs, PPTC)
+        val extraScreens = listOf(Services, AboutUs, Spotlight, PPTC)
 
         Column(
             modifier = Modifier

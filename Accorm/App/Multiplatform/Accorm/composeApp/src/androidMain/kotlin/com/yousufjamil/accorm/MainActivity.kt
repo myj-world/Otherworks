@@ -81,7 +81,7 @@ class MainActivity : ComponentActivity() {
                     0L
                 )
                 isReviewed = getSharedPreferences("accorm_data", MODE_PRIVATE).getBoolean(
-                    "accorm_reviewed",
+                    "accorm_reviewed_play_store",
                     false
                 )
                 println("Usage Stats: $isReviewed $usageTime $reviewMessageDismissed")
@@ -173,15 +173,18 @@ class MainActivity : ComponentActivity() {
 
                 if (agreedReview) {
                     val manager = ReviewManagerFactory.create(this@MainActivity)
-                    val request = manager.requestReviewFlow()
-                    request.addOnCompleteListener { task ->
+                    manager.requestReviewFlow().addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            println("Review Success")
-                            displayThanks = true
-                            isReviewed = true
-                            getSharedPreferences("accorm_data", MODE_PRIVATE).edit()
-                                .putBoolean("accorm_reviewed", true).apply()
-                            agreedReview = false
+                            manager.launchReviewFlow(this@MainActivity, task.result).addOnCompleteListener{ it ->
+                                if (it.isSuccessful) {
+                                    println("Review Success")
+                                    displayThanks = true
+                                    isReviewed = true
+                                    getSharedPreferences("accorm_data", MODE_PRIVATE).edit()
+                                        .putBoolean("accorm_reviewed_play_store", true).apply()
+                                    agreedReview = false
+                                }
+                            }
                         } else {
                             @ReviewErrorCode val reviewErrorCode =
                                 (task.exception as ReviewException).errorCode
