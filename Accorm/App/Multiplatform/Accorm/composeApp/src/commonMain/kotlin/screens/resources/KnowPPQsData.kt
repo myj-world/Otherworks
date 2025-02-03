@@ -97,15 +97,63 @@ fun KnowPapersBySubject(subject: String, level: String): List<String> {
             )
 
             "History" -> listOf(
-                "11",
-                "12",
-                "13"
+                "01"
             )
 
             else -> listOf(
+                "02"
+            )
+        }
+    } else if (level == "AS") {
+        return when (subject) {
+            "Biology" -> listOf(
+                "11",
+                "12",
+                "13",
+                "21",
+                "22",
+                "23",
+                "31",
+                "32",
+                "33"
+            )
+            "Chemistry" -> listOf(
+                "11",
+                "12",
+                "13",
+                "21",
+                "22",
+                "23",
+                "31",
+                "32",
+                "33"
+            )
+            "Physics" -> listOf(
+                "11",
+                "12",
+                "13",
+                "21",
+                "22",
+                "23",
+                "31",
+                "32",
+                "33"
+            )
+            "CS" -> listOf(
+                "11",
+                "12",
+                "13",
                 "21",
                 "22",
                 "23"
+            )
+            else -> listOf(
+                "11",
+                "12",
+                "13",
+                "51",
+                "52",
+                "53"
             )
         }
     } else {
@@ -127,23 +175,20 @@ fun KnowPapersBySubject(subject: String, level: String): List<String> {
                 "53"
             )
             "Physics" -> listOf(
-                "11",
-                "12",
-                "13",
-                "21",
-                "22",
-                "23",
-                "31",
-                "32",
-                "33"
+                "41",
+                "42",
+                "43",
+                "51",
+                "52",
+                "53"
             )
             "CS" -> listOf(
-                "11",
-                "12",
-                "13",
-                "21",
-                "22",
-                "23"
+                "31",
+                "32",
+                "33",
+                "41",
+                "42",
+                "43"
             )
             else -> listOf(
                 "31",

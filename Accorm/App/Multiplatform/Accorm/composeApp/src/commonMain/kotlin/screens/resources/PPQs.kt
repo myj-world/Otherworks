@@ -123,7 +123,7 @@ object PPQs : Tab {
                     "Maths" -> "Mathematics-$codeRetrieve"
                     "FLE" -> "English-First-Language-$codeRetrieve"
                     "ESL" -> "English-Second-Language-oral-endorsement-$codeRetrieve"
-                    "Islamiyat" -> "Islamiyat%20-%20-$codeRetrieve"
+                    "Islamiyat" -> "Islamiyat%20-%20$codeRetrieve"
                     "History" -> "Pakistan-Studies-$codeRetrieve"
                     "Geography" -> "Pakistan-Studies-$codeRetrieve"
                     else -> "${CurrentSubject.getSubject()}-$codeRetrieve"
