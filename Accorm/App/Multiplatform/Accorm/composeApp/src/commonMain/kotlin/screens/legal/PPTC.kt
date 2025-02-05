@@ -145,7 +145,7 @@ object PPTC : Tab {
                 )
             }
             Spacer(Modifier.height(30.dp))
-            body("Cambridge has restrictions on publicly sharing their resources, which includes past papers and related content. In order to fulfill the all-in-one goal of the platform, we are fetching past papers directly from PastPapers.co.")
+            body("Cambridge has restrictions on publicly sharing their resources, which includes past papers and related content. In order to fulfill the all-in-one goal of the platform, we are fetching past papers directly from PapaCambridge.com.")
             Spacer(Modifier.height(30.dp))
             CopyrightMessage()
             Spacer(Modifier.height(70.dp))

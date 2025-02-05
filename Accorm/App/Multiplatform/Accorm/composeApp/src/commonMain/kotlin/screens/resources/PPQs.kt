@@ -552,8 +552,8 @@ object PPQs : Tab {
                                 title = "$subjectCode ${CurrentSubject.getSubject()} - Paper $paper",
                                 session = session,
                                 year = year.toString(),
-                                qpLink = "https://pastpapers.co/cie/$levelRetrieve/$subjectRetrieve/$year-$sessionDirectoryRetrieve/" + codeRetrieve + "_" + sessionRetrieve + yearRetrieve + "_qp_$paper.pdf",
-                                msLink = "https://pastpapers.co/cie/$levelRetrieve/$subjectRetrieve/$year-$sessionDirectoryRetrieve/" + codeRetrieve + "_" + sessionRetrieve + yearRetrieve + "_ms_$paper.pdf",
+                                qpLink = "https://pastpapers.papacambridge.com/directories/CAIE/CAIE-pastpapers/upload/" + codeRetrieve + "_" + sessionRetrieve + yearRetrieve + "_qp_$paper.pdf",
+                                msLink = "https://pastpapers.papacambridge.com/directories/CAIE/CAIE-pastpapers/upload/" + codeRetrieve + "_" + sessionRetrieve + yearRetrieve + "_ms_$paper.pdf",
                             )
                         }
                     }
