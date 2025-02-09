@@ -320,7 +320,7 @@ class MainActivity : ComponentActivity() {
             if (!isGranted) {
                 Toast.makeText(
                     this,
-                    "Please grant notification permission via settings.",
+                    "Please grant notification & external storage permission via settings.",
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -332,6 +332,15 @@ class MainActivity : ComponentActivity() {
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissionLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
         }
     }

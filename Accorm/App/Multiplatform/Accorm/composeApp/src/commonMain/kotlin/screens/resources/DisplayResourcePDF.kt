@@ -53,6 +53,8 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Regular
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Book
+import compose.icons.fontawesomeicons.solid.CheckCircle
+import compose.icons.fontawesomeicons.solid.Download
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import screens.device
@@ -224,6 +226,32 @@ class DisplayResourcePDF : Tab, ScreenLifecycleOwner {
                                     .padding(15.dp),
                                 colorFilter = if (pdfZoom <= 0.3f) ColorFilter.tint(Color.Gray) else ColorFilter.tint(Color(0xFFacacf9))
                             )
+                            if (CurrentSubject.getUrlFileName().contains("Paper")) {
+                                var icon by remember {
+                                    mutableStateOf(FontAwesomeIcons.Solid.Download)
+                                }
+                                Spacer(modifier = Modifier.width(10.dp))
+                                Image(
+                                    imageVector = icon,
+                                    contentDescription = "Download",
+                                    modifier = Modifier
+                                        .size(70.dp)
+                                        .clip(RoundedCornerShape(25.dp))
+                                        .clickable {
+                                            coroutine.launch {
+                                                downloadFile(
+                                                    title = "CIE Past Paper - ${CurrentSubject.getUrlFileName()}",
+                                                    url = CurrentSubject.getUrl()
+                                                )
+                                            }
+                                            icon = FontAwesomeIcons.Solid.CheckCircle
+                                        }
+                                        .padding(15.dp),
+                                    colorFilter = ColorFilter.tint(
+                                        Color(0xFFacacf9)
+                                    )
+                                )
+                            }
                         }
                     }
                     LazyColumn(

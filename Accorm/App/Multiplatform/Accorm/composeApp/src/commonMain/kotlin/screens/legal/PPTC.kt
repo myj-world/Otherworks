@@ -95,7 +95,7 @@ object PPTC : Tab {
                 fontFamily = poppins,
                 fontWeight = FontWeight.Bold
             )
-            body("Last Updated: 20/01/25")
+            body("Last Updated: 05/02/25")
             Spacer(Modifier.height(20.dp))
             body("Accorm is a sub-service of Ginastic, and all the Ginastic Terms & Conditions, and Privacy Policies apply to Accorm")
             subHeading("Introduction")
