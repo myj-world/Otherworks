@@ -51,6 +51,7 @@ import compose.icons.fontawesomeicons.solid.PeopleCarry
 import compose.icons.fontawesomeicons.solid.PersonBooth
 import compose.icons.fontawesomeicons.solid.Trophy
 import compose.icons.fontawesomeicons.solid.User
+import compose.icons.fontawesomeicons.solid.Video
 import compose.icons.fontawesomeicons.solid.Wifi
 import screens.assets.CopyrightMessage
 import screens.assets.Member
@@ -212,6 +213,45 @@ object AboutUs : Tab {
                     ),
                     department = "Content Team",
                     description = "Contribution to AS CS"
+                ),
+                TeamMember(
+                    name = "Minahil Imran Khan",
+                    imageUrl = "https://accorm.ginastic.co/pfp/minahilimran.png",
+                    tag = FontAwesomeIcons.Solid.Trophy,
+                    roles = listOf(
+                        Role(
+                            roleName = "Conducer",
+                            roleIcon = FontAwesomeIcons.Solid.FileImport
+                        )
+                    ),
+                    department = "Content Team",
+                    description = "Contribution to AS Maths, AS Chemistry, A2 Chemistry"
+                ),
+                TeamMember(
+                    name = "Taqi Ahmed",
+                    imageUrl = "https://accorm.ginastic.co/pfp/taqiahmed.png",
+                    tag = FontAwesomeIcons.Solid.Trophy,
+                    roles = listOf(
+                        Role(
+                            roleName = "Imparter",
+                            roleIcon = FontAwesomeIcons.Solid.Video
+                        )
+                    ),
+                    department = "Content Team",
+                    description = "Contributions to parts of AS and IGCSE Physics"
+                ),
+                TeamMember(
+                    name = "Ahmad Abdul Rauf",
+                    imageUrl = "https://accorm.ginastic.co/pfp/mahmed.jpg",
+                    tag = FontAwesomeIcons.Solid.Trophy,
+                    roles = listOf(
+                        Role(
+                            roleName = "Imparter",
+                            roleIcon = FontAwesomeIcons.Solid.Video
+                        )
+                    ),
+                    department = "Content Team",
+                    description = "Contribution to AS Physics, IGCSE Chemistry"
                 )
             )
 
@@ -224,10 +264,14 @@ object AboutUs : Tab {
                         Role(
                             roleName = "Promotion Manager",
                             roleIcon = FontAwesomeIcons.Solid.Ad
+                        ),
+                        Role(
+                            roleName = "Instagram Manager",
+                            roleIcon = FontAwesomeIcons.Brands.Instagram
                         )
                     ),
                     department = "Marketing Team",
-                    description = "Promotion Manager"
+                    description = "Effective marketing, marketing techniques & instagram manager."
                 ),
                 TeamMember(
                     name = "Abdullah Kamil",
@@ -248,13 +292,16 @@ object AboutUs : Tab {
                     tag = null,
                     roles = listOf(
                         Role(
-                            roleName = "Instagram Manager",
+                            roleName = "Instagram Co-Manager",
                             roleIcon = FontAwesomeIcons.Brands.Instagram
                         )
                     ),
                     department = "Marketing Team",
                     description = "Setup and control of Accorm instagram account."
-                ),
+                )
+            )
+
+            val promotionTeam = listOf(
                 TeamMember(
                     name = "Muhammad Hamza",
                     imageUrl = "https://accorm.ginastic.co/pfp/hamza.jpg",
@@ -265,7 +312,7 @@ object AboutUs : Tab {
                             roleIcon = FontAwesomeIcons.Solid.CaretSquareUp
                         )
                     ),
-                    department = "Marketing Team",
+                    department = "Promotion Team",
                     description = "From AlWaha International School."
                 ),
                 TeamMember(
@@ -278,7 +325,7 @@ object AboutUs : Tab {
                             roleIcon = FontAwesomeIcons.Solid.PeopleArrows
                         )
                     ),
-                    department = "Marketing Team",
+                    department = "Promotion Team",
                     description = "Y10 representative of Accorm."
                 ),
                 TeamMember(
@@ -291,7 +338,7 @@ object AboutUs : Tab {
                             roleIcon = FontAwesomeIcons.Solid.PeopleArrows
                         )
                     ),
-                    department = "Marketing Team",
+                    department = "Promotion Team",
                     description = "Y10 representative of Accorm."
                 ),
                 TeamMember(
@@ -304,7 +351,7 @@ object AboutUs : Tab {
                             roleIcon = FontAwesomeIcons.Solid.PeopleArrows
                         )
                     ),
-                    department = "Marketing Team",
+                    department = "Promotion Team",
                     description = "Y9 representative of Accorm."
                 ),
                 TeamMember(
@@ -317,8 +364,21 @@ object AboutUs : Tab {
                             roleIcon = FontAwesomeIcons.Solid.PeopleArrows
                         )
                     ),
-                    department = "Marketing Team",
+                    department = "Promotion Team",
                     description = "Y9 representative of Accorm."
+                ),
+                TeamMember(
+                    name = "Bareera Bint-e-Nasir",
+                    imageUrl = "https://accorm.ginastic.co/pfp/bariranasir.jpg",
+                    tag = null,
+                    roles = listOf(
+                        Role(
+                            roleName = "AS Proxy",
+                            roleIcon = FontAwesomeIcons.Solid.PeopleArrows
+                        )
+                    ),
+                    department = "Promotion Team",
+                    description = "AS representative of Accorm."
                 )
             )
 
@@ -326,7 +386,7 @@ object AboutUs : Tab {
                 columns = GridCells.Adaptive(300.dp),
                 modifier = Modifier.fillMaxHeight()
             ) {
-                item (
+                item(
                     span = {
                         GridItemSpan(maxLineSpan)
                     }
@@ -362,7 +422,7 @@ object AboutUs : Tab {
                     )
                     Spacer(Modifier.height(10.dp))
                 }
-                item (
+                item(
                     span = {
                         GridItemSpan(maxLineSpan)
                     }
@@ -370,7 +430,7 @@ object AboutUs : Tab {
                     Spacer(modifier = Modifier.height(20.dp))
                 }
 
-                item (
+                item(
                     span = {
                         GridItemSpan(maxLineSpan)
                     }
@@ -395,7 +455,7 @@ object AboutUs : Tab {
                     )
                     Spacer(Modifier.height(10.dp))
                 }
-                item (
+                item(
                     span = {
                         GridItemSpan(maxLineSpan)
                     }
@@ -403,7 +463,7 @@ object AboutUs : Tab {
                     Spacer(modifier = Modifier.height(20.dp))
                 }
 
-                item (
+                item(
                     span = {
                         GridItemSpan(maxLineSpan)
                     }
@@ -428,7 +488,7 @@ object AboutUs : Tab {
                     )
                     Spacer(Modifier.height(10.dp))
                 }
-                item (
+                item(
                     span = {
                         GridItemSpan(maxLineSpan)
                     }
@@ -436,7 +496,7 @@ object AboutUs : Tab {
                     Spacer(modifier = Modifier.height(20.dp))
                 }
 
-                item (
+                item(
                     span = {
                         GridItemSpan(maxLineSpan)
                     }
@@ -461,7 +521,40 @@ object AboutUs : Tab {
                     )
                     Spacer(Modifier.height(10.dp))
                 }
-                item (
+                item(
+                    span = {
+                        GridItemSpan(maxLineSpan)
+                    }
+                ) {
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+
+                item(
+                    span = {
+                        GridItemSpan(maxLineSpan)
+                    }
+                ) {
+                    Text(
+                        text = "Promotion Team",
+                        color = Color.White,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(Modifier.height(20.dp))
+                }
+                items(
+                    count = promotionTeam.size,
+                ) { person ->
+                    Member(
+                        name = promotionTeam[person].name,
+                        imageUrl = promotionTeam[person].imageUrl,
+                        tag = promotionTeam[person].tag,
+                        roles = promotionTeam[person].roles,
+                        description = promotionTeam[person].description
+                    )
+                    Spacer(Modifier.height(10.dp))
+                }
+                item(
                     span = {
                         GridItemSpan(maxLineSpan)
                     }

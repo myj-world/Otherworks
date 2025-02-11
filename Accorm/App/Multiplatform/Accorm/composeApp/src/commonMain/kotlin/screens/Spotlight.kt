@@ -198,52 +198,7 @@ object Spotlight : Tab {
                         name = "Mahnoor Faisal",
                         icon = "M",
                         achievement = "Best Across Three  - Cambridge AS Level, Third Place in Western Province"
-                    ),
-                    DistinctionHolder(
-                        name = "Ayesha Amir",
-                        icon = "A",
-                        achievement = "Top in Saudi Arabia  - Cambridge IGCSE™ Computer Science"
-                    ),
-//                    DistinctionHolder(
-//                        name = "Eesha Kamil",
-//                        icon = "E",
-//                        achievement = "Top in The World  - Cambridge IGCSE™ Mathematics"
-//                    ),
-//                    DistinctionHolder(
-//                        name = "Abdul Aleem",
-//                        icon = "A",
-//                        achievement = "Top in Saudi Arabia  - Cambridge A Level Accounting"
-//                    ),
-//                    DistinctionHolder(
-//                        name = "Abdul Rehman",
-//                        icon = "A",
-//                        achievement = "Best Across Three  - Cambridge A Level, Third Place in Western Province"
-//                    ),
-//                    DistinctionHolder(
-//                        name = "Eman Amir",
-//                        icon = "E",
-//                        achievement = "Top in Saudi Arabia  - Cambridge IGCSE™ Islamiyat"
-//                    ),
-//                    DistinctionHolder(
-//                        name = "Maria Khalid",
-//                        icon = "M",
-//                        achievement = "Top in The World  - Cambridge IGCSE™ Pakistan Studies"
-//                    ),
-//                    DistinctionHolder(
-//                        name = "Maryam Imran",
-//                        icon = "M",
-//                        achievement = "Top in Saudi Arabia  - Cambridge A Level Economics"
-//                    ),
-//                    DistinctionHolder(
-//                        name = "Rayyan Khan",
-//                        icon = "R",
-//                        achievement = "Top in Western Province, Saudi Arabia  - Cambridge A Level Business"
-//                    ),
-//                    DistinctionHolder(
-//                        name = "Sanaa Mohammed",
-//                        icon = "S",
-//                        achievement = "Top in Saudi Arabia  - Cambridge AS Level Business"
-//                    )
+                    )
                 )
 
                 @Composable
