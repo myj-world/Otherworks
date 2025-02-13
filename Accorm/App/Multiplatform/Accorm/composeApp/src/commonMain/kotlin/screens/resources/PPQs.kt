@@ -542,19 +542,21 @@ object PPQs : Tab {
                         Spacer(modifier = Modifier.height(20.dp))
 
                         for (paper in papers) {
-                            val yearRetrieve = year.toString().substring(2, 4)
-                            val sessionRetrieve =
-                                if (session == "May/June") "s" else if (session == "Oct/Nov") "w" else "m"
-                            val sessionDirectoryRetrieve =
-                                if (session == "May/June") "May-June" else "Oct-Nov"
+                            if (!((paper == "32" && session == "Oct/Now" && (subjectCode == "9700" || subjectCode == "9701" || subjectCode == "9702")) || (subjectCode == "9618" && year == 2022))) {
+                                val yearRetrieve = year.toString().substring(2, 4)
+                                val sessionRetrieve =
+                                    if (session == "May/June") "s" else if (session == "Oct/Nov") "w" else "m"
+                                val sessionDirectoryRetrieve =
+                                    if (session == "May/June") "May-June" else "Oct-Nov"
 
-                            Paper(
-                                title = "$subjectCode ${CurrentSubject.getSubject()} - Paper $paper",
-                                session = session,
-                                year = year.toString(),
-                                qpLink = "https://pastpapers.papacambridge.com/directories/CAIE/CAIE-pastpapers/upload/" + codeRetrieve + "_" + sessionRetrieve + yearRetrieve + "_qp_$paper.pdf",
-                                msLink = "https://pastpapers.papacambridge.com/directories/CAIE/CAIE-pastpapers/upload/" + codeRetrieve + "_" + sessionRetrieve + yearRetrieve + "_ms_$paper.pdf",
-                            )
+                                Paper(
+                                    title = "$subjectCode ${CurrentSubject.getSubject()} - Paper $paper",
+                                    session = session,
+                                    year = year.toString(),
+                                    qpLink = "https://pastpapers.papacambridge.com/directories/CAIE/CAIE-pastpapers/upload/" + codeRetrieve + "_" + sessionRetrieve + yearRetrieve + "_qp_$paper.pdf",
+                                    msLink = "https://pastpapers.papacambridge.com/directories/CAIE/CAIE-pastpapers/upload/" + codeRetrieve + "_" + sessionRetrieve + yearRetrieve + "_ms_$paper.pdf",
+                                )
+                            }
                         }
                     }
                 }

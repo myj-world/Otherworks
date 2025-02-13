@@ -239,8 +239,9 @@ class DisplayResourcePDF : Tab, ScreenLifecycleOwner {
                                         .clip(RoundedCornerShape(25.dp))
                                         .clickable {
                                             coroutine.launch {
+                                                val fileName = "CIE Past Paper - ${CurrentSubject.getUrlFileName()}.pdf".replace(oldChar = '/', newChar = '-')
                                                 downloadFile(
-                                                    title = "CIE Past Paper - ${CurrentSubject.getUrlFileName()}",
+                                                    title = fileName,
                                                     url = CurrentSubject.getUrl()
                                                 )
                                             }

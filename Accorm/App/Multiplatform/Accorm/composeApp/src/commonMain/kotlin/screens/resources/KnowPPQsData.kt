@@ -90,10 +90,8 @@ fun KnowPapersBySubject(subject: String, level: String): List<String> {
             "Islamiyat" -> listOf(
                 "11",
                 "12",
-                "13",
                 "21",
-                "22",
-                "23"
+                "22"
             )
 
             "History" -> listOf(
