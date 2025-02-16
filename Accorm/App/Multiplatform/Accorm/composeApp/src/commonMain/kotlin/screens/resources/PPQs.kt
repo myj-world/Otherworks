@@ -542,12 +542,10 @@ object PPQs : Tab {
                         Spacer(modifier = Modifier.height(20.dp))
 
                         for (paper in papers) {
-                            if (!((paper == "32" && session == "Oct/Now" && (subjectCode == "9700" || subjectCode == "9701" || subjectCode == "9702")) || (subjectCode == "9618" && year == 2022))) {
+                            if (!((paper == "32" && session == "Oct/Nov" && (subjectCode == "9700" || subjectCode == "9701" || subjectCode == "9702")) || (subjectCode == "9618" && year == 2022) || (subjectCode == "0511" && year == 2024 && (paper == "31" || paper == "32" || paper == "33")))) {
                                 val yearRetrieve = year.toString().substring(2, 4)
                                 val sessionRetrieve =
                                     if (session == "May/June") "s" else if (session == "Oct/Nov") "w" else "m"
-                                val sessionDirectoryRetrieve =
-                                    if (session == "May/June") "May-June" else "Oct-Nov"
 
                                 Paper(
                                     title = "$subjectCode ${CurrentSubject.getSubject()} - Paper $paper",

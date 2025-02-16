@@ -198,6 +198,11 @@ object Spotlight : Tab {
                         name = "Mahnoor Faisal",
                         icon = "M",
                         achievement = "Best Across Three  - Cambridge AS Level, Third Place in Western Province"
+                    ),
+                    DistinctionHolder(
+                        name = "Ayesha Amir",
+                        icon = "A",
+                        achievement = "Top in Saudi Arabia - Cambridge IGCSE Computer Science"
                     )
                 )
 

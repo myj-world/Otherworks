@@ -1,5 +1,7 @@
 package screens
 
+import accorm.composeapp.generated.resources.Res
+import accorm.composeapp.generated.resources.qa_app
 import analytics.LogEvent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalIndication
@@ -22,14 +24,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,6 +51,7 @@ import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -53,6 +60,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.zIndex
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
@@ -63,11 +72,16 @@ import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.brands.Discord
 import compose.icons.fontawesomeicons.brands.Instagram
+import compose.icons.fontawesomeicons.solid.ArrowRight
 import compose.icons.fontawesomeicons.solid.BookOpen
+import compose.icons.fontawesomeicons.solid.Cross
 import compose.icons.fontawesomeicons.solid.Home
+import compose.icons.fontawesomeicons.solid.SkullCrossbones
+import compose.icons.fontawesomeicons.solid.Times
 import compose.icons.fontawesomeicons.solid.Trophy
 import compose.icons.fontawesomeicons.solid.User
 import kotlinx.coroutines.delay
+import org.jetbrains.compose.resources.painterResource
 import screens.resources.DisplayResourceExternal
 import screens.resources.Resources
 import viewmodels.CurrentSubject
@@ -104,7 +118,126 @@ object HomeScreen : Tab {
     @Composable
     override fun Content() {
         LogEvent("Home Screen", null, null)
-//    Main Outer Container
+
+        var displayQuestionAndAnswerMsg by remember {
+            mutableStateOf(true)
+        }
+        val navigator = LocalNavigator.current
+
+        if (displayQuestionAndAnswerMsg) {
+            Dialog(
+                onDismissRequest = {
+                    displayQuestionAndAnswerMsg = false
+                },
+                content = {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Box (
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.TopEnd
+                        ) {
+                            Icon(
+                                imageVector = FontAwesomeIcons.Solid.Times,
+                                contentDescription = "Close",
+                                modifier = Modifier
+                                    .padding(10.dp)
+                                    .size(60.dp)
+                                    .clickable {
+                                        displayQuestionAndAnswerMsg = false
+                                    }
+                                    .padding(20.dp)
+                                    .zIndex(2f)
+                            )
+
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .zIndex(1f)
+                            ) {
+                                Image(
+                                    painter = painterResource(Res.drawable.qa_app),
+                                    contentDescription = "Question and Answer App Illustration",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                )
+                                Text(
+                                    text = "Ask Real Toppers, Not Just Experts!",
+                                    fontSize = 25.sp,
+                                    fontFamily = poppins,
+                                    color = Color(0xFF181829),
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier
+                                        .padding(horizontal = 10.dp)
+                                        .fillMaxWidth()
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = buildAnnotatedString {
+                                        append("Our ")
+                                        withStyle(SpanStyle(color = Color(0xff754bff))) {
+                                            append("Distinction Holders")
+                                        }
+                                        append(" are here to guide you: clear your doubts, ask strategies, learn from their experiences before it's too late!")
+                                    },
+                                    fontSize = 18.sp,
+                                    fontFamily = poppins,
+                                    color = Color(0xFF1f1f36),
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier
+                                        .padding(horizontal = 10.dp)
+                                        .fillMaxWidth()
+                                        .clickable {
+                                            navigator?.push(Spotlight)
+                                        }
+                                )
+                                Spacer(modifier = Modifier.height(30.dp))
+                                Button(
+                                    onClick = {
+                                        CurrentSubject.setUrl("https://ginastic.co/home/login/")
+                                        navigator?.push(DisplayResourceExternal())
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color(0xFF1f1f36)
+                                    ),
+                                    modifier = Modifier
+                                        .padding(horizontal = 3.dp)
+                                        .fillMaxWidth()
+                                        .clip(
+                                            RoundedCornerShape(
+                                                bottomStart = 16.dp,
+                                                bottomEnd = 16.dp
+                                            )
+                                        )
+                                ) {
+                                    Text(
+                                        text = "Login to ask",
+                                        fontSize = 18.sp,
+                                        fontFamily = poppins,
+                                        color = Color(0xFFffffff)
+                                    )
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Icon(
+                                        imageVector = FontAwesomeIcons.Solid.ArrowRight,
+                                        contentDescription = "Open",
+                                        tint = Color.White,
+                                        modifier = Modifier.size(24.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            )
+        }
+
+        //    Main Outer Container
+
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
