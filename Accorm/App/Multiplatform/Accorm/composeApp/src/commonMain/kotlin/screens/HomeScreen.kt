@@ -23,7 +23,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -32,6 +34,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -82,6 +85,7 @@ import compose.icons.fontawesomeicons.solid.Trophy
 import compose.icons.fontawesomeicons.solid.User
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
+import screens.accounts.searchPPQs
 import screens.resources.DisplayResourceExternal
 import screens.resources.Resources
 import viewmodels.CurrentSubject
@@ -119,6 +123,20 @@ object HomeScreen : Tab {
     override fun Content() {
         LogEvent("Home Screen", null, null)
 
+//        LaunchedEffect(
+//            key1 = Unit,
+//        ) {
+//            println(searchPPQs(
+//                range = 2017..2024,
+//                subject = "Islamiyat",
+//                level = "IGCSE / O Level",
+//                subjectCode = "0493",
+//                component = 1,
+//                variantCodes = listOf("1", "2"),
+//                query = "Allah"
+//            ))
+//        }
+
         var displayQuestionAndAnswerMsg by remember {
             mutableStateOf(true)
         }
@@ -133,7 +151,8 @@ object HomeScreen : Tab {
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(16.dp)
+                            .verticalScroll(rememberScrollState()),
                         shape = RoundedCornerShape(16.dp)
                     ) {
                         Box (
@@ -485,7 +504,7 @@ object HomeScreen : Tab {
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(if (device != "Android") 20.dp else 100.dp))
+                Spacer(modifier = Modifier.height(if (device != "Android" || landscapeTablet) 20.dp else 100.dp))
             }
         }
     }

@@ -52,7 +52,9 @@ kotlin {
             implementation(libs.review)
             implementation(libs.review.ktx)
 
-            implementation(libs.pdf.viewer)
+//            implementation(libs.pdf.viewer)
+//            implementation(libs.pdfviewer.pdfium)
+            implementation(libs.bouquet)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -82,11 +84,11 @@ kotlin {
 
             implementation(libs.multiplatform.settings)
             implementation(libs.multiplatform.settings.no.arg)
+
+            implementation(libs.pdfbox)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
-
-            implementation(libs.pdfbox)
 
             implementation(libs.sqlite.driver)
         }
@@ -103,7 +105,7 @@ android {
 
     defaultConfig {
         applicationId = "com.yousufjamil.accorm"
-        minSdk = 23
+        minSdk = 26
         targetSdk = 35
         versionCode = 44
         versionName = "2.4.4"
@@ -111,6 +113,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/DEPENDENCIES"
         }
     }
     buildTypes {

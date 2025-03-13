@@ -24,7 +24,7 @@ actual object FileManager {
         return try {
             var response: ByteArray? = null
             withContext(Dispatchers.IO) {
-                response = OkHttpClient().newCall(Request.Builder().url(link).build()).execute().body()?.bytes()
+                response = OkHttpClient().newCall(Request.Builder().url(link).build()).execute().body?.bytes()
             }
             delay(5000)
             val response1 = response?.copyOfRange(0, response!!.size / 2)

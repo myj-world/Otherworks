@@ -61,6 +61,7 @@ class MainActivity : ComponentActivity() {
     private var isReviewed = false
     private var reviewMessageDismissed = false
     private var showReviewRequest = false
+    private var reviewAsked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,8 +86,9 @@ class MainActivity : ComponentActivity() {
                     false
                 )
                 println("Usage Stats: $isReviewed $usageTime $reviewMessageDismissed")
-                if (((usageTime / 1000L / 60L).toInt() >= 10) && !reviewMessageDismissed && !isReviewed) showReviewRequest =
-                    true
+                if (((usageTime / 1000L / 60L).toInt() >= 10) && !reviewMessageDismissed && !isReviewed && !reviewAsked) {
+                    showReviewRequest = true
+                }
                 updateTime()
             }
 
@@ -172,6 +174,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 if (agreedReview) {
+                    reviewAsked = true
                     val manager = ReviewManagerFactory.create(this@MainActivity)
                     manager.requestReviewFlow().addOnCompleteListener { task ->
                         if (task.isSuccessful) {

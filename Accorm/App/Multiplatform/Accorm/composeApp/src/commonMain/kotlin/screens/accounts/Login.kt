@@ -367,6 +367,7 @@ object Login : Tab {
                 Button(
                     onClick = {
                         isLoggingIn = true
+                        loginResponse = ""
                         if (validEmail && password.isNotEmpty()) {
                             coroutineScope.launch {
                                 try {
@@ -377,6 +378,8 @@ object Login : Tab {
                                     }
                                 } catch (e: Exception) {
                                     println("Error: ${e.message}")
+                                    loginResponse = e.message.toString()
+                                    isLoggingIn = false
                                 }
                             }
                         } else if (!validEmail) {
@@ -407,7 +410,8 @@ object Login : Tab {
                     retrieveUserData(email)
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                if (loginResponse == "Something went wrong" || loginResponse == "Wrong email" || loginResponse == "Wrong password" || loginResponse == "Invalid email" || loginResponse == "Password cannot be empty") {
+//                if (loginResponse == "Something went wrong" || loginResponse == "Wrong email" || loginResponse == "Wrong password" || loginResponse == "Invalid email" || loginResponse == "Password cannot be empty") {
+                if (loginResponse != "") {
                     Text(
                         text = loginResponse,
                         color = Color.Red,
@@ -415,6 +419,7 @@ object Login : Tab {
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center
                     )
+                    isLoggingIn = false
                 }
             }
             Spacer(modifier = Modifier.height(50.dp))

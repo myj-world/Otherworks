@@ -436,6 +436,10 @@ object Videos : Tab {
                         )
                     }
 
+                    val favs by remember {
+                        mutableStateOf(mutableListOf<String>())
+                    }
+
                     if (LoginStatus.getLoginStatus()) {
                         itemList.sortBy { it.chapter.toIntOrNull() }
                         val tempList1 = mutableListOf<VideoItem>()
@@ -473,6 +477,14 @@ object Videos : Tab {
                         itemList.clear()
                         itemList.addAll(tempList4)
                         itemList.addAll(tempList2)
+
+                        if (LoginStatus.getFavourites() != "") {
+                            val favsStr = LoginStatus.getFavourites().trim().split(" ")
+                            favsStr.forEach {
+                                val item = it.split("-")
+                                favs.add(item[1])
+                            }
+                        }
                     }
 
                     var previousChapter = ""
@@ -494,20 +506,41 @@ object Videos : Tab {
                         }
 
                         if (item.title != "Sample Video") {
-                            DisplayVideosItem(
-                                subjectRetrieve = subjectRetrieve,
-                                uniqueId = item.uniqueId,
-                                logo = item.logo,
-                                logoColor = parseColor(item.logoBg),
-                                chapter = item.chapter,
-                                publisher = item.publisher,
-                                title = item.title,
-                                description = item.description,
-                                specification = item.specification,
-                                source = item.source,
-                                published = item.published,
-                                url = item.url
-                            )
+                            if (favs.contains(item.uniqueId.toString())) {
+                                DisplayVideosItem(
+                                    subjectRetrieve = subjectRetrieve,
+                                    uniqueId = item.uniqueId,
+                                    logo = item.logo,
+                                    logoColor = parseColor(item.logoBg),
+                                    chapter = item.chapter,
+                                    publisher = item.publisher,
+                                    title = item.title,
+                                    description = item.description,
+                                    specification = item.specification,
+                                    source = item.source,
+                                    published = item.published,
+                                    url = item.url,
+                                    backgroundColor = Color(0xFFffb900),
+                                    textColor = Color.Black,
+                                    labelColor = Color(0xFF373120),
+                                    logoTextColour = Color.Black
+                                )
+                            } else {
+                                DisplayVideosItem(
+                                    subjectRetrieve = subjectRetrieve,
+                                    uniqueId = item.uniqueId,
+                                    logo = item.logo,
+                                    logoColor = parseColor(item.logoBg),
+                                    chapter = item.chapter,
+                                    publisher = item.publisher,
+                                    title = item.title,
+                                    description = item.description,
+                                    specification = item.specification,
+                                    source = item.source,
+                                    published = item.published,
+                                    url = item.url
+                                )
+                            }
                             Spacer(modifier = Modifier.height(10.dp))
                         } else {
                             removeItem = item

@@ -529,7 +529,7 @@ object PPQs : Tab {
                 val sessions = KnowSessionsBySubject(CurrentSubject.getSubject())
 
                 for (year in years.reversed()) {
-                    for (session in sessions) {
+                    for (session in sessions.reversed()) {
 
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(

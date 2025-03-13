@@ -12,7 +12,7 @@ actual suspend fun getResponse(url: String): String? {
         val response = withContext(Dispatchers.IO) {
             val client = OkHttpClient()
             val request = Request.Builder().url(url).build()
-            client.newCall(request).execute().body()?.string()
+            client.newCall(request).execute().body?.string()
         }
         return response
     } catch (e: Exception) {

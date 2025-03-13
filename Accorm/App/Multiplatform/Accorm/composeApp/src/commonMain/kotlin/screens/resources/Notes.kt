@@ -442,6 +442,10 @@ object Notes : Tab {
                         )
                     }
 
+                    val favs by remember {
+                        mutableStateOf(mutableListOf<String>())
+                    }
+
                     if (LoginStatus.getLoginStatus()) {
                         itemList.sortBy { it.chapter.toIntOrNull() }
                         val tempList1 = mutableListOf<Item>()
@@ -479,6 +483,16 @@ object Notes : Tab {
                         itemList.clear()
                         itemList.addAll(tempList4)
                         itemList.addAll(tempList2)
+
+                        if (LoginStatus.getFavourites() != "") {
+                            val favsStr = LoginStatus.getFavourites().trim().split(" ")
+                            println(favsStr)
+                            favsStr.forEach {
+                                val item = it.split("-")
+                                println(item)
+                                favs.add(item[1])
+                            }
+                        }
                     }
 
                     var previousChapter = ""
@@ -500,21 +514,44 @@ object Notes : Tab {
                         }
 
                         if (item.title != "Sample Notes") {
-                            DisplayNotesItem(
-                                subjectRetrieve = subjectRetrieve,
-                                uniqueId = item.uniqueId,
-                                logo = item.logo,
-                                logoBg = item.logoBg,
-                                chapter = item.chapter,
-                                publisher = item.publisher,
-                                title = item.title,
-                                description = item.description,
-                                specification = item.specification,
-                                published = item.published,
-                                url = item.url,
-                                credit = item.credit,
-                                creditUrl = item.creditUrl
-                            )
+                            if (favs.contains(item.uniqueId.toString())) {
+                                DisplayNotesItem(
+                                    subjectRetrieve = subjectRetrieve,
+                                    uniqueId = item.uniqueId,
+                                    logo = item.logo,
+                                    logoBg = item.logoBg,
+                                    chapter = item.chapter,
+                                    publisher = item.publisher,
+                                    title = item.title,
+                                    description = item.description,
+                                    specification = item.specification,
+                                    published = item.published,
+                                    url = item.url,
+                                    credit = item.credit,
+                                    creditUrl = item.creditUrl,
+                                    backgroundColor = Color(0xFFffb900),
+                                    textColor = Color.Black,
+                                    labelColor = Color(0xFF373120),
+                                    logoTextColour = Color.Black,
+                                    downloadIconColor = Color.Black
+                                )
+                            } else {
+                                DisplayNotesItem(
+                                    subjectRetrieve = subjectRetrieve,
+                                    uniqueId = item.uniqueId,
+                                    logo = item.logo,
+                                    logoBg = item.logoBg,
+                                    chapter = item.chapter,
+                                    publisher = item.publisher,
+                                    title = item.title,
+                                    description = item.description,
+                                    specification = item.specification,
+                                    published = item.published,
+                                    url = item.url,
+                                    credit = item.credit,
+                                    creditUrl = item.creditUrl
+                                )
+                            }
                             Spacer(modifier = Modifier.height(10.dp))
                         } else {
                             removeItem = item

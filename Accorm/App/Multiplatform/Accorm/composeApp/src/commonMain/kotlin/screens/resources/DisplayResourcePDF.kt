@@ -7,9 +7,7 @@ import analytics.LogEvent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,7 +22,6 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,6 +37,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -50,11 +48,11 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Regular
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Book
 import compose.icons.fontawesomeicons.solid.CheckCircle
 import compose.icons.fontawesomeicons.solid.Download
+import compose.icons.fontawesomeicons.solid.ExchangeAlt
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import screens.device
@@ -252,6 +250,35 @@ class DisplayResourcePDF : Tab, ScreenLifecycleOwner {
                                         Color(0xFFacacf9)
                                     )
                                 )
+                                Spacer(modifier = Modifier.width(10.dp))
+//                                Button(
+//                                    onClick = {
+//                                        val newUrl = getInvertedUrl(CurrentSubject.getUrl())
+//                                        CurrentSubject.setUrl(newUrl)
+//                                        navigator.pop()
+//                                        navigator.push(DisplayResourcePDF())
+//                                    }
+//                                ) {
+//                                    Row {
+//                                        val newFileType = if (CurrentSubject.getUrl().contains("qp")) "MS" else "QP"
+//                                        Image(
+//                                            imageVector = FontAwesomeIcons.Solid.ExchangeAlt,
+//                                            contentDescription = "Change to $newFileType",
+//                                            modifier = Modifier
+//                                                .size(70.dp)
+//                                                .clip(RoundedCornerShape(25.dp))
+//                                        )
+//                                        Spacer(modifier = Modifier.width(10.dp))
+//                                        Text(
+//                                            text = "Change to $newFileType",
+//                                            color = Color.White,
+//                                            modifier = Modifier.padding(5.dp),
+//                                            fontFamily = poppins,
+//                                            fontSize = 20.sp,
+//                                            textAlign = TextAlign.Center
+//                                        )
+//                                    }
+//                                }
                             }
                         }
                     }
@@ -305,3 +332,5 @@ expect suspend fun downloadFile(title: String, url: String): Boolean
 expect fun openFile(title: String, url: String): Boolean
 
 expect suspend fun desktopLoad(url: String): List<BitmapPainter>
+
+//expect fun getInvertedUrl(ppqUrl: String): String

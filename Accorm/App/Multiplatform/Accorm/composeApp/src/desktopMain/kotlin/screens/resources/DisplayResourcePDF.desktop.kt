@@ -78,3 +78,11 @@ actual suspend fun desktopLoad(url: String) : List<BitmapPainter> {
 
     return list
 }
+
+//actual fun getInvertedUrl(ppqUrl: String): String {
+//    return if (ppqUrl.contains("qp")) {
+//        ppqUrl.replace("qp", "ms")
+//    } else {
+//        ppqUrl.replace("ms", "qp")
+//    }
+//}
