@@ -168,6 +168,8 @@ sqldelight {
     databases {
         create("Accorm") {
             packageName.set("com.yousufjamil.accorm")
+            schemaOutputDirectory = file("src/main/sqldelight/databases")
+            version = 2
         }
     }
 }

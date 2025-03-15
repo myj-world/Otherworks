@@ -12,4 +12,5 @@ class AndroidAppModule() : AppModule {
 
     override fun provideDownloadsDataSource() = DownloadsDataSource(db)
     override fun provideAccountsDataSource() = AccountsDataSource(db)
+    override fun provideHistoryDataSource() = HistoryDataSource(db)
 }

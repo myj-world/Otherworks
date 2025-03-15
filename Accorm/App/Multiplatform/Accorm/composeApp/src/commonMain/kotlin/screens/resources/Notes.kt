@@ -60,17 +60,20 @@ import compose.icons.fontawesomeicons.solid.Link
 import compose.icons.fontawesomeicons.solid.Trash
 import database.AccormDatabase
 import database.DownloadsDataSource
+import database.HistoryDataSource
 import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import network.RequestURL
 import screens.accounts.Dashboard
 import screens.assets.CopyrightMessage
+import screens.assets.contentType
 import screens.lexend
 import screens.poppins
 import viewmodels.CurrentSubject
 import screens.device
 import screens.landscapeTablet
+import kotlin.math.roundToInt
 
 object Notes : Tab {
     override val options: TabOptions
@@ -1016,6 +1019,36 @@ fun DisplayNotesItem(
                                 navigator.push(DisplayResourcePDF())
                             }
                             reportAnalytics = true
+
+                            val modTextColor = textColor.toHex()
+                            val modLabelColor = labelColor.toHex()
+                            val modLogoTextColour = logoTextColour.toHex()
+                            val modBackgroundColor = backgroundColor.toHex()
+                            val modDownloadIconColor = downloadIconColor.toHex()
+
+                            HistoryDataSource(AccormDatabase.database).addToHistory(
+                                uniqueId = uniqueId.toString(),
+                                title = title,
+                                url = url,
+                                chapter = chapter,
+                                publisher = publisher,
+                                logo = logo,
+                                logoBg = logoBg,
+                                specification = specification,
+                                published = published,
+                                description = description,
+                                credit = credit,
+                                creditUrl = creditUrl,
+                                textColor = modTextColor,
+                                labelColor = modLabelColor,
+                                logoTextColour = modLogoTextColour,
+                                backgroundColor = modBackgroundColor,
+                                contentType = contentType.NOTE.toString(),
+                                subjectRetrieve = subjectRetrieve,
+                                source = "",
+                                isDownload = isDownload,
+                                downloadIconColor = modDownloadIconColor,
+                            )
                         },
                         modifier = Modifier.fillMaxWidth().height(45.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -1426,6 +1459,35 @@ fun DisplayNotesItem(
                                 navigator.push(DisplayResourcePDF())
                             }
                             reportAnalytics = true
+                            val modTextColor = textColor.toHex()
+                            val modLabelColor = labelColor.toHex()
+                            val modLogoTextColour = logoTextColour.toHex()
+                            val modBackgroundColor = backgroundColor.toHex()
+                            val modDownloadIconColor = downloadIconColor.toHex()
+
+                            HistoryDataSource(AccormDatabase.database).addToHistory(
+                                uniqueId = uniqueId.toString(),
+                                title = title,
+                                url = url,
+                                chapter = chapter,
+                                publisher = publisher,
+                                logo = logo,
+                                logoBg = logoBg,
+                                specification = specification,
+                                published = published,
+                                description = description,
+                                credit = credit,
+                                creditUrl = creditUrl,
+                                textColor = modTextColor,
+                                labelColor = modLabelColor,
+                                logoTextColour = modLogoTextColour,
+                                backgroundColor = modBackgroundColor,
+                                contentType = contentType.NOTE.toString(),
+                                subjectRetrieve = subjectRetrieve,
+                                source = "",
+                                isDownload = isDownload,
+                                downloadIconColor = modDownloadIconColor,
+                            )
                         },
                         modifier = Modifier.fillMaxWidth().height(45.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -1473,6 +1535,19 @@ fun DisplayNotesItem(
             },
             confirmButton = {}
         )
+    }
+}
+
+fun Color.toHex(): String {
+    val red = (this.red * 255).roundToInt()
+    val green = (this.green * 255).roundToInt()
+    val blue = (this.blue * 255).roundToInt()
+    val alpha = (this.alpha * 255).roundToInt()
+
+    return if (alpha == 255) {
+        String.format("#%02X%02X%02X", red, green, blue) // RGB format
+    } else {
+        String.format("#%02X%02X%02X%02X", alpha, red, green, blue) // ARGB format
     }
 }
 

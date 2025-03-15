@@ -181,6 +181,7 @@ object Login : Tab {
         @Composable
         fun retrieveUserData(email: String) {
             LoginStatus.updateLoginStatus(true)
+            LoginStatus.updateEmail(email)
 
             val userId = LoginStatus.getUserID()
 
@@ -197,7 +198,6 @@ object Login : Tab {
                     val loginData = json.decodeFromString<LoginData>(userData)
                     println(loginData)
                     LoginStatus.updateName(loginData.accountData.name)
-                    LoginStatus.updateEmail(email)
                     LoginStatus.updateLogoBg(loginData.accountData.colour)
                     LoginStatus.updateLogo(loginData.accountData.name.substring(0, 1))
                     LoginStatus.updateFavourites(loginData.addons.favs)
@@ -378,7 +378,9 @@ object Login : Tab {
                                     }
                                 } catch (e: Exception) {
                                     println("Error: ${e.message}")
-                                    loginResponse = e.message.toString()
+                                    if (loginResponse != "Wrong email" && loginResponse != "Wrong password") {
+                                        loginResponse = e.message.toString()
+                                    }
                                     isLoggingIn = false
                                 }
                             }

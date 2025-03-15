@@ -1,0 +1,30 @@
+CREATE TABLE History (
+    historyId INTEGER PRIMARY KEY NOT NULL,
+    uniqueId TEXT NOT NULL DEFAULT "",
+    subjectRetrieve TEXT NOT NULL DEFAULT "",
+    logo TEXT NOT NULL DEFAULT "",
+    logoBg TEXT DEFAULT "",
+    chapter TEXT NOT NULL DEFAULT "",
+    publisher TEXT NOT NULL DEFAULT "",
+    title TEXT NOT NULL DEFAULT "",
+    description TEXT NOT NULL DEFAULT "",
+    specification TEXT NOT NULL DEFAULT "",
+    published TEXT NOT NULL DEFAULT "",
+    url TEXT DEFAULT "",
+    source TEXT  DEFAULT "",
+    credit TEXT DEFAULT "",
+    creditUrl TEXT  DEFAULT "",
+    backgroundColor TEXT DEFAULT "",
+    textColor TEXT DEFAULT "",
+    labelColor TEXT DEFAULT "",
+    logoTextColour TEXT DEFAULT "",
+    downloadIconColor TEXT DEFAULT "",
+    isDownload TEXT DEFAULT "",
+    contentType TEXT CHECK(contentType IN ('NOTE', 'VIDEO')) NOT NULL
+);
+
+getHistory:
+SELECT * FROM History;
+
+addToHistory:
+INSERT INTO History VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);

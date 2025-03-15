@@ -54,11 +54,14 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Book
 import compose.icons.fontawesomeicons.solid.ExternalLinkAlt
 import compose.icons.fontawesomeicons.solid.Link
+import database.AccormDatabase
+import database.HistoryDataSource
 import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import network.RequestURL
 import screens.assets.CopyrightMessage
+import screens.assets.contentType
 import screens.device
 import screens.landscapeTablet
 import screens.lexend
@@ -819,6 +822,34 @@ fun DisplayVideosItem(
                             CurrentSubject.setUrl(url)
                             navigator.push(DisplayResourceExternal())
                             reportAnalytics = true
+                            val modTextColor = textColor.toHex()
+                            val modLabelColor = labelColor.toHex()
+                            val modLogoTextColour = logoTextColour.toHex()
+                            val modBackgroundColor = backgroundColor.toHex()
+
+                            HistoryDataSource(AccormDatabase.database).addToHistory(
+                                uniqueId = uniqueId.toString(),
+                                title = title,
+                                url = url,
+                                chapter = chapter,
+                                publisher = publisher,
+                                logo = logo,
+                                logoBg = "#acacf9",
+                                specification = specification,
+                                published = published,
+                                description = description,
+                                credit = "",
+                                creditUrl = "",
+                                textColor = modTextColor,
+                                labelColor = modLabelColor,
+                                logoTextColour = modLogoTextColour,
+                                backgroundColor = modBackgroundColor,
+                                contentType = contentType.VIDEO.toString(),
+                                subjectRetrieve = subjectRetrieve,
+                                source = source,
+                                isDownload = false,
+                                downloadIconColor = "",
+                            )
                         },
                         modifier = Modifier.fillMaxWidth().height(45.dp),
                         colors = ButtonDefaults.buttonColors(

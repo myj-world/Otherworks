@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
+import com.yousufjamil.accorm.Accorm
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Blog
@@ -40,6 +41,7 @@ import compose.icons.fontawesomeicons.solid.BookOpen
 import compose.icons.fontawesomeicons.solid.EllipsisH
 import compose.icons.fontawesomeicons.solid.Home
 import compose.icons.fontawesomeicons.solid.User
+import database.AccormDatabase
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import screens.HomeScreen
 import screens.MoreItems
@@ -64,6 +66,17 @@ fun App() {
             FontAwesomeIcons.Solid.Blog,
             FontAwesomeIcons.Solid.EllipsisH
         )
+
+        LaunchedEffect(Unit) {
+            try {
+                Accorm.Schema.migrate(
+                    driver = AccormDatabase.driver,
+                    oldVersion = 1,
+                    newVersion = 2
+                )
+            } catch (_: Exception) {}
+        }
+
         val screens = listOf(HomeScreen, Resources, Dashboard, Blogs, MoreItems)
         TabNavigator(
             tab = HomeScreen

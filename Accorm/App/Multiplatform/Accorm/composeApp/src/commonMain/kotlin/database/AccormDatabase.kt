@@ -3,5 +3,6 @@ package database
 import com.yousufjamil.accorm.Accorm
 
 object AccormDatabase {
-    val database = Accorm(driver = DatabaseDriverFactory.create())
+    val driver = DatabaseDriverFactory.create()
+    val database = Accorm(driver = driver)
 }

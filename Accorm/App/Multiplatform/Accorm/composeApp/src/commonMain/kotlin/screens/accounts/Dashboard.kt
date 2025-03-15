@@ -48,6 +48,7 @@ import compose.icons.fontawesomeicons.solid.SignOutAlt
 import compose.icons.fontawesomeicons.solid.User
 import database.AccormDatabase
 import database.DownloadsDataSource
+import database.HistoryDataSource
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -95,7 +96,10 @@ object Dashboard : Tab {
                 println(responseAccount)
                 val json = Json { ignoreUnknownKeys = true }
                 val loginData = json.decodeFromString<LoginData>(responseAccount)
-
+                println(loginData)
+                LoginStatus.updateName(loginData.accountData.name)
+                LoginStatus.updateLogoBg(loginData.accountData.colour)
+                LoginStatus.updateLogo(loginData.accountData.name.substring(0, 1))
                 LoginStatus.updateFavourites(loginData.addons.favs)
             } catch (e: Exception) {
                 println(e.message)
@@ -442,6 +446,77 @@ object Dashboard : Tab {
                         CircularProgressIndicator(color = Color.White)
                     }
                 }
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "History",
+                    color = Color.White,
+                    fontFamily = poppins,
+                    fontSize = 30.sp,
+                    textAlign = if (device == "Android" && !landscapeTablet) TextAlign.Center else TextAlign.Start,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp)
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+                val historyDataSource = HistoryDataSource(AccormDatabase.database)
+                val history = historyDataSource.getHistory()
+                if (history.isNotEmpty()) {
+                    history.forEach {
+                        println(it)
+                        if (it.contentType == "NOTE") {
+                            DisplayNotesItem(
+                                subjectRetrieve = it.subjectRetrieve,
+                                uniqueId = it.uniqueId.toInt(),
+                                logo = it.logo,
+                                logoBg = it.logoBg.toString(),
+                                publisher = it.publisher,
+                                title = it.title,
+                                description = it.description,
+                                specification = it.specification,
+                                chapter = it.chapter,
+                                published = it.published,
+                                url = it.url.toString(),
+                                credit = it.credit.toString(),
+                                creditUrl = it.creditUrl.toString(),
+                                backgroundColor = parseColor(it.backgroundColor.toString()),
+                                textColor = parseColor(it.textColor.toString()),
+                                labelColor = parseColor(it.labelColor.toString()),
+                                logoTextColour = parseColor(it.logoTextColour.toString()),
+                                downloadIconColor = parseColor(it.downloadIconColor.toString())
+                            )
+                        } else {
+                            DisplayVideosItem(
+                                subjectRetrieve = it.subjectRetrieve,
+                                uniqueId = it.uniqueId.toInt(),
+                                logo = it.logo,
+                                logoColor = parseColor(it.logoBg.toString()),
+                                publisher = it.publisher,
+                                title = it.title,
+                                description = it.description,
+                                specification = it.specification,
+                                chapter = it.chapter,
+                                published = it.published,
+                                url = it.url.toString(),
+                                source = it.source.toString(),
+                                backgroundColor = parseColor(it.backgroundColor.toString()),
+                                textColor = parseColor(it.textColor.toString()),
+                                labelColor = parseColor(it.labelColor.toString()),
+                                logoTextColour = parseColor(it.logoTextColour.toString())
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+                } else {
+                    Text(
+                        text = "No notes or videos opened yet.",
+                        color = Color.White,
+                        fontFamily = poppins,
+                        fontSize = 24.sp,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
                 Spacer(modifier = Modifier.height(50.dp))
                 CopyrightMessage()
                 Spacer(modifier = Modifier.height(80.dp))
