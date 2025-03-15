@@ -49,6 +49,7 @@ import compose.icons.fontawesomeicons.solid.User
 import database.AccormDatabase
 import database.DownloadsDataSource
 import database.HistoryDataSource
+import database.ToDoListDataSource
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -263,6 +264,21 @@ object Dashboard : Tab {
                         }
                     }
                 }
+
+                Spacer(modifier = Modifier.height(10.dp))
+                val navigator = LocalNavigator.currentOrThrow
+                Text(
+                    text = "My  Todo List",
+                    color = Color.White,
+                    fontFamily = poppins,
+                    fontSize = 30.sp,
+                    textAlign = if (device == "Android" && !landscapeTablet) TextAlign.Center else TextAlign.Start,
+                    modifier = Modifier.clickable {
+                        navigator.push(ToDoList)
+                    }
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+
                 Text(
                     text = "My Downloads",
                     color = Color.White,

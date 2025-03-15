@@ -1,0 +1,28 @@
+CREATE TABLE ToDoList (
+    itemId INTEGER PRIMARY KEY AUTOINCREMENT,
+    item TEXT NOT NULL DEFAULT "",
+    complete INTEGER CHECK (complete IN (0, 1)) DEFAULT 0
+);
+
+getList:
+SELECT * FROM ToDoList;
+
+addToList:
+INSERT INTO ToDoList VALUES (?,?,?);
+
+completeItem:
+UPDATE ToDoList
+SET complete = 1
+WHERE  itemId = ?;
+
+inCompleteItem:
+UPDATE ToDoList
+SET complete = 0
+WHERE  itemId = ?;
+
+deleteItem:
+DELETE FROM ToDoList
+WHERE itemId = ?;
+
+clearList:
+DELETE FROM ToDoList;

@@ -75,6 +75,14 @@ fun App() {
                     newVersion = 2
                 )
             } catch (_: Exception) {}
+
+            try {
+                Accorm.Schema.migrate(
+                    driver = AccormDatabase.driver,
+                    oldVersion = 2,
+                    newVersion = 3
+                )
+            } catch (_: Exception) {}
         }
 
         val screens = listOf(HomeScreen, Resources, Dashboard, Blogs, MoreItems)
