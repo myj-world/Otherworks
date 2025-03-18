@@ -1,7 +1,8 @@
 CREATE TABLE History (
     historyId INTEGER PRIMARY KEY NOT NULL,
     uniqueId TEXT NOT NULL DEFAULT "",
-    subjectRetrieve TEXT NOT NULL DEFAULT "",
+    subject TEXT NOT NULL DEFAULT "",
+    level TEXT NOT NULL DEFAULT "",
     logo TEXT NOT NULL DEFAULT "",
     logoBg TEXT DEFAULT "",
     chapter TEXT NOT NULL DEFAULT "",
@@ -27,4 +28,4 @@ getHistory:
 SELECT * FROM History;
 
 addToHistory:
-INSERT INTO History VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+INSERT INTO History VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);

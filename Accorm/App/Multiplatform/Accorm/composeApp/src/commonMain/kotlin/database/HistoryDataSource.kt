@@ -13,6 +13,7 @@ class HistoryDataSource (private val db: Accorm) {
     fun addToHistory(
         uniqueId: String,
         subjectRetrieve: String,
+        level: String,
         logo: String,
         logoBg: String,
         chapter: String,
@@ -33,10 +34,14 @@ class HistoryDataSource (private val db: Accorm) {
         isDownload: Boolean,
         contentType: String
     ) {
+        val subject = if (subjectRetrieve.length <= 3) subjectRetrieve.uppercase()
+        else subjectRetrieve.first().uppercase() + subjectRetrieve.substring(1)
+
         queries.addToHistory(
             historyId = null,
             uniqueId = uniqueId,
-            subjectRetrieve = subjectRetrieve,
+            subject = subject,
+            level = level,
             logo = logo,
             logoBg = logoBg,
             chapter = chapter,

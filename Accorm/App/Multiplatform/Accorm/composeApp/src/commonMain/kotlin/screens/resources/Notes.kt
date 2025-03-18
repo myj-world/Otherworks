@@ -536,7 +536,8 @@ object Notes : Tab {
                                     textColor = Color.Black,
                                     labelColor = Color(0xFF373120),
                                     logoTextColour = Color.Black,
-                                    downloadIconColor = Color.Black
+                                    downloadIconColor = Color.Black,
+                                    level = level
                                 )
                             } else {
                                 DisplayNotesItem(
@@ -552,7 +553,8 @@ object Notes : Tab {
                                     published = item.published,
                                     url = item.url,
                                     credit = item.credit,
-                                    creditUrl = item.creditUrl
+                                    creditUrl = item.creditUrl,
+                                    level = level
                                 )
                             }
                             Spacer(modifier = Modifier.height(10.dp))
@@ -616,6 +618,7 @@ data class Item(
 @Composable
 fun DisplayNotesItem(
     subjectRetrieve: String,
+    level: String,
     uniqueId: Int,
     logo: String,
     logoBg: String,
@@ -1048,6 +1051,7 @@ fun DisplayNotesItem(
                                 source = "",
                                 isDownload = isDownload,
                                 downloadIconColor = modDownloadIconColor,
+                                level = level
                             )
                         },
                         modifier = Modifier.fillMaxWidth().height(45.dp),
@@ -1487,6 +1491,7 @@ fun DisplayNotesItem(
                                 source = "",
                                 isDownload = isDownload,
                                 downloadIconColor = modDownloadIconColor,
+                                level = level
                             )
                         },
                         modifier = Modifier.fillMaxWidth().height(45.dp),

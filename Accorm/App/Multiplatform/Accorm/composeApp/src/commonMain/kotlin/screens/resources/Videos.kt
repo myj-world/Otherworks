@@ -512,6 +512,7 @@ object Videos : Tab {
                             if (favs.contains(item.uniqueId.toString())) {
                                 DisplayVideosItem(
                                     subjectRetrieve = subjectRetrieve,
+                                    level = level,
                                     uniqueId = item.uniqueId,
                                     logo = item.logo,
                                     logoColor = parseColor(item.logoBg),
@@ -531,6 +532,7 @@ object Videos : Tab {
                             } else {
                                 DisplayVideosItem(
                                     subjectRetrieve = subjectRetrieve,
+                                    level = level,
                                     uniqueId = item.uniqueId,
                                     logo = item.logo,
                                     logoColor = parseColor(item.logoBg),
@@ -606,6 +608,7 @@ data class VideoItem(
 @Composable
 fun DisplayVideosItem(
     subjectRetrieve: String,
+    level: String,
     uniqueId: Int,
     logo: String,
     logoColor: Color,
@@ -822,6 +825,7 @@ fun DisplayVideosItem(
                             CurrentSubject.setUrl(url)
                             navigator.push(DisplayResourceExternal())
                             reportAnalytics = true
+
                             val modTextColor = textColor.toHex()
                             val modLabelColor = labelColor.toHex()
                             val modLogoTextColour = logoTextColour.toHex()
@@ -846,6 +850,7 @@ fun DisplayVideosItem(
                                 backgroundColor = modBackgroundColor,
                                 contentType = contentType.VIDEO.toString(),
                                 subjectRetrieve = subjectRetrieve,
+                                level = level,
                                 source = source,
                                 isDownload = false,
                                 downloadIconColor = "",
@@ -1071,6 +1076,36 @@ fun DisplayVideosItem(
                             CurrentSubject.setUrl(url)
                             navigator.push(DisplayResourceExternal())
                             reportAnalytics = true
+
+                            val modTextColor = textColor.toHex()
+                            val modLabelColor = labelColor.toHex()
+                            val modLogoTextColour = logoTextColour.toHex()
+                            val modBackgroundColor = backgroundColor.toHex()
+
+                            HistoryDataSource(AccormDatabase.database).addToHistory(
+                                uniqueId = uniqueId.toString(),
+                                title = title,
+                                url = url,
+                                chapter = chapter,
+                                publisher = publisher,
+                                logo = logo,
+                                logoBg = "#acacf9",
+                                specification = specification,
+                                published = published,
+                                description = description,
+                                credit = "",
+                                creditUrl = "",
+                                textColor = modTextColor,
+                                labelColor = modLabelColor,
+                                logoTextColour = modLogoTextColour,
+                                backgroundColor = modBackgroundColor,
+                                contentType = contentType.VIDEO.toString(),
+                                subjectRetrieve = subjectRetrieve,
+                                level = level,
+                                source = source,
+                                isDownload = false,
+                                downloadIconColor = "",
+                            )
                         },
                         modifier = Modifier.fillMaxWidth().height(45.dp),
                         colors = ButtonDefaults.buttonColors(

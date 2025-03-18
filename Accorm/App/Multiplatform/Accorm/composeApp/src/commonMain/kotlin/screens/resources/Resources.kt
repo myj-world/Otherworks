@@ -46,11 +46,13 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.BookOpen
 import screens.assets.CopyrightMessage
+import screens.assets.Option
 import screens.assets.Subject
 import screens.device
 import screens.landscapeTablet
 
 object Resources : Tab {
+    private fun readResolve(): Any = Resources
     override val options: TabOptions
         @Composable
         get() {
@@ -103,91 +105,27 @@ object Resources : Tab {
             )
             Spacer(Modifier.height(10.dp))
 
-            @Composable
-            fun Option(text: String) {
-                if (device == "Android" && !landscapeTablet) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(75.dp)
-                            .padding(5.dp)
-                            .border(
-                                width = 2.dp,
-                                brush = Brush.linearGradient(
-                                    listOf(
-                                        Color(118, 78, 255),
-                                        Color(157, 78, 255)
-                                    )
-                                ),
-                                shape = RoundedCornerShape(20.dp)
-                            )
-                            .clickable {
-                                if (text != "Coming Soon!") {
-                                    grade = text
-                                }
-                            },
-                        contentAlignment = androidx.compose.ui.Alignment.Center
-                    ) {
-                        Text(
-                            text = text,
-                            fontSize = 28.sp,
-                            color = Color.White,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                } else {
-                    Box(
-                        modifier = Modifier
-                            .width(350.dp)
-                            .height(350.dp)
-                            .padding(5.dp)
-                            .border(
-                                width = 2.dp,
-                                brush = Brush.linearGradient(
-                                    listOf(
-                                        Color(118, 78, 255),
-                                        Color(157, 78, 255)
-                                    )
-                                ),
-                                shape = RoundedCornerShape(20.dp)
-                            )
-                            .clickable {
-                                if (text != "Coming Soon!") {
-                                    grade = text
-                                }
-                            },
-                        contentAlignment = androidx.compose.ui.Alignment.Center
-                    ) {
-                        Text(
-                            text = text,
-                            fontSize = 28.sp,
-                            color = Color.White,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                }
-            }
             when (grade) {
                 "" -> {
                     if (device == "Android" && !landscapeTablet) {
-                        Option(text = "IGCSE / O Level")
-                        Option(text = "AS")
-                        Option(text = "A2")
+                        Option(text = "IGCSE / O Level", onClick = { grade = "IGCSE / O Level" })
+                        Option(text = "AS", onClick = { grade = "AS" })
+                        Option(text = "A2", onClick = { grade = "A2" })
                     } else {
                         LazyVerticalGrid(columns = GridCells.Adaptive(350.dp)) {
                             item {
-                                Option(text = "IGCSE / O Level")
+                                Option(text = "IGCSE / O Level", onClick = { grade = "IGCSE / O Level" })
                             }
                             item {
-                                Option(text = "AS")
+                                Option(text = "AS", onClick = { grade = "AS" })
                             }
                             item {
-                                Option(text = "A2")
+                                Option(text = "A2", onClick = { grade = "A2" })
                             }
-                            item (
+                            item(
                                 span = { GridItemSpan(maxLineSpan) }
                             ) {
-                                Column (
+                                Column(
                                     modifier = Modifier
                                         .fillMaxWidth(),
                                     verticalArrangement = Arrangement.Center,
@@ -404,12 +342,14 @@ object Resources : Tab {
                 }
 
                 else -> {
-                    Option(text = "Error: Not Found")
+                    Option(text = "Error: Not Found", onClick = { grade = "" })
                 }
             }
-            Spacer(modifier = Modifier.height(30.dp))
-            CopyrightMessage()
-            Spacer(modifier = Modifier.height(70.dp))
+            if (device == "Android" && !landscapeTablet && grade == "") {
+                Spacer(modifier = Modifier.height(30.dp))
+                CopyrightMessage()
+                Spacer(modifier = Modifier.height(70.dp))
+            }
         }
     }
 }

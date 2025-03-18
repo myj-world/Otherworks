@@ -55,6 +55,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import network.RequestURL
 import screens.assets.CopyrightMessage
+import screens.assets.Option
 import screens.device
 import screens.landscapeTablet
 import screens.poppins
@@ -267,15 +268,9 @@ object Dashboard : Tab {
 
                 Spacer(modifier = Modifier.height(10.dp))
                 val navigator = LocalNavigator.currentOrThrow
-                Text(
-                    text = "My  Todo List",
-                    color = Color.White,
-                    fontFamily = poppins,
-                    fontSize = 30.sp,
-                    textAlign = if (device == "Android" && !landscapeTablet) TextAlign.Center else TextAlign.Start,
-                    modifier = Modifier.clickable {
-                        navigator.push(ToDoList)
-                    }
+                Option(
+                    text = "My Todo List",
+                    onClick = { navigator.push(ToDoList()) }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
 
@@ -311,7 +306,8 @@ object Dashboard : Tab {
                         textColor = Color.White,
                         labelColor = Color.Gray,
                         logoTextColour = Color.White,
-                        isDownload = true
+                        isDownload = true,
+                        level = item.specification
                     )
                 }
 
@@ -390,7 +386,8 @@ object Dashboard : Tab {
                                 textColor = Color.Black,
                                 labelColor = Color(0xFF373120),
                                 logoTextColour = Color.Black,
-                                downloadIconColor = Color.Black
+                                downloadIconColor = Color.Black,
+                                level = item.specification
                             )
                         } else {
                             DisplayVideosItem(
@@ -409,7 +406,8 @@ object Dashboard : Tab {
                                 backgroundColor = Color(0xFFffb900),
                                 textColor = Color.Black,
                                 labelColor = Color(0xFF373120),
-                                logoTextColour = Color.Black
+                                logoTextColour = Color.Black,
+                                level = item.specification
                             )
                         }
                     }
@@ -463,6 +461,7 @@ object Dashboard : Tab {
                     }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
+
                 Text(
                     text = "History",
                     color = Color.White,
@@ -474,53 +473,108 @@ object Dashboard : Tab {
                         .padding(20.dp)
                 )
                 Spacer(modifier = Modifier.height(5.dp))
+
                 val historyDataSource = HistoryDataSource(AccormDatabase.database)
                 val history = historyDataSource.getHistory()
+                val historyExpanded by remember { mutableStateOf(false) }
+
                 if (history.isNotEmpty()) {
-                    history.forEach {
-                        println(it)
-                        if (it.contentType == "NOTE") {
-                            DisplayNotesItem(
-                                subjectRetrieve = it.subjectRetrieve,
-                                uniqueId = it.uniqueId.toInt(),
-                                logo = it.logo,
-                                logoBg = it.logoBg.toString(),
-                                publisher = it.publisher,
-                                title = it.title,
-                                description = it.description,
-                                specification = it.specification,
-                                chapter = it.chapter,
-                                published = it.published,
-                                url = it.url.toString(),
-                                credit = it.credit.toString(),
-                                creditUrl = it.creditUrl.toString(),
-                                backgroundColor = parseColor(it.backgroundColor.toString()),
-                                textColor = parseColor(it.textColor.toString()),
-                                labelColor = parseColor(it.labelColor.toString()),
-                                logoTextColour = parseColor(it.logoTextColour.toString()),
-                                downloadIconColor = parseColor(it.downloadIconColor.toString())
-                            )
-                        } else {
-                            DisplayVideosItem(
-                                subjectRetrieve = it.subjectRetrieve,
-                                uniqueId = it.uniqueId.toInt(),
-                                logo = it.logo,
-                                logoColor = parseColor(it.logoBg.toString()),
-                                publisher = it.publisher,
-                                title = it.title,
-                                description = it.description,
-                                specification = it.specification,
-                                chapter = it.chapter,
-                                published = it.published,
-                                url = it.url.toString(),
-                                source = it.source.toString(),
-                                backgroundColor = parseColor(it.backgroundColor.toString()),
-                                textColor = parseColor(it.textColor.toString()),
-                                labelColor = parseColor(it.labelColor.toString()),
-                                logoTextColour = parseColor(it.logoTextColour.toString())
-                            )
+                    if (!historyExpanded) {
+                        history.subList(0, 3).forEach {
+                            println(it)
+                            if (it.contentType == "NOTE") {
+                                DisplayNotesItem(
+                                    subjectRetrieve = it.subject,
+                                    uniqueId = it.uniqueId.toInt(),
+                                    logo = it.logo,
+                                    logoBg = it.logoBg.toString(),
+                                    publisher = it.publisher,
+                                    title = it.title,
+                                    description = it.description,
+                                    specification = it.specification,
+                                    chapter = it.chapter,
+                                    published = it.published,
+                                    url = it.url.toString(),
+                                    credit = it.credit.toString(),
+                                    creditUrl = it.creditUrl.toString(),
+                                    backgroundColor = parseColor(it.backgroundColor.toString()),
+                                    textColor = parseColor(it.textColor.toString()),
+                                    labelColor = parseColor(it.labelColor.toString()),
+                                    logoTextColour = parseColor(it.logoTextColour.toString()),
+                                    downloadIconColor = parseColor(it.downloadIconColor.toString()),
+                                    level = it.specification
+                                )
+                            } else {
+                                DisplayVideosItem(
+                                    subjectRetrieve = it.subject,
+                                    uniqueId = it.uniqueId.toInt(),
+                                    logo = it.logo,
+                                    logoColor = parseColor(it.logoBg.toString()),
+                                    publisher = it.publisher,
+                                    title = it.title,
+                                    description = it.description,
+                                    specification = it.specification,
+                                    chapter = it.chapter,
+                                    published = it.published,
+                                    url = it.url.toString(),
+                                    source = it.source.toString(),
+                                    backgroundColor = parseColor(it.backgroundColor.toString()),
+                                    textColor = parseColor(it.textColor.toString()),
+                                    labelColor = parseColor(it.labelColor.toString()),
+                                    logoTextColour = parseColor(it.logoTextColour.toString()),
+                                    level = it.specification
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(10.dp))
                         }
-                        Spacer(modifier = Modifier.height(10.dp))
+                    } else {
+                        history.forEach {
+                            println(it)
+                            if (it.contentType == "NOTE") {
+                                DisplayNotesItem(
+                                    subjectRetrieve = it.subject,
+                                    uniqueId = it.uniqueId.toInt(),
+                                    logo = it.logo,
+                                    logoBg = it.logoBg.toString(),
+                                    publisher = it.publisher,
+                                    title = it.title,
+                                    description = it.description,
+                                    specification = it.specification,
+                                    chapter = it.chapter,
+                                    published = it.published,
+                                    url = it.url.toString(),
+                                    credit = it.credit.toString(),
+                                    creditUrl = it.creditUrl.toString(),
+                                    backgroundColor = parseColor(it.backgroundColor.toString()),
+                                    textColor = parseColor(it.textColor.toString()),
+                                    labelColor = parseColor(it.labelColor.toString()),
+                                    logoTextColour = parseColor(it.logoTextColour.toString()),
+                                    downloadIconColor = parseColor(it.downloadIconColor.toString()),
+                                    level = it.specification
+                                )
+                            } else {
+                                DisplayVideosItem(
+                                    subjectRetrieve = it.subject,
+                                    uniqueId = it.uniqueId.toInt(),
+                                    logo = it.logo,
+                                    logoColor = parseColor(it.logoBg.toString()),
+                                    publisher = it.publisher,
+                                    title = it.title,
+                                    description = it.description,
+                                    specification = it.specification,
+                                    chapter = it.chapter,
+                                    published = it.published,
+                                    url = it.url.toString(),
+                                    source = it.source.toString(),
+                                    backgroundColor = parseColor(it.backgroundColor.toString()),
+                                    textColor = parseColor(it.textColor.toString()),
+                                    labelColor = parseColor(it.labelColor.toString()),
+                                    logoTextColour = parseColor(it.logoTextColour.toString()),
+                                    level = it.specification
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(10.dp))
+                        }
                     }
                 } else {
                     Text(

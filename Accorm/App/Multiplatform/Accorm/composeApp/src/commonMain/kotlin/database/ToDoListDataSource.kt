@@ -19,21 +19,21 @@ class ToDoListDataSource (private val db: Accorm) {
         )
     }
 
-    fun completeItem(id: Int) {
+    fun completeItem(id: Long) {
         queries.completeItem(
-            itemId = id.toLong()
+            itemId = id
         )
     }
 
-    fun inCompleteItem(id: Int) {
+    fun inCompleteItem(id: Long) {
         queries.inCompleteItem(
-            itemId = id.toLong()
+            itemId = id
         )
     }
 
-    fun deleteItem(id: Int) {
+    fun deleteItem(id: Long) {
         queries.deleteItem(
-            itemId = id.toLong()
+            itemId = id
         )
     }
 
