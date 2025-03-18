@@ -32,8 +32,6 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.History
 import database.AccormDatabase
 import database.HistoryDataSource
-import screens.device
-import screens.landscapeTablet
 import screens.poppins
 import screens.resources.DisplayNotesItem
 import screens.resources.DisplayVideosItem
@@ -67,7 +65,6 @@ class History : Tab {
             ) {
                 val historyDataSource = HistoryDataSource(AccormDatabase.database)
                 val history = historyDataSource.getHistory()
-                val historyExpanded by remember { mutableStateOf(false) }
 
                 Text(
                     text = "History",

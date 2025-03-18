@@ -65,7 +65,6 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import network.RequestURL
-import screens.accounts.Dashboard
 import screens.assets.CopyrightMessage
 import screens.assets.contentType
 import screens.lexend
@@ -76,6 +75,7 @@ import screens.landscapeTablet
 import kotlin.math.roundToInt
 
 object Notes : Tab {
+    private fun readResolve(): Any = Notes
     override val options: TabOptions
         @Composable get() {
             val icon = rememberVectorPainter(FontAwesomeIcons.Solid.Book)

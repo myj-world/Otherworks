@@ -30,8 +30,6 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Download
 import database.AccormDatabase
 import database.DownloadsDataSource
-import screens.device
-import screens.landscapeTablet
 import screens.poppins
 import screens.resources.DisplayNotesItem
 

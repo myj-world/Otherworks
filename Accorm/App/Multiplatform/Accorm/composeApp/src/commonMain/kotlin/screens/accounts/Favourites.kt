@@ -39,8 +39,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import network.RequestURL
-import screens.device
-import screens.landscapeTablet
 import screens.poppins
 import screens.resources.DisplayNotesItem
 import screens.resources.DisplayVideosItem
@@ -75,7 +73,7 @@ class Favourites : Tab {
                 var refreshFavs by remember { mutableIntStateOf(0) }
                 var connected: String? by remember { mutableStateOf("") }
                 val favs by remember { mutableStateOf(mutableListOf<SingleFavData>()) }
-                var favsAdditionalData by remember { mutableStateOf(mutableListOf<FavsInfo>()) }
+                val favsAdditionalData by remember { mutableStateOf(mutableListOf<FavsInfo>()) }
                 var canLoad by remember { mutableStateOf(false) }
                 var noInternet by remember { mutableStateOf(false) }
 

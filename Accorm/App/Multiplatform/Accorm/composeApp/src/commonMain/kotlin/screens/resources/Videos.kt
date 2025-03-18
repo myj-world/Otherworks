@@ -69,6 +69,7 @@ import screens.poppins
 import viewmodels.CurrentSubject
 
 object Videos : Tab {
+    private fun readResolve(): Any = Videos
     override val options: TabOptions
         @Composable
         get() {
@@ -635,7 +636,6 @@ fun DisplayVideosItem(
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     val navigator = LocalNavigator.currentOrThrow
-    val coroutineScope = rememberCoroutineScope()
 
     if (device == "Android" && !landscapeTablet) {
         Column(
