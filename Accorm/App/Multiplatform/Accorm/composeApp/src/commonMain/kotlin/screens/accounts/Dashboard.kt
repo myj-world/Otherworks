@@ -156,7 +156,6 @@ object Dashboard : Tab {
                                         .fillMaxWidth()
                                         .padding(10.dp)
                                 ) {
-                                    val navigator = LocalNavigator.currentOrThrow
                                     Image(
                                         imageVector = FontAwesomeIcons.Solid.SignOutAlt,
                                         contentDescription = "Logout",
