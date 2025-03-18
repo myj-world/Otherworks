@@ -345,7 +345,7 @@ object Resources : Tab {
                     Option(text = "Error: Not Found", onClick = { grade = "" })
                 }
             }
-            if (device == "Android" && !landscapeTablet && grade == "") {
+            if ((device == "Android" && !landscapeTablet && grade == "") || grade != "") {
                 Spacer(modifier = Modifier.height(30.dp))
                 CopyrightMessage()
                 Spacer(modifier = Modifier.height(70.dp))

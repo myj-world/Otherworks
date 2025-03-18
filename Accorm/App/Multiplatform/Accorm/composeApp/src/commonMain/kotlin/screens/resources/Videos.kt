@@ -349,234 +349,242 @@ object Videos : Tab {
                 }
                 Spacer(modifier = Modifier.height(20.dp))
 
-                if (data != "" && data != "no data available.") {
+                var noInternet by remember { mutableStateOf(false) }
 
-                    val itemList = MutableList(0) { VideoItem() }
-                    var numRows by remember { mutableIntStateOf(0) }
+                if (!noInternet) {
+                    if (data != "" && data != "no data available.") {
 
-                    try {
-                        JsonReader(data.reader()).use { reader ->
-                            reader.beginObject()
-                            while (reader.hasNext()) {
-                                val token = reader.peek()
-                                if (token.equals(JsonToken.NAME)) {
-                                    try {
-                                        reader.nextName()
-                                        reader.beginObject()
+                        val itemList = MutableList(0) { VideoItem() }
+                        var numRows by remember { mutableIntStateOf(0) }
+
+                        try {
+                            JsonReader(data.reader()).use { reader ->
+                                reader.beginObject()
+                                while (reader.hasNext()) {
+                                    val token = reader.peek()
+                                    if (token.equals(JsonToken.NAME)) {
                                         try {
-                                            reader.skipValue()
-                                            val uniqueId = reader.nextInt()
-                                            reader.skipValue()
-                                            val title = reader.nextString()
-                                            reader.skipValue()
-                                            val url = reader.nextString()
-                                            reader.skipValue()
-                                            val chapter = reader.nextString()
-                                            reader.skipValue()
-                                            val publisher = reader.nextString()
-                                            reader.skipValue()
-                                            val pubType = reader.nextString()
-                                            reader.skipValue()
-                                            val logo = reader.nextString()
-                                            reader.skipValue()
-                                            val logoBg = reader.nextString()
-                                            reader.skipValue()
-                                            val published = reader.nextString()
-                                            reader.skipValue()
-                                            val description = reader.nextString()
-                                            reader.skipValue()
-                                            val source = reader.nextString()
-                                            reader.skipValue()
-                                            val specification = reader.nextString()
+                                            reader.nextName()
+                                            reader.beginObject()
+                                            try {
+                                                reader.skipValue()
+                                                val uniqueId = reader.nextInt()
+                                                reader.skipValue()
+                                                val title = reader.nextString()
+                                                reader.skipValue()
+                                                val url = reader.nextString()
+                                                reader.skipValue()
+                                                val chapter = reader.nextString()
+                                                reader.skipValue()
+                                                val publisher = reader.nextString()
+                                                reader.skipValue()
+                                                val pubType = reader.nextString()
+                                                reader.skipValue()
+                                                val logo = reader.nextString()
+                                                reader.skipValue()
+                                                val logoBg = reader.nextString()
+                                                reader.skipValue()
+                                                val published = reader.nextString()
+                                                reader.skipValue()
+                                                val description = reader.nextString()
+                                                reader.skipValue()
+                                                val source = reader.nextString()
+                                                reader.skipValue()
+                                                val specification = reader.nextString()
 
 
-                                            itemList.add(
-                                                VideoItem(
-                                                    uniqueId = uniqueId,
-                                                    title = title,
-                                                    url = url,
-                                                    chapter = chapter,
-                                                    publisher = publisher,
-                                                    pubType = pubType,
-                                                    logo = logo,
-                                                    logoBg = logoBg,
-                                                    specification = specification,
-                                                    source = source,
-                                                    published = published,
-                                                    description = description
+                                                itemList.add(
+                                                    VideoItem(
+                                                        uniqueId = uniqueId,
+                                                        title = title,
+                                                        url = url,
+                                                        chapter = chapter,
+                                                        publisher = publisher,
+                                                        pubType = pubType,
+                                                        logo = logo,
+                                                        logoBg = logoBg,
+                                                        specification = specification,
+                                                        source = source,
+                                                        published = published,
+                                                        description = description
+                                                    )
                                                 )
-                                            )
+                                            } catch (e: Exception) {
+                                                println(reader.peek())
+                                            }
+                                            reader.endObject()
                                         } catch (e: Exception) {
-                                            println(reader.peek())
+                                            numRows = reader.nextInt()
+                                            reader.skipValue()
                                         }
-                                        reader.endObject()
-                                    } catch (e: Exception) {
-                                        numRows = reader.nextInt()
-                                        reader.skipValue()
                                     }
                                 }
+                                println(itemList)
                             }
-                            println(itemList)
-                        }
-                    } catch (e: Exception) {
-                        println(e)
-                        numRows = 0
-                        itemList.add(
-                            VideoItem(
-                                uniqueId = 0,
-                                title = "Sample Video",
-                                url = "https://youtu.be/uixWHUCES4I?si=Wl72mcCy_PhQczms",
-                                chapter = "miscellaneous",
-                                publisher = "Accorm",
-                                pubType = "Admin",
-                                logo = "A",
-                                logoBg = "#000000",
-                                specification = "Sample Video",
-                                source = "Accorm",
-                                published = "12/12/2023",
-                                description = "Sample Video"
-                            )
-                        )
-                    }
-
-                    val favs by remember {
-                        mutableStateOf(mutableListOf<String>())
-                    }
-
-                    if (LoginStatus.getLoginStatus()) {
-                        itemList.sortBy { it.chapter.toIntOrNull() }
-                        val tempList1 = mutableListOf<VideoItem>()
-                        itemList.forEach {
-                            tempList1.add(it)
-                        }
-                        val tempList2 = mutableListOf<VideoItem>()
-                        itemList.forEach {
-                            tempList2.add(it)
-                        }
-
-                        itemList.sortBy { it.chapter }
-                        val tempList3 = mutableListOf<VideoItem>()
-                        itemList.forEach {
-                            tempList3.add(it)
-                        }
-                        val tempList4 = mutableListOf<VideoItem>()
-                        itemList.forEach {
-                            tempList4.add(it)
-                        }
-
-                        tempList1.forEach {
-                            val isChapNum = it.chapter.toIntOrNull()
-                            if (isChapNum == null) {
-                                tempList2.remove(it)
-                            }
-                        }
-                        tempList3.forEach {
-                            val isChapNum = it.chapter.toIntOrNull()
-                            if (isChapNum != null) {
-                                tempList4.remove(it)
-                            }
-                        }
-                        tempList4.sortBy { it.chapter }
-                        itemList.clear()
-                        itemList.addAll(tempList4)
-                        itemList.addAll(tempList2)
-
-                        if (LoginStatus.getFavourites() != "") {
-                            val favsStr = LoginStatus.getFavourites().trim().split(" ")
-                            favsStr.forEach {
-                                val item = it.split("-")
-                                favs.add(item[1])
-                            }
-                        }
-                    }
-
-                    var previousChapter = ""
-                    var removeItem  = VideoItem()
-
-                    itemList.forEach { item ->
-                        if (previousChapter != item.chapter && LoginStatus.getLoginStatus()) {
-                            previousChapter = item.chapter
-                            val isNumber = item.chapter.toIntOrNull()
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Text(
-                                text = if (isNumber == null) "${item.chapter.replaceFirstChar { it.uppercase() }} Resources" else "Chapter ${item.chapter}",
-                                fontSize = 20.sp,
-                                fontFamily = poppins,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                        }
-
-                        if (item.title != "Sample Video") {
-                            if (favs.contains(item.uniqueId.toString())) {
-                                DisplayVideosItem(
-                                    subjectRetrieve = subjectRetrieve,
-                                    level = level,
-                                    uniqueId = item.uniqueId,
-                                    logo = item.logo,
-                                    logoColor = parseColor(item.logoBg),
-                                    chapter = item.chapter,
-                                    publisher = item.publisher,
-                                    title = item.title,
-                                    description = item.description,
-                                    specification = item.specification,
-                                    source = item.source,
-                                    published = item.published,
-                                    url = item.url,
-                                    backgroundColor = Color(0xFFffb900),
-                                    textColor = Color.Black,
-                                    labelColor = Color(0xFF373120),
-                                    logoTextColour = Color.Black
+                        } catch (e: Exception) {
+                            println(e)
+                            numRows = 0
+                            itemList.add(
+                                VideoItem(
+                                    uniqueId = 0,
+                                    title = "Sample Video",
+                                    url = "https://youtu.be/uixWHUCES4I?si=Wl72mcCy_PhQczms",
+                                    chapter = "miscellaneous",
+                                    publisher = "Accorm",
+                                    pubType = "Admin",
+                                    logo = "A",
+                                    logoBg = "#000000",
+                                    specification = "Sample Video",
+                                    source = "Accorm",
+                                    published = "12/12/2023",
+                                    description = "Sample Video"
                                 )
+                            )
+                        }
+
+                        val favs by remember {
+                            mutableStateOf(mutableListOf<String>())
+                        }
+
+                        if (LoginStatus.getLoginStatus()) {
+                            itemList.sortBy { it.chapter.toIntOrNull() }
+                            val tempList1 = mutableListOf<VideoItem>()
+                            itemList.forEach {
+                                tempList1.add(it)
+                            }
+                            val tempList2 = mutableListOf<VideoItem>()
+                            itemList.forEach {
+                                tempList2.add(it)
+                            }
+
+                            itemList.sortBy { it.chapter }
+                            val tempList3 = mutableListOf<VideoItem>()
+                            itemList.forEach {
+                                tempList3.add(it)
+                            }
+                            val tempList4 = mutableListOf<VideoItem>()
+                            itemList.forEach {
+                                tempList4.add(it)
+                            }
+
+                            tempList1.forEach {
+                                val isChapNum = it.chapter.toIntOrNull()
+                                if (isChapNum == null) {
+                                    tempList2.remove(it)
+                                }
+                            }
+                            tempList3.forEach {
+                                val isChapNum = it.chapter.toIntOrNull()
+                                if (isChapNum != null) {
+                                    tempList4.remove(it)
+                                }
+                            }
+                            tempList4.sortBy { it.chapter }
+                            itemList.clear()
+                            itemList.addAll(tempList4)
+                            itemList.addAll(tempList2)
+
+                            if (LoginStatus.getFavourites() != "") {
+                                val favsStr = LoginStatus.getFavourites().trim().split(" ")
+                                favsStr.forEach {
+                                    val item = it.split("-")
+                                    favs.add(item[1])
+                                }
+                            }
+                        }
+
+                        var previousChapter = ""
+                        var removeItem = VideoItem()
+
+                        itemList.forEach { item ->
+                            if (previousChapter != item.chapter && LoginStatus.getLoginStatus()) {
+                                previousChapter = item.chapter
+                                val isNumber = item.chapter.toIntOrNull()
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = if (isNumber == null) "${item.chapter.replaceFirstChar { it.uppercase() }} Resources" else "Chapter ${item.chapter}",
+                                    fontSize = 20.sp,
+                                    fontFamily = poppins,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                            }
+
+                            if (item.title != "Sample Video") {
+                                if (favs.contains(item.uniqueId.toString())) {
+                                    DisplayVideosItem(
+                                        subjectRetrieve = subjectRetrieve,
+                                        level = level,
+                                        uniqueId = item.uniqueId,
+                                        logo = item.logo,
+                                        logoColor = parseColor(item.logoBg),
+                                        chapter = item.chapter,
+                                        publisher = item.publisher,
+                                        title = item.title,
+                                        description = item.description,
+                                        specification = item.specification,
+                                        source = item.source,
+                                        published = item.published,
+                                        url = item.url,
+                                        backgroundColor = Color(0xFFffb900),
+                                        textColor = Color.Black,
+                                        labelColor = Color(0xFF373120),
+                                        logoTextColour = Color.Black
+                                    )
+                                } else {
+                                    DisplayVideosItem(
+                                        subjectRetrieve = subjectRetrieve,
+                                        level = level,
+                                        uniqueId = item.uniqueId,
+                                        logo = item.logo,
+                                        logoColor = parseColor(item.logoBg),
+                                        chapter = item.chapter,
+                                        publisher = item.publisher,
+                                        title = item.title,
+                                        description = item.description,
+                                        specification = item.specification,
+                                        source = item.source,
+                                        published = item.published,
+                                        url = item.url
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(10.dp))
                             } else {
-                                DisplayVideosItem(
-                                    subjectRetrieve = subjectRetrieve,
-                                    level = level,
-                                    uniqueId = item.uniqueId,
-                                    logo = item.logo,
-                                    logoColor = parseColor(item.logoBg),
-                                    chapter = item.chapter,
-                                    publisher = item.publisher,
-                                    title = item.title,
-                                    description = item.description,
-                                    specification = item.specification,
-                                    source = item.source,
-                                    published = item.published,
-                                    url = item.url
-                                )
+                                removeItem = item
                             }
-                            Spacer(modifier = Modifier.height(10.dp))
-                        } else {
-                            removeItem = item
                         }
-                    }
 
 
 
-                    if (removeItem.uniqueId != 111111111) {
-                        itemList.remove(removeItem)
-                    }
+                        if (removeItem.uniqueId != 111111111) {
+                            itemList.remove(removeItem)
+                        }
 
-                    if (itemList.isEmpty()) {
+                        if (itemList.isEmpty()) {
+                            noInternet = true
+                        }
+                    } else if (data == "no data available.") {
                         Text(
-                            text = "No Internet Connection!",
+                            text = "No Videos Uploaded Yet!",
                             fontSize = 20.sp,
                             fontFamily = poppins,
                             fontWeight = FontWeight.SemiBold,
                             color = Color.White
                         )
+                    } else {
+                        CircularProgressIndicator(
+                            color = Color.White
+                        )
                     }
-                } else if (data == "no data available.") {
+                }
+
+                if (noInternet) {
                     Text(
-                        text = "No Videos Uploaded Yet!",
+                        text = "No Internet Connection!",
                         fontSize = 20.sp,
                         fontFamily = poppins,
                         fontWeight = FontWeight.SemiBold,
-                        color = Color.White
-                    )
-                } else {
-                    CircularProgressIndicator(
                         color = Color.White
                     )
                 }

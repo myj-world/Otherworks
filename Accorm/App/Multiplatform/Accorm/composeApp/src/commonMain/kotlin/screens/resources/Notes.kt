@@ -353,239 +353,247 @@ object Notes : Tab {
                 }
                 Spacer(modifier = Modifier.height(20.dp))
 
-                if (data != "" && data != "no data available.") {
+                var noInternet by remember { mutableStateOf(false) }
 
-                    val itemList = MutableList(0) { Item() }
-                    var numRows by remember { mutableIntStateOf(0) }
+                if (!noInternet) {
+                    if (data != "" && data != "no data available.") {
 
-                    try {
-                        println(data)
-                        JsonReader(data.reader()).use { reader ->
-                            reader.beginObject()
-                            while (reader.hasNext()) {
-                                val token = reader.peek()
-                                if (token.equals(JsonToken.NAME)) {
-                                    try {
-                                        reader.nextName()
-                                        reader.beginObject()
+                        val itemList = MutableList(0) { Item() }
+                        var numRows by remember { mutableIntStateOf(0) }
+
+                        try {
+                            println(data)
+                            JsonReader(data.reader()).use { reader ->
+                                reader.beginObject()
+                                while (reader.hasNext()) {
+                                    val token = reader.peek()
+                                    if (token.equals(JsonToken.NAME)) {
                                         try {
-                                            reader.skipValue()
-                                            val uniqueId = reader.nextInt()
-                                            reader.skipValue()
-                                            val title = reader.nextString()
-                                            reader.skipValue()
-                                            val url = reader.nextString()
-                                            reader.skipValue()
-                                            val chapter = reader.nextString()
-                                            reader.skipValue()
-                                            val publisher = reader.nextString()
-                                            reader.skipValue()
-                                            val pubType = reader.nextString()
-                                            reader.skipValue()
-                                            val logo = reader.nextString()
-                                            reader.skipValue()
-                                            val logoBg = reader.nextString()
-                                            reader.skipValue()
-                                            val published = reader.nextString()
-                                            reader.skipValue()
-                                            val description = reader.nextString()
-                                            reader.skipValue()
-                                            val specification = reader.nextString()
-                                            reader.skipValue()
-                                            val credit = reader.nextString()
-                                            reader.skipValue()
-                                            val creditUrl = reader.nextString()
+                                            reader.nextName()
+                                            reader.beginObject()
+                                            try {
+                                                reader.skipValue()
+                                                val uniqueId = reader.nextInt()
+                                                reader.skipValue()
+                                                val title = reader.nextString()
+                                                reader.skipValue()
+                                                val url = reader.nextString()
+                                                reader.skipValue()
+                                                val chapter = reader.nextString()
+                                                reader.skipValue()
+                                                val publisher = reader.nextString()
+                                                reader.skipValue()
+                                                val pubType = reader.nextString()
+                                                reader.skipValue()
+                                                val logo = reader.nextString()
+                                                reader.skipValue()
+                                                val logoBg = reader.nextString()
+                                                reader.skipValue()
+                                                val published = reader.nextString()
+                                                reader.skipValue()
+                                                val description = reader.nextString()
+                                                reader.skipValue()
+                                                val specification = reader.nextString()
+                                                reader.skipValue()
+                                                val credit = reader.nextString()
+                                                reader.skipValue()
+                                                val creditUrl = reader.nextString()
 
 
-                                            itemList.add(
-                                                Item(
-                                                    uniqueId = uniqueId,
-                                                    title = title,
-                                                    url = url,
-                                                    chapter = chapter,
-                                                    publisher = publisher,
-                                                    pubType = pubType,
-                                                    logo = logo,
-                                                    logoBg = logoBg,
-                                                    specification = specification,
-                                                    published = published,
-                                                    description = description,
-                                                    credit = credit,
-                                                    creditUrl = creditUrl
+                                                itemList.add(
+                                                    Item(
+                                                        uniqueId = uniqueId,
+                                                        title = title,
+                                                        url = url,
+                                                        chapter = chapter,
+                                                        publisher = publisher,
+                                                        pubType = pubType,
+                                                        logo = logo,
+                                                        logoBg = logoBg,
+                                                        specification = specification,
+                                                        published = published,
+                                                        description = description,
+                                                        credit = credit,
+                                                        creditUrl = creditUrl
+                                                    )
                                                 )
-                                            )
+                                            } catch (e: Exception) {
+                                                println(reader.peek())
+                                            }
+                                            reader.endObject()
                                         } catch (e: Exception) {
-                                            println(reader.peek())
+                                            numRows = reader.nextInt()
+                                            reader.skipValue()
                                         }
-                                        reader.endObject()
-                                    } catch (e: Exception) {
-                                        numRows = reader.nextInt()
-                                        reader.skipValue()
                                     }
                                 }
+                                println(itemList)
                             }
-                            println(itemList)
-                        }
-                    } catch (_: Exception) {
-                        numRows = 0
-                        itemList.add(
-                            Item(
-                                uniqueId = 0,
-                                title = "Sample Notes",
-                                url = "https://accorm.ginastic.co/700/IGCSE/islamiyat/The%20Quranic%20Passages_373776704.pdf",
-                                chapter = "miscellaneous",
-                                publisher = "Accorm",
-                                pubType = "Admin",
-                                logo = "A",
-                                logoBg = "#000000",
-                                specification = "Sample Notes",
-                                published = "12/12/2023",
-                                description = "Sample Notes"
-                            )
-                        )
-                    }
-
-                    val favs by remember {
-                        mutableStateOf(mutableListOf<String>())
-                    }
-
-                    if (LoginStatus.getLoginStatus()) {
-                        itemList.sortBy { it.chapter.toIntOrNull() }
-                        val tempList1 = mutableListOf<Item>()
-                        itemList.forEach {
-                            tempList1.add(it)
-                        }
-                        val tempList2 = mutableListOf<Item>()
-                        itemList.forEach {
-                            tempList2.add(it)
-                        }
-
-                        itemList.sortBy { it.chapter }
-                        val tempList3 = mutableListOf<Item>()
-                        itemList.forEach {
-                            tempList3.add(it)
-                        }
-                        val tempList4 = mutableListOf<Item>()
-                        itemList.forEach {
-                            tempList4.add(it)
-                        }
-
-                        tempList1.forEach {
-                            val isChapNum = it.chapter.toIntOrNull()
-                            if (isChapNum == null) {
-                                tempList2.remove(it)
-                            }
-                        }
-                        tempList3.forEach {
-                            val isChapNum = it.chapter.toIntOrNull()
-                            if (isChapNum != null) {
-                                tempList4.remove(it)
-                            }
-                        }
-                        tempList4.sortBy { it.chapter }
-                        itemList.clear()
-                        itemList.addAll(tempList4)
-                        itemList.addAll(tempList2)
-
-                        if (LoginStatus.getFavourites() != "") {
-                            val favsStr = LoginStatus.getFavourites().trim().split(" ")
-                            println(favsStr)
-                            favsStr.forEach {
-                                val item = it.split("-")
-                                println(item)
-                                favs.add(item[1])
-                            }
-                        }
-                    }
-
-                    var previousChapter = ""
-                    var removeItem  = Item()
-
-                    itemList.forEach { item ->
-                        if (previousChapter != item.chapter && LoginStatus.getLoginStatus()) {
-                            previousChapter = item.chapter
-                            val isNumber = item.chapter.toIntOrNull()
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Text(
-                                text = if (isNumber == null) "${item.chapter.replaceFirstChar { it.uppercase() }} Resources" else "Chapter ${item.chapter}",
-                                fontSize = 20.sp,
-                                fontFamily = poppins,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                        }
-
-                        if (item.title != "Sample Notes") {
-                            if (favs.contains(item.uniqueId.toString())) {
-                                DisplayNotesItem(
-                                    subjectRetrieve = subjectRetrieve,
-                                    uniqueId = item.uniqueId,
-                                    logo = item.logo,
-                                    logoBg = item.logoBg,
-                                    chapter = item.chapter,
-                                    publisher = item.publisher,
-                                    title = item.title,
-                                    description = item.description,
-                                    specification = item.specification,
-                                    published = item.published,
-                                    url = item.url,
-                                    credit = item.credit,
-                                    creditUrl = item.creditUrl,
-                                    backgroundColor = Color(0xFFffb900),
-                                    textColor = Color.Black,
-                                    labelColor = Color(0xFF373120),
-                                    logoTextColour = Color.Black,
-                                    downloadIconColor = Color.Black,
-                                    level = level
+                        } catch (_: Exception) {
+                            numRows = 0
+                            itemList.add(
+                                Item(
+                                    uniqueId = 0,
+                                    title = "Sample Notes",
+                                    url = "https://accorm.ginastic.co/700/IGCSE/islamiyat/The%20Quranic%20Passages_373776704.pdf",
+                                    chapter = "miscellaneous",
+                                    publisher = "Accorm",
+                                    pubType = "Admin",
+                                    logo = "A",
+                                    logoBg = "#000000",
+                                    specification = "Sample Notes",
+                                    published = "12/12/2023",
+                                    description = "Sample Notes"
                                 )
+                            )
+                        }
+
+                        val favs by remember {
+                            mutableStateOf(mutableListOf<String>())
+                        }
+
+                        if (LoginStatus.getLoginStatus()) {
+                            itemList.sortBy { it.chapter.toIntOrNull() }
+                            val tempList1 = mutableListOf<Item>()
+                            itemList.forEach {
+                                tempList1.add(it)
+                            }
+                            val tempList2 = mutableListOf<Item>()
+                            itemList.forEach {
+                                tempList2.add(it)
+                            }
+
+                            itemList.sortBy { it.chapter }
+                            val tempList3 = mutableListOf<Item>()
+                            itemList.forEach {
+                                tempList3.add(it)
+                            }
+                            val tempList4 = mutableListOf<Item>()
+                            itemList.forEach {
+                                tempList4.add(it)
+                            }
+
+                            tempList1.forEach {
+                                val isChapNum = it.chapter.toIntOrNull()
+                                if (isChapNum == null) {
+                                    tempList2.remove(it)
+                                }
+                            }
+                            tempList3.forEach {
+                                val isChapNum = it.chapter.toIntOrNull()
+                                if (isChapNum != null) {
+                                    tempList4.remove(it)
+                                }
+                            }
+                            tempList4.sortBy { it.chapter }
+                            itemList.clear()
+                            itemList.addAll(tempList4)
+                            itemList.addAll(tempList2)
+
+                            if (LoginStatus.getFavourites() != "") {
+                                val favsStr = LoginStatus.getFavourites().trim().split(" ")
+                                println(favsStr)
+                                favsStr.forEach {
+                                    val item = it.split("-")
+                                    println(item)
+                                    favs.add(item[1])
+                                }
+                            }
+                        }
+
+                        var previousChapter = ""
+                        var removeItem = Item()
+
+                        itemList.forEach { item ->
+                            if (previousChapter != item.chapter && LoginStatus.getLoginStatus()) {
+                                previousChapter = item.chapter
+                                val isNumber = item.chapter.toIntOrNull()
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = if (isNumber == null) "${item.chapter.replaceFirstChar { it.uppercase() }} Resources" else "Chapter ${item.chapter}",
+                                    fontSize = 20.sp,
+                                    fontFamily = poppins,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                            }
+
+                            if (item.title != "Sample Notes") {
+                                if (favs.contains(item.uniqueId.toString())) {
+                                    DisplayNotesItem(
+                                        subjectRetrieve = subjectRetrieve,
+                                        uniqueId = item.uniqueId,
+                                        logo = item.logo,
+                                        logoBg = item.logoBg,
+                                        chapter = item.chapter,
+                                        publisher = item.publisher,
+                                        title = item.title,
+                                        description = item.description,
+                                        specification = item.specification,
+                                        published = item.published,
+                                        url = item.url,
+                                        credit = item.credit,
+                                        creditUrl = item.creditUrl,
+                                        backgroundColor = Color(0xFFffb900),
+                                        textColor = Color.Black,
+                                        labelColor = Color(0xFF373120),
+                                        logoTextColour = Color.Black,
+                                        downloadIconColor = Color.Black,
+                                        level = level
+                                    )
+                                } else {
+                                    DisplayNotesItem(
+                                        subjectRetrieve = subjectRetrieve,
+                                        uniqueId = item.uniqueId,
+                                        logo = item.logo,
+                                        logoBg = item.logoBg,
+                                        chapter = item.chapter,
+                                        publisher = item.publisher,
+                                        title = item.title,
+                                        description = item.description,
+                                        specification = item.specification,
+                                        published = item.published,
+                                        url = item.url,
+                                        credit = item.credit,
+                                        creditUrl = item.creditUrl,
+                                        level = level
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(10.dp))
                             } else {
-                                DisplayNotesItem(
-                                    subjectRetrieve = subjectRetrieve,
-                                    uniqueId = item.uniqueId,
-                                    logo = item.logo,
-                                    logoBg = item.logoBg,
-                                    chapter = item.chapter,
-                                    publisher = item.publisher,
-                                    title = item.title,
-                                    description = item.description,
-                                    specification = item.specification,
-                                    published = item.published,
-                                    url = item.url,
-                                    credit = item.credit,
-                                    creditUrl = item.creditUrl,
-                                    level = level
-                                )
+                                removeItem = item
                             }
-                            Spacer(modifier = Modifier.height(10.dp))
-                        } else {
-                            removeItem = item
                         }
-                    }
 
-                    if (removeItem.uniqueId != 111111111) {
-                        itemList.remove(removeItem)
-                    }
+                        if (removeItem.uniqueId != 111111111) {
+                            itemList.remove(removeItem)
+                        }
 
-                    if (itemList.isEmpty()) {
+                        if (itemList.isEmpty()) {
+                            noInternet = true
+                        }
+                    } else if (data == "no data available.") {
                         Text(
-                            text = "No Internet Connection!",
+                            text = "No Notes Uploaded Yet!",
                             fontSize = 20.sp,
                             fontFamily = poppins,
                             fontWeight = FontWeight.SemiBold,
                             color = Color.White
                         )
+                    } else {
+                        CircularProgressIndicator(
+                            color = Color.White
+                        )
                     }
-                } else if (data == "no data available.") {
+                }
+
+                if (noInternet) {
                     Text(
-                        text = "No Notes Uploaded Yet!",
+                        text = "No Internet Connection!",
                         fontSize = 20.sp,
                         fontFamily = poppins,
                         fontWeight = FontWeight.SemiBold,
-                        color = Color.White
-                    )
-                } else {
-                    CircularProgressIndicator(
                         color = Color.White
                     )
                 }
@@ -1001,7 +1009,11 @@ fun DisplayNotesItem(
 
                     var reportAnalytics by remember { mutableStateOf(false) }
                     if (reportAnalytics) {
-                        LogEvent("Open notes $uniqueId ${CurrentSubject.getSubject()}", uniqueId, CurrentSubject.getSubject())
+                        LogEvent(
+                            "Open notes $uniqueId ${CurrentSubject.getSubject()}",
+                            uniqueId,
+                            CurrentSubject.getSubject()
+                        )
                         reportAnalytics = false
                     }
                     Button(
@@ -1442,7 +1454,11 @@ fun DisplayNotesItem(
 
                     var reportAnalytics by remember { mutableStateOf(false) }
                     if (reportAnalytics) {
-                        LogEvent("Open notes $uniqueId ${CurrentSubject.getSubject()}", uniqueId, CurrentSubject.getSubject())
+                        LogEvent(
+                            "Open notes $uniqueId ${CurrentSubject.getSubject()}",
+                            uniqueId,
+                            CurrentSubject.getSubject()
+                        )
                         reportAnalytics = false
                     }
                     Button(
