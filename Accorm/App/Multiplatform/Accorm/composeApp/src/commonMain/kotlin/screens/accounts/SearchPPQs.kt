@@ -29,7 +29,6 @@ suspend fun searchPPQs(
     val paperCodes = mutableListOf<String>()
     val componentCodes = mutableListOf<String>()
     val years = mutableListOf<String>()
-    var loop = false // To repeat loop to check both winter and summer
     for (i in range) {
         var session = "s"
         val year = i.toString().substring(2..3)
