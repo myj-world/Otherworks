@@ -180,7 +180,7 @@ object Spotlight : Tab {
                         achievement = "Top in Western Province, Saudi Arabia  - Cambridge IGCSE™ Information & Communication Technology"
                     ),
                     DistinctionHolder(
-                        name = "Muhammad Arsalan",
+                        name = "Muhammad Arslan",
                         icon = "M",
                         achievement = "Top in The World  - Cambridge IGCSE™ Mathematics"
                     ),

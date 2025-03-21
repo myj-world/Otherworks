@@ -206,6 +206,22 @@ object Dashboard : Tab {
                         Spacer(modifier = Modifier.height(10.dp))
                         Spacer(modifier = Modifier.width(10.dp))
                     }
+                    item {
+                        Option(
+                            text = "PPQ Searcher",
+                            onClick = { navigator.push(PPQSearcher()) }
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.width(10.dp))
+                    }
+                    item {
+                        Option(
+                            text = "Dictionary",
+                            onClick = { navigator.push(Dictionary()) }
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.width(10.dp))
+                    }
                 }
 
 
