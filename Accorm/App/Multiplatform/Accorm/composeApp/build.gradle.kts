@@ -86,6 +86,8 @@ kotlin {
             implementation(libs.multiplatform.settings.no.arg)
 
             implementation(libs.pdfbox)
+
+//            implementation(libs.compose.multiplatform.media.player)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

@@ -81,7 +81,8 @@ class PPQSearcher : Tab {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(31, 31, 54)),
+                    .background(Color(31, 31, 54))
+                    .padding(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
