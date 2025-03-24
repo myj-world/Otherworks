@@ -1,6 +1,6 @@
 [versions]
 agp = "8.9.0"
-android-compileSdk = "34"
+android-compileSdk = "35"
 android-minSdk = "24"
 android-targetSdk = "34"
 androidDriver = "2.0.2"
@@ -17,8 +17,10 @@ bouquetVersion = "1.1.2"
 coil3 = "3.0.0-alpha01"
 coilCompose = "3.0.0-alpha06"
 coilNetworkKtor = "3.0.0-alpha06"
+compose = "1.0.0"
 compose-plugin = "1.7.0"
 composeMultiplatformMediaPlayer = "1.0.35"
+composePdf = "1.2.0"
 composeWebviewMultiplatform = "1.4.0"
 connectivityComposeHttp = "1.1.0"
 connectivityCore = " 1.1.0"
@@ -30,6 +32,7 @@ gson = "2.11.0"
 jetpdfvue = "1.0.3"
 junit = "4.13.2"
 kamelImage = "0.9.5"
+korge = "5.4.0"
 kotlin = "2.0.21"
 kotlinxCoroutinesAndroid = "1.9.0-RC"
 kotlinxCoroutinesCore = "1.9.0"
@@ -66,9 +69,13 @@ androidx-material3 = { module = "androidx.compose.material3:material3", version.
 app-update = { module = "com.google.android.play:app-update", version.ref = "appUpdate" }
 app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "appUpdate" }
 bouquet = { module = "io.github.grizzi91:bouquet", version.ref = "bouquetVersion" }
+compose = { module = "com.github.bhuvaneshw.pdfviewer:compose", version.ref = "compose" }
 compose-multiplatform-media-player = { module = "network.chaintech:compose-multiplatform-media-player", version.ref = "composeMultiplatformMediaPlayer" }
+compose-pdf = { module = "dev.zt64:compose-pdf", version.ref = "composePdf" }
+compose-ui = { module = "com.github.bhuvaneshw.pdfviewer:compose-ui", version.ref = "compose" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+korge = { module = "com.soywiz.korge:korge", version.ref = "korge" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 kotlinx-serialization-json-v171 = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJsonVersion" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }

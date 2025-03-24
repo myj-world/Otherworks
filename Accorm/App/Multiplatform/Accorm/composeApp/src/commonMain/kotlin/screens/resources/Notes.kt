@@ -65,6 +65,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import network.RequestURL
+import screens.accounts.Downloads
 import screens.assets.CopyrightMessage
 import screens.assets.contentType
 import screens.lexend
@@ -1536,26 +1537,28 @@ fun DisplayNotesItem(
     }
 
     if (blockUser) {
-        AlertDialog(
-            onDismissRequest = {},
-            title = {
-                Text(
-                    text = "App Relaunch Required",
-                    fontSize = 20.sp,
-                    fontFamily = poppins,
-                    color = Color(0xFF181829)
-                )
-            },
-            text = {
-                Text(
-                    text = "Please relaunch the app",
-                    fontSize = 18.sp,
-                    fontFamily = poppins,
-                    color = Color(0xFF1f1f36)
-                )
-            },
-            confirmButton = {}
-        )
+//        AlertDialog(
+//            onDismissRequest = {},
+//            title = {
+//                Text(
+//                    text = "App Relaunch Required",
+//                    fontSize = 20.sp,
+//                    fontFamily = poppins,
+//                    color = Color(0xFF181829)
+//                )
+//            },
+//            text = {
+//                Text(
+//                    text = "Please relaunch the app",
+//                    fontSize = 18.sp,
+//                    fontFamily = poppins,
+//                    color = Color(0xFF1f1f36)
+//                )
+//            },
+//            confirmButton = {}
+//        )
+        navigator.pop()
+        navigator.push(Downloads())
     }
 }
 

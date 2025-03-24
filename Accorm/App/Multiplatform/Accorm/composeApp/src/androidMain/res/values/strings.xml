@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Accorm</string>
     <string name="default_notification_channel_id">accorm_notifications</string>
+    <string name="shortcuts_short">Start Using Accorm</string>
+    <string name="shortcuts_long">Start using the Accorm app to browse resources for CIEs!</string>
+    <string name="shortcuts_disabled">Unavailable right now</string>
 </resources>

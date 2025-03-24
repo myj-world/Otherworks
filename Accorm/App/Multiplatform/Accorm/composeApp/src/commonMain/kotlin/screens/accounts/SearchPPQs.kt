@@ -11,6 +11,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.text.PDFTextStripper
+import screens.device
 import java.time.Year
 
 suspend fun searchPPQs(
@@ -23,7 +24,7 @@ suspend fun searchPPQs(
     query: String
 ): List<PPQ> {
     //    Generate urls
-    val list = MutableList(0) { PPQ("", Year.now(), "", "", "", "", "","", "") }
+    val list = MutableList(0) { PPQ("", Year.now(), "", "", "", "", "", "", "") }
     val qpUrls = mutableListOf<String>()
     val sessionCodes = mutableListOf<String>()
     val paperCodes = mutableListOf<String>()
@@ -74,25 +75,47 @@ suspend fun searchPPQs(
                             println("Downloaded $bytesSentTotal of $contentLength")
                         }
                     }.bodyAsChannel().toByteArray()
-                    val pdf = Loader.loadPDF(response)
-                    val pdfTextStripper = PDFTextStripper()
-                    val text = pdfTextStripper.getText(pdf)
-                    if (text.contains(query)) {
-                        // Instead of adding to a shared list here, return the value
-                        PPQ(
-                            session = session,
-                            year = Year.parse(year),
-                            level = level,
-                            subject = subject,
-                            subjectCode = subjectCode,
-                            codeName = code,
-                            qpLink = url,
-                            msLink = url.replace("qp", "ms"),
-                            componentCode = componentCodes[i]
-                        )
+
+                    if (device != "Android") {
+                        val pdf = Loader.loadPDF(response)
+                        val pdfTextStripper = PDFTextStripper()
+                        val text = pdfTextStripper.getText(pdf)
+                        if (text.contains(query)) {
+                            // Instead of adding to a shared list here, return the value
+                            PPQ(
+                                session = session,
+                                year = Year.parse(year),
+                                level = level,
+                                subject = subject,
+                                subjectCode = subjectCode,
+                                codeName = code,
+                                qpLink = url,
+                                msLink = url.replace("qp", "ms"),
+                                componentCode = componentCodes[i]
+                            )
+                        } else {
+                            null // if not matching, return null
+                        }
                     } else {
-                        null // if not matching, return null
+                        if (getAndroidSearch(response, query)) {
+                            PPQ(
+                                session = session,
+                                year = Year.parse(year),
+                                level = level,
+                                subject = subject,
+                                subjectCode = subjectCode,
+                                codeName = code,
+                                qpLink = url,
+                                msLink = url.replace("qp", "ms"),
+                                componentCode = componentCodes[i]
+                            )
+                        } else {
+                            null
+                        }
                     }
+                } catch (e: UnsupportedOperationException) {
+                    e.printStackTrace()
+                    throw e
                 } catch (e: Exception) {
                     e.printStackTrace()
                     null
@@ -119,3 +142,5 @@ data class PPQ(
     val qpLink: String,
     val msLink: String
 )
+
+expect fun getAndroidSearch(respose: ByteArray, keyword: String): Boolean

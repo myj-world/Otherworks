@@ -649,16 +649,23 @@ class PPQSearcher : Tab {
                                     coroutineScope.launch {
                                         firstTimeTried = true
                                         loading = true
-                                        response = searchPPQs(
-                                            range = rangeStartInt..rangeEndInt,
-                                            subject = subject,
-                                            level = level,
-                                            subjectCode = subjectCode,
-                                            component = componentInt,
-                                            variantCodes = variantCodes,
-                                            query = keyword
-                                        )
-                                        loading = false
+                                        try {
+                                            response = searchPPQs(
+                                                range = rangeStartInt..rangeEndInt,
+                                                subject = subject,
+                                                level = level,
+                                                subjectCode = subjectCode,
+                                                component = componentInt,
+                                                variantCodes = variantCodes,
+                                                query = keyword
+                                            )
+                                            loading = false
+                                        } catch (e: Exception) {
+                                            println(e.message)
+                                            error = e.message.toString()
+                                            loading = false
+                                            variantCodes = emptyList()
+                                        }
                                     }
                                 } catch (e: Exception) {
                                     println(e.message)

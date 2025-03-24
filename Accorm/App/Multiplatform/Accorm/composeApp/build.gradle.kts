@@ -52,9 +52,7 @@ kotlin {
             implementation(libs.review)
             implementation(libs.review.ktx)
 
-//            implementation(libs.pdf.viewer)
-//            implementation(libs.pdfviewer.pdfium)
-            implementation(libs.bouquet)
+            implementation(libs.pdf.viewer)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -67,6 +65,8 @@ kotlin {
             implementation(libs.navigation.compose)
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.tab.navigator)
+
+
 
             implementation(libs.play.services.base)
             implementation (libs.grpc.okhttp)
@@ -87,7 +87,7 @@ kotlin {
 
             implementation(libs.pdfbox)
 
-//            implementation(libs.compose.multiplatform.media.player)
+            implementation(libs.korge)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

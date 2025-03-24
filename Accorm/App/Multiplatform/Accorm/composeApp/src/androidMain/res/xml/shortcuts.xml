@@ -1,0 +1,14 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="startaccorm"
+        android:enabled="true"
+        android:icon="@drawable/ic"
+        android:shortcutShortLabel="@string/shortcuts_short"
+        android:shortcutLongLabel="@string/shortcuts_long"
+        android:shortcutDisabledMessage="@string/shortcuts_disabled">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.yousufjamil.accorm"
+            android:targetClass="com.yousufjamil.accorm.MainActivity" />
+    </shortcut>
+</shortcuts>

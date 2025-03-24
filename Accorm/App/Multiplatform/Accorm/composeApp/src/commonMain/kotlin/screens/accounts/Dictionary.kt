@@ -20,6 +20,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,11 +43,14 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Book
 import compose.icons.fontawesomeicons.solid.Search
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import network.RequestURL
 import screens.assets.DictionaryResponse
 import screens.assets.parseDictionaryJson
 import screens.poppins
+import screens.assets.AudioPlayer
+import screens.device
 
 class Dictionary : Tab {
     private fun readResolve(): Any = Dictionary()
@@ -176,9 +180,22 @@ class Dictionary : Tab {
                         for (i in result[itemIndex].phonetics ?: emptyList()) {
                             if (i.audio != "") audioUrl = i.audio!!
                         }
-                        if (audioUrl != "") {
+                        if (audioUrl != "" && device == "Android") {
                             println(audioUrl)
+                            val audioPlayer = AudioPlayer()
 
+                            Button(
+                                onClick = {
+                                    coroutineScope.launch {
+                                        audioPlayer.downloadAudio(audioUrl)
+                                        audioPlayer.playAudio()
+                                        delay(5000)
+                                        audioPlayer.stopAudio()
+                                    }
+                                }
+                            ) {
+                                Text("Play Audio")
+                            }
                         } else {
                             println("Audio not found")
                         }
