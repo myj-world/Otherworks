@@ -1,6 +1,6 @@
-package screens.assets
+@file:Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 
-import androidx.compose.runtime.Composable
+package screens.assets
 
 expect class AudioPlayer() {
     suspend fun downloadAudio(url: String): Boolean

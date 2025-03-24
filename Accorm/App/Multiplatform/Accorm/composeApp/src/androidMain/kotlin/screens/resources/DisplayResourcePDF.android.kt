@@ -47,6 +47,7 @@ import screens.landscapeTablet
 import screens.resources.FileManager.context
 import viewmodels.CurrentSubject
 import java.io.File
+import androidx.core.net.toUri
 
 actual suspend fun downloadFile(title: String, url: String): Boolean {
 //    return try {
@@ -73,7 +74,7 @@ actual suspend fun downloadFile(title: String, url: String): Boolean {
 //        false
 //    }
     return try {
-        val request = DownloadManager.Request(Uri.parse(url))
+        val request = DownloadManager.Request(url.toUri())
             .setTitle(title)
             .setDescription("Downloading file...")
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
