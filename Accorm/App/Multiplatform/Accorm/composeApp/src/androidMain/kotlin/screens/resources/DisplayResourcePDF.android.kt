@@ -2,7 +2,6 @@ package screens.resources
 
 import android.app.DownloadManager
 import android.content.Context
-import android.net.Uri
 import android.os.Environment
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
