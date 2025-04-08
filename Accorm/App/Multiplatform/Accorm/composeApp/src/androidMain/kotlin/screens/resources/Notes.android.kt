@@ -6,6 +6,7 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.graphics.toColorInt
 
 @Composable
 actual fun Copy(url: String) {
@@ -15,5 +16,9 @@ actual fun Copy(url: String) {
 }
 
 actual fun parseColor(color: String): Color {
-    return Color(android.graphics.Color.parseColor(color))
+    return try {
+        Color(color.toColorInt())
+    } catch (e: Exception) {
+        Color("#acacf9".toColorInt())
+    }
 }

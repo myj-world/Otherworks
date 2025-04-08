@@ -64,6 +64,8 @@ class History : Tab {
                 val historyDataSource = HistoryDataSource(AccormDatabase.database)
                 val history = historyDataSource.getHistory()
 
+                Spacer(modifier = Modifier.height(30.dp))
+
                 Text(
                     text = "History",
                     color = Color.White,
@@ -81,16 +83,16 @@ class History : Tab {
                         println(it)
                         if (it.contentType == "NOTE") {
                             DisplayNotesItem(
-                                subjectRetrieve = it.subject,
-                                uniqueId = it.uniqueId.toInt(),
-                                logo = it.logo,
+                                subjectRetrieve = it.subject.toString(),
+                                uniqueId = it.uniqueId?.toInt() ?: 0,
+                                logo = it.logo.toString(),
                                 logoBg = it.logoBg.toString(),
-                                publisher = it.publisher,
-                                title = it.title,
-                                description = it.description,
-                                specification = it.specification,
-                                chapter = it.chapter,
-                                published = it.published,
+                                publisher = it.publisher.toString(),
+                                title = it.title.toString(),
+                                description = it.description.toString(),
+                                specification = it.specification.toString(),
+                                chapter = it.chapter.toString(),
+                                published = it.published.toString(),
                                 url = it.url.toString(),
                                 credit = it.credit.toString(),
                                 creditUrl = it.creditUrl.toString(),
@@ -99,27 +101,27 @@ class History : Tab {
                                 labelColor = parseColor(it.labelColor.toString()),
                                 logoTextColour = parseColor(it.logoTextColour.toString()),
                                 downloadIconColor = parseColor(it.downloadIconColor.toString()),
-                                level = it.specification
+                                level = it.specification.toString()
                             )
                         } else {
                             DisplayVideosItem(
-                                subjectRetrieve = it.subject,
-                                uniqueId = it.uniqueId.toInt(),
-                                logo = it.logo,
+                                subjectRetrieve = it.subject.toString(),
+                                uniqueId = it.uniqueId?.toInt() ?: 0,
+                                logo = it.logo.toString(),
                                 logoColor = parseColor(it.logoBg.toString()),
-                                publisher = it.publisher,
-                                title = it.title,
-                                description = it.description,
-                                specification = it.specification,
-                                chapter = it.chapter,
-                                published = it.published,
+                                publisher = it.publisher.toString(),
+                                title = it.title.toString(),
+                                description = it.description.toString(),
+                                specification = it.specification.toString(),
+                                chapter = it.chapter.toString(),
+                                published = it.published.toString(),
                                 url = it.url.toString(),
                                 source = it.source.toString(),
                                 backgroundColor = parseColor(it.backgroundColor.toString()),
                                 textColor = parseColor(it.textColor.toString()),
                                 labelColor = parseColor(it.labelColor.toString()),
                                 logoTextColour = parseColor(it.logoTextColour.toString()),
-                                level = it.specification
+                                level = it.specification.toString()
                             )
                         }
                         Spacer(modifier = Modifier.height(10.dp))

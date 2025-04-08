@@ -41,7 +41,7 @@ class HistoryDataSource (private val db: Accorm) {
             historyId = null,
             uniqueId = uniqueId,
             subject = subject,
-            level = level,
+            LEVEL = level,
             logo = logo,
             logoBg = logoBg,
             chapter = chapter,

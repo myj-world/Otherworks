@@ -12,6 +12,6 @@ actual fun Copy (url: String) {
 }
 
 actual fun parseColor(color: String): Color {
-    val color = java.awt.Color.decode(color)
-    return Color(color.red, color.green, color.blue)
+    val colorMod = java.awt.Color.decode(color)
+    return Color(colorMod.red, colorMod.green, colorMod.blue)
 }

@@ -208,7 +208,7 @@ class ToDoList : Tab {
                             )
 
                             Text(
-                                text = it.item,
+                                text = it.item.toString(),
                                 color = Color.White,
                                 fontFamily = poppins,
                                 fontSize = 24.sp,

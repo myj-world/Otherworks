@@ -20,7 +20,7 @@ plugins {
 }
 
 group = "accorm"
-version = "2.5.0"
+version = "2.5.1"
 
 kotlin {
     androidTarget {
@@ -109,8 +109,8 @@ android {
         applicationId = "com.yousufjamil.accorm"
         minSdk = 26
         targetSdk = 35
-        versionCode = 50
-        versionName = "2.5.0"
+        versionCode = 52
+        versionName = "2.5.1"
     }
     packaging {
         resources {
@@ -171,7 +171,7 @@ sqldelight {
         create("Accorm") {
             packageName.set("com.yousufjamil.accorm")
             schemaOutputDirectory = file("src/main/sqldelight/databases")
-            version = 2
+            version = "2.5.1"
         }
     }
 }
