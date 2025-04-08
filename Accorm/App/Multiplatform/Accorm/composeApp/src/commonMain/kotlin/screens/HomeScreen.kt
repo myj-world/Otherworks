@@ -75,6 +75,7 @@ import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.brands.Discord
 import compose.icons.fontawesomeicons.brands.Instagram
+import compose.icons.fontawesomeicons.brands.Linkedin
 import compose.icons.fontawesomeicons.solid.ArrowRight
 import compose.icons.fontawesomeicons.solid.BookOpen
 import compose.icons.fontawesomeicons.solid.Cross
@@ -403,6 +404,43 @@ object HomeScreen : Tab {
                         Image(
                             imageVector = FontAwesomeIcons.Brands.Instagram,
                             contentDescription = "Instagram logo",
+                            modifier = Modifier
+                                .size(20.dp)
+                                .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
+                                .drawWithContent {
+                                    val colors = listOf(
+                                        Color(129, 52, 175),
+                                        Color(221, 42, 123)
+                                    )
+                                    drawContent()
+                                    drawRect(
+                                        brush = Brush.linearGradient(
+                                            colors = colors,
+                                            start = Offset(0f, size.height),
+                                            end = Offset(size.width, 0f)
+                                        ),
+                                        blendMode = BlendMode.DstIn
+                                    )
+                                }
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(5.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(100))
+                            .background(color = Color.White)
+                            .padding(10.dp)
+                            .clickable {
+                                CurrentSubject.setUrl("https://www.linkedin.com/company/accorm")
+                                navigator.current = DisplayResourceExternal()
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            imageVector = FontAwesomeIcons.Brands.Linkedin,
+                            contentDescription = "LinkedIn logo",
                             modifier = Modifier
                                 .size(20.dp)
                                 .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)

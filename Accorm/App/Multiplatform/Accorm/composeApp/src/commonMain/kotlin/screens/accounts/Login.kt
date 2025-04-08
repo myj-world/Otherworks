@@ -46,7 +46,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import com.google.gson.stream.JsonReader
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.CheckCircle
@@ -62,15 +61,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import network.RequestURL
-import screens.assets.Contact
 import screens.assets.CopyrightMessage
 import screens.device
 import screens.landscapeTablet
 import screens.poppins
-import screens.resources.DisplayResourceExternal
-import viewmodels.CurrentEmailName
 import java.net.URLEncoder
-import kotlin.random.Random
 
 object Login : Tab {
     private fun readResolve(): Any = Login
@@ -200,7 +195,7 @@ object Login : Tab {
                     LoginStatus.updateName(loginData.accountData.name)
                     LoginStatus.updateLogoBg(loginData.accountData.colour)
                     LoginStatus.updateLogo(loginData.accountData.name.substring(0, 1))
-                    LoginStatus.updateFavourites(loginData.addons.favs)
+                    LoginStatus.updateFavourites(loginData.addOnsData.favs)
                     LoginStatus.updateLoginStatus(true)
                     navigator.push(Dashboard)
                 } catch (e: Exception) {
@@ -434,16 +429,17 @@ object Login : Tab {
 @Serializable
 data class LoginData(
     @SerialName("profile") val accountData: AccountData,
-    @SerialName("add-ons") val addons: addons
+    @SerialName("add-ons") val addOnsData: AddOnsData
 )
 
 @Serializable
 data class AccountData(
     @SerialName("name") val name: String,
-    @SerialName("colour") val colour: String
+    @SerialName("colour") val colour: String,
+    @SerialName("theme") val theme: String
 )
 
 @Serializable
-data class addons(
+data class AddOnsData(
     @SerialName("favs") val favs: String
 )

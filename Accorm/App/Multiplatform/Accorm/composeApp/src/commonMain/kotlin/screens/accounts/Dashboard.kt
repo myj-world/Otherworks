@@ -22,7 +22,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,6 +45,9 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.SignOutAlt
 import compose.icons.fontawesomeicons.solid.User
+import korlibs.io.async.launch
+import kotlinx.serialization.json.Json
+import network.RequestURL
 import screens.assets.CopyrightMessage
 import screens.assets.Option
 import screens.device
@@ -75,12 +82,40 @@ object Dashboard : Tab {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            val coroutineScope = rememberCoroutineScope()
             if (!LoginStatus.getLoginStatus()) {
                 LoginStatus.clearSavedLoginData()
                 val navigator = LocalNavigator.currentOrThrow
                 navigator.push(Login)
             } else {
                 val navigator = LocalNavigator.currentOrThrow
+                var newName by remember { mutableStateOf("") }
+
+                if (LoginStatus.getName() == "Error") {
+                    suspend fun refreshData() {
+                        val userId = LoginStatus.getUserID()
+                        val responseAccount =
+                            RequestURL("https://accorm.ginastic.co/300/login/UserData/?access-id=4954kvti4&unique-id=$userId")
+                                ?: return
+
+                        try {
+                            println(responseAccount)
+                            val json = Json { ignoreUnknownKeys = true }
+                            val loginData = json.decodeFromString<LoginData>(responseAccount)
+                            println(loginData)
+                            LoginStatus.updateName(loginData.accountData.name)
+                            LoginStatus.updateLogoBg(loginData.accountData.colour)
+                            LoginStatus.updateLogo(loginData.accountData.name.substring(0, 1))
+                            LoginStatus.updateFavourites(loginData.addOnsData.favs)
+                            newName = loginData.accountData.name
+                        } catch (e: Exception) {
+                            println(e.message)
+                        }
+                    }
+                    coroutineScope.launch {
+                        refreshData()
+                    }
+                }
 
                 LazyVerticalGrid (columns = if (device == "Android" && !landscapeTablet) GridCells.Fixed(1) else GridCells.Adaptive(minSize = 300.dp)) {
                     item (
@@ -134,7 +169,7 @@ object Dashboard : Tab {
                                 }
                                 Spacer(modifier = Modifier.height(30.dp))
                                 Text(
-                                    text = LoginStatus.getName(),
+                                    text = if (newName != "") newName else LoginStatus.getName(),
                                     color = Color.White,
                                     fontFamily = poppins,
                                     fontSize = 24.sp,

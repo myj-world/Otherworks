@@ -91,7 +91,7 @@ class Favourites : Tab {
                         LoginStatus.updateName(loginData.accountData.name)
                         LoginStatus.updateLogoBg(loginData.accountData.colour)
                         LoginStatus.updateLogo(loginData.accountData.name.substring(0, 1))
-                        LoginStatus.updateFavourites(loginData.addons.favs)
+                        LoginStatus.updateFavourites(loginData.addOnsData.favs)
                     } catch (e: Exception) {
                         println(e.message)
                     }
