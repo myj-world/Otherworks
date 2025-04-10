@@ -103,6 +103,14 @@ fun App() {
                 println(ColourProvider.colour1)
             } catch (e: Exception) {
                 println(e)
+
+                try {
+                    val accountsDataSource = AccountsDataSource(AccormDatabase.database)
+                    ColourProvider.setTheme(accountsDataSource.getTheme())
+                    println(ColourProvider.colour1)
+                } catch (e: Exception) {
+                    println(e)
+                }
             }
         }
         val screens = listOf(HomeScreen, Resources, Dashboard, Blogs, MoreItems)
