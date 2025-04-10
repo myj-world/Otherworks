@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -36,19 +35,15 @@ import com.yousufjamil.accorm.Accorm
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Blog
-import compose.icons.fontawesomeicons.solid.Book
 import compose.icons.fontawesomeicons.solid.BookOpen
 import compose.icons.fontawesomeicons.solid.EllipsisH
 import compose.icons.fontawesomeicons.solid.Home
 import compose.icons.fontawesomeicons.solid.User
 import database.AccormDatabase
 import database.AccountsDataSource
-import korlibs.io.async.launch
-import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import screens.HomeScreen
 import screens.MoreItems
-import screens.Services
 import screens.device
 import screens.landscapeTablet
 import screens.Blogs
