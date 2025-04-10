@@ -54,6 +54,7 @@ import screens.device
 import screens.landscapeTablet
 import screens.poppins
 import screens.resources.parseColor
+import viewmodels.ColourProvider
 
 object Dashboard : Tab {
     private fun readResolve(): Any = Dashboard
@@ -107,6 +108,8 @@ object Dashboard : Tab {
                             LoginStatus.updateLogoBg(loginData.accountData.colour)
                             LoginStatus.updateLogo(loginData.accountData.name.substring(0, 1))
                             LoginStatus.updateFavourites(loginData.addOnsData.favs)
+                            LoginStatus.updateTheme(loginData.accountData.theme)
+                            ColourProvider.setTheme(newTheme = loginData.accountData.theme)
                             newName = loginData.accountData.name
                         } catch (e: Exception) {
                             println(e.message)

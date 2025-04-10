@@ -66,6 +66,7 @@ import screens.device
 import screens.landscapeTablet
 import screens.lexend
 import screens.poppins
+import viewmodels.ColourProvider
 import viewmodels.CurrentSubject
 
 object Videos : Tab {
@@ -172,8 +173,8 @@ object Videos : Tab {
                     .background(
                         Brush.radialGradient(
                             listOf(
-                                Color(106, 106, 193),
-                                Color(153, 109, 194)
+                                parseColor(ColourProvider.colour1),
+                                parseColor(ColourProvider.colour2)
                             ),
                             radius = 1500f,
                             center = Offset(-0.5f, -0.5f)
@@ -220,7 +221,7 @@ object Videos : Tab {
                             fontSize = 14.sp,
                             fontFamily = poppins,
                             fontWeight = FontWeight.SemiBold,
-                            color = Color(172, 172, 249)
+                            color = parseColor(ColourProvider.colour2)
                         )
                         Text(
                             text = board,
@@ -247,7 +248,7 @@ object Videos : Tab {
             ) {
                 Text(
                     text = "Change Subject",
-                    color = Color(172, 172, 249),
+                    color = parseColor(ColourProvider.colour1),
                     fontFamily = poppins,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 20.sp
@@ -267,7 +268,7 @@ object Videos : Tab {
                             .width(175.dp)
                             .height(150.dp)
                             .clip(RoundedCornerShape(20.dp))
-                            .background(Color(172, 172, 249))
+                            .background(parseColor(ColourProvider.colour1))
                             .padding(20.dp),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.Start
@@ -310,7 +311,7 @@ object Videos : Tab {
                             .width(175.dp)
                             .height(150.dp)
                             .clip(RoundedCornerShape(20.dp))
-                            .background(Color(172, 172, 249))
+                            .background(parseColor(ColourProvider.colour1))
                             .padding(20.dp),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.Start
@@ -519,7 +520,8 @@ object Videos : Tab {
                                         level = level,
                                         uniqueId = item.uniqueId,
                                         logo = item.logo,
-                                        logoColor = parseColor(item.logoBg),
+//                                        logoColor = parseColor(item.logoBg),
+                                        logoColor = parseColor(ColourProvider.colour1),
                                         chapter = item.chapter,
                                         publisher = item.publisher,
                                         title = item.title,
@@ -539,7 +541,8 @@ object Videos : Tab {
                                         level = level,
                                         uniqueId = item.uniqueId,
                                         logo = item.logo,
-                                        logoColor = parseColor(item.logoBg),
+//                                        logoColor = parseColor(item.logoBg),
+                                        logoColor = parseColor(ColourProvider.colour1),
                                         chapter = item.chapter,
                                         publisher = item.publisher,
                                         title = item.title,

@@ -8,7 +8,8 @@ CREATE TABLE Accounts (
     email TEXT NOT NULL DEFAULT "error@example.com",
     logo TEXT NOT NULL DEFAULT "E",
     logoBg TEXT NOT NULL DEFAULT "#FF0000",
-    favs TEXT NOT NULL DEFAULT ""
+    favs TEXT NOT NULL DEFAULT "",
+    theme TEXT DEFAULT ""
 );
 
 getUser:
@@ -70,3 +71,10 @@ SELECT favs FROM Accounts;
 
 updateFavourites:
 UPDATE Accounts SET favs=?;
+
+getTheme:
+SELECT theme FROM Accounts;
+
+setTheme:
+UPDATE Accounts
+SET theme = ?;

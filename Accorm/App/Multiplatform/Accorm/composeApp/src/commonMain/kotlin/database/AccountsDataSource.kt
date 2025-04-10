@@ -130,4 +130,18 @@ class AccountsDataSource (private val db: Accorm) {
     fun updateFavourites(favourites: String) {
         queries.updateFavourites(favourites)
     }
+
+
+    fun getTheme(): String {
+        try {
+            queries.getLoginStatus().executeAsOne()
+        } catch (e: Exception) {
+            initializeForNoUser()
+        }
+        return queries.getTheme().executeAsOne().theme ?: ""
+    }
+
+    fun setTheme(theme: String) {
+        queries.setTheme(theme)
+    }
 }

@@ -42,6 +42,9 @@ import compose.icons.fontawesomeicons.solid.EllipsisH
 import compose.icons.fontawesomeicons.solid.Home
 import compose.icons.fontawesomeicons.solid.User
 import database.AccormDatabase
+import database.AccountsDataSource
+import korlibs.io.async.launch
+import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import screens.HomeScreen
 import screens.MoreItems
@@ -53,6 +56,7 @@ import screens.accounts.Dashboard
 import screens.accounts.Login
 import screens.accounts.Signup
 import screens.resources.Resources
+import viewmodels.ColourProvider
 
 @Composable
 @Preview
@@ -74,7 +78,9 @@ fun App() {
                     oldVersion = 1,
                     newVersion = 2
                 )
-            } catch (_: Exception) {}
+            } catch (e: Exception) {
+                println(e)
+            }
 
             try {
                 Accorm.Schema.migrate(
@@ -82,9 +88,23 @@ fun App() {
                     oldVersion = 2,
                     newVersion = 3
                 )
-            } catch (_: Exception) {}
-        }
+            } catch (e: Exception) {
+                println(e)
+            }
+            try {
+                Accorm.Schema.migrate(
+                    driver = AccormDatabase.driver,
+                    oldVersion = 3,
+                    newVersion = 4
+                )
 
+                val accountsDataSource = AccountsDataSource(AccormDatabase.database)
+                ColourProvider.setTheme(accountsDataSource.getTheme())
+                println(ColourProvider.colour1)
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
         val screens = listOf(HomeScreen, Resources, Dashboard, Blogs, MoreItems)
         TabNavigator(
             tab = HomeScreen

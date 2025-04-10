@@ -1,0 +1,8 @@
+ALTER TABLE Accounts ADD COLUMN theme TEXT DEFAULT "";
+
+getTheme:
+SELECT theme FROM Accounts;
+
+setTheme:
+UPDATE Accounts
+SET theme = ?;

@@ -65,6 +65,7 @@ import screens.assets.CopyrightMessage
 import screens.device
 import screens.landscapeTablet
 import screens.poppins
+import viewmodels.ColourProvider
 import java.net.URLEncoder
 
 object Login : Tab {
@@ -196,6 +197,8 @@ object Login : Tab {
                     LoginStatus.updateLogoBg(loginData.accountData.colour)
                     LoginStatus.updateLogo(loginData.accountData.name.substring(0, 1))
                     LoginStatus.updateFavourites(loginData.addOnsData.favs)
+                    LoginStatus.updateTheme(loginData.accountData.theme)
+                    ColourProvider.setTheme(newTheme = loginData.accountData.theme)
                     LoginStatus.updateLoginStatus(true)
                     navigator.push(Dashboard)
                 } catch (e: Exception) {

@@ -43,6 +43,7 @@ import screens.poppins
 import screens.resources.DisplayNotesItem
 import screens.resources.DisplayVideosItem
 import screens.resources.parseColor
+import viewmodels.ColourProvider
 
 class Favourites : Tab {
     private fun readResolve(): Any = Favourites()
@@ -91,6 +92,8 @@ class Favourites : Tab {
                         LoginStatus.updateName(loginData.accountData.name)
                         LoginStatus.updateLogoBg(loginData.accountData.colour)
                         LoginStatus.updateLogo(loginData.accountData.name.substring(0, 1))
+                        LoginStatus.updateTheme(loginData.accountData.theme)
+                        ColourProvider.setTheme(newTheme = loginData.accountData.theme)
                         LoginStatus.updateFavourites(loginData.addOnsData.favs)
                     } catch (e: Exception) {
                         println(e.message)

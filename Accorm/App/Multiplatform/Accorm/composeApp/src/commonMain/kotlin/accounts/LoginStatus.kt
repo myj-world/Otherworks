@@ -80,10 +80,21 @@ object LoginStatus {
 
 
 
+    fun updateTheme(theme: String) {
+        db.setTheme(theme)
+    }
+
+    fun getTheme(): String {
+        return db.getTheme()
+    }
+
+
+
     fun clearSavedLoginData(): Boolean {
         db.clearSavedLoginData()
         return true
     }
+
 
 
     fun initializeForNoUser(): Boolean {

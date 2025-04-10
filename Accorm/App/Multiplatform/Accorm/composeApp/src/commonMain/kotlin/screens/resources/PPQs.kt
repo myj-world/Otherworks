@@ -44,6 +44,7 @@ import screens.assets.CopyrightMessage
 import screens.device
 import screens.landscapeTablet
 import screens.poppins
+import viewmodels.ColourProvider
 import viewmodels.CurrentSubject
 
 object PPQs : Tab {
@@ -158,8 +159,8 @@ object PPQs : Tab {
                     .background(
                         Brush.radialGradient(
                             listOf(
-                                Color(106, 106, 193),
-                                Color(153, 109, 194)
+                                parseColor(ColourProvider.colour1),
+                                parseColor(ColourProvider.colour2)
                             ),
                             radius = 1500f,
                             center = Offset(-0.5f, -0.5f)
@@ -206,7 +207,7 @@ object PPQs : Tab {
                             fontSize = 14.sp,
                             fontFamily = poppins,
                             fontWeight = FontWeight.SemiBold,
-                            color = Color(172, 172, 249)
+                            color = parseColor(ColourProvider.colour2)
                         )
                         Text(
                             text = board,
@@ -233,7 +234,7 @@ object PPQs : Tab {
             ) {
                 Text(
                     text = "Change Subject",
-                    color = Color(172, 172, 249),
+                    color = parseColor(ColourProvider.colour1),
                     fontFamily = poppins,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 20.sp
@@ -254,7 +255,7 @@ object PPQs : Tab {
                             .width(175.dp)
                             .height(150.dp)
                             .clip(RoundedCornerShape(20.dp))
-                            .background(Color(172, 172, 249))
+                            .background(parseColor(ColourProvider.colour1))
                             .padding(20.dp),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.Start
@@ -297,7 +298,7 @@ object PPQs : Tab {
                             .width(175.dp)
                             .height(150.dp)
                             .clip(RoundedCornerShape(20.dp))
-                            .background(Color(172, 172, 249))
+                            .background(parseColor(ColourProvider.colour1))
                             .padding(20.dp),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.Start
@@ -407,8 +408,8 @@ fun Paper(
                 .background(
                     Brush.radialGradient(
                         listOf(
-                            Color(155, 138, 250),
-                            Color(138, 138, 250)
+                            parseColor(ColourProvider.colour1),
+                            parseColor(ColourProvider.colour2)
                         ),
                         radius = 1500f,
                         center = Offset(-0.5f, -0.5f)
@@ -444,7 +445,7 @@ fun Paper(
                         navigator.push(DisplayResourcePDF())
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(108, 108, 221)
+                        backgroundColor = Color.White
                     ),
                     modifier = Modifier
                         .height(55.dp)
@@ -452,7 +453,7 @@ fun Paper(
                 ) {
                     Text(
                         text = "MS",
-                        color = Color.White,
+                        color = parseColor(ColourProvider.colour1),
                         fontFamily = poppins,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
@@ -468,7 +469,7 @@ fun Paper(
                         navigator.push(DisplayResourcePDF())
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(160, 160, 243)
+                        backgroundColor = parseColor(ColourProvider.colour1)
                     ),
                     modifier = Modifier
                         .height(55.dp)
@@ -492,8 +493,8 @@ fun Paper(
                 .background(
                     Brush.radialGradient(
                         listOf(
-                            Color(155, 138, 250),
-                            Color(138, 138, 250)
+                            parseColor(ColourProvider.colour1),
+                            parseColor(ColourProvider.colour2)
                         ),
                         radius = 1500f,
                         center = Offset(-0.5f, -0.5f)
@@ -529,7 +530,7 @@ fun Paper(
                         navigator.push(DisplayResourcePDF())
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(108, 108, 221)
+                        backgroundColor = Color.White
                     ),
                     modifier = Modifier
                         .height(55.dp)
@@ -538,7 +539,7 @@ fun Paper(
                 ) {
                     Text(
                         text = "MS",
-                        color = Color.White,
+                        color = parseColor(ColourProvider.colour1),
                         fontFamily = poppins,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
@@ -554,7 +555,7 @@ fun Paper(
                         navigator.push(DisplayResourcePDF())
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(160, 160, 243)
+                        backgroundColor = parseColor(ColourProvider.colour1)
                     ),
                     modifier = Modifier
                         .height(55.dp)
