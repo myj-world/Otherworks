@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Accorm | Educational Platform</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="icon" href="algo.png" type="image/x-icon" />
+  <script src="https://kit.fontawesome.com/90301f7072.js" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="script.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="icons.js"></script>
+</head>
+<body>
+  <nav id="nav-bar">
+    <div onclick="home()" class="n-left"><img src="algo.png"></div>
+    <div class="n-center">
+      <button class="auto" onclick="home()">Home</button>
+      <button title="All the Subjects and Information We Offer">Subjects</button>
+      <button title="Tools/Applications we Provide">Features</button>
+      <button onclick="contribute()" title="Share Your Knowledge Related to Any Subject">Contribute</button>
+      <button title="About Us">About</button>
+    </div>
+    <div class="n-right">
+      <button title="Login" ><i class="fa-solid fa-user"></i></button>
+    </div>
+  </nav>
+  <div onmouseover="openThemes()" onmouseout="closeThemes()" id="theme-con">
+    <div class="colors">
+      <button onclick="themeColor('def')" class="def"><div class="t-c" id="def-t"><i class="fa-solid fa-check"></i></div></button>
+      <button onclick="themeColor('ored')" class="ored"><div class="t-c" id="ored-t"><i class="fa-solid fa-check"></i></div></button>
+      <button onclick="themeColor('gween')" class="gween"><div class="t-c" id="gween-t"><i class="fa-solid fa-check"></i></div></button>
+      <button onclick="themeColor('glue')" class="glue"><div class="t-c" id="glue-t"><i class="fa-solid fa-check"></i></div></button>
+      <button onclick="themeColor('teel')" class="teel"><div class="t-c" id="teel-t"><i class="fa-solid fa-check"></i></div></button>
+    </div>
+    <button onmouseover="openThemes()" id="color-opt"><i class="fa-solid fa-brush"></i></button>
+    
+  </div>
+
+  <button id="navBtn" onclick="openNav()">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <div id="sidebar">
+    <button onclick="closeNav()" class="close-nav"><i class="fa-solid fa-xmark"></i></button>
+    <div onclick="home()" class="s-header">
+      <img src="algo.png">
+      <div class="s-text-h">
+        <div>
+          <h2>Accorm</h2>
+          <p>A Staggering Educational Platform</p>
+        </div>
+      </div>
+    </div>
+    <div class="s-line"></div>
+
+    <button class="s-btn topbtn"><i class="fa-solid fa-book-open"></i><p>Subjects</p></button>
+    <button class="s-btn middlebtn"><i class="material-icons">apps</i><p>Features</p></button>
+    <button class="s-btn lowbtn"><i class="fa-solid fa-circle-info"></i><p>About Us</p></button>
+
+    <div class="s-line"></div>
+
+    <button class="s-btn topbtn"><i class="fa-solid fa-circle-plus"></i><p>Contribute</p></button>
+    <button class="s-btn lowbtn"><i class="fa-solid fa-user"></i><p>Login</p></button>
+
+    <div class="s-line"></div>
+    <div class="s-c-con">
+      <div class="s-colors">
+        <button onclick="themeColor('def')" class="def"><div class="t-c" id="def-t"><i class="fa-solid fa-check"></i></div></button>
+        <button onclick="themeColor('ored')" class="ored"><div class="t-c" id="ored-t"><i class="fa-solid fa-check"></i></div></button>
+        <button onclick="themeColor('gween')" class="gween"><div class="t-c" id="gween-t"><i class="fa-solid fa-check"></i></div></button>
+        <button onclick="themeColor('glue')" class="glue"><div class="t-c" id="glue-t"><i class="fa-solid fa-check"></i></div></button>
+        <button onclick="themeColor('teel')" class="teel"><div class="t-c" id="teel-t"><i class="fa-solid fa-check"></i></div></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="titlebar">
+    <div class="info-con">
+      
+      <h1>Accorm</h1>
+      <h2>A Staggering Educational Platform</h2>
+      <h6><div class="line"></div></h6>
+      <div id="everything">
+        <div class="flexy">
+          <div class="option">
+            <div class="opt-logo l"><i class="fa-solid fa-book-open"></i></div>
+
+            <div class="norm">
+              <p class="p-l">Subjects <i class="fa-solid fa-angle-left left-i"></i></p>
+            </div>
+            
+            <div class="compat">
+              <p style="margin-left: 25px;" class="p-r">Subjects <i class="fa-solid fa-angle-right right-i"></i></p>
+            </div>
+          </div>
+
+          <div class="option">
+            <div class="norm">
+              <div class="opt-logo r"><i class="material-icons">apps</i></div>
+              <p class="p-r">Features <i class="fa-solid fa-angle-right right-i"></i></p>
+            </div>
+            <div class="compat">
+              <div class="opt-logo l"><i class="material-icons">apps</i></div>
+              <p style="margin-left: 25px;" class="p-r">Features <i class="fa-solid fa-angle-right right-i"></i></p>
+            </div>
+          </div>
+        </div>
+        <div class="flexy">
+          <div onclick="contribute()" class="option">
+            <div class="opt-logo l"><i class="fa-solid fa-circle-plus"></i></div>
+            <div class="norm">
+              <p class="p-l">Contribute <i class="fa-solid fa-angle-left left-i"></i></p>
+            </div>
+            <div class="compat">
+              <p style="margin-left: 25px;" class="p-r">Contribute <i class="fa-solid fa-angle-right right-i"></i></p>
+            </div>
+          </div>
+
+          <div class="option">
+            <div class="norm">
+              <div class="opt-logo r"><i class="fa-solid fa-circle-info"></i></div>
+              <p class="p-r">About Us <i class="fa-solid fa-angle-right right-i"></i></p>
+            </div>
+            <div class="compat">
+              <div class="opt-logo l"><i class="fa-solid fa-circle-info"></i></div>
+              <p style="margin-left: 25px;" class="p-r">About Us <i class="fa-solid fa-angle-right right-i"></i></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

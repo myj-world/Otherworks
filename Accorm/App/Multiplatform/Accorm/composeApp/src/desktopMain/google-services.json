@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1039157885443",
+    "project_id": "accorm-4b6a9",
+    "storage_bucket": "accorm-4b6a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1039157885443:android:bb944245a9e771ad7fac36",
+        "android_client_info": {
+          "package_name": "com.yousufjamil.accorm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzs5pDeDgs8nC9zdS4MvmnufC4DGF0iqs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
