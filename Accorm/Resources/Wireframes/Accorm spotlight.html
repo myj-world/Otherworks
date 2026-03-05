@@ -1,0 +1,403 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Distinctions | Accorm Spotlight</title>
+    <link rel="icon" href="https://ginastic.co/logos/accorm-logo2.png" type="image/x-icon">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
+    <script src="https://kit.fontawesome.com/b622a9d4f9.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lexend&family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gantari&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Wix+Madefor+Text&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+body {
+    margin: 0;
+    background: linear-gradient(to right, #1a2245, #0d1229, #1a2245);
+    overflow: none;
+}
+
+*::-webkit-scrollbar {
+    width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #0d1124;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: #203863;
+    border-radius: 20px;
+    border: solid #0d1124 1px;
+}
+
+* {
+    margin: 0;
+}
+
+#shape-holder {
+    margin: 50px 0px;
+    margin-top: 70px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#shape {
+    background: linear-gradient(to right, #9452fd, #345dff);
+    filter: blur(35px) brightness(90%);
+    transform: rotate(-20deg);
+    z-index: -1;
+    animation: change 5s infinite;
+    opacity: 0.8;
+    position: fixed;
+}
+
+@keyframes change {
+    0%    {height: 50px;width: 200px;border-radius: 50px;}
+    25%   {height: 150px;width: 150px;border-radius: 50%;}
+    50%   {height: 50px;width: 200px;border-radius: 50px;transform:rotate(20deg);}
+    75%   {height: 150px;width: 150px;border-radius: 50%;}
+    100%  {height: 50px;width: 200px;border-radius: 50px;transform: rotate(-20deg);}
+}
+
+#title {
+    width: 50%;
+    margin-top: 40px;
+    text-align: center;
+    font-family: bricolage grotesque;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#title h1 {
+    font-size: 25px;
+    font-family: bricolage grotesque;
+    color: white;
+    text-shadow: 0px 5px 7px rgba(0,0,0,0.2);
+    animation: moveup 3s;
+}
+
+@keyframes moveup {
+  0%   {opacity: 0;transform: translateY(15px);}
+  100% {opacity: 1;transform: translateY(0);}
+}
+
+#title p {
+    font-size: 13px;
+    font-family: plus jakarta sans;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: #c4c4c4;
+    margin-top: 10px;
+    text-shadow: 0px 5px 7px rgba(0,0,0,0.2);
+}
+
+#title p span {
+    position: relative;
+    background: -webkit-linear-gradient(45deg, #b98cff, #9db0fb 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+}
+
+#dash-line {
+    width: 50px;
+    padding: 3px;
+    border-radius: 5px;
+    /*background: linear-gradient(to right, #9452fd, #345dff);*/
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+#dash-line img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    box-shadow: 0px 5px 7px 0px rgba(0,0,0,0.1);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.5s ease;
+    cursor: pointer;
+}
+
+#dash-line img:hover {
+    transform:translate(-50%, -50%) scale(0.75);
+}
+
+
+
+#names-grid {
+    width: 70%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.name {
+    height: 250px;
+    text-align: center;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(225, 240, 255, 0.03);
+    transition: 0.37s ease;
+}
+
+.name:hover {
+    transform: scale(0.9);
+}
+
+.name .img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 15px auto;
+    background: radial-gradient(circle at bottom left, #9452fd, #345dff);
+    border: solid rgba(225,240,255,0.15) 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 2.5rem;
+    font-family: albert sans;
+    font-weight: 700;
+    box-shadow: 0px 5px 7px 10px rgba(0,0,0,0.07);
+}
+
+.name h3 {
+    font-family: Montserrat;
+    font-size: 25px;
+    color: white;
+    text-shadow: 0px 5px 7px rgba(0,0,0,0.2);
+    letter-spacing: 1.2;
+    margin-top: 20px;
+}
+
+.name p {
+    font-family: plus jakarta sans;
+    font-size: 10px;
+    color: #c4c4c4;
+    text-shadow: 0px 5px 7px rgba(0,0,0,0.2);
+    letter-spacing: 1.5;
+    margin-top: 15px;
+}
+
+#nav {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    display: flex;
+}
+
+#nav button {
+    border-radius: 100px;
+    outline: none;
+    border: 0px;
+    height: 37px;
+    cursor: pointer;
+}
+
+.back {
+    width: 37px;
+    background: rgba(210, 200, 255, 0.75);
+    font-size: 1em;
+    color: black;
+    transition: 0.3s ease;
+    /*display: flex;
+    align-items: center;
+    justify-content: center;*/
+    text-align: left;
+    padding: 0px;
+    margin-right: 10px;
+}
+
+.back i {
+    transition: 0.3s ease !important;
+    margin-left: 14.5px;
+}
+
+/*.back:hover i {
+    margin-right: auto !important;
+}*/
+
+.back:hover {
+    width: 75px;
+    filter: brightness(60%);
+}
+
+#nav button:active {
+    transform: scale(0.50);
+}
+
+.qa {
+    display: flex;
+    background: radial-gradient(circle at bottom left, #9452fd, #345dff);
+    transition: 0.3s ease;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 10px;
+    font-family: Montserrat;
+    font-weight: 500;
+}
+
+.qa:hover {
+    background: radial-gradient(circle at bottom left, #345dff, #9452fd);
+    filter: brightness(1.9);
+}
+
+.qa p {
+    display: flex;
+    align-items: center;
+    padding-bottom: 1.9px;
+    padding-left: 5.5px;
+    margin-left: -1.0px;
+}
+
+.qa i {
+    color: rgba(10, 10, 10, 0.75);
+}
+
+</style>
+</head>
+<body>
+<center>
+
+<div id="shape-holder">
+    <div id="shape"></div>
+    <div id="title">
+    <h1>🙶Your limitation - it's only your imagination.🙷</h1>
+    <p>The Accorm Team recognizes the achievement of the <span>Cambridge distinction holders</span>.</p>
+    <div id="dash-line"><img onclick="window.location='https://accorm.ginastic.co/';" src="accorm.cryptic.png"></div>
+</div>
+</div>
+
+<div id="nav">
+    <button onclick="window.location='https://accorm.ginastic.co/';" class="back"><i class="fa-solid fa-caret-left"></i></button>
+
+    <button class="qa">
+        <i class="fa-solid fa-comments"></i>
+        <p>Q/A App</p>
+    </button>
+</div>
+
+<div id="names-grid">
+    
+    <div class="name">
+        <div class="img">A</div>
+        <h3>M. Abdullah<br> Kamil</h3>
+        <p>Top in Saudia Arabia - Cambridge IGCSE™ Accounting & Computer Science</p>
+    </div>
+
+    <div class="name">
+        <div class="img">T</div>
+        <h3>Tahreem<br> Awan</h3>
+        <p style="margin-top: 10px;">Top in Western Province, Saudi Arabia  - Cambridge IGCSE™ Information & Communication Technology</p>
+    </div>
+    
+    <div class="name">
+        <div class="img">M</div>
+        <h3>Muhammad<br> Arsalan</h3>
+        <p>Top in The World  - Cambridge IGCSE™ Mathematics</p>
+    </div>
+    
+    <!-- <div class="name">
+        <div class="img">E</div>
+        <h3>Eesha<br> Kamil</h3>
+        <p>Top in The World  - Cambridge IGCSE™ Mathematics</p>
+    </div> -->
+
+    <!-- <div class="name">
+        <div class="img">A</div>
+        <h3>Abdul<br> Aleem</h3>
+        <p>Top in Saudi Arabia  - Cambridge A Level Accounting</p>
+    </div> -->
+
+    <!-- <div class="name">
+        <div class="img">A</div>
+        <h3>Abdul<br> Rehman</h3>
+        <p>Best Across Three  - Cambridge A Level, Third Place in Western Province</p>
+    </div> -->
+
+    <!-- <div class="name">
+        <div class="img">A</div>
+        <h3>Ayesha<br> Amir</h3>
+        <p>Top in Saudi Arabia  - Cambridge IGCSE™ Computer Science</p>
+    </div> -->
+
+    <!-- <div class="name">
+        <div class="img">E</div>
+        <h3>Eman<br> Amir</h3>
+        <p>Top in Saudi Arabia  - Cambridge IGCSE™ Islamiyat</p>
+    </div> -->
+
+    <!-- <div class="name">
+        <div class="img">M</div>
+        <h3>Mahnoor<br> Faisal</h3>
+        <p>Best Across Three  - Cambridge AS Level, Third Place in Western Province</p>
+    </div> -->
+
+    <!-- <div class="name">
+        <div class="img">M</div>
+        <h3>Maria<br> Khalid</h3>
+        <p>Top in The World  - Cambridge IGCSE™ Pakistan Studies</p>
+    </div> -->
+
+    <!-- <div class="name">
+        <div class="img">M</div>
+        <h3>Maryam<br> Imran</h3>
+        <p>Top in Saudi Arabia  - Cambridge A Level Economics</p>
+    </div> -->
+
+    <div class="name">
+        <div class="img">K</div>
+        <h3>M. Khalid<br> Iqbal</h3>
+        <p>Best Across Four  - Cambridge AS Level, First Place in Saudi Arabia and Western Province</p>
+    </div>
+
+    <div class="name">
+        <div class="img">K</div>
+        <h3>M. Khalid<br> Iqbal</h3>
+        <p>Top in Western Province, Saudi Arabia  - Cambridge AS Level Computer Science</p>
+    </div>
+
+    <!-- <div class="name">
+        <div class="img">R</div>
+        <h3>Rayyan<br> Khan</h3>
+        <p>Top in Western Province, Saudi Arabia  - Cambridge A Level Business</p>
+    </div> -->
+
+    <!-- <div class="name">
+        <div class="img">S</div>
+        <h3>Sanaa<br> Mohammed</h3>
+        <p>Top in Saudi Arabia  - Cambridge AS Level Business</p>
+    </div> -->
+
+    
+</div>
+
+</center>    
+</body>
+</html>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <item
+        android:title="@string/quick_links">
+        <menu>
+            <item
+                android:id="@+id/home"
+                android:title="@string/home"
+                android:icon="@drawable/baseline_home_24"/>
+
+            <item
+                android:id="@+id/calendar"
+                android:title="@string/calendar"
+                android:icon="@drawable/baseline_calendar_today_24"/>
+        </menu>
+    </item>
+    <item android:title="@string/curriculum">
+        <menu>
+            <item
+                android:id="@+id/junior"
+                android:title="@string/junior_school"
+                android:icon="@drawable/baseline_book_24"/>
+            <item
+                android:id="@+id/middle"
+                android:title="@string/middle_school"
+                android:icon="@drawable/baseline_book_24"/>
+            <item
+                android:id="@+id/senior"
+                android:title="@string/senior_school"
+                android:icon="@drawable/baseline_book_24"/>
+        </menu>
+    </item>
+
+
+    <item android:title="@string/parent_portal">
+        <menu>
+            <item
+                android:id="@+id/parentportal"
+                android:title="@string/parent_portal_menu"
+                android:icon="@drawable/baseline_person_24"/>
+        </menu>
+    </item>
+<!--    <group>-->
+<!--        <item-->
+<!--            android:id="@+id/darkswitch"-->
+<!--            android:title="@string/dark_mode"-->
+<!--            app:actionLayout="@layout/switch_item"-->
+<!--            app:showAsAction="always" />-->
+<!--    </group>-->
+</menu>
